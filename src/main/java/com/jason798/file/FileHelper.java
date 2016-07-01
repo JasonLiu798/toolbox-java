@@ -6,6 +6,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import java.io.*;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.List;
 public final class FileHelper {
 
     private static Logger log = LoggerFactory.getLogger(FileHelper.class);
-
+    public static final String DFT_FILE = "/opt/logs/perf/fav.dat";
     /**
      * file exist
      * @param filepath
@@ -68,16 +69,30 @@ public final class FileHelper {
 
 
 
-    /**
-     * thread safe
-     * @param content
-     */
 
+    public static void write2File(byte[] content){
+        write2File(DFT_FILE,content);
+    }
 
+    public static void write2File(String filepath,byte[] content){
+        try {
+            DataOutputStream out = new DataOutputStream(new FileOutputStream(filepath));
+            for(int i=0;i<content.length;i++){
+                out.writeByte(content[i]);
+            }
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        log.debug("write to file {} finish,bin mode", filepath);
+        return;
+    }
 
 
     public static void write2File(List<String> content){
-        write2File("/opt/logs/perf/fav.log",content);
+        write2File("/opt/logs/perf/fav.log", content);
     }
     public static void write2File(String content){
         List<String> list = new LinkedList<>();
@@ -122,6 +137,32 @@ public final class FileHelper {
         return;
     }
 
+    public static byte[] readBinaryFile(){
+        return readBinaryFile(DFT_FILE);
+    }
+    /**
+     * only read int.max_value byte
+     * @param filepath
+     * @return
+     */
+    public static byte[] readBinaryFile(String filepath){
+        int size = (int) getFileSize(filepath);
+        log.debug("file size {}",size);
+        byte[] res = new byte[size];
+        try {
+            DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(filepath)));
+//            FileInputStream in = new FileInputStream(filepath);
+            for(int i=0;i<size;i++) {
+                res[i] = in.readByte();
+            }
+//            while ((c=in.read())!=-1) {
+//                byte tmpByte = in.readByte();
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
 
     /**
      * read xml
@@ -170,6 +211,33 @@ public final class FileHelper {
             temp = breader.readLine();
         }
         res = xmlStr;
+        return res;
+    }
+
+    public static long getFileSize(String filepath){
+        long res = -1;
+        FileChannel fc = null;
+        File f = new File(filepath);
+        if(f.exists() && f.isFile()){
+            FileInputStream fis = null;
+            try {
+                fis = new FileInputStream(f);
+                fc = fis.getChannel();
+                res = fc.size();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if(null!=fc){
+                    try{
+                        fc.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
         return res;
     }
 }

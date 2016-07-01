@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * json helper,user alibaba fastjson
+ * json helper
+ * user alibaba fastjson
  */
 public class JSONHelperF {
 

@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 /**
  * For test,record cost time and return value
- * @author JianLong
+ * @author JasonLiu798
  * @date 2015/4/6 12:30
  */
 public class ResCostTime <T>{

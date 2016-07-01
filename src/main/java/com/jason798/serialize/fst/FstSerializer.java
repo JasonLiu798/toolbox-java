@@ -43,8 +43,12 @@ public class FstSerializer implements Serializer {
                 e.printStackTrace();
             }
         }
-
         return stream.toByteArray();
+    }
+
+
+    public byte[] serialize1(Object object){
+        return conf.asByteArray(object);
     }
 
     /**

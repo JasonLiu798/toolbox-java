@@ -11,7 +11,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 /**
- * Json helper,use jackson
+ * Json helper
+ * use jackson
  */
 public class JSONHelperJ {
 

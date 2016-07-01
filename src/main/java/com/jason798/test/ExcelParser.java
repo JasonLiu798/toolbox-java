@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author JianLong
+ * Excel parser
+ * @author JasonLiu798
  * @date 2015/11/27 9:44
  */
 public class ExcelParser {

@@ -11,7 +11,6 @@ import com.alibaba.druid.sql.parser.SQLStatementParser;
 import com.alibaba.druid.sql.visitor.SQLASTOutputVisitor;
 import com.alibaba.druid.util.JdbcUtils;
 import com.jason798.file.FileHelper;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

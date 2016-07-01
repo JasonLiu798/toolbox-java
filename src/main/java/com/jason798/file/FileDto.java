@@ -1,16 +1,19 @@
 package com.jason798.file;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Created by JasonLiu798 on 16/6/2.
  */
-public class FileDto {
+public class FileDto implements Serializable{
+//    private int a;
+    private static final long serialVersionUID = -1558745353709563962L;
     private String path;
     private List<String> contents = new LinkedList<>();
 
-//    public FileDto(String content) {
+    //    public FileDto(String content) {
 //        path = DFT_PATH;
 //        contents.add(content);
 //    }
@@ -38,5 +41,14 @@ public class FileDto {
 
     public List<String> getContents() {
         return contents;
+    }
+
+    @Override
+    public String toString() {
+        return "FileDto{" +
+                "path='" + path + '\'' +
+                ", contents=" + contents +
+//                ", a=" + a +
+                '}';
     }
 }
