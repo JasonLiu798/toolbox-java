@@ -1,9 +1,11 @@
 package com.jason798.file;
 
+import com.jason798.character.StringHelper;
+import com.jason798.constant.SystemConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+//import org.springframework.core.io.Resource;
+//import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
@@ -28,6 +30,58 @@ public final class FileHelper {
         File file=new File(filepath);
         return file.exists();
     }
+
+	public static String className2FilePath(String className){
+		if(StringHelper.isEmpty(className)){
+			return "";
+		}
+		String[] arr = className.split(StringHelper.DOT_SEP_NO_REX);
+		System.out.println("arr size "+arr.length+","+className);
+		if(arr.length==1){
+			return className;
+		}
+		int lenMinus1= arr.length-1;
+		StringBuilder sb = new StringBuilder();
+		for(int i=0;i<arr.length;i++){
+			sb.append(arr[i]);
+			if(i!=lenMinus1){
+				sb.append(SystemConstant.FILE_SEP);
+			}
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * file size
+	 * @param filepath
+	 * @return
+	 */
+	public static long getFileSize(String filepath){
+		long res = -1;
+		FileChannel fc = null;
+		File f = new File(filepath);
+		if(f.exists() && f.isFile()){
+			FileInputStream fis = null;
+			try {
+				fis = new FileInputStream(f);
+				fc = fis.getChannel();
+				res = fc.size();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				if(null!=fc){
+					try{
+						fc.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		return res;
+	}
 
     /**
      * 文件拷贝
@@ -67,9 +121,10 @@ public final class FileHelper {
         return res;
     }
 
-
-
-
+	/**
+	 * write file
+	 * @param content
+	 */
     public static void write2File(byte[] content){
         write2File(DFT_FILE,content);
     }
@@ -164,12 +219,53 @@ public final class FileHelper {
         return res;
     }
 
+	public static List<String> readFilesByLineResList(String filepath) throws IOException {
+		File file = new File(filepath);
+		BufferedReader reader = null;
+		List<String> res = new ArrayList<>();
+		try {
+			reader = new BufferedReader(new FileReader(file));
+			String tempString = null;
+			while ((tempString = reader.readLine()) != null) {
+				res.add(tempString);
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally {
+			if(reader!=null)
+				reader.close();
+		}
+		return res;
+	}
+
+	public static String readFilesByLineResStr(String filepath) throws IOException {
+		File file = new File(filepath);
+		BufferedReader reader = null;
+		StringBuilder res = new StringBuilder();
+		try {
+			reader = new BufferedReader(new FileReader(file));
+			String tempString = null;
+			while ((tempString = reader.readLine()) != null) {
+//				String codeced = new String(tempString.getBytes("utf8"));
+				res.append(tempString).append(SystemConstant.LINE_SEP);
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally {
+			if(reader!=null)
+				reader.close();
+		}
+		return res.toString();
+	}
+
     /**
      * read xml
      *
      * @return
      * @throws IOException
-     */
+     *
     public static List<String> getFilesStr(String filepath) throws IOException {
         PathMatchingResourcePatternResolver patternResolver = new PathMatchingResourcePatternResolver();
         Resource[] resources = patternResolver.getResources(filepath);
@@ -191,8 +287,8 @@ public final class FileHelper {
             res.add(xmlStr);
         }
         return res;
-    }
-
+    }*/
+	/*
     public static String getFileStr(String filepath) throws IOException {
         PathMatchingResourcePatternResolver patternResolver = new PathMatchingResourcePatternResolver();
         Resource resource = patternResolver.getResource(filepath);
@@ -212,32 +308,7 @@ public final class FileHelper {
         }
         res = xmlStr;
         return res;
-    }
+    }*/
 
-    public static long getFileSize(String filepath){
-        long res = -1;
-        FileChannel fc = null;
-        File f = new File(filepath);
-        if(f.exists() && f.isFile()){
-            FileInputStream fis = null;
-            try {
-                fis = new FileInputStream(f);
-                fc = fis.getChannel();
-                res = fc.size();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if(null!=fc){
-                    try{
-                        fc.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-        return res;
-    }
+
 }

@@ -1,11 +1,18 @@
 package com.jason798.file;
 
+import com.jason798.collection.CollectionHelper;
+import com.jason798.constant.SystemConstant;
 import com.jason798.serialize.SerializerHelper;
 import com.jason798.serialize.fst.FstSerializer1;
 import com.jason798.test.TestDto;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
+
+import java.io.File;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * FileHelper Tester.
@@ -118,20 +125,37 @@ public class FileHelperTest {
 
     }
 
+
+	@Test
+	public void testSepClassName(){
+		System.out.println(FileHelper.className2FilePath(this.getClass().getName()));
+		assertEquals("", FileHelper.className2FilePath(""));
+		assertEquals("", FileHelper.className2FilePath(null));
+		assertEquals("haha", FileHelper.className2FilePath("haha"));
+		assertEquals("com\\haha",FileHelper.className2FilePath("com.haha"));
+		assertEquals("com\\haha\\HUJSDF",FileHelper.className2FilePath("com.haha.HUJSDF"));
+	}
+
+
     /**
      * Method: getFilesStr(String filepath)
      */
     @Test
-    public void testGetFilesStr() throws Exception {
-
-    }
+    public void testreadFilesByLine() throws Exception {
+		File dir = new File(this.getClass().getResource("/").getPath());
+		String filename = dir+ SystemConstant.FILE_SEP+FileHelper.className2FilePath(this.getClass().getName())+".class";
+		System.out.println(filename);
+		List<String> list = FileHelper.readFilesByLineResList(filename);
+		CollectionHelper.printList(list);
+	}
 
     /**
      * Method: getFileStr(String filepath)
      */
     @Test
-    public void testGetFileStr() throws Exception {
-
-    }
+    public void testreadFilesByLine2String() throws Exception {
+		String res = FileHelper.readFilesByLineResStr("Y:\\yp\\JL.txt");
+		System.out.println(res);
+	}
 
 }

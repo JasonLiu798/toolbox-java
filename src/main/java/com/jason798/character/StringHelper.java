@@ -23,6 +23,8 @@ public final class StringHelper {
     private static final String TOP_PATH = "..";
     private static final String CURRENT_PATH = ".";
     private static final char EXTENSION_SEPARATOR = 46;
+	public static final String DOT_SEP = ".";
+	public static final String DOT_SEP_NO_REX = "\\.";
 
 
     /**

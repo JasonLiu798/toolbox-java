@@ -237,7 +237,7 @@ public final class CollectionHelper {
         if (name == null) {
             name = "default";
         }
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("Collection:{[");
         sb.append(name);
         sb.append("]\n");
@@ -250,16 +250,18 @@ public final class CollectionHelper {
         }
         sb.append("}\n");
         switch (level) {
-            case 0:
+			case 0:
+				System.out.println(sb.toString());
+			case 1:
                 log.debug(sb.toString());
                 break;
-            case 1:
+            case 2:
                 log.info(sb.toString());
                 break;
-            case 2:
+            case 3:
                 log.warn(sb.toString());
                 break;
-            case 3:
+            case 4:
                 log.error(sb.toString());
         }
     }
