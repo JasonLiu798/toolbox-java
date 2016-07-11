@@ -128,7 +128,7 @@ public class FileHelperTest {
 
 	@Test
 	public void testSepClassName(){
-		System.out.println(FileHelper.className2FilePath(this.getClass().getName()));
+//		System.out.println(FileHelper.className2FilePath(this.getClass().getName()));
 		assertEquals("", FileHelper.className2FilePath(""));
 		assertEquals("", FileHelper.className2FilePath(null));
 		assertEquals("haha", FileHelper.className2FilePath("haha"));

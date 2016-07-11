@@ -1,9 +1,11 @@
-package com.jason798.common;
+package com.jason798.number;
 
 import com.jason798.number.NumberHelper;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
+
+import java.util.HashMap;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -15,22 +17,14 @@ import static junit.framework.TestCase.assertEquals;
  */
 public class NumberHelperTest {
 
-    @Before
-    public void before() throws Exception {
-
-    }
-
-    @After
-    public void after() throws Exception {
-
-    }
-
     /**
      * Method: long2Int(long lnum)
      */
     @Test
     public void testLong2Int() throws Exception {
 
+		HashMap hm = new HashMap();
+		hm.put("","");
     }
 
     /**

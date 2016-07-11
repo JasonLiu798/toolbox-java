@@ -1,12 +1,17 @@
 package com.jason798.collection;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 
 /**
  * Created by JasonLiu798 on 16/6/3.
  */
 public class SearchHelper {
+
+	public static <T> int binarySearchRaw(ArrayList<T> srcArray, T tgt, Comparator<T> comparator){
+		return Collections.binarySearch(srcArray,tgt,comparator);
+	}
 
     /**
      * find the tgt element index

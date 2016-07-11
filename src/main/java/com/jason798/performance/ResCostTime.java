@@ -3,7 +3,7 @@ package com.jason798.performance;
 import java.util.HashMap;
 
 /**
- * For test,record cost time and return value
+ * For simpledemo,record cost time and return value
  * @author JasonLiu798
  * @date 2015/4/6 12:30
  */

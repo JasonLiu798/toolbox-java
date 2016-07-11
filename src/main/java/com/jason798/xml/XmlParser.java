@@ -110,7 +110,7 @@ public class XmlParser {
     public static void main(String[] argv) {
         XmlElement xmlElement = null;
         try {
-            //InputStream processDefinitionInputStream = new FileInputStream( "E:/javaWorkSpace/test/bin/exampleB
+            //InputStream processDefinitionInputStream = new FileInputStream( "E:/javaWorkSpace/simpledemo/bin/exampleB
             // .xml" );
             XmlParser xmlParser = new XmlParser(new FileReader("d:/ReqAudActivitys.xml"));
             xmlElement = xmlParser.parse();

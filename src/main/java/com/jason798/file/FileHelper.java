@@ -9,6 +9,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,7 +24,8 @@ import java.util.List;
 public final class FileHelper {
 
     private static Logger log = LoggerFactory.getLogger(FileHelper.class);
-    public static final String DFT_FILE = "/opt/logs/perf/fav.dat";
+    public static final String DFT_FILE = "/opt/logs/test.dat";
+
     /**
      * file exist
      * @param filepath
@@ -35,8 +40,9 @@ public final class FileHelper {
 		if(StringHelper.isEmpty(className)){
 			return "";
 		}
+		// className.replaceAll(StringHelper.DOT_SEP_NO_REX,SystemConstant.FILE_SEP);
 		String[] arr = className.split(StringHelper.DOT_SEP_NO_REX);
-		System.out.println("arr size "+arr.length+","+className);
+		//System.out.println("arr size "+arr.length+","+className);
 		if(arr.length==1){
 			return className;
 		}
@@ -94,6 +100,7 @@ public final class FileHelper {
     public static boolean copy(File srcFile, String destPath) throws Exception {
         File dir = new File(destPath);
         return srcFile.renameTo(new File(dir.getPath(), dir.getName()));
+
     }
 
     /**
@@ -259,6 +266,10 @@ public final class FileHelper {
 		}
 		return res.toString();
 	}
+
+
+
+
 
     /**
      * read xml

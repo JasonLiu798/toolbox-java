@@ -2,14 +2,21 @@ package com.jason798.performance;
 
 import com.jason798.collection.CollectionHelper;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 链路计时工具
+ * usage:
+ * 1.simplest way
+ * RunTimeHelper.addTime();
+ * 	xxx
+ * RunTimeHelper.addTime();
+ *  yyy
+ * System.out.println(RunTimeHelper.addTimeAndGetStdout());
+ *
+ * 2.normal usage
+ *
  * Created by JasonLiu798 on 16/4/5.
  */
 public class RunTimeHelper {
@@ -17,25 +24,25 @@ public class RunTimeHelper {
     /**
      * templates
      */
-    private static final String DFT = "default";
-    private static final String CSV = "csv";
+    public static final String DFT = "default";
+    public static final String CSV = "csv";
     private static final String TOTAL_KEY = "totalcost";
     private static final String SECTION_KEY = "section";
     private static final String EMPTY_KEY = "empty";
     private static Map<String, Map<String, String>> fmtTemplates = new ConcurrentHashMap<>();
 
-    public static void init() {
-        // add
-        time.set(new RunTimeDto());
+    static {
         /**
          * init template
          */
         if (fmtTemplates.size() <= 0) {
-            Map<String, String> defaultTemplate = new HashMap<>();
+            //init default template
+			Map<String, String> defaultTemplate = new HashMap<>();
             defaultTemplate.put(TOTAL_KEY, "total cost: %s ms,%s");//  time,comment
             defaultTemplate.put(SECTION_KEY, "section %s cost: %s ms, %s");
             defaultTemplate.put(EMPTY_KEY, "cost time:not enough record");
             fmtTemplates.put(DFT, defaultTemplate);
+			//init csv template
             Map<String, String> csvTemplate = new HashMap<>();
             csvTemplate.put(TOTAL_KEY, "total cost, %s, %s");//  time,comment
             csvTemplate.put(SECTION_KEY, "section %s cost, %s, %s");
@@ -44,15 +51,20 @@ public class RunTimeHelper {
         }
     }
 
-    public static void reset() {
-        init();
-    }
+	public static void init(){
+		time.set(new RunTimeDto());
+	}
 
     public static void resetAndRestart() {
         init();
         addTime();
     }
 
+
+	public static String addTimeAndGetStdout(){
+		addTime();
+		return getFmtTimeForStdout();
+	}
 
     public static String getFmtTimeForStdout() {
         return getFmtTimeForStdout(0);
@@ -146,8 +158,14 @@ public class RunTimeHelper {
         time.set(rd);
     }
 
-//	public static void main(String[] args) {
-//		System.out.println(RunTimeUtil.timeReserve(123456789012L));
-//	}
+	/**
+	 * get output template keys
+	 * @return
+	 */
+	public static Set<String> getTemplates(){
+		return fmtTemplates.keySet();
+	}
+
+
 
 }

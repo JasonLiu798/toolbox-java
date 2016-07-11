@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * For test, calc avg,max,min cost time.
+ * For simpledemo, calc avg,max,min cost time.
  * @author JasonLiu798
  * @date 2015/4/6 12:30
  */
