@@ -8,7 +8,7 @@ import java.util.Calendar;
  */
 public class ByteHelper {
 
-	private static final String SEP = ",";
+	private static final String SEP = "_";
 
 	public static int byte2int(byte b) {
 		if (b < 0) {

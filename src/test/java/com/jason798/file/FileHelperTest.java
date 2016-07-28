@@ -88,7 +88,7 @@ public class FileHelperTest {
 //        TestDto fd = new TestDto(1111,2222,333);
 //        byte[] content = fs.serialize(fd);
 //        FileHelper.write2File(content);
-
+		/*
         byte[] readByte = FileHelper.readBinaryFile();
         StringBuffer csb = new StringBuffer();
         StringBuffer bsb = new StringBuffer();
@@ -106,7 +106,7 @@ public class FileHelperTest {
         //TestDto fda = (TestDto) fs.deserialize(readByte);
         TestDto fda = (TestDto)SerializerHelper.deserialize(readByte);
         System.out.println(fda);
-
+		*/
     }
 
     /**

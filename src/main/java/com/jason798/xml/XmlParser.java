@@ -5,15 +5,18 @@ import java.io.*;
 
 import org.xml.sax.*;
 import org.xml.sax.helpers.*;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * convenience class for parsing and/or validating xml documents.
  * The dtd's for validation of jBpm-xml-documents is are included?
  */
 public class XmlParser {
-
+	private static final Logger log = LoggerFactory.getLogger(XmlParser.class);
+	//	private static Log log = LogFactory.getLog(XmlParser.class.getName());
     /**
      * creates an XmlParser for an inputStream (conaining an xml-document).
      *
@@ -135,6 +138,6 @@ public class XmlParser {
     private boolean validate = true;
     private boolean parse = true;
     //private static final Logger log = Logger.getLogger(XmlParser.class);
-    private static Log log = LogFactory.getLog(XmlParser.class.getName());
+
     private static final String LINESEPARATOR = System.getProperty("line.separator");
 }

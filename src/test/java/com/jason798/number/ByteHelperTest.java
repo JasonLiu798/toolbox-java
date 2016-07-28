@@ -36,17 +36,6 @@ public class ByteHelperTest {
 	}
 
 	/**
-	 * Method: integer2HexString(int src)
-	 */
-	@Test
-	public void testInteger2HexStringSrc() throws Exception {
-		String res = ByteHelper.int2FmtHexStr(123);
-		System.out.println(res);
-		assertEquals("7b",res);
-
-	}
-
-	/**
 	 * Method: integer2HexString(int src, int bit)
 	 */
 	@Test

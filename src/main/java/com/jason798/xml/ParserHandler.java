@@ -1,16 +1,16 @@
 package com.jason798.xml;
 
 import java.util.*;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.*;
 import org.xml.sax.helpers.*;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * parset handler
  */
 public class ParserHandler extends DefaultHandler {
+	private static final Logger log = LoggerFactory.getLogger(ParserHandler.class);
 
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes atts) {
@@ -95,5 +95,5 @@ public class ParserHandler extends DefaultHandler {
     private LinkedList elementStack = new LinkedList();
     private XmlElement rootElement = null;
     //private static final Logger log = Logger.getLogger(IwapWorkFlowHandler.class);
-    private static Log log = LogFactory.getLog(ParserHandler.class.getName());
+
 }
