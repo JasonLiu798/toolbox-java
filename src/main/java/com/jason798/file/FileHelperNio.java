@@ -5,6 +5,7 @@ import com.jason798.number.NumberHelper;
 import com.sun.org.apache.bcel.internal.generic.RET;
 
 import java.io.*;
+import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
@@ -20,42 +21,77 @@ public class FileHelperNio {
 
 	static final int BUFFER_SIZE = 1024;
 
-	public static boolean writeFile(String file, String content) {
-		return writeFile(file, content, StandardCharsets.UTF_8, StandardOpenOption.WRITE);
-	}
-
-	public static boolean appendLine(String file, String content) {
-		return append(file, content + SystemConstant.LINE_SEP);
-	}
-
-	public static boolean append(String file, String content) {
-		return writeFile(file, content, StandardCharsets.UTF_8, StandardOpenOption.APPEND);
-	}
-
-	public static boolean writeFile(String file, String content, Charset c, OpenOption o) {
-		boolean res = true;
-		if (!FileHelper.fileExist(file)) {
-			o = StandardOpenOption.CREATE_NEW;
+	/**
+	 ************************ read file apis ************************
+	 */
+	/**
+	 *
+	 * @param filename
+	 * @return
+	 * @throws IOException
+	 */
+	public static byte[] readFile2ByteArray(String filename) throws IOException {
+		File f = new File(filename);
+		if (!f.exists()) {
+			throw new FileNotFoundException(filename);
 		}
-		Path path = Paths.get(file);
-		BufferedWriter writer = null;
+		FileChannel channel = null;
+		FileInputStream fs = null;
 		try {
-			writer = Files.newBufferedWriter(path, c, o);
-			writer.write(content);
-			writer.flush();
+			fs = new FileInputStream(f);
+			channel = fs.getChannel();
+			ByteBuffer byteBuffer = ByteBuffer.allocate((int) channel.size());
+			while ((channel.read(byteBuffer)) > 0) {
+				// do nothing
+				// System.out.println("reading");
+			}
+			return byteBuffer.array();
 		} catch (IOException e) {
 			e.printStackTrace();
-			res = false;
+			throw e;
 		} finally {
-			if (writer != null) {
-				try {
-					writer.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			try {
+				channel.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			try {
+				fs.close();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
-		return res;
+	}
+
+	/**
+	 * Mapped File way MappedByteBuffer 可以在处理大文件时，提升性能
+	 *
+	 * @param filename
+	 * @return
+	 * @throws IOException
+	 */
+	public static byte[] readBigFile2ByteArray(String filename) throws IOException {
+		FileChannel fc = null;
+		try {
+			fc = new RandomAccessFile(filename, "r").getChannel();
+			MappedByteBuffer byteBuffer = fc.map(FileChannel.MapMode.READ_ONLY, 0,
+					fc.size()).load();
+			//System.out.println(byteBuffer.isLoaded());
+			byte[] result = new byte[(int) fc.size()];
+			if (byteBuffer.remaining() > 0) {
+				byteBuffer.get(result, 0, byteBuffer.remaining());
+			}
+			return result;
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				fc.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -95,7 +131,59 @@ public class FileHelperNio {
 		return res;
 	}
 
+	/**
+	 ************************ write file apis ************************
+	 */
+	public static boolean writeFile(String file, String content) {
+		return writeFile(file, content, StandardCharsets.UTF_8, StandardOpenOption.WRITE);
+	}
 
+	public static boolean appendLine(String file, String content) {
+		return append(file, content + SystemConstant.LINE_SEP);
+	}
+
+	public static boolean append(String file, String content) {
+		return writeFile(file, content, StandardCharsets.UTF_8, StandardOpenOption.APPEND);
+	}
+
+	public static boolean writeFile(String file, String content, Charset c, OpenOption o) {
+		boolean res = true;
+		if (!FileHelper.fileExist(file)) {
+			o = StandardOpenOption.CREATE_NEW;
+		}
+		Path path = Paths.get(file);
+		BufferedWriter writer = null;
+		try {
+			writer = Files.newBufferedWriter(path, c, o);
+			writer.write(content);
+			writer.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+			res = false;
+		} finally {
+			if (writer != null) {
+				try {
+					writer.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return res;
+	}
+
+
+
+
+	/**
+	 ************************ complex apis ************************
+	 */
+	/**
+	 * copy file from in to out
+	 * @param in
+	 * @param out
+	 * @throws IOException
+	 */
 	public static void copy(File in, File out) throws IOException {
 		FileChannel inChannel = new FileInputStream(in).getChannel();
 		FileChannel outChannel = new FileOutputStream(out).getChannel();

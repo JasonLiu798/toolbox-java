@@ -103,13 +103,18 @@ public final class FileHelper {
 
     }
 
+
+	/**
+	 ************************ read  file apis ************************
+	 */
+
     /**
      * read file content to List<String>
      *
      * @param path
      * @return
      */
-    public static List<String> readFile(String path) {
+    public static List<String> readFile2StringList(String path) {
         List<String> res = new ArrayList<>();
         String line;
         try {
@@ -127,6 +132,110 @@ public final class FileHelper {
         }
         return res;
     }
+
+	/**
+	 *
+	 * @param filePath
+	 * @return
+	 * @throws IOException
+	 */
+	public static byte[] readFile2ByteArray(String filePath) throws IOException {
+		File file = new File(filePath);
+		long fileSize = file.length();
+		if (fileSize > Integer.MAX_VALUE) {
+			System.out.println("file too big...");
+			return null;
+		}
+		FileInputStream fi = new FileInputStream(file);
+		byte[] buffer = new byte[(int) fileSize];
+		int offset = 0;
+		int numRead = 0;
+		while (offset < buffer.length
+				&& (numRead = fi.read(buffer, offset, buffer.length - offset)) >= 0) {
+			offset += numRead;
+		}
+		// 确保所有数据均被读取
+		if (offset != buffer.length) {
+			throw new IOException("Could not completely read file "
+					+ file.getName());
+		}
+		fi.close();
+		return buffer;
+	}
+
+	public static byte[] readFile2ByteArray() throws IOException {
+		return readFile2ByteArray(DFT_FILE);
+	}
+
+	/**
+	 * only read int.max_value byte
+	 * @param filepath
+	 * @return
+	 */
+	public static byte[] readFile2ByteArr2(String filepath){
+		int size = (int) getFileSize(filepath);
+		log.debug("file size {}",size);
+		byte[] res = new byte[size];
+		try {
+			DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(filepath)));
+//            FileInputStream in = new FileInputStream(filepath);
+			for(int i=0;i<size;i++) {
+				res[i] = in.readByte();
+			}
+//            while ((c=in.read())!=-1) {
+//                byte tmpByte = in.readByte();
+			in.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return res;
+	}
+
+	public static List<String> readFilesByLine2StringList(String filepath) throws IOException {
+		File file = new File(filepath);
+		BufferedReader reader = null;
+		List<String> res = new ArrayList<>();
+		try {
+			reader = new BufferedReader(new FileReader(file));
+			String tempString = null;
+			while ((tempString = reader.readLine()) != null) {
+				res.add(tempString);
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally {
+			if(reader!=null)
+				reader.close();
+		}
+		return res;
+	}
+
+	public static String readFilesByLine2String(String filepath) throws IOException {
+		File file = new File(filepath);
+		BufferedReader reader = null;
+		StringBuilder res = new StringBuilder();
+		try {
+			reader = new BufferedReader(new FileReader(file));
+			String tempString = null;
+			while ((tempString = reader.readLine()) != null) {
+//				String codeced = new String(tempString.getBytes("utf8"));
+				res.append(tempString).append(SystemConstant.LINE_SEP);
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally {
+			if(reader!=null)
+				reader.close();
+		}
+		return res.toString();
+	}
+
+
+	/**
+	 ************************  write file apis ************************
+	 */
 
 	/**
 	 * write file
@@ -184,7 +293,7 @@ public final class FileHelper {
             for (String str : contents) {
                 writer.write(str + "\n");
             }
-            log.debug("write to file,file {},content {}",filepath,contents);
+            log.debug("write to file,file {},content {}", filepath, contents);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -199,80 +308,11 @@ public final class FileHelper {
         return;
     }
 
-    public static byte[] readBinaryFile(){
-        return readBinaryFile(DFT_FILE);
-    }
-    /**
-     * only read int.max_value byte
-     * @param filepath
-     * @return
-     */
-    public static byte[] readBinaryFile(String filepath){
-        int size = (int) getFileSize(filepath);
-        log.debug("file size {}",size);
-        byte[] res = new byte[size];
-        try {
-            DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(filepath)));
-//            FileInputStream in = new FileInputStream(filepath);
-            for(int i=0;i<size;i++) {
-                res[i] = in.readByte();
-            }
-//            while ((c=in.read())!=-1) {
-//                byte tmpByte = in.readByte();
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return res;
-    }
-
-	public static List<String> readFilesByLineResList(String filepath) throws IOException {
-		File file = new File(filepath);
-		BufferedReader reader = null;
-		List<String> res = new ArrayList<>();
-		try {
-			reader = new BufferedReader(new FileReader(file));
-			String tempString = null;
-			while ((tempString = reader.readLine()) != null) {
-				res.add(tempString);
-			}
-			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}finally {
-			if(reader!=null)
-				reader.close();
-		}
-		return res;
-	}
-
-	public static String readFilesByLineResStr(String filepath) throws IOException {
-		File file = new File(filepath);
-		BufferedReader reader = null;
-		StringBuilder res = new StringBuilder();
-		try {
-			reader = new BufferedReader(new FileReader(file));
-			String tempString = null;
-			while ((tempString = reader.readLine()) != null) {
-//				String codeced = new String(tempString.getBytes("utf8"));
-				res.append(tempString).append(SystemConstant.LINE_SEP);
-			}
-			reader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}finally {
-			if(reader!=null)
-				reader.close();
-		}
-		return res.toString();
-	}
-
-
 
 
 
     /**
-     * read xml
+     * read file use PathMatchingResourcePatternResolver
      *
      * @return
      * @throws IOException

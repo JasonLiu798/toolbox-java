@@ -86,7 +86,7 @@ public class SQLGenerator {
      * @param writepath
      */
     public static void batchGenerateInsert(String inputPath, String writepath) {
-        List<String> reads = FileHelper.readFile(inputPath);
+        List<String> reads = FileHelper.readFile2StringList(inputPath);
         String targetSql = null;
         List<String> writes = new ArrayList<>();
         for (String sql : reads) {

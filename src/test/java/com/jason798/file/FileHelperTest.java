@@ -145,7 +145,7 @@ public class FileHelperTest {
 		File dir = new File(this.getClass().getResource("/").getPath());
 		String filename = dir+ SystemConstant.FILE_SEP+FileHelper.className2FilePath(this.getClass().getName())+".class";
 		System.out.println(filename);
-		List<String> list = FileHelper.readFilesByLineResList(filename);
+		List<String> list = FileHelper.readFilesByLine2StringList(filename);
 		CollectionHelper.printList(list);
 	}
 
@@ -154,7 +154,7 @@ public class FileHelperTest {
      */
     @Test
     public void testreadFilesByLine2String() throws Exception {
-		String res = FileHelper.readFilesByLineResStr("Y:\\yp\\JL.txt");
+		String res = FileHelper.readFilesByLine2String("Y:\\yp\\JL.txt");
 		System.out.println(res);
 	}
 

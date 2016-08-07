@@ -16,3 +16,6 @@
 	- NumberHelper
 
 * performance
+
+
+v1.0.3 FileHelper update function api name,add functions
