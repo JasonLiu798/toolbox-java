@@ -24,4 +24,9 @@ public class SystemConstant {
 
 	public static final String TMP_DIR = System.getProperty("java.io.tmpdir");
 
+	public static final String UPPER_PATH = "..";
+	public static final String CURRENT_PATH = ".";
+
+	public static final char EXTENSION_SEPARATOR = 46;
+
 }

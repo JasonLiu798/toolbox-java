@@ -96,7 +96,7 @@ public class SQLGenerator {
             writes.add(targetSql);
             writes.add(sql.replace("delete", "delete from ") + ";");
         }
-        FileHelper.write2File(writepath, writes);
+        FileHelper.writeLines2File(writepath, writes);
     }
 
 

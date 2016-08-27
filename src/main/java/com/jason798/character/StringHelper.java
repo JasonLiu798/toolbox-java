@@ -15,11 +15,6 @@ public final class StringHelper {
 	private static final String NULL = "NULL";
 	private static final int NULLNUMSTR = -1;
 	private static final String code = "UTF-8";
-	private static final String FOLDER_SEPARATOR = "/";
-	private static final String WINDOWS_FOLDER_SEPARATOR = "\\";
-	private static final String TOP_PATH = "..";
-	private static final String CURRENT_PATH = ".";
-	private static final char EXTENSION_SEPARATOR = 46;
 	public static final String DOT_SEP = ".";
 	public static final String DOT_SEP_NO_REX = "\\.";
 
@@ -331,62 +326,6 @@ public final class StringHelper {
 	}
 
 
-	public static String[] tokenizeToStringArray(String str, String delimiters) {
-		return tokenizeToStringArray(str, delimiters, true, true);
-	}
-
-	/**
-	 * split
-	 *
-	 * @param str
-	 * @param delimiters
-	 * @param trimTokens
-	 * @param ignoreEmptyTokens
-	 * @return
-	 */
-	public static String[] tokenizeToStringArray(String str, String delimiters,
-												 boolean trimTokens, boolean ignoreEmptyTokens) {
-		if (str == null)
-			return null;
-		StringTokenizer st = new StringTokenizer(str, delimiters);
-		List tokens = new ArrayList();
-		while (st.hasMoreTokens()) {
-			String token = st.nextToken();
-			if (trimTokens)
-				token = token.trim();
-			if (!ignoreEmptyTokens || token.length() > 0)
-				tokens.add(token);
-		}
-		return toStringArray(tokens);
-	}
-
-	/**
-	 * collection to string array
-	 *
-	 * @param collection
-	 * @return
-	 */
-	public static String[] toStringArray(Collection collection) {
-		if (collection == null)
-			return null;
-		else
-			return (String[]) collection.toArray(new String[collection.size()]);
-	}
-
-	/**
-	 * enumeration to string array
-	 *
-	 * @param enumeration
-	 * @return
-	 */
-	public static String[] toStringArray(Enumeration enumeration) {
-		if (enumeration == null) {
-			return null;
-		} else {
-			List list = (List) Collections.list(enumeration);
-			return (String[]) list.toArray(new String[list.size()]);
-		}
-	}
 
 	/**
 	 * @param str
