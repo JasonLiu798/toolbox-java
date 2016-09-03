@@ -124,6 +124,51 @@ public class DateHelper {
         return Long.parseLong(timestamp2yyymmdd(timestamp));
     }
 
+
+    /**
+     * get date
+     * @param day  -xxx ~ xxx
+     * @return target date
+     *  ...
+     *  1 = tomorrow
+     *  0 = now date
+     * -1 = yesterday
+     * -2 = the day before yesterday
+     *  ...
+     */
+    public static Date getDate(int day){
+        Calendar cd = Calendar.getInstance();
+        cd.add(Calendar.DATE, day);
+        Date dat = cd.getTime();
+        return dat;
+    }
+    public static long getDateTS(int day){
+        return date2Timestamp(getDate(day));
+    }
+    public static Date getDateZero(int day){
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, day);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.SECOND,0);
+        Date dat = calendar.getTime();
+        return dat;
+    }
+    public static long getDateZeroTS(int day){
+        return date2Timestamp(getDateZero(day));
+    }
+    public static Date getDate12(int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, day);
+        calendar.set(Calendar.HOUR_OF_DAY, 12);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTime();
+    }
+    public static long getDate12TS(int day) {
+        return date2Timestamp(getDate12(day));
+    }
+
     /**
      * get last month firtst day  0:0
      * @return java.util.Date
@@ -137,7 +182,6 @@ public class DateHelper {
         calendar.set(Calendar.SECOND,0);
         return calendar.getTime();
     }
-
     /**
      * get last month first day 0:0
      * @return timestamp
@@ -145,7 +189,6 @@ public class DateHelper {
     public static long getLastMonthFirstDayTimestamp(){
         return getLastMonthFirstDay().getTime()/1000;
     }
-
 
     /**
      * get last month same day
@@ -174,67 +217,7 @@ public class DateHelper {
         return getLastMonthSameDayBeforOneDay().getTime()/1000;
     }
 
-    /**
-     * get the day before yesterday
-     * @return
-     */
-    public static Date getTheDayBeforeYesterday(){
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, -2);
-        return calendar.getTime();
-    }
 
-    /**
-     *
-     * @return
-     */
-    public static String  getTheDayBeforeYesterdayHumanRead(){
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, -2);
-        Date tmp = calendar.getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat( yyyy_MM_dd_HH_mm_CN);
-        return sdf.format(tmp);
-    }
-
-    /**
-     * get the day before yesterday timestamp
-     * @return
-     */
-    public static long getTheDayBeforeYesterdayTS(){
-        return getTheDayBeforeYesterday().getTime()/1000;
-    }
-
-    /**
-     * get yesterday moon
-     * @return Date
-     */
-    public static Date getYesterdayMoon() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
-        calendar.set(Calendar.HOUR_OF_DAY, 12);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        return calendar.getTime();
-    }
-    public static long getYesterdayMoonTS(){
-        return getYesterdayMoon().getTime()/1000;
-    }
-
-    /**
-     * get yesterday night 23:59:59
-     * @return
-     */
-    public static Date getYesterdayNight0() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
-        calendar.set(Calendar.HOUR_OF_DAY, 23);
-        calendar.set(Calendar.MINUTE, 59);
-        calendar.set(Calendar.SECOND, 59);
-        return calendar.getTime();
-    }
-    public static long getYesterdayNight0TS(){
-        return getYesterdayNight0().getTime()/1000;
-    }
 
     /**
      * long to yyyy 年MM月dd日HH时mm分ss秒
@@ -327,16 +310,4 @@ public class DateHelper {
         return formatymdhms.format(date);
     }
 
-
-    public static void main(String[] args) {
-//        System.out.println(timestamp2yyymmdd(new Date().getTime()/1000));
-//        System.out.println(timestamp2yyymmdd( 1445334700 ));
-//        System.out.println(timestamp2yyymmddL( 1403085079 ));
-//        long ts = date2Timestamp(getLastMonthFirstDay());
-        System.out.println(getYesterdayMoon());
-        System.out.println(getTheDayBeforeYesterday());
-        System.out.println(getYesterdayMoonTS());
-        System.out.println(getYesterdayNight0());
-        System.out.println(getYesterdayNight0TS());
-    }
 }

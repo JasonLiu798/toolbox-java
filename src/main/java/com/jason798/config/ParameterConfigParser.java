@@ -1,6 +1,6 @@
 package com.jason798.config;
 
-import com.jason798.character.StringHelper;
+import com.jason798.character.StringUtil;
 import com.jason798.collection.CollectionHelper;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class ParameterConfigParser {
      */
     public static int binaryString2Int(String binary){
         int res = 0;
-        if(StringHelper.isEmpty(binary)){
+        if(StringUtil.isEmpty(binary)){
             return res;
         }
         byte[] bytes = binary.getBytes();

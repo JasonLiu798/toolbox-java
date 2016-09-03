@@ -148,7 +148,7 @@ public class NumberHelper {
 
     /**
      * long to int
-     * @param lnum
+     * @param lnum long number
      * @return
      */
     public static int long2int(long lnum) throws Exception {
@@ -158,4 +158,15 @@ public class NumberHelper {
         return Integer.parseInt(String.valueOf(lnum));
     }
 
+    /**
+     * check number type
+     * @param o object type
+     * @return is instance of number type
+     */
+    public <T>  boolean checkIsNumberType(T o){
+        if(o instanceof Integer || o instanceof Long || o instanceof Short || o instanceof Byte || o instanceof Float || o instanceof Double){
+            return true;
+        }
+        return false;
+    }
 }

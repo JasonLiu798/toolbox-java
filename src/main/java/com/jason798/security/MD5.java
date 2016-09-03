@@ -57,7 +57,6 @@ class MD5State {
  * @author Santeri Paavolainen <sjpaavol@cc.helsinki.fi>
  * @version $Revision: 1.1.1.1 $
  */
-
 public class MD5 {
     /**
      * MD5 state
@@ -265,7 +264,6 @@ public class MD5 {
      * Updates hash with the bytebuffer given (using at maximum length bytes from
      * that buffer)
      *
-     * @param state  Which state is updated
      * @param buffer Array of bytes to be hashed
      * @param offset Offset to buffer array
      * @param length Use at maximum `length' bytes (absolute

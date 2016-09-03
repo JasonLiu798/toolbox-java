@@ -5,12 +5,12 @@ import org.junit.Test;
 import static junit.framework.TestCase.assertEquals;
 
 /**
- * StringHelper Tester.
+ * StringUtil Tester.
  *
  * @author <Authors name>
  * @version 1.0
  */
-public class StringHelperTest {
+public class StringUtilTest {
 
     /**
      * Method: isEmpty(Object str)
@@ -121,23 +121,13 @@ public class StringHelperTest {
      */
     @Test
     public void testCaptureName() throws Exception {
-        assertEquals("A", StringHelper.upperFirstLetter("a"));
-        assertEquals("Ab", StringHelper.upperFirstLetter("ab"));
-        assertEquals("", StringHelper.upperFirstLetter(""));
-        assertEquals("", StringHelper.upperFirstLetter(null));
-
+        assertEquals("A", StringUtil.toUpperCaseFirstOne("a"));
+        assertEquals("Ab", StringUtil.toUpperCaseFirstOne("ab"));
+        assertEquals("", StringUtil.toUpperCaseFirstOne(""));
+        assertEquals(null, StringUtil.toUpperCaseFirstOne(null));
     }
 
-    /**
-     * Method: tokenizeToStringArray(String str, String delimiters)
-     */
-    @Test
-    public void testTokenizeToStringArrayForStrDelimiters() throws Exception {
-        String[] arr = StringHelper.tokenizeToStringArray("a,b,c",",");
-        for(int i=0;i<arr.length;i++){
-            System.out.println(arr[i]);
-        }
-    }
+
 
     /**
      * Method: tokenizeToStringArray(String str, String delimiters, boolean trimTokens, boolean ignoreEmptyTokens)
@@ -505,6 +495,49 @@ public class StringHelperTest {
     @Test
     public void testEncodeNotEmpty() throws Exception {
 
+    }
+
+
+    @Test
+    public void testTrimQuote(){
+        assertEquals(null,StringUtil.trimQuote(null));
+        assertEquals("",StringUtil.trimQuote(""));
+        assertEquals("",StringUtil.trimQuote("   "));
+        //no quote
+        assertEquals("a",StringUtil.trimQuote("a"));
+        assertEquals("a",StringUtil.trimQuote("a  "));
+        assertEquals("a",StringUtil.trimQuote("  a"));
+
+        //only single quote
+        assertEquals("",StringUtil.trimQuote("\""));
+        assertEquals("",StringUtil.trimQuote("   \""));
+        assertEquals("",StringUtil.trimQuote("\"  "));
+        assertEquals("",StringUtil.trimQuote("   \"  "));
+
+        //only double quote
+        assertEquals("",StringUtil.trimQuote("\"\""));
+        assertEquals("",StringUtil.trimQuote("\"   \""));
+        assertEquals("",StringUtil.trimQuote("\"\"   "));
+        assertEquals("",StringUtil.trimQuote("   \"\""));
+        assertEquals("",StringUtil.trimQuote("   \"\"   "));
+        assertEquals("",StringUtil.trimQuote("   \"   \"   "));
+        //normal
+        assertEquals("a",StringUtil.trimQuote("\"a\""));
+        //got right
+        assertEquals("a",StringUtil.trimQuote("\"a"));
+        assertEquals("a",StringUtil.trimQuote("\"a   "));
+        assertEquals("a",StringUtil.trimQuote("   \"a"));
+        assertEquals("a",StringUtil.trimQuote("   \"a   "));
+        //got left
+        assertEquals("a",StringUtil.trimQuote("a\""));
+        assertEquals("a",StringUtil.trimQuote("\"  a   \""));
+        assertEquals("a",StringUtil.trimQuote("\"a   \""));
+        assertEquals("a",StringUtil.trimQuote("\"   a\""));
+        assertEquals("asdfsasdfsdfd",StringUtil.trimQuote("\" asdfsasdfsdfd  \""));
+        assertEquals("asdfsasdfsdfd",StringUtil.trimQuote("   \" asdfsasdfsdfd  \"    "));
+        assertEquals("asdfsasdfsdfd",StringUtil.trimQuote("   \" asdfsasdfsdfd  \""));
+        assertEquals("asdfsasdfsdfd",StringUtil.trimQuote("\" asdfsasdfsdfd  \"   "));
+        assertEquals("asdf  sasdfsdfd",StringUtil.trimQuote("\" asdf  sasdfsdfd  \""));
     }
 
 }

@@ -1,6 +1,6 @@
 package com.jason798.file;
 
-import com.jason798.character.StringHelper;
+import com.jason798.character.StringUtil;
 import com.jason798.constant.SystemConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,10 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,11 +33,11 @@ public final class FileHelper {
     }
 
 	public static String className2FilePath(String className){
-		if(StringHelper.isEmpty(className)){
+		if(StringUtil.isEmpty(className)){
 			return "";
 		}
-		// className.replaceAll(StringHelper.DOT_SEP_NO_REX,SystemConstant.FILE_SEP);
-		String[] arr = className.split(StringHelper.DOT_SEP_NO_REX);
+		// className.replaceAll(StringUtil.DOT_SEP_NO_REX,SystemConstant.FILE_SEP);
+		String[] arr = className.split(StringUtil.DOT_SEP_NO_REX);
 		//System.out.println("arr size "+arr.length+","+className);
 		if(arr.length==1){
 			return className;

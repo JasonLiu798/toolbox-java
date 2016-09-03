@@ -14,14 +14,28 @@ import java.util.*;
  */
 public final class CollectionHelper {
 
-    private static final Logger log = LoggerFactory.getLogger(CollectionHelper.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CollectionHelper.class);
+
 
     /**
-     * 判断 collection是否为空
-     *
-     * @param collection
-     * @param <T>
-     * @return
+     * check array is null or size == 0
+     * @param arr array
+     * @return null or not
+     */
+    public static <T> boolean isEmpty(T[] arr){
+        if(arr==null || arr.length <= 0){
+            return true;
+        }
+        return false;
+    }
+    public static <T> boolean isNotEmpty(T[] arr){
+        return !isEmpty(arr);
+    }
+
+    /**
+     * check collection null or size == 0
+     * @param collection collection
+     * @return null or not
      */
     public static <T> boolean isEmpty(Collection<T> collection) {
         if (collection == null || collection.size() == 0) {
@@ -29,43 +43,28 @@ public final class CollectionHelper {
         }
         return false;
     }
-
-    /**
-     * 判断collection 不为空
-     *
-     * @param collection
-     * @param <T>
-     * @return
-     */
     public static <T> boolean isNotEmpty(Collection<T> collection) {
-        if (collection != null && collection.size() > 0) {
-            return true;
-        }
-        return false;
+        return !isEmpty(collection);
     }
 
     /**
-     * 获取 idx 前节点
-     *
-     * @param list
-     * @param idx
-     * @param <T>
-     * @return
+     * get idx-1 's node
+     * @param list list
+     * @param idx index
+     * @return the (idx-1)'s node
      */
     public static <T> T getPreNode(List<T> list, int idx) {
-        if (idx <= 0 || idx > list.size() - 1) {
+        if (idx <= 1 || idx > list.size() - 1) {
             return null;
         }
         return list.get(idx - 1);
     }
 
     /**
-     * 获取 idx 后一个节点
-     *
-     * @param list
-     * @param idx
-     * @param <T>
-     * @return
+     * get idx+1 's node
+     * @param list list
+     * @param idx index
+     * @return the (idx+1)'s node
      */
     public static <T> T getNextNode(List<T> list, int idx) {
         if (idx < 0 || idx >= list.size() - 1) {
@@ -76,11 +75,9 @@ public final class CollectionHelper {
 
 
     /**
-     * 删除list中超过count的item
-     *
+     * filter list 2 count,drop the node index >= count
      * @param list
      * @param count
-     * @param <T>
      * @return
      */
     public static <T> List<T> filterList2Size(List<T> list, int count) {
@@ -93,7 +90,9 @@ public final class CollectionHelper {
         } else {
             int start = count - 1;
             int end = list.size() - 1;
-            log.debug("start " + start + " end " + end);
+            if(LOG.isDebugEnabled()) {
+                LOG.debug("start " + start + " end " + end);
+            }
             for (int i = end; i > start; i--) {
                 list.remove(i);
             }
@@ -164,7 +163,7 @@ public final class CollectionHelper {
             T mainItem = it.next();
             for (T deleteItem : deleteList) {
                 try {
-                    //log.debug("main {},del {}",mainItem,deleteItem);
+                    //LOG.debug("main {},del {}",mainItem,deleteItem);
                     Boolean res = (Boolean) checkMethod.invoke(mainItem, deleteItem);
                     if (res != null && res == true) {
                         it.remove();
@@ -210,8 +209,8 @@ public final class CollectionHelper {
                 }
             }
         } catch (IllegalAccessException | InvocationTargetException e) {
-            log.error("reflect method error,method:{}", getMethod);
-            log.error(e.getMessage());
+            LOG.error("reflect method error,method:{}", getMethod);
+            LOG.error(e.getMessage());
             return mainList;
         }
         return mainList;
@@ -253,16 +252,16 @@ public final class CollectionHelper {
 			case 0:
 				System.out.println(sb.toString());
 			case 1:
-                log.debug(sb.toString());
+                LOG.debug(sb.toString());
                 break;
             case 2:
-                log.info(sb.toString());
+                LOG.info(sb.toString());
                 break;
             case 3:
-                log.warn(sb.toString());
+                LOG.warn(sb.toString());
                 break;
             case 4:
-                log.error(sb.toString());
+                LOG.error(sb.toString());
         }
     }
 
@@ -286,7 +285,7 @@ public final class CollectionHelper {
             return res;
         }
 //        Integer interval = getInterval(totalSize,singleListSize);
-        log.debug("interval:{}", interval);
+        LOG.debug("interval:{}", interval);
         int i = 0;
         while (i < totalSize) {
             int st = i;
@@ -294,7 +293,7 @@ public final class CollectionHelper {
             if (ed > totalSize - 1) {
                 ed = totalSize - 1;
             }
-            log.debug("copy:{},{}", st, ed);
+            LOG.debug("copy:{},{}", st, ed);
             List<T> tmp = copy(list, st, ed);
             if (tmp != null) {
                 res.add(tmp);
@@ -361,40 +360,6 @@ public final class CollectionHelper {
     }
 
 
-    /**
-     * python range
-     * @param start
-     * @param end
-     * @return
-     */
-    public static List<Integer> range(int start,int end){
-        return range(start,end,1);
-    }
-
-    /**
-     * python range
-     * @param start
-     * @param end
-     * @param interval
-     * @return
-     */
-    public static List<Integer> range(int start,int end,int interval){
-        if(end<start ){
-            return null;
-        }
-        if(interval<=0){
-            interval = 1;
-        }
-        int len = end-start;
-        int add = Math.min(Math.max(len%interval,0),1);
-        int size = len/interval+add;
-        log.debug("range size :{}, / {}, % {}",size,len/interval,add);
-        List<Integer> list = new ArrayList<>(size);
-        for(int i = start;i<end;i+=interval){
-            list.add(i);
-        }
-        return list;
-    }
 
 
 	public static Object resizeArray (Object oldArray, int newSize) {

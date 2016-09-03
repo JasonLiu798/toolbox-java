@@ -21,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class RunTimeHelper {
     private static ThreadLocal<RunTimeDto> time = new ThreadLocal<>();
+
     /**
      * templates
      */
@@ -37,12 +38,12 @@ public class RunTimeHelper {
          */
         if (fmtTemplates.size() <= 0) {
             //init default template
-			Map<String, String> defaultTemplate = new HashMap<>();
+            Map<String, String> defaultTemplate = new HashMap<>();
             defaultTemplate.put(TOTAL_KEY, "total cost: %s ms,%s");//  time,comment
             defaultTemplate.put(SECTION_KEY, "section %s cost: %s ms, %s");
             defaultTemplate.put(EMPTY_KEY, "cost time:not enough record");
             fmtTemplates.put(DFT, defaultTemplate);
-			//init csv template
+            //init csv template
             Map<String, String> csvTemplate = new HashMap<>();
             csvTemplate.put(TOTAL_KEY, "total cost, %s, %s");//  time,comment
             csvTemplate.put(SECTION_KEY, "section %s cost, %s, %s");
@@ -51,9 +52,17 @@ public class RunTimeHelper {
         }
     }
 
-	public static void init(){
-		time.set(new RunTimeDto());
-	}
+    public static void clear() {
+        time.set(null);
+    }
+
+    public static RunTimeDto getRunTimeDto() {
+        return time.get();
+    }
+
+    public static void init() {
+        time.set(new RunTimeDto());
+    }
 
     public static void resetAndRestart() {
         init();
@@ -61,17 +70,23 @@ public class RunTimeHelper {
     }
 
 
-	public static String addTimeAndGetStdout(){
-		addTime();
-		return getFmtTimeForStdout();
-	}
-
-    public static String getFmtTimeForStdout() {
-        return getFmtTimeForStdout(0);
+    public static String addTimeAndGetStdout() {
+        addTime();
+        return getFmtTimeForStdout();
     }
 
-    public static String getFmtTimeForStdout(int type) {
-        List<String> lines = getFmtTimeForWrite(type);
+
+    public static String getFmtTimeForStdout(RunTimeDto dto) {
+        return getFmtTimeForStdout(dto, 0);
+    }
+
+    public static String getFmtTimeForStdout() {
+        RunTimeDto dto = time.get();
+        return getFmtTimeForStdout(dto, 0);
+    }
+
+    public static String getFmtTimeForStdout(RunTimeDto dto, int type) {
+        List<String> lines = getFmtTimeForWrite(dto, type);
         String res = "";
         for (String line : lines) {
             res += line + "\n";
@@ -86,7 +101,7 @@ public class RunTimeHelper {
      * @param type
      * @return
      */
-    public static List<String> getFmtTimeForWrite(int type) {
+    public static List<String> getFmtTimeForWrite(RunTimeDto dto, int type) {
         List<String> res = new LinkedList<>();
         String fmtTemplateKey = "csv";
 
@@ -95,8 +110,9 @@ public class RunTimeHelper {
             fmtTemplate = fmtTemplates.get(fmtTemplateKey);
         }
 
-        List<Long> timeList = getTime();
-        List<String> commentList = getComment();
+        List<Long> timeList = getTime(dto);
+        List<String> commentList = getComment(dto);
+
         if (CollectionHelper.isNotEmpty(timeList) && CollectionHelper.isNotEmpty(commentList)) {
             Long startTime = timeList.get(0);
             Long endTime = timeList.get(timeList.size() - 1);
@@ -122,12 +138,28 @@ public class RunTimeHelper {
         return res;
     }
 
+    public static List<String> getComment(RunTimeDto rd) {
+        //RunTimeDto rd = time.get();
+        if (rd != null && rd.hasComment()) {
+            return rd.getComments();
+        }
+        return null;
+    }
+
     public static List<String> getComment() {
         if (time != null) {
             RunTimeDto rd = time.get();
             if (rd != null && rd.hasComment()) {
                 return rd.getComments();
             }
+        }
+        return null;
+    }
+
+
+    public static List<Long> getTime(RunTimeDto dto) {
+        if (dto != null && dto.hasTime()) {
+            return dto.getTimes();
         }
         return null;
     }
@@ -146,8 +178,11 @@ public class RunTimeHelper {
         addTime("");
     }
 
+
     /**
-     * @param cmt
+     * add a system.currentmill
+     * PS: first add time ,the comment will not show
+     * @param cmt comment of the pre time to this time 's meaning
      */
     public static void addTime(String cmt) {
         RunTimeDto rd = time.get();
@@ -158,14 +193,15 @@ public class RunTimeHelper {
         time.set(rd);
     }
 
-	/**
-	 * get output template keys
-	 * @return
-	 */
-	public static Set<String> getTemplates(){
-		return fmtTemplates.keySet();
-	}
 
+    /**
+     * get output template keys
+     *
+     * @return
+     */
+    public static Set<String> getTemplates() {
+        return fmtTemplates.keySet();
+    }
 
 
 }

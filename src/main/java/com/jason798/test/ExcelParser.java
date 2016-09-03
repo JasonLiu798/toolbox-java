@@ -1,6 +1,6 @@
 package com.jason798.test;
 
-import com.jason798.character.StringHelper;
+import com.jason798.character.StringUtil;
 import com.jason798.excel.Excel;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -99,7 +99,7 @@ public class ExcelParser {
 
             for(int i =0;i< parameterNames.size();i++){
                 String parameterName = parameterNames.get(i);
-                String methodname = "set" + StringHelper.upperFirstLetter(parameterName);
+                String methodname = "set" + StringUtil.toUpperCaseFirstOne(parameterName);
                 String paramTypeName  = parameterTypes.get(i);
                 Class<?> paramTypeClass = Class.forName(paramTypeName);
                 Object paramObject = null;

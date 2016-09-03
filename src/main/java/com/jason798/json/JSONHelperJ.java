@@ -1,6 +1,6 @@
 package com.jason798.json;
 
-import com.jason798.character.StringHelper;
+import com.jason798.character.StringUtil;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
@@ -85,7 +85,7 @@ public class JSONHelperJ {
      * @return 转换后的对象
      */
     public <T> T parse(String jsonString, Class<T> clazz) {
-        if (StringHelper.isEmpty(jsonString)) {
+        if (StringUtil.isEmpty(jsonString)) {
             return null;
         }
         try {
@@ -117,7 +117,7 @@ public class JSONHelperJ {
      * @param pattern {@link String} 日期格式
      */
     public void setDateFormat(String pattern) {
-        if (StringHelper.isEmpty(pattern)) {
+        if (StringUtil.isEmpty(pattern)) {
             DateFormat df = new SimpleDateFormat(pattern);
             mapper.getSerializationConfig().withDateFormat(df);
             mapper.getDeserializationConfig().withDateFormat(df);

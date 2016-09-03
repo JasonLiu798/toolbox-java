@@ -1,5 +1,7 @@
 package com.jason798.number;
 
+import com.jason798.character.StringUtil;
+
 import java.math.BigDecimal;
 import java.util.Calendar;
 
@@ -10,6 +12,11 @@ public class ByteHelper {
 
 	private static final String SEP = "_";
 
+	/**
+	 * byte to int,if byte <0,
+	 * @param b
+	 * @return
+	 */
 	public static int byte2int(byte b) {
 		if (b < 0) {
 			return (int) b + 0x100;
@@ -17,10 +24,66 @@ public class ByteHelper {
 		return b;
 	}
 
+	/**
+	 * byte array to int
+	 * @param src int high,byte[len-1] ... int low,byte[0]
+	 * @return res
+	 */
+	public static int bytes2Int(byte[] src) {
+		int ret = 0;
+		for (int i = src.length - 1; i >= 0; i--) {
+			ret = ret << 8 | src[i] & 0xFF;
+		}
+		return ret;
+	}
+
+	/**
+	 * byte to hex string
+	 * @param b
+	 * @return
+	 */
+	public static String byteToHexString(byte b) {
+		int n = b;
+		if (n < 0)
+			n = 256 + n;
+		int d1 = n / 16;
+		int d2 = n % 16;
+		return StringUtil.HEX_DIGITS[d1] + StringUtil.HEX_DIGITS[d2];
+	}
+
+
+	public static String byteArrayToHexString(byte[] b) {
+		if(b==null || b.length <= 0){
+			return null;
+		}
+		StringBuilder resultSb = new StringBuilder();
+		for (int i = 0; i < b.length; i++) {
+			resultSb.append(byteToHexString(b[i]));
+		}
+		return resultSb.toString();
+	}
+
+
+
+	public static byte[] int2Byte(int src) {
+		byte[] bs = new byte[4];
+		for (int i = 0; i < bs.length; i++) {
+			bs[i] = ((byte) (src >> 8 * i & 0xFF));
+		}
+		return bs;
+	}
+
+	public static byte[] long2Byte(long src) {
+		byte[] bs = new byte[8];
+		for (int i = 0; i < bs.length; i++) {
+			bs[i] = ((byte) (int) (src >> 8 * i & 0xFF));
+		}
+		return bs;
+	}
 
 	public static final String int2HexStr(int src) {
 		return int2HexStr(src, Integer.SIZE / 4, false);
-//		return Integer.toHexString(src);
+		//return Integer.toHexString(src);
 	}
 
 	public static final String int2FmtHexStr(int src) {
@@ -46,56 +109,6 @@ public class ByteHelper {
 			}
 		}
 		return sb.toString();
-	}
-
-
-
-
-	/**
-	 * byte[] to hex string
-	 *
-	 * @param src
-	 * @return
-	 */
-	public static String bytesToHexString(byte[] src) {
-		StringBuilder stringBuilder = new StringBuilder("");
-		if ((src == null) || (src.length <= 0)) {
-			return null;
-		}
-		for (int i = 0; i < src.length; i++) {
-			int v = src[i] & 0xFF;
-			String hv = Integer.toHexString(v);
-			if (hv.length() < 2) {
-				stringBuilder.append(0);
-			}
-			stringBuilder.append(hv);
-		}
-		return stringBuilder.toString();
-	}
-
-
-	public static int byte2Int(byte[] src) {
-		int ret = 0;
-		for (int i = src.length - 1; i >= 0; i--) {
-			ret = ret << 8 | src[i] & 0xFF;
-		}
-		return ret;
-	}
-
-	public static byte[] int2Byte(int src) {
-		byte[] bs = new byte[4];
-		for (int i = 0; i < bs.length; i++) {
-			bs[i] = ((byte) (src >> 8 * i & 0xFF));
-		}
-		return bs;
-	}
-
-	public static byte[] long2Byte(long src) {
-		byte[] bs = new byte[8];
-		for (int i = 0; i < bs.length; i++) {
-			bs[i] = ((byte) (int) (src >> 8 * i & 0xFF));
-		}
-		return bs;
 	}
 
 	public static byte[] integer2Bytes(int src, int bytesLen, boolean littleEndian) {
@@ -583,6 +596,7 @@ public class ByteHelper {
 	static int ROTATE_LEFT(int x, int n) {
 		return ((x << n) | (x >>> (32 - n)));
 	}
+
 
 
 }

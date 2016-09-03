@@ -1,8 +1,16 @@
 package com.jason798.security;
 
+import com.jason798.number.ByteHelper;
+
 import java.security.MessageDigest;
 
 public class MD5Util {
+
+    /**
+     *
+     * @param s
+     * @return
+     */
 	public final static String MD5(String s) {
         char hexDigits[]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};       
         try {
@@ -24,4 +32,19 @@ public class MD5Util {
             return null;
         }
 	}
+
+
+    public static String MD5Encode(String origin) {
+        String resultString = null;
+        try {
+            resultString = new String(origin);
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            resultString = ByteHelper.byteArrayToHexString(md.digest(resultString
+                    .getBytes()));
+        } catch (Exception ex) {
+            resultString = null;
+        }
+        return resultString;
+    }
+
 }

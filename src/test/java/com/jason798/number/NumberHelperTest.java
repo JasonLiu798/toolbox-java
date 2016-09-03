@@ -1,9 +1,6 @@
 package com.jason798.number;
 
-import com.jason798.number.NumberHelper;
 import org.junit.Test;
-import org.junit.Before;
-import org.junit.After;
 
 import java.util.HashMap;
 

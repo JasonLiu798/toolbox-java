@@ -1,47 +1,453 @@
 package com.jason798.character;
 
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.MessageFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-/**
- * String associate functions
- */
-public final class StringHelper {
+public final class StringUtil {
+
+    private static Logger logger = LoggerFactory.getLogger(StringUtil.class);
 
     private static final String NULL = "NULL";
     private static final int NULLNUMSTR = -1;
-    private static final String code = "UTF-8";
+    private static final String UTF8 = "UTF-8";
     private static final String FOLDER_SEPARATOR = "/";
     private static final String WINDOWS_FOLDER_SEPARATOR = "\\";
     private static final String TOP_PATH = "..";
     private static final String CURRENT_PATH = ".";
     private static final char EXTENSION_SEPARATOR = 46;
-	public static final String DOT_SEP = ".";
-	public static final String DOT_SEP_NO_REX = "\\.";
+    public static final String DOT_SEP = ".";
+    public static final String DOT_SEP_NO_REX = "\\.";
+
+    public static final String[] HEX_DIGITS = {"0", "1", "2", "3", "4", "5",
+            "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
 
 
     /**
-     * 判空
-     *
-     * @param str {@link Object} 对象或字符串
+     * is empty
+     * @param target string
+     * @return
+     */
+    public static boolean isEmpty(String target) {
+        if (target == null || target.length() == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * is empty
+     * @param str {@link Object} object or string
      * @return {@link boolean}
      */
     public static boolean isEmpty(Object str) {
         return (str == null || "".equals(str));
     }
 
+
     /**
-     * 去除字符串前后空格
+     * check String array exist one string empty
+     * @param targets string array
+     * @return
+     */
+    public static boolean isEmptyExist(String... targets) {
+        if (targets == null || targets.length == 0) {
+            return true;
+        }
+        for (String str : targets) {
+            if (isEmpty(str)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * check T array exist one string empty
+     * @param targets T array
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> boolean isEmptyExistType( T ... targets) {
+        if (targets == null || targets.length == 0) {
+            return true;
+        }
+        for (T str : targets) {
+            if (isEmpty(String.valueOf(str))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * 首字母转小写
+     */
+    public static String toLowerCaseFirstOne(String s) {
+        if (isEmpty(s)) {
+            return s;
+        }
+        //length at leatest one
+        if (Character.isLowerCase(s.charAt(0))) {
+            return s;
+        } else {
+            return (new StringBuilder()).append(Character.toLowerCase(s.charAt(0))).append(s.substring(1)).toString();
+        }
+    }
+
+    /**
+     * 首字母转大写
+     */
+    public static String toUpperCaseFirstOne(String s) {
+        if (isEmpty(s)) {
+            return s;
+        }
+        //length at leatest one
+        if (Character.isUpperCase(s.charAt(0))) {
+            return s;
+        } else {
+            return (new StringBuilder()).append(Character.toUpperCase(s.charAt(0))).append(s.substring(1)).toString();
+        }
+    }
+
+
+    /**
+     * 替换Oracle like搜索的特殊字符串
      *
-     * @param str {@link String} 待去除空格的字符串
-     * @return {@link String} 去除空格后的字符串
+     * @param str
+     * @return
+     */
+    public static String replaceSpecialLikeCharacter(String str) {
+        if (null == str) {
+            return null;
+        }
+        str = str.replaceAll("%", "/%");
+        str = str.replaceAll("_", "\\\\_");
+        str = str.replaceAll("'", "\\\\'");
+        return str;
+    }
+
+
+    /**
+     * check string equals
+     * @param s1
+     * @param s2
+     * @return
+     */
+    public static boolean equal(String s1, String s2){
+        // all null
+        if(s1==null && s2 == null){
+            return true;
+        }
+        //one is null
+        if( s1 == null || s2==null ){
+            return false;
+        }
+        //all not null
+        return s1.equals(s2);
+    }
+
+
+    public static boolean isNotEmpty(String target) {
+        return !isEmpty(target);
+    }
+
+    public static String addDimmer(String target, String split, String dimmer) {
+        if (target == null || target.length() == 0) {
+            return "";
+        }
+        String[] s = target.split(split);
+        StringBuilder sb = new StringBuilder("");
+        for (String st : s) {
+            sb.append(dimmer);
+            sb.append(st);
+            sb.append(dimmer);
+            sb.append(split);
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
+    }
+
+    public static String formatFentoYuan(Long fen) {
+        Long abFen = Math.abs(fen);
+        String str = abFen.toString();
+        if (abFen < 10) {
+            str = "00" + str;
+        } else if (abFen < 100) {
+            str = "0" + str;
+        }
+        return (fen < 0 ? "-" : "") + str.substring(0, str.length() - 2) + "." + str.substring(str.length() - 2);
+    }
+
+    /**
+     * 判断字符串数组中是否包含指定的字符串
+     *
+     * @param strArr
+     * @param str
+     * @return
+     */
+    public static boolean contains(String[] strArr, String str) {
+        if (null == strArr || null == str) {
+            return false;
+        }
+        for (String temp : strArr) {
+            if (temp.equals(str)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 集合转string
+     *
+     * @param sep 元素分隔符号
+     * @return
+     */
+    public static String concat(Collection<String> collection, String sep) {
+        if (null == collection || collection.size() <= 0) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+
+        for (String str : collection) {
+            sb.append(str).append(sep);
+        }
+
+        return sb.substring(0, sb.lastIndexOf(sep));
+    }
+
+    public static boolean strIsEmpty(String str) {
+        if (str == null || str.trim().equals("")) {
+            return true;
+        }
+        return false;
+    }
+
+    public static String deleteSpace(String str) {
+        return str.replaceAll("\\s", StringUtils.EMPTY);
+    }
+
+    /**
+     * 重量舍入。<br/>
+     * 小于等于1kg的为1kg,1.1 ~ 1.5kg为1.5kg,1.6 ~ 2kg为2kg,2.1 ~ 2.5kg 为2.5kg。 以此类推。
+     *
+     * @param weight
+     */
+    public static String rangeWeight(String weight) {
+
+        if (StringUtils.isBlank(weight)) {
+            return weight;
+        }
+
+        String rangeWeight = StringUtils.EMPTY;
+
+        BigDecimal decimalWeight = null;
+        try {
+            decimalWeight = new BigDecimal(weight);
+        } catch (Exception e) {
+            logger.error("处理重量失败，非法的重量参数：" + weight, e);
+            return weight;
+        }
+
+        double doubleWeight = decimalWeight.doubleValue();
+
+        double startWeight = 1.0d;
+
+        BigDecimal step = new BigDecimal(0.5);
+
+        if (decimalWeight.doubleValue() < startWeight) {
+            rangeWeight = String.valueOf(startWeight);
+        } else {
+            if (doubleWeight == Math.ceil(doubleWeight)) {
+                rangeWeight = weight;
+            } else if (Math.ceil(doubleWeight) < decimalWeight.add(step).doubleValue()) {
+                rangeWeight = String.valueOf(Math.ceil(decimalWeight.doubleValue()));
+            } else {
+                rangeWeight = new BigDecimal(Math.floor(doubleWeight)).add(step).toString();
+            }
+        }
+
+        return rangeWeight;
+    }
+
+    /**
+     * 左补字符串
+     *
+     * @param origin 原字符串
+     * @param length 补位后的字符串长度
+     * @param addStr 补位的字符串
+     * @return
+     */
+    public static String lpad(String origin, int length, Character addStr) {
+        StringBuilder sb = new StringBuilder();
+        if (StringUtils.isBlank(origin)) {
+            for (int i = 0; i < length; i++) {
+                sb.append(addStr);
+            }
+            return sb.toString();
+        }
+        if (origin.length() > length) {
+            return origin;
+        }
+        for (int i = 0; i < length - origin.length(); i++) {
+            sb.append(addStr);
+        }
+        sb.append(origin);
+        return sb.toString();
+    }
+
+    /**
+     * replace special character
+     * @param input
+     * @return
+     */
+    public static String replaceSpecialCharacter(String input) {
+        if (StringUtils.isBlank(input)) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < input.length(); i++) {
+
+            char c = input.charAt(i);
+            switch (c) {
+                // case '\"':
+                // sb.append("\\\"");
+                // break;
+                case '\\': // 如果不处理单引号，可以释放此段代码，若结合下面的方法处理单引号就必须注释掉该段代码
+                    sb.append("\\\\");
+                    break;
+                case '/':
+                    sb.append("\\/");
+                    break;
+                case '\b': // 退格
+                    sb.append("\\b");
+                    break;
+                case '\f': // 走纸换页
+                    sb.append("\\f");
+                    break;
+                case '\n':
+                    sb.append("\\n");// 换行
+                    break;
+                case '\r': // 回车
+                    sb.append("\\r");
+                    break;
+                case '\t': // 横向跳格
+                    sb.append("\\t");
+                    break;
+                default:
+                    sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String escapeSpecialCharacter(String input) {
+        if (StringUtils.isBlank(input)) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < input.length(); i++) {
+
+            char c = input.charAt(i);
+            switch (c) {
+                // case '\"':
+                // sb.append("\\\"");
+                // break;
+                // case '\\': // 如果不处理单引号，可以释放此段代码，若结合下面的方法处理单引号就必须注释掉该段代码
+                // sb.append("\\\\");
+                // break;
+                // case '/':
+                // sb.append("\\/");
+                // break;
+                case '\b': // 退格
+                    sb.append("");
+                    break;
+                case '\f': // 走纸换页
+                    sb.append("");
+                    break;
+                case '\n':
+                    sb.append("");// 换行
+                    break;
+                case '\r': // 回车
+                    sb.append("");
+                    break;
+                // case '\t': // 横向跳格
+                // sb.append("\\t");
+                // break;
+                default:
+                    sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 检查指定的字符串列表是否不为空。
+     */
+    public static boolean areNotEmpty(String... values) {
+        boolean result = true;
+        if (values == null || values.length == 0) {
+            result = false;
+        } else {
+            for (String value : values) {
+                result &= !StringUtils.isEmpty(value);
+            }
+        }
+        return result;
+    }
+
+
+    /**
+     * 检查指定的字符串列表是否都不为空。
+     * <p>
+     * StringUtils.areNotBlank(" ")       = false
+     */
+    public static boolean areNotBlank(String... values) {
+        if (values == null || values.length == 0) {
+            return false;
+        } else {
+            for (String value : values) {
+                if (StringUtils.isBlank(value)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 检查指定的字符串列表是否都为空。
+     * <p>
+     * StringUtils.areBlank(" ")       = true
+     */
+    public static boolean areBlank(String... values) {
+        if (values == null || values.length == 0) {
+            return true;
+        } else {
+            for (String value : values) {
+                if (StringUtils.isNotBlank(value)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
+    /**
+     * trim String
+     * @param str string to trim
+     * @return string trimed
      */
     public static String trim(String str) {
         if (isEmpty(str)) {
@@ -49,6 +455,56 @@ public final class StringHelper {
         }
         return str.trim();
     }
+
+
+    /**
+     * null => null
+     * ""   =>  ""
+     * "\"" =>  ""
+     * "\"\"" => ""
+     * "\"aaa\"" => aaa
+     * "\"aa" => aa
+     * "aa\"" => aa
+     * @param str string to trim
+     * @return trimed string
+     */
+    public static String trimQuote(String str){
+        if( isEmpty(str) ){
+            return str; //nothing to trim quote
+        }
+        str = str.trim();
+        if( isEmpty(str) ){
+            return str;//nothing to trim quote
+        }
+        int len = str.length();
+        int left = -1;
+        if(str.charAt(0)=='"' ){
+            left =  1;
+        }
+        int right = -1;
+        if( str.charAt(len-1) == '"'){
+            right =  len- 1;
+        }
+        //left not found,right not found
+        if( right<0 && left <0 ){
+            return str;
+        }
+        //situation "\"" ; "\"\""
+        if( (left == right)|| (left == right +1 ) && left ==1 ){
+            return "";
+        }
+        if(left<0){
+            left = 0;
+        }
+        if(right<0){
+            right = len;
+        }
+
+        str = str.substring(left,right);
+        str = str.trim();
+        return str;
+    }
+
 
     /**
      * Replace all occurences of a substring within a string with another
@@ -64,7 +520,7 @@ public final class StringHelper {
             return inString;
         }
         String rlt = inString;
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         while (true) {
             int idx = rlt.indexOf(oldPattern);
             if (idx < 0)
@@ -104,16 +560,6 @@ public final class StringHelper {
         return list;
     }
 
-    /**
-     * 判断两个字符串是否相等
-     *
-     * @param arg1 {@link String}
-     * @param arg2 {@link String}
-     * @return {@link Boolean}
-     */
-    public static Boolean isEqualString(String arg1, String arg2) {
-        return arg1.equals(arg2);
-    }
 
     /**
      * 格式化字符串
@@ -131,9 +577,9 @@ public final class StringHelper {
      *
      * @param ids       {@link String} 字符串
      * @param separator {@link String} 符号
-     * @return
+     * @return string to array by separator
      */
-    public static int[] StringToArray(String ids, String separator) {
+    public static int[] stringToArray(String ids, String separator) {
         String[] t = ids.split(separator);
         int[] arrays = new int[t.length];
         for (int i = 0; i < t.length; i++) {
@@ -143,10 +589,10 @@ public final class StringHelper {
     }
 
     /**
-     * uncode 转中文
+     * unicode 转中文
      *
      * @param dataStr {@link String} 目标字符串
-     * @return
+     * @return transfer dataStr to chinese
      */
     public static String decodeUnicode(final String dataStr) {
         int start = 0;
@@ -168,10 +614,10 @@ public final class StringHelper {
     }
 
     /**
-     * 中文 转 uncode
+     * 中文 转 unicode
      *
      * @param dataStr {@link String} 目标字符串
-     * @return
+     * @return unicode String
      */
     public static String encodeUnicode(final String dataStr) {
         String retString = "";
@@ -186,7 +632,7 @@ public final class StringHelper {
      *
      * @param array  目标数组
      * @param number 目标数字
-     * @return
+     * @return result
      */
     public static boolean numberInArray(int[] array, int number) {
         int start = 0, end, middle, count = 0;
@@ -212,9 +658,9 @@ public final class StringHelper {
     /**
      * add 0 in front of string until length equal vOutputLen
      *
-     * @param vSourceString
-     * @param vOutputLen
-     * @return
+     * @param vSourceString add zero in front until length reach vOutputLen
+     * @param vOutputLen max length
+     * @return add 0 string
      */
     public static String addZeroFront(String vSourceString, int vOutputLen) {
         String strNewString;
@@ -228,8 +674,8 @@ public final class StringHelper {
     /**
      * length >0 ?
      *
-     * @param str
-     * @return
+     * @param str charSeq
+     * @return is reach length
      */
     public static boolean hasLength(CharSequence str) {
         return str != null && str.length() > 0;
@@ -238,69 +684,14 @@ public final class StringHelper {
     /**
      * length >0 ?
      *
-     * @param str
-     * @return
+     * @param str string
+     * @return is reach length
      */
     public static boolean hasLength(String str) {
         return hasLength(((CharSequence) (str)));
     }
 
-    /**
-     * capture name
-     *
-     * @return
-     */
-    public static String upperFirstLetter(String str) {
-        if (isEmpty(str)) {
-            return "";
-        }
-        char[] chars = str.toCharArray();
-        chars[0] = Character.toUpperCase(chars[0]);
-        return new String(chars);
-    }
 
-
-    public static String[] tokenizeToStringArray(String str, String delimiters) {
-        return tokenizeToStringArray(str, delimiters, true, true);
-    }
-
-    /**
-     * split
-     *
-     * @param str
-     * @param delimiters
-     * @param trimTokens
-     * @param ignoreEmptyTokens
-     * @return
-     */
-    public static String[] tokenizeToStringArray(String str, String delimiters,
-                                                 boolean trimTokens, boolean ignoreEmptyTokens) {
-        if (str == null)
-            return null;
-        StringTokenizer st = new StringTokenizer(str, delimiters);
-        List tokens = new ArrayList();
-        while (st.hasMoreTokens()) {
-            String token = st.nextToken();
-            if (trimTokens)
-                token = token.trim();
-            if (!ignoreEmptyTokens || token.length() > 0)
-                tokens.add(token);
-        }
-        return toStringArray(tokens);
-    }
-
-    /**
-     * collection to string array
-     *
-     * @param collection
-     * @return
-     */
-    public static String[] toStringArray(Collection collection) {
-        if (collection == null)
-            return null;
-        else
-            return (String[]) collection.toArray(new String[collection.size()]);
-    }
 
     /**
      * enumeration to string array
@@ -308,11 +699,11 @@ public final class StringHelper {
      * @param enumeration
      * @return
      */
-    public static String[] toStringArray(Enumeration enumeration) {
+    public static String[] toStringArray(Enumeration<?> enumeration) {
         if (enumeration == null) {
             return null;
         } else {
-            List list = (List) Collections.list(enumeration);
+            List<?> list = (List<?>) Collections.list(enumeration);
             return (String[]) list.toArray(new String[list.size()]);
         }
     }
@@ -502,6 +893,7 @@ public final class StringHelper {
         return str.charAt(str.length() - 1);
     }
 
+
     public static boolean isIvrNull(String str) {
         return str == null || str.equalsIgnoreCase(NULL)
                 || str.equalsIgnoreCase("");
@@ -596,7 +988,7 @@ public final class StringHelper {
         String decodeInfos[] = new String[infos.length];
         for (int i = 0; i < infos.length; i++) {
             try {
-                decodeInfos[i] = URLDecoder.decode(infos[i], code);
+                decodeInfos[i] = URLDecoder.decode(infos[i], UTF8);
             } catch (UnsupportedEncodingException e) {
                 return infos;
             }
@@ -615,6 +1007,10 @@ public final class StringHelper {
     }
 
 
+
+    public final static String encode(String info) {
+        return encode(info,UTF8);
+    }
     public final static String encode(String info, String decodeType) {
         try {
             if (info == null) {
@@ -632,24 +1028,13 @@ public final class StringHelper {
         if (info == null)
             return null;
         try {
-            return URLDecoder.decode(info, code);
+            return URLDecoder.decode(info, UTF8);
         } catch (Exception e) {
             return info;
         }
     }
 
-    public final static String encode(String info) {
-        try {
-            if (info == null) {
-                return NULL;
-            } else {
-                info = URLEncoder.encode(info, code);
-            }
-        } catch (Exception e) {
-            return info;
-        }
-        return info;
-    }
+
 
 
     public final static String encodeStr(String str) {
@@ -659,7 +1044,7 @@ public final class StringHelper {
         String[] tokens = new String[count];
         for (int i = 0; i < count; i++) {
             try {
-                tokens[i] = URLEncoder.encode(st.nextToken(), code) + " ";
+                tokens[i] = URLEncoder.encode(st.nextToken(), UTF8) + " ";
             } catch (UnsupportedEncodingException e) {
                 return tokens[i];
             }
@@ -671,13 +1056,7 @@ public final class StringHelper {
         return message;
     }
 
-    public final static String formatDate(Date date, SimpleDateFormat sf) {
-        if (date == null) {
-            return NULL;
-        } else {
-            return sf.format(date);
-        }
-    }
+
 
 
     public final static String getNullString(String str) {
@@ -716,7 +1095,6 @@ public final class StringHelper {
 
 
 
-
     /**
      * make double value reserve until 'N' after the decimal point
      *
@@ -736,10 +1114,35 @@ public final class StringHelper {
 
     }
 
+    /**
+     * clear string buffer
+     * @param buf string buffer
+     */
     public static void clean(StringBuffer buf) {
         if (buf != null) {
             buf.delete(0, buf.length());
         }
+    }
+
+    /**
+     * 过滤 外边双引号
+     * null => null
+     * ""   =>  空字符串
+     * "aaa" => aaa
+     *
+     * @param string string to filter
+     * @return filtered string
+     */
+    public static String filterOuterQuote(String string){
+        if(isEmpty(string) || string.length() <2){
+            return string;
+        }
+        if( string.length() == 2){
+            return "";
+        }
+        int len = string.length();
+        string = string.substring(1,len-1);
+        return string;
     }
 
 
