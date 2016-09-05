@@ -47,6 +47,15 @@ public final class CollectionHelper {
         return !isEmpty(collection);
     }
 
+
+	public static <K,V> boolean isEmpty(Map<K,V> map){
+		if(map==null || map.isEmpty()){
+			return true;
+		}
+		return false;
+	}
+
+
     /**
      * get idx-1 's node
      * @param list list
@@ -100,7 +109,24 @@ public final class CollectionHelper {
         return list;
     }
 
-    /**
+	/**
+	 * remove filterKeys from map,
+	 * thread-safe depend on map
+	 * @param map
+	 * @param filterKeys
+	 * void
+	 */
+	public static <T> void filterMap(Map<String,T> map,String[] filterKeys ){
+		if(isEmpty(filterKeys) || isEmpty(map)){
+			return;
+		}
+		for(String key:filterKeys){
+			map.remove(key);
+		}
+	}
+
+
+	/**
      * 删除tgtlist中所有存在于dellist的item
      *
      * @param tgtList
@@ -140,7 +166,40 @@ public final class CollectionHelper {
     }
 
 
-    /**
+	/**
+	 * array to arrayList
+	 * @param array
+	 * @param <T>
+	 * @return
+	 */
+	public static <T> List<T> array2List(T[] array){
+		if(CollectionHelper.isEmpty(array)){
+			return null;
+		}
+		List<T> res = new ArrayList<>(array.length);
+		Collections.addAll(res,array);
+		return res;
+	}
+
+	/**
+	 * array to hashset
+	 * @param array
+	 * @param <T>
+	 * @return
+	 */
+	public static <T> Set<T> array2Set(T[] array){
+		if(CollectionHelper.isEmpty(array)){
+			return null;
+		}
+		Set<T> s = new HashSet<T>();
+		for(T item:array){
+			s.add(item);
+		}
+		return s;
+	}
+
+
+	/**
      * delete duplicate item
      * algorithm:
      * two loop

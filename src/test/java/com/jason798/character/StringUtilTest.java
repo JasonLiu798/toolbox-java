@@ -128,7 +128,6 @@ public class StringUtilTest {
     }
 
 
-
     /**
      * Method: tokenizeToStringArray(String str, String delimiters, boolean trimTokens, boolean ignoreEmptyTokens)
      */

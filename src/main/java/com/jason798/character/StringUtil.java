@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public final class StringUtil {
@@ -32,6 +33,7 @@ public final class StringUtil {
 
     /**
      * is empty
+     *
      * @param target string
      * @return
      */
@@ -44,6 +46,7 @@ public final class StringUtil {
 
     /**
      * is empty
+     *
      * @param str {@link Object} object or string
      * @return {@link boolean}
      */
@@ -54,6 +57,7 @@ public final class StringUtil {
 
     /**
      * check String array exist one string empty
+     *
      * @param targets string array
      * @return
      */
@@ -72,11 +76,12 @@ public final class StringUtil {
 
     /**
      * check T array exist one string empty
+     *
      * @param targets T array
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static <T> boolean isEmptyExistType( T ... targets) {
+    public static <T> boolean isEmptyExistType(T... targets) {
         if (targets == null || targets.length == 0) {
             return true;
         }
@@ -139,17 +144,18 @@ public final class StringUtil {
 
     /**
      * check string equals
+     *
      * @param s1
      * @param s2
      * @return
      */
-    public static boolean equal(String s1, String s2){
+    public static boolean equal(String s1, String s2) {
         // all null
-        if(s1==null && s2 == null){
+        if (s1 == null && s2 == null) {
             return true;
         }
         //one is null
-        if( s1 == null || s2==null ){
+        if (s1 == null || s2 == null) {
             return false;
         }
         //all not null
@@ -308,6 +314,7 @@ public final class StringUtil {
 
     /**
      * replace special character
+     *
      * @param input
      * @return
      */
@@ -446,6 +453,7 @@ public final class StringUtil {
 
     /**
      * trim String
+     *
      * @param str string to trim
      * @return string trimed
      */
@@ -465,42 +473,43 @@ public final class StringUtil {
      * "\"aaa\"" => aaa
      * "\"aa" => aa
      * "aa\"" => aa
+     *
      * @param str string to trim
      * @return trimed string
      */
-    public static String trimQuote(String str){
-        if( isEmpty(str) ){
+    public static String trimQuote(String str) {
+        if (isEmpty(str)) {
             return str; //nothing to trim quote
         }
         str = str.trim();
-        if( isEmpty(str) ){
+        if (isEmpty(str)) {
             return str;//nothing to trim quote
         }
         int len = str.length();
         int left = -1;
-        if(str.charAt(0)=='"' ){
-            left =  1;
+        if (str.charAt(0) == '"') {
+            left = 1;
         }
         int right = -1;
-        if( str.charAt(len-1) == '"'){
-            right =  len- 1;
+        if (str.charAt(len - 1) == '"') {
+            right = len - 1;
         }
         //left not found,right not found
-        if( right<0 && left <0 ){
+        if (right < 0 && left < 0) {
             return str;
         }
         //situation "\"" ; "\"\""
-        if( (left == right)|| (left == right +1 ) && left ==1 ){
+        if ((left == right) || (left == right + 1) && left == 1) {
             return "";
         }
-        if(left<0){
+        if (left < 0) {
             left = 0;
         }
-        if(right<0){
+        if (right < 0) {
             right = len;
         }
 
-        str = str.substring(left,right);
+        str = str.substring(left, right);
         str = str.trim();
         return str;
     }
@@ -659,7 +668,7 @@ public final class StringUtil {
      * add 0 in front of string until length equal vOutputLen
      *
      * @param vSourceString add zero in front until length reach vOutputLen
-     * @param vOutputLen max length
+     * @param vOutputLen    max length
      * @return add 0 string
      */
     public static String addZeroFront(String vSourceString, int vOutputLen) {
@@ -690,7 +699,6 @@ public final class StringUtil {
     public static boolean hasLength(String str) {
         return hasLength(((CharSequence) (str)));
     }
-
 
 
     /**
@@ -774,6 +782,37 @@ public final class StringUtil {
             System.out.println(ex);
         }
         return map;
+    }
+
+
+    /**
+     * check T array exist one string empty
+     *
+     * @param targets T array
+     * @return
+     */
+    public static <T> boolean isEmptyExist(T... targets) {
+        if (targets == null || targets.length == 0) {
+            return true;
+        }
+        for (T str : targets) {
+            if (isEmpty(String.valueOf(str))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * 判断两个字符串是否相等
+     *
+     * @param arg1 {@link String}
+     * @param arg2 {@link String}
+     * @return {@link Boolean}
+     */
+    public static Boolean isEqualString(String arg1, String arg2) {
+        return arg1.equals(arg2);
     }
 
 
@@ -893,7 +932,6 @@ public final class StringUtil {
         return str.charAt(str.length() - 1);
     }
 
-
     public static boolean isIvrNull(String str) {
         return str == null || str.equalsIgnoreCase(NULL)
                 || str.equalsIgnoreCase("");
@@ -978,39 +1016,11 @@ public final class StringUtil {
         return bytes;
     }
 
-    public static String integerToZhCn(int i) {
-        StringBuilder builder = new StringBuilder();
-        return builder.toString();
-    }
-
-
-    public final static String[] decode(String infos[]) {
-        String decodeInfos[] = new String[infos.length];
-        for (int i = 0; i < infos.length; i++) {
-            try {
-                decodeInfos[i] = URLDecoder.decode(infos[i], UTF8);
-            } catch (UnsupportedEncodingException e) {
-                return infos;
-            }
-        }
-        return decodeInfos;
-    }
-
-    public final static String decode(String info, String decodeType) {
-        if (info == null)
-            return null;
-        try {
-            return URLDecoder.decode(info, decodeType);
-        } catch (Exception e) {
-            return info;
-        }
-    }
-
-
 
     public final static String encode(String info) {
-        return encode(info,UTF8);
+        return encode(info, UTF8);
     }
+
     public final static String encode(String info, String decodeType) {
         try {
             if (info == null) {
@@ -1035,8 +1045,6 @@ public final class StringUtil {
     }
 
 
-
-
     public final static String encodeStr(String str) {
         StringTokenizer st = new StringTokenizer(str, " ");
         int count = st.countTokens();
@@ -1055,8 +1063,6 @@ public final class StringUtil {
 
         return message;
     }
-
-
 
 
     public final static String getNullString(String str) {
@@ -1094,7 +1100,6 @@ public final class StringUtil {
     }
 
 
-
     /**
      * make double value reserve until 'N' after the decimal point
      *
@@ -1116,6 +1121,7 @@ public final class StringUtil {
 
     /**
      * clear string buffer
+     *
      * @param buf string buffer
      */
     public static void clean(StringBuffer buf) {
@@ -1123,6 +1129,32 @@ public final class StringUtil {
             buf.delete(0, buf.length());
         }
     }
+
+    public static String integerToZhCn(int i) {
+        StringBuilder builder = new StringBuilder();
+        return builder.toString();
+    }
+
+
+    public final static String decode(String info, String decodeType) {
+        if (info == null)
+            return null;
+        try {
+            return URLDecoder.decode(info, decodeType);
+        } catch (Exception e) {
+            return info;
+        }
+    }
+
+
+    public final static String formatDate(Date date, SimpleDateFormat sf) {
+        if (date == null) {
+            return NULL;
+        } else {
+            return sf.format(date);
+        }
+    }
+
 
     /**
      * 过滤 外边双引号
@@ -1133,15 +1165,15 @@ public final class StringUtil {
      * @param string string to filter
      * @return filtered string
      */
-    public static String filterOuterQuote(String string){
-        if(isEmpty(string) || string.length() <2){
+    public static String filterOuterQuote(String string) {
+        if (isEmpty(string) || string.length() < 2) {
             return string;
         }
-        if( string.length() == 2){
+        if (string.length() == 2) {
             return "";
         }
         int len = string.length();
-        string = string.substring(1,len-1);
+        string = string.substring(1, len - 1);
         return string;
     }
 

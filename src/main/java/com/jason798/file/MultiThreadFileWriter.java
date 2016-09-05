@@ -1,9 +1,10 @@
 package com.jason798.file;
 
+import com.jason798.queue.IQueue;
+import com.jason798.queue.QueueManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * for multi thread write same file
@@ -13,63 +14,107 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * Created by JasonLiu798 on 15/6/2.
  */
-public class MultiThreadFileWriter implements Runnable{
+public class MultiThreadFileWriter implements Runnable {
 
-    private static final Logger log = LoggerFactory.getLogger(MultiThreadFileWriter.class);
-    /**
-     * for multi thread
-     */
-    private static ConcurrentLinkedQueue<FileDto> writebuffer = new ConcurrentLinkedQueue<>();
-    private static final String DFT_PATH= "/opt/logs/perf/fav.log";
-    private static boolean start = false;
+	private static final Logger LOG = LoggerFactory.getLogger(MultiThreadFileWriter.class);
 
-    public static boolean isStart() {
-        return start;
-    }
+	private boolean start = false;
 
-    public void write(String content){
-        write(DFT_PATH,content);
-    }
+	private IQueue writebuffer;
 
-    public void write(List<String> content){
-        write(DFT_PATH,content);
-    }
+	private String destinationFile;
 
-    public void write(String path,List<String> content){
-        FileDto fd = new FileDto(path,content);
-        writebuffer.offer(fd);
-    }
+	public MultiThreadFileWriter(String destinationFile, String queueName) {
+		init(destinationFile, queueName);
+	}
 
-    public void write(String path,String content){
-        FileDto fd = new FileDto(path,content);
-        writebuffer.offer(fd);
-    }
+	private void init(String file, String queueName) {
+		this.destinationFile = file;
+		IQueue queue = QueueManager.getQueue(queueName);
+		if (queue == null) {
+			throw new NullPointerException();
+		}
+		this.writebuffer = queue;
+	}
 
-    public static void close(){
-        start = false;
-    }
 
-    @Override
-    public void run() {
-        start = true;
-        log.debug("multi thread file writer started!");
-        while(start){
-            if(!writebuffer.isEmpty()){
-                FileDto fd = writebuffer.poll();
-                FileHelper.write2File( fd.getPath(), fd.getContents());
-            }
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        log.debug("multi thread file writer stopped!");
-    }
+	public boolean isStart() {
+		return start;
+	}
 
-//    public static void main(String[] args) {
-//        String s = "gZmeDQBoSelihGLmL4TDcJO5F9RPm_g8Xi_iE2lIDvWKrTDEAPdi2w";
-//        String s2 = "zJHdhrmHnqj3-ihT6IpRxaOym-gNNwc1z4I7JQmyBOpJDAFDkIupGPhaICUjdoHTuwbWz095AiY2UudYmxDZa8PTAyLwtkkwDyW_CkTU4BFXrPjWCGwzeg";
-//        System.out.println(s.length()+","+s2.length());
-//    }
+	public void write(String content) {
+		write(destinationFile, content);
+	}
+
+	public void write(List<String> content) {
+		write(destinationFile, content);
+	}
+
+	/**
+	 * write file to buffer
+	 *
+	 * @param path
+	 * @param content
+	 * @return
+	 */
+	public boolean write(String path, List<String> content) {
+		FileDto fd = new FileDto(path, content);
+		return writeInner(fd);
+	}
+
+	/**
+	 * write to buffer
+	 *
+	 * @param path
+	 * @param content
+	 * @return
+	 */
+	public boolean write(String path, String content) {
+		FileDto fd = new FileDto(path, content);
+		return writeInner(fd);
+	}
+
+	/**
+	 * write to buffer inner
+	 *
+	 * @param fd
+	 * @return
+	 */
+	private boolean writeInner(FileDto fd) {
+		try {
+			writebuffer.sendMessage(fd);
+			return true;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public void close() {
+		start = false;
+	}
+
+	/**
+	 * file write
+	 */
+	@Override
+	public void run() {
+		start = true;
+		LOG.debug("multi thread file writer started!");
+		while (start) {
+			try {
+				FileDto fd = (FileDto) writebuffer.receiveMessage();
+				FileHelper.writeLines2File(fd.getPath(), fd.getContents());
+
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		LOG.debug("multi thread file writer stopped!");
+	}
+
+	public void stop(){
+		start = false;
+	}
+
 }

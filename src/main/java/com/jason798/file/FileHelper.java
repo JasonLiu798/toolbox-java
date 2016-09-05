@@ -2,36 +2,39 @@ package com.jason798.file;
 
 import com.jason798.character.StringUtil;
 import com.jason798.constant.SystemConstant;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//import org.springframework.core.io.Resource;
-//import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-
 import java.io.*;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * file helper
- *
- */
 public final class FileHelper {
 
-    private static Logger log = LoggerFactory.getLogger(FileHelper.class);
-    public static final String DFT_FILE = "/opt/logs/test.dat";
+	private static Logger LOG = LoggerFactory.getLogger(FileHelper.class);
+	public static final String DFT_FILE = "/opt/logs/test.dat";
 
-    /**
-     * file exist
-     * @param filepath
-     * @return
-     */
-    public static boolean fileExist(String filepath){
-        File file=new File(filepath);
-        return file.exists();
-    }
+	/**
+	 * file exist
+	 * @param filepath
+	 * @return
+	 */
+	public static boolean fileExist(String filepath){
+		File file=new File(filepath);
+		return file.exists();
+	}
 
+	/**
+	 * class name format to Path
+	 * example:
+	 *  	com.jason798.util.A
+	 *  in linux :
+	 *  	-> com/jason798/util/A
+	 * @param className
+	 * @return
+	 */
 	public static String className2FilePath(String className){
 		if(StringUtil.isEmpty(className)){
 			return "";
@@ -55,15 +58,15 @@ public final class FileHelper {
 
 	/**
 	 * file size
-	 * @param filepath
-	 * @return
+	 * @param filepath file name
+	 * @return file size
 	 */
 	public static long getFileSize(String filepath){
 		long res = -1;
 		FileChannel fc = null;
 		File f = new File(filepath);
+		FileInputStream fis = null;
 		if(f.exists() && f.isFile()){
-			FileInputStream fis = null;
 			try {
 				fis = new FileInputStream(f);
 				fc = fis.getChannel();
@@ -73,8 +76,16 @@ public final class FileHelper {
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
+				if(fis!=null){
+					try {
+						fis.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
 				if(null!=fc){
 					try{
+
 						fc.close();
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -85,49 +96,56 @@ public final class FileHelper {
 		return res;
 	}
 
-    /**
-     * 文件拷贝
-     *
-     * @param srcFile  {@link File} 待拷贝的文件
-     * @param destPath {@link String} 目的地
-     * @return
-     * @throws Exception
-     */
-    public static boolean copy(File srcFile, String destPath) throws Exception {
-        File dir = new File(destPath);
-        return srcFile.renameTo(new File(dir.getPath(), dir.getName()));
-
-    }
+	/**
+	 * 文件拷贝
+	 * commons.io包 封装
+	 * @param srcFilePath  {@link File} 待拷贝的文件
+	 * @param destFilePath {@link String} 目的地
+	 * @throws Exception IOException
+	 */
+	public static void copy(String srcFilePath, String destFilePath) throws IOException {
+		File srcFile = new File(srcFilePath);
+		File destFile = new File(destFilePath);
+		FileUtils.copyFile(srcFile, destFile);
+	}
 
 
 	/**
 	 ************************ read  file apis ************************
 	 */
 
-    /**
-     * read file content to List<String>
-     *
-     * @param path
-     * @return
-     */
-    public static List<String> readFile2StringList(String path) {
-        List<String> res = new ArrayList<>();
-        String line;
-        try {
-            BufferedReader in = new BufferedReader(new FileReader(path));
-            line = in.readLine();
-            while (line != null) {
-                if (line.indexOf("--") != 0) {
-                    res.add(line);
-                }
-                line = in.readLine();
-            }
-            in.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return res;
-    }
+	/**
+	 * read file content to List<String>
+	 *
+	 * @param path
+	 * @return
+	 */
+	public static List<String> readFile2StringList(String path) {
+		List<String> res = new ArrayList<>();
+		String line;
+		BufferedReader in = null;
+		try {
+			in = new BufferedReader(new FileReader(path));
+			line = in.readLine();
+			while (line != null) {
+				if (line.indexOf("--") != 0) {
+					res.add(line);
+				}
+				line = in.readLine();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(in!=null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return res;
+	}
 
 	/**
 	 *
@@ -170,7 +188,7 @@ public final class FileHelper {
 	 */
 	public static byte[] readFile2ByteArr2(String filepath){
 		int size = (int) getFileSize(filepath);
-		log.debug("file size {}",size);
+		LOG.debug("file size {}",size);
 		byte[] res = new byte[size];
 		try {
 			DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(filepath)));
@@ -234,75 +252,84 @@ public final class FileHelper {
 	 */
 
 	/**
-	 * write file
+	 * write byte file
+	 * @param content byte[]
+	 */
+	public static void writeBytes2File(byte[] content){
+		writeBytes2File(DFT_FILE,content);
+	}
+
+	public static void writeBytes2File(String filepath, byte[] content){
+		try {
+			DataOutputStream out = new DataOutputStream(new FileOutputStream(filepath));
+			for(int i=0;i<content.length;i++){
+				out.writeByte(content[i]);
+			}
+			out.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		LOG.debug("write to file {} finish,bin mode", filepath);
+		return;
+	}
+
+
+	public static void writeLines2File(List<String> content){
+		writeLines2File("/opt/logs/perf/fav.LOG", content);
+	}
+	public static void writeOneLine2File(String content){
+		List<String> list = new LinkedList<>();
+		list.add(content);
+		writeLines2File(list);
+	}
+
+	/**
+	 * write content to file,auto add "\n"
+	 * @param filepath
 	 * @param content
 	 */
-    public static void write2File(byte[] content){
-        write2File(DFT_FILE,content);
-    }
+	public static void writeLines2File(String filepath, String content){
+		List<String> list = new LinkedList<>();
+		list.add(content);
+		writeLines2File(filepath, list);
+	}
+	/**
+	 * write contents to file
+	 *
+	 * @param filepath file path
+	 * @param contents content
+	 */
+	public static void writeLines2File(String filepath, List<String> contents) {
+		FileWriter writer = null;
+		try {
+			if(fileExist(filepath)){
+				writer = new FileWriter(filepath,true);//exist,append
+			}else {
+				writer = new FileWriter(filepath,false);//if file exist ,it will delete the file then create
+			}
+			for (String str : contents) {
+				writer.write(str + "\n");
+			}
+			if(LOG.isDebugEnabled()) {
+				LOG.debug("write to file,file {},content {}", filepath, contents);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (writer != null) {
+				try {
+					writer.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return;
+	}
 
-    public static void write2File(String filepath,byte[] content){
-        try {
-            DataOutputStream out = new DataOutputStream(new FileOutputStream(filepath));
-            for(int i=0;i<content.length;i++){
-                out.writeByte(content[i]);
-            }
-            out.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        log.debug("write to file {} finish,bin mode", filepath);
-        return;
-    }
-
-
-    public static void write2File(List<String> content){
-        write2File("/opt/logs/perf/fav.log", content);
-    }
-    public static void write2File(String content){
-        List<String> list = new LinkedList<>();
-        list.add(content);
-        write2File(list);
-    }
-
-    public static void write2File(String filepath,String content){
-        List<String> list = new LinkedList<>();
-        list.add(content);
-        write2File(filepath, list);
-    }
-    /**
-     * write contents to file
-     *
-     * @param filepath file path
-     * @param contents content
-     */
-    public static void write2File(String filepath, List<String> contents) {
-        FileWriter writer = null;
-        try {
-            if(fileExist(filepath)){
-                writer = new FileWriter(filepath,true);
-            }else {
-                writer = new FileWriter(filepath,false);//if file exist ,it will delete the file then create
-            }
-            for (String str : contents) {
-                writer.write(str + "\n");
-            }
-            log.debug("write to file,file {},content {}", filepath, contents);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (writer != null) {
-                try {
-                    writer.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return;
-    }
+}
 
 
 
@@ -358,4 +385,3 @@ public final class FileHelper {
     }*/
 
 
-}

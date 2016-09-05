@@ -110,27 +110,6 @@ public class XmlParser {
     }
 
 
-    public static void main(String[] argv) {
-        XmlElement xmlElement = null;
-        try {
-            //InputStream processDefinitionInputStream = new FileInputStream( "E:/javaWorkSpace/simpledemo/bin/exampleB
-            // .xml" );
-            XmlParser xmlParser = new XmlParser(new FileReader("d:/ReqAudActivitys.xml"));
-            xmlElement = xmlParser.parse();
-            System.out.println("ss=" + xmlElement.getName());
-            System.out.println("ss=" + xmlElement.getChildElements("activity-state").get(0));
-            System.out.println("ss=" + xmlElement.getChildElements("activity-state").get(1));
-        } catch (Exception e) {
-            e.printStackTrace();
-            Iterator iter = ((XmlException) e).getErrors().iterator();
-            while (iter.hasNext()) {
-                String error = (String) iter.next();
-                System.out.println("xml parsing error in  : " + error);
-            }
-
-        }
-
-    }
 
 
     private InputSource inputSource = null;
