@@ -1,7 +1,6 @@
 package com.jason798.queue.impl;
 
 import com.jason798.queue.IQueue;
-
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
@@ -52,17 +51,14 @@ public class ConcurrentLinkedBlockingQueue<T> implements IQueue<T> {
 	/**
 	 * send one message
 	 *
-	 * @param message
-	 * @return void
-	 * @throws InterruptedException
+	 * @param message message to send
+	 * @throws InterruptedException interrupted exception
 	 */
 	public void sendMessage(T message) throws InterruptedException {
 		if (message != null) {
 			lock.lock();
 			try {
-				/**
-				 * wait until buffer empty
-				 */
+				//wait until buffer empty
 				while (count.get() == maxSize) {
 					full.await();
 				}
@@ -78,11 +74,11 @@ public class ConcurrentLinkedBlockingQueue<T> implements IQueue<T> {
 	/**
 	 * receive message
 	 *
-	 * @return Object
-	 * @throws InterruptedException
+	 * @return Object polled  object
+	 * @throws InterruptedException interrupted exception
 	 */
 	public T receiveMessage() throws InterruptedException {
-		T message = null;
+		T message;
 		lock.lock();
 		try {
 			while (count.get() == 0) {
@@ -91,9 +87,7 @@ public class ConcurrentLinkedBlockingQueue<T> implements IQueue<T> {
 			}
 			message = linkq.poll();
 			count.decrementAndGet();
-			/**
-			 * awake other producer
-			 */
+			// awake other producer
 			full.signal();
 			return message;
 		} finally {
@@ -104,7 +98,7 @@ public class ConcurrentLinkedBlockingQueue<T> implements IQueue<T> {
 	/**
 	 * get now size
 	 *
-	 * @return int
+	 * @return int queue size
 	 */
 	public int getCount() {
 		return count.get();
@@ -113,8 +107,7 @@ public class ConcurrentLinkedBlockingQueue<T> implements IQueue<T> {
 
 	/**
 	 * chk producer buffer
-	 *
-	 * @return boolean
+	 * @return boolean is queue full
 	 */
 	public boolean ifMaxCount() {
 		return (maxSize - count.get()) < 10;

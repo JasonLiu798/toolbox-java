@@ -14,6 +14,7 @@ public class MultiThreadFileWriterHelper {
 	private MultiThreadFileWriter multiThreadFileWriter;
 	public static final String DFT_PATH= "/opt/logs/test.log";
 	public static final String DFT_QUEUNAME= "fileQ";
+	private static final int DFT_QUEUE_SIZE = 100000;
 
 	/**
 	 * construct
@@ -21,19 +22,35 @@ public class MultiThreadFileWriterHelper {
 	public MultiThreadFileWriterHelper() {
 		init(DFT_PATH,DFT_QUEUNAME);
 	}
-	public MultiThreadFileWriterHelper(String defaultFile) {
-		init(defaultFile,DFT_QUEUNAME);
-	}
-	public MultiThreadFileWriterHelper(String defaultFile,String queueName){
-		init(defaultFile,queueName);
+	public MultiThreadFileWriterHelper(String writeFile) {
+		init(writeFile,DFT_QUEUNAME);
 	}
 
-	private void init(String defaultFile,String queueName){
+	public MultiThreadFileWriterHelper(boolean autostart,String writeFile, String queueName){
+		init(writeFile,queueName);
+		if(autostart){
+			start();
+		}
+	}
+
+	public MultiThreadFileWriterHelper(boolean autoStart) {
+		init(DFT_PATH,DFT_QUEUNAME);
+		if(autoStart){
+			start();
+		}
+	}
+
+	/**
+	 * init method
+	 * @param writeFile write file
+	 * @param queueName queue name
+	 */
+	private void init(String writeFile, String queueName){
 		boolean exist = QueueManager.queueExist(queueName);
 		if(!exist){
-			QueueManager.addQueue(queueName, new BlockingQueueEncap());
+			QueueManager.addQueue(queueName, new BlockingQueueEncap(DFT_QUEUE_SIZE));
 		}
-		this.multiThreadFileWriter = new MultiThreadFileWriter(defaultFile,queueName);
+		this.multiThreadFileWriter = new MultiThreadFileWriter(writeFile,queueName);
 	}
 
 	public void start(){
@@ -59,4 +76,5 @@ public class MultiThreadFileWriterHelper {
 		multiThreadFileWriter.close();
 	}
 }
+
 

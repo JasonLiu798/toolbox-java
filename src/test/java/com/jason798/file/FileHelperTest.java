@@ -158,4 +158,25 @@ public class FileHelperTest {
 		System.out.println(res);
 	}
 
+	@Test
+    public void testDelete(){
+	    String file = "D:\\t1";
+	    FileHelper.writeLines2File(file,"aaa");
+
+        boolean exist = FileHelper.fileExist(file);
+        System.out.println("file exist "+exist);
+        FileHelper.delete(file);
+
+        exist = FileHelper.fileExist(file);
+        System.out.println("file exist "+exist);
+    }
+
+    @Test
+    public void testDeletDir(){
+        String dir = "D:\\aaa\\bbb\\ccc";
+        FileHelper.makeDirs(dir);
+        String dirA = "D:\\aaa";
+        FileHelper.delete(dirA);
+    }
+
 }

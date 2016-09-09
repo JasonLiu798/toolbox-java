@@ -1,10 +1,13 @@
 package com.jason798.performance;
 
+import com.jason798.number.LongCalculator;
+import com.jason798.number.NumberHelper;
+import com.jason798.number.RandomGenerator;
 import org.junit.Test;
-import org.junit.Before;
-import org.junit.After;
 
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 public class RunTimeStatisticsHelperTest {
@@ -43,8 +46,21 @@ public class RunTimeStatisticsHelperTest {
      * Method: getResultString()
      */
     @Test
-    public void testGetResultString() throws Exception {
-
+    public void testGetStat() throws Exception {
+        List<Long> list = new ArrayList<>();
+        for (int i = 0; i < 1000; i++) {
+            list.add(RandomGenerator.generateLong(1,99999));
+        }
+        System.out.println(list);
+        RunTimeStatisticsDto dto = RunTimeStatisticsHelper.
+                getStat(
+                        list.toArray(new Long[list.size()]),
+                        (o1, o2) -> NumberHelper.long2Int(o1 - o2),
+                        new LongCalculator(),
+                        num -> num);
+        Collections.sort(list);
+        System.out.println(list);
+        System.out.println(dto);
     }
 
     /**
@@ -54,7 +70,6 @@ public class RunTimeStatisticsHelperTest {
     public void testClear() throws Exception {
 
     }
-
 
 
 }

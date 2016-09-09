@@ -23,10 +23,8 @@ public interface IQueue <T> {
 
 	/**
 	 * receive message
-	 *
 	 * @return
 	 * @throws InterruptedException
-	 * @return Object
 	 */
 	T receiveMessage() throws InterruptedException;
 	/**

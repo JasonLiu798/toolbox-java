@@ -6,6 +6,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 /**
+ * Blocking queue use ArrayBlocking queue
  * Created by async on 2016/8/28.
  */
 public class BlockingQueueEncap<T> implements IQueue<T> {
@@ -38,11 +39,8 @@ public class BlockingQueueEncap<T> implements IQueue<T> {
 	/**
 	 * send one message
 	 *
-	 * @param message
-	 * @throws InterruptedException
-	 * @return void
-	 * @author JasonLiu
-	 * @createtime Jun 29, 2015 1:05:16 PM
+	 * @param message send message object
+	 * @throws InterruptedException interrupt exception
 	 */
 	public void sendMessage(T message) throws InterruptedException {
 		if (message != null) {
@@ -54,25 +52,18 @@ public class BlockingQueueEncap<T> implements IQueue<T> {
 	 * receive message
 	 *
 	 * @return
-	 * @throws InterruptedException
-	 * @return Object
-	 * @author JasonLiu
-	 * @createtime Jun 29, 2015 1:08:56 PM
+	 * @throws InterruptedException interrupt exception
+	 * @return Object recv message object
 	 */
 	@Override
 	public T receiveMessage() throws InterruptedException {
-		T message = null;
-		message = linkq.take();
-		return message;
+		return linkq.take();
 	}
 
 	/**
 	 * get now size
 	 *
-	 * @return
-	 * @return int
-	 * @author JasonLiu
-	 * @createtime Jun 29, 2015 1:08:48 PM
+	 * @return queue size
 	 */
 	public int getCount(){
 		return linkq.size();
@@ -80,11 +71,7 @@ public class BlockingQueueEncap<T> implements IQueue<T> {
 
 	/**
 	 * chk producer buffer
-	 *
-	 * @return
-	 * @return boolean
-	 * @author JasonLiu
-	 * @createtime Jun 29, 2015 12:52:49 PM
+	 * @return is queue full
 	 */
 	public boolean ifMaxCount(){
 		return (maxSize - getCount())<10;

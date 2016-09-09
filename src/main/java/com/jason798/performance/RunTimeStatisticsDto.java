@@ -1,47 +1,42 @@
 package com.jason798.performance;
 
-public class RunTimeStatisticsDto {
-
-    private long max;
-    private long min;
-    private long avg;
+public class RunTimeStatisticsDto <T>{
+    private T total;
     private long count;
-    private long mid;
-    private long total;
+    private T max;
+    private T min;
+    private T avg;
+    private T mid;
+    private T median;
 
-    public RunTimeStatisticsDto() {
+
+    public RunTimeStatisticsDto(){}
+
+    public RunTimeStatisticsDto(T one) {
+        count = 1;
+        total = max=min=mid=avg=median=one;
     }
 
-    public long getMid() {
-        return mid;
+
+    @Override
+    public String toString() {
+        return "RunTimeStatisticsDto{" +
+                "total=" + total +
+                ", count=" + count +
+                ", max=" + max +
+                ", min=" + min +
+                ", avg=" + avg +
+                ", mid=" + mid +
+                ", median=" + median +
+                '}';
     }
 
-    public void setMid(long mid) {
-        this.mid = mid;
+    public T getTotal() {
+        return total;
     }
 
-    public long getMax() {
-        return max;
-    }
-
-    public void setMax(long max) {
-        this.max = max;
-    }
-
-    public long getMin() {
-        return min;
-    }
-
-    public void setMin(long min) {
-        this.min = min;
-    }
-
-    public long getAvg() {
-        return avg;
-    }
-
-    public void setAvg(long avg) {
-        this.avg = avg;
+    public void setTotal(T total) {
+        this.total = total;
     }
 
     public long getCount() {
@@ -52,23 +47,43 @@ public class RunTimeStatisticsDto {
         this.count = count;
     }
 
-    public long getTotal() {
-        return total;
+    public T getMax() {
+        return max;
     }
 
-    public void setTotal(long total) {
-        this.total = total;
+    public void setMax(T max) {
+        this.max = max;
     }
 
-    @Override
-    public String toString() {
-        return "RunTimeStatisticsDto{" +
-                "max=" + max +
-                ", min=" + min +
-                ", avg=" + avg +
-                ", count=" + count +
-                ", mid=" + mid +
-                ", total=" + total +
-                '}';
+    public T getMin() {
+        return min;
+    }
+
+    public void setMin(T min) {
+        this.min = min;
+    }
+
+    public T getAvg() {
+        return avg;
+    }
+
+    public void setAvg(T avg) {
+        this.avg = avg;
+    }
+
+    public T getMid() {
+        return mid;
+    }
+
+    public void setMid(T mid) {
+        this.mid = mid;
+    }
+
+    public T getMedian() {
+        return median;
+    }
+
+    public void setMedian(T median) {
+        this.median = median;
     }
 }

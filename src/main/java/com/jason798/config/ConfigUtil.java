@@ -1,11 +1,10 @@
 package com.jason798.config;
 
-import com.jason798.character.ReflectHelper;
+import com.jason798.common.ReflectHelper;
 import com.jason798.character.RegexUtil;
 import com.jason798.character.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -21,25 +20,20 @@ public class ConfigUtil {
 
     private static final Map<String, ResourceBundle> resourceBundles = new HashMap<>();
     private static final String DFT_PREFIX = "";
-
-    private static final String DFT_FILE = "sysconfig";
-
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(DFT_FILE);
+    //private static final String DFT_FILE = "config";
+    //private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(DFT_FILE);
 
     private static ResourceBundle EXIT_RESOURCE_BUNDLE = null;
 
     public static String[] jsStrings = new String[1];
 
-
     private ConfigUtil() {
     }
 
-    public static String get(String key) {
-        try {
-            return RESOURCE_BUNDLE.getString(key);
-        } catch (MissingResourceException e) {
-            return "";
-        }
+
+    public static void initProperties(String filePath) throws IOException {
+        InputStream in = new BufferedInputStream(new FileInputStream(filePath));
+        EXIT_RESOURCE_BUNDLE = new PropertyResourceBundle(in);
     }
 
     public static String getByKey(String key) {
@@ -54,10 +48,6 @@ public class ConfigUtil {
         }
     }
 
-    public static void initProperties(String filePath) throws IOException {
-        InputStream in = new BufferedInputStream(new FileInputStream(filePath));
-        EXIT_RESOURCE_BUNDLE = new PropertyResourceBundle(in);
-    }
 
 
     /**
@@ -91,6 +81,18 @@ public class ConfigUtil {
             LOG.info(e.getMessage());
             return "";
         }
+    }
+
+    /**
+     * check properties file exist
+     * @param filename filename
+     * @return exist or not
+     */
+    public static boolean checkPropertiesExist(String filename){
+        if(Thread.currentThread().getContextClassLoader().getResource(filename)==null){
+            return false;
+        }
+        return true;
     }
 
     /**

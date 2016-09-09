@@ -329,6 +329,89 @@ public final class FileHelper {
 		return;
 	}
 
+
+	/**
+	 * mkdir
+	 * @param dirPath dirpath
+	 * @return success or not
+	 */
+	public static boolean makeDirs(String dirPath) {
+		String folderName = dirPath;
+		if (folderName == null || folderName.isEmpty()) {
+			return false;
+		}
+		File folder = new File(folderName);
+		return (folder.exists() && folder.isDirectory()) ? true : folder.mkdirs();
+	}
+
+	/**
+	 *
+	 * @param sPath
+	 * @return
+	 */
+	public static boolean delete(String sPath) {
+		boolean flag = false;
+		File file = new File(sPath);
+		if (!file.exists()) {
+			return flag;
+		} else {
+			if (file.isFile()) {
+				return deleteFile(sPath);
+			} else {
+				return deleteDirectory(sPath);
+			}
+		}
+	}
+
+	/**
+	 * delete file
+	 * @param sPath
+	 * @return
+	 */
+	public static boolean deleteFile(String sPath) {
+		boolean flag = false;
+		File file = new File(sPath);
+		if (file.isFile() && file.exists()) {
+			file.delete();
+			flag = true;
+		}
+		return flag;
+	}
+
+	/**
+	 * delete dir
+	 * @param sPath dir path
+	 * @return success or not
+	 */
+	public static boolean deleteDirectory(String sPath) {
+		if (!sPath.endsWith(File.separator)) {//add sep
+			sPath = sPath + File.separator;
+		}
+		File dirFile = new File(sPath);
+		if (!dirFile.exists() || !dirFile.isDirectory()) {//check exist,type
+			return false;
+		}
+		boolean flag = true;
+		File[] files = dirFile.listFiles();
+		for (int i = 0; i < files.length; i++) {
+			if (files[i].isFile()) {
+				flag = deleteFile(files[i].getAbsolutePath());
+				if (!flag) break;
+			} else {//recursive delete
+				flag = deleteDirectory(files[i].getAbsolutePath());
+				if (!flag) break;
+			}
+		}
+		if (!flag) {
+			return false;
+		}
+		if (dirFile.delete()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }
 
 

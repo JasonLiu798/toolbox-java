@@ -433,6 +433,29 @@ public final class CollectionHelper {
 	}
 
 
+    /**
+     * remove list 's first n element
+     * @param list list
+     * @param n n to remove
+     * @return after removed list
+     */
+    public static <T> List<T> removeListFirstN(List<T> list,int n){
+        if(CollectionHelper.isEmpty(list)){
+            return list;
+        }
+        if(list.size()<n){
+            return list;
+        }
+        Iterator<T> iterator = list.iterator();
+        int i=0;
+        while (iterator.hasNext() && i<n){
+            iterator.next();
+            iterator.remove();
+            i++;
+        }
+        return list;
+    }
+
 //    public static <T> T[] list2array(List<T> l){
 //
 //        T[] = new T[l.size()];

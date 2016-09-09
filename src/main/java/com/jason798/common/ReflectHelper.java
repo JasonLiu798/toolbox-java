@@ -1,5 +1,6 @@
-package com.jason798.character;
+package com.jason798.common;
 
+import com.jason798.character.StringUtil;
 import com.jason798.collection.CollectionHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,17 +17,17 @@ public class ReflectHelper {
     private static final String GET_PREFIX = "get";
     private static final String GET_BOOL_PREFIX = "is";
     /**
-     * 获取属性值选项：
-     * 0   获取本类和所有父类
-     * 1   只获取本类
-     * 2 只获取上一级父类
-     * 3 获取所有父类
+     * get field map type
+     * 0   self and parents
+     * 1   self
+     * 2   parent
+     * 3   parents
      */
     public enum ParentOpt {
-        ALL,//本类和所有父类，
-        SELF,//只获取本类
-        PARENT,//只获取上一级父类
-        ALLPARENT//获取所有父类，不包括SELF
+        ALL,
+        SELF,
+        PARENT,
+        ALLPARENT
     }
 
     private static Map<Class<?>, Class<?>> boxTypeMap     = new HashMap<Class<?>, Class<?>>();
@@ -41,7 +42,6 @@ public class ReflectHelper {
         boxTypeMap.put(double.class, Double.class);
         boxTypeMap.put(boolean.class, Boolean.class);
     }
-
 
 
     /**
@@ -63,7 +63,7 @@ public class ReflectHelper {
      * @param clz class string
      * @return class is exist
      */
-    public boolean checkClassExist(String clz) {
+    public static boolean checkClassExist(String clz) {
         try {
             Class.forName(clz);
         } catch (ClassNotFoundException e1) {
@@ -90,46 +90,22 @@ public class ReflectHelper {
     /**
      * check is implement interface
      *
-     * @param checkClass check class
-     * @param intf       interface
+     * @param A check class
+     * @param B parent or interface
      * @return is impl
      */
-    public static boolean chkImplementIntf(Class<?> checkClass, Class<?> intf) {
-        return intf.isAssignableFrom(checkClass);
+    public static boolean chkAInheritB(Class<?> A, Class<?> B) {
+        return B.isAssignableFrom(A);
     }
-
-    /**
-     * check is implement interface
-     *
-     * @param obj  check object
-     * @param intf interface
-     * @return is impl
-     */
-    public static boolean chkImplementIntf(Object obj, Class<?> intf) {
-        return chkImplementIntf(obj.getClass(), intf);
+    public static boolean chkAInheritB(Object A, Class<?> B) {
+        return chkAInheritB(A.getClass(), B);
     }
-
-    /**
-     * check is implement interfaces
-     *
-     * @param obj   check object
-     * @param intfs interface
-     * @return is impl,at leatest one
-     */
-    public static boolean chkImpiIntf(Object obj, List<Class<?>> intfs) {
-        return chkImpiIntf(obj.getClass(), intfs);
+    public static boolean chkAInheritBList(Object A, List<Class<?>> B) {
+        return chkAInheritBList(A.getClass(), B);
     }
-
-    /**
-     * check is implement interfaces
-     *
-     * @param clz   check class
-     * @param intfs interface
-     * @return is impl,at leatest one
-     */
-    public static boolean chkImpiIntf(Class<?> clz, List<Class<?>> intfs) {
-        for (Class<?> intf : intfs) {
-            if (chkImplementIntf(clz, intf)) {
+    public static boolean chkAInheritBList(Class<?> A, List<Class<?>> B) {
+        for (Class<?> intf : B) {
+            if (chkAInheritB(A, intf)) {
                 return true;
             }
         }

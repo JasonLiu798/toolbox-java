@@ -27,7 +27,7 @@ public class RandomGenerator {
      * @param range
      * @return
      */
-    public static int generateNum(int range) throws InterruptedException {
+    public static int generateInt(int range) throws InterruptedException {
         int res = 0;
         Random random = new Random(System.currentTimeMillis());
         Thread.sleep(1);
@@ -35,6 +35,14 @@ public class RandomGenerator {
 //		random.nextGaussian();
         return res;
     }
+    public static long generateLong(long range) throws InterruptedException {
+        long res = 0;
+        Random random = new Random(System.currentTimeMillis());
+        Thread.sleep(1);
+        res = Math.abs(random.nextLong()) % range;
+        return res;
+    }
+
 
     /**
      * 随机生成start~end范围内随机数
@@ -42,27 +50,33 @@ public class RandomGenerator {
      * @param end
      * @return
      */
-    public static int generateNum(int start, int end) throws InterruptedException {
+    public static int generateInt(int start, int end) throws InterruptedException {
         int range = end - start + 1;
-        int res = start + generateNum(range);
+        int res = start + generateInt(range);
         return res;
     }
 
-    /**
-     * 随机生成长度为N的数字，range(10...0,99...9)
-     * @param N
-     * @return
-     * @throws InterruptedException
-     */
+    public static long generateLong(long start, long end) throws InterruptedException {
+        long range = end - start + 1;
+        long res = start + generateLong(range);
+        return res;
+    }
+
+        /**
+         * 随机生成长度为N的数字，range(10...0,99...9)
+         * @param N
+         * @return
+         * @throws InterruptedException
+         */
     public static int generateLengthNNum(int N) throws InterruptedException {
         int num = 9;
         for(int i=0;i<N-1;i++){
             num = num*10 + 9;
         }
-        String rawNum = String.valueOf(generateNum(num));
+        String rawNum = String.valueOf(generateInt(num));
         if(rawNum.length()<N){
             for(int i=rawNum.length();i<N;i++){
-                rawNum += String.valueOf(generateNum(9));
+                rawNum += String.valueOf(generateInt(9));
             }
         }
         return Integer.parseInt(rawNum);
@@ -75,7 +89,7 @@ public class RandomGenerator {
      */
     public static String generateMobile() throws InterruptedException{
         int [] prefix = {13,14,15,17,18};
-        int prefixNum = prefix[generateNum(prefix.length)];
+        int prefixNum = prefix[generateInt(prefix.length)];
         int lastNum = generateLengthNNum(9);
         return String.valueOf(prefixNum) + String.valueOf(lastNum);
     }
@@ -113,7 +127,7 @@ public class RandomGenerator {
     public static Set<Integer> generateDistinctBatchNum(int n, int start, int end) throws InterruptedException {
         Set<Integer> set = new HashSet<>();
         while (set.size() < n) {
-            int num = generateNum(start, end);
+            int num = generateInt(start, end);
             Thread.sleep(1);// sleep 随机时间，以便产生的system.currentTimeMillis不同
             set.add(num);
         }
@@ -130,7 +144,7 @@ public class RandomGenerator {
     public static List<Integer> generateBatchNum(int n, int start, int end) throws InterruptedException {
         List<Integer> res = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
-            int num = generateNum(start, end);
+            int num = generateInt(start, end);
             try {
                 Thread.sleep(num % 1000);// sleep
                 // 随机时间，以便产生的system.currentTimeMillis不同
