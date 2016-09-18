@@ -8,9 +8,9 @@ import java.util.List;
 /**
  * series helper
  */
-public class ProgressionHelper {
+public class RangeHelper {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ProgressionHelper.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RangeHelper.class);
 
     private static final int DFT_DIFF = 1;
     /**

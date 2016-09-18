@@ -2,6 +2,7 @@ package com.jason798.collection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -19,21 +20,24 @@ public final class CollectionHelper {
 
     /**
      * check array is null or size == 0
+     *
      * @param arr array
      * @return null or not
      */
-    public static <T> boolean isEmpty(T[] arr){
-        if(arr==null || arr.length <= 0){
+    public static <T> boolean isEmpty(T[] arr) {
+        if (arr == null || arr.length <= 0) {
             return true;
         }
         return false;
     }
-    public static <T> boolean isNotEmpty(T[] arr){
+
+    public static <T> boolean isNotEmpty(T[] arr) {
         return !isEmpty(arr);
     }
 
     /**
      * check collection null or size == 0
+     *
      * @param collection collection
      * @return null or not
      */
@@ -43,23 +47,25 @@ public final class CollectionHelper {
         }
         return false;
     }
+
     public static <T> boolean isNotEmpty(Collection<T> collection) {
         return !isEmpty(collection);
     }
 
 
-	public static <K,V> boolean isEmpty(Map<K,V> map){
-		if(map==null || map.isEmpty()){
-			return true;
-		}
-		return false;
-	}
+    public static <K, V> boolean isEmpty(Map<K, V> map) {
+        if (map == null || map.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
 
 
     /**
      * get idx-1 's node
+     *
      * @param list list
-     * @param idx index
+     * @param idx  index
      * @return the (idx-1)'s node
      */
     public static <T> T getPreNode(List<T> list, int idx) {
@@ -71,8 +77,9 @@ public final class CollectionHelper {
 
     /**
      * get idx+1 's node
+     *
      * @param list list
-     * @param idx index
+     * @param idx  index
      * @return the (idx+1)'s node
      */
     public static <T> T getNextNode(List<T> list, int idx) {
@@ -85,6 +92,7 @@ public final class CollectionHelper {
 
     /**
      * filter list 2 count,drop the node index >= count
+     *
      * @param list
      * @param count
      * @return
@@ -99,7 +107,7 @@ public final class CollectionHelper {
         } else {
             int start = count - 1;
             int end = list.size() - 1;
-            if(LOG.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("start " + start + " end " + end);
             }
             for (int i = end; i > start; i--) {
@@ -109,24 +117,24 @@ public final class CollectionHelper {
         return list;
     }
 
-	/**
-	 * remove filterKeys from map,
-	 * thread-safe depend on map
-	 * @param map
-	 * @param filterKeys
-	 * void
-	 */
-	public static <T> void filterMap(Map<String,T> map,String[] filterKeys ){
-		if(isEmpty(filterKeys) || isEmpty(map)){
-			return;
-		}
-		for(String key:filterKeys){
-			map.remove(key);
-		}
-	}
+    /**
+     * remove filterKeys from map,
+     * thread-safe depend on map
+     *
+     * @param map
+     * @param filterKeys void
+     */
+    public static <T> void filterMap(Map<String, T> map, String[] filterKeys) {
+        if (isEmpty(filterKeys) || isEmpty(map)) {
+            return;
+        }
+        for (String key : filterKeys) {
+            map.remove(key);
+        }
+    }
 
 
-	/**
+    /**
      * 删除tgtlist中所有存在于dellist的item
      *
      * @param tgtList
@@ -166,40 +174,42 @@ public final class CollectionHelper {
     }
 
 
-	/**
-	 * array to arrayList
-	 * @param array
-	 * @param <T>
-	 * @return
-	 */
-	public static <T> List<T> array2List(T[] array){
-		if(CollectionHelper.isEmpty(array)){
-			return null;
-		}
-		List<T> res = new ArrayList<>(array.length);
-		Collections.addAll(res,array);
-		return res;
-	}
+    /**
+     * array to arrayList
+     *
+     * @param array
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> array2List(T[] array) {
+        if (CollectionHelper.isEmpty(array)) {
+            return null;
+        }
+        List<T> res = new ArrayList<>(array.length);
+        Collections.addAll(res, array);
+        return res;
+    }
 
-	/**
-	 * array to hashset
-	 * @param array
-	 * @param <T>
-	 * @return
-	 */
-	public static <T> Set<T> array2Set(T[] array){
-		if(CollectionHelper.isEmpty(array)){
-			return null;
-		}
-		Set<T> s = new HashSet<T>();
-		for(T item:array){
-			s.add(item);
-		}
-		return s;
-	}
+    /**
+     * array to hashset
+     *
+     * @param array
+     * @param <T>
+     * @return
+     */
+    public static <T> Set<T> array2Set(T[] array) {
+        if (CollectionHelper.isEmpty(array)) {
+            return null;
+        }
+        Set<T> s = new HashSet<T>();
+        for (T item : array) {
+            s.add(item);
+        }
+        return s;
+    }
 
 
-	/**
+    /**
      * delete duplicate item
      * algorithm:
      * two loop
@@ -275,16 +285,58 @@ public final class CollectionHelper {
         return mainList;
     }
 
+    /**
+     * get two list's same element
+     * @param mainList
+     * @param otherList
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> getDuplicateItemUseHash(List<T> mainList, List<T> otherList) {
+        if (CollectionHelper.isEmpty(mainList) || CollectionHelper.isEmpty(otherList)) {
+            return new LinkedList<>();
+        }
+        Set otherSet = new HashSet();
+        List<T> res = new LinkedList<>();
+        for (T item : otherList) {
+            otherSet.add(item);
+        }
+        for (T item : mainList) {
+            if (otherSet.contains(item)) {
+                res.add(item);
+            }
+        }
+        return res;
+    }
+
+    /**
+     * get the first duplicate item
+     * @param mainList
+     * @param otherList
+     * @param <T>
+     * @return
+     */
+    public static <T> T getOneDuplicateItemUseHash(List<T> mainList,List<T> otherList){
+        List<T> list = getDuplicateItemUseHash(mainList,otherList);
+        if(CollectionHelper.isEmpty(list)){
+            return null;
+        }
+        return list.get(0);
+    }
+
 
     public static <T> void printList(Collection<T> c) {
         printList(c, 0);
     }
+
     public static <T> void printList(Collection<T> c, String name) {
-        printList(c, name,0);
+        printList(c, name, 0);
     }
+
     public static <T> void printList(Collection<T> c, int level) {
         printList(c, null, level);
     }
+
     /**
      * for debug
      *
@@ -308,9 +360,9 @@ public final class CollectionHelper {
         }
         sb.append("}\n");
         switch (level) {
-			case 0:
-				System.out.println(sb.toString());
-			case 1:
+            case 0:
+                System.out.println(sb.toString());
+            case 1:
                 LOG.debug(sb.toString());
                 break;
             case 2:
@@ -419,41 +471,49 @@ public final class CollectionHelper {
     }
 
 
-
-
-	public static Object resizeArray (Object oldArray, int newSize) {
-		int oldSize = java.lang.reflect.Array.getLength(oldArray);
-		Class elementType = oldArray.getClass().getComponentType();
-		Object newArray = java.lang.reflect.Array.newInstance(
-				elementType,newSize);
-		int preserveLength = Math.min(oldSize,newSize);
-		if (preserveLength > 0)
-			System.arraycopy (oldArray,0,newArray,0,preserveLength);
-		return newArray;
-	}
+    public static Object resizeArray(Object oldArray, int newSize) {
+        int oldSize = java.lang.reflect.Array.getLength(oldArray);
+        Class elementType = oldArray.getClass().getComponentType();
+        Object newArray = java.lang.reflect.Array.newInstance(
+                elementType, newSize);
+        int preserveLength = Math.min(oldSize, newSize);
+        if (preserveLength > 0)
+            System.arraycopy(oldArray, 0, newArray, 0, preserveLength);
+        return newArray;
+    }
 
 
     /**
      * remove list 's first n element
+     *
      * @param list list
-     * @param n n to remove
+     * @param n    n to remove
      * @return after removed list
      */
-    public static <T> List<T> removeListFirstN(List<T> list,int n){
-        if(CollectionHelper.isEmpty(list)){
+    public static <T> List<T> removeListFirstN(List<T> list, int n) {
+        if (CollectionHelper.isEmpty(list)) {
             return list;
         }
-        if(list.size()<n){
+        if (list.size() < n) {
             return list;
         }
         Iterator<T> iterator = list.iterator();
-        int i=0;
-        while (iterator.hasNext() && i<n){
+        int i = 0;
+        while (iterator.hasNext() && i < n) {
             iterator.next();
             iterator.remove();
             i++;
         }
         return list;
+    }
+
+
+    public static List<String> castInt2String(List<Integer> list){
+        List<String> res = new LinkedList<>();
+        for(Integer i:list){
+            res.add(String.valueOf(i));
+        }
+        return res;
     }
 
 //    public static <T> T[] list2array(List<T> l){

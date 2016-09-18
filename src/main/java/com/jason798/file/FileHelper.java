@@ -309,9 +309,11 @@ public final class FileHelper {
 			}else {
 				writer = new FileWriter(filepath,false);//if file exist ,it will delete the file then create
 			}
+			StringBuilder sb = new StringBuilder();
 			for (String str : contents) {
-				writer.write(str + "\n");
+				sb.append(str).append("\n");
 			}
+			writer.write(sb.toString());
 			if(LOG.isDebugEnabled()) {
 				LOG.debug("write to file,file {},content {}", filepath, contents);
 			}

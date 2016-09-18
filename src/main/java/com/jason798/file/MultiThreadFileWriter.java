@@ -1,10 +1,15 @@
 package com.jason798.file;
 
+import com.jason798.collection.CollectionHelper;
 import com.jason798.queue.IQueue;
 import com.jason798.queue.QueueManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * for multi thread write same file
@@ -23,6 +28,11 @@ public class MultiThreadFileWriter implements Runnable {
 	private IQueue writebuffer;
 
 	private String destinationFile;
+
+	private int interval = 3000;
+	private int writeSize = 500;
+
+
 
 	public MultiThreadFileWriter(String destinationFile, String queueName) {
 		init(destinationFile, queueName);
@@ -94,6 +104,8 @@ public class MultiThreadFileWriter implements Runnable {
 		start = false;
 	}
 
+	private Map<String,List<String>> memPage = new HashMap<>();
+
 	/**
 	 * file write
 	 */
@@ -103,14 +115,56 @@ public class MultiThreadFileWriter implements Runnable {
 		LOG.debug("multi thread file writer started!");
 		while (start) {
 			try {
-				FileDto fd = (FileDto) writebuffer.receiveMessage();
-				FileHelper.writeLines2File(fd.getPath(), fd.getContents());
-
+				long t = System.currentTimeMillis();
+				Object msg = writebuffer.receiveMessage(interval);
+				FileDto fd = null;
+				if(msg!=null){
+					fd = (FileDto)msg;
+				}
+				if( memPage.size()>writeSize ){
+					doAdd(fd);
+					doWrite();
+				}else{
+					doAdd(fd);
+					long tt = System.currentTimeMillis();
+					if( tt-t > interval && memPage.size()>0 ){
+						if(LOG.isDebugEnabled()){
+							LOG.debug("times up,write to file");
+						}
+						doWrite();
+					}
+				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 		LOG.debug("multi thread file writer stopped!");
+	}
+
+	private void doAdd(FileDto fd){
+		if(fd!=null) {
+			List<String> oldContent = memPage.get(fd.getPath());
+			if (CollectionHelper.isEmpty(oldContent)) {
+				memPage.put(fd.getPath(), fd.getContents());
+			} else {
+				oldContent.addAll(fd.getContents());
+				memPage.put(fd.getPath(), oldContent);
+			}
+		}
+	}
+
+	private void doWrite(){
+		if(LOG.isDebugEnabled()){
+			LOG.debug("before write map:"+memPage);
+		}
+		for(String file:memPage.keySet()) {
+			List<String> s = memPage.get(file);
+			FileHelper.writeLines2File(file,s);
+		}
+		memPage.clear();
+		if(LOG.isDebugEnabled()){
+			LOG.debug("after write "+memPage);
+		}
 	}
 
 	public void stop(){

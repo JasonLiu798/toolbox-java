@@ -4,6 +4,7 @@ import com.jason798.queue.IQueue;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Blocking queue use ArrayBlocking queue
@@ -59,6 +60,12 @@ public class BlockingQueueEncap<T> implements IQueue<T> {
 	public T receiveMessage() throws InterruptedException {
 		return linkq.take();
 	}
+
+	@Override
+	public T receiveMessage(long mstime) throws InterruptedException{
+		return linkq.poll(mstime, TimeUnit.MILLISECONDS);
+	}
+
 
 	/**
 	 * get now size
