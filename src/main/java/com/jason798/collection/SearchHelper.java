@@ -10,7 +10,35 @@ import java.util.Random;
  */
 public class SearchHelper {
 
-	public static <T> int binarySearchRaw(ArrayList<T> srcArray, T tgt, Comparator<T> comparator){
+    /**
+     * check number is exist in array
+     *
+     * @param array  number array
+     * @param number target
+     * @return result
+     */
+    public static boolean numberInArray(int[] array, int number) {
+        int start = 0, end, middle, count = 0;
+        int N = array.length;
+        end = N;
+        middle = (start + end) / 2;
+        while (number != array[middle]) {
+            if (number > array[middle])
+                start = middle;
+            else if (number < array[middle])
+                end = middle;
+            middle = (start + end) / 2;
+            count++;
+            if (count > N / 2)
+                break;
+        }
+        if (count > N / 2)
+            return false;
+        else
+            return true;
+    }
+
+    public static <T> int binarySearchRaw(ArrayList<T> srcArray, T tgt, Comparator<T> comparator){
 		return Collections.binarySearch(srcArray,tgt,comparator);
 	}
 

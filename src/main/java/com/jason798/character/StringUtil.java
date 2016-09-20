@@ -32,73 +32,10 @@ public final class StringUtil {
 
 
     /**
-     * is empty
-     *
-     * @param target string
-     * @return
-     */
-    public static boolean isEmpty(String target) {
-        if (target == null || target.length() == 0) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * is empty
-     *
-     * @param str {@link Object} object or string
-     * @return {@link boolean}
-     */
-    public static boolean isEmpty(Object str) {
-        return (str == null || "".equals(str));
-    }
-
-
-    /**
-     * check String array exist one string empty
-     *
-     * @param targets string array
-     * @return
-     */
-    public static boolean isEmptyExist(String... targets) {
-        if (targets == null || targets.length == 0) {
-            return true;
-        }
-        for (String str : targets) {
-            if (isEmpty(str)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    /**
-     * check T array exist one string empty
-     *
-     * @param targets T array
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> boolean isEmptyExistType(T... targets) {
-        if (targets == null || targets.length == 0) {
-            return true;
-        }
-        for (T str : targets) {
-            if (isEmpty(String.valueOf(str))) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    /**
      * 首字母转小写
      */
     public static String toLowerCaseFirstOne(String s) {
-        if (isEmpty(s)) {
+        if (StringCheckUtil.isEmpty(s)) {
             return s;
         }
         //length at leatest one
@@ -113,7 +50,7 @@ public final class StringUtil {
      * 首字母转大写
      */
     public static String toUpperCaseFirstOne(String s) {
-        if (isEmpty(s)) {
+        if (StringCheckUtil.isEmpty(s)) {
             return s;
         }
         //length at leatest one
@@ -123,7 +60,6 @@ public final class StringUtil {
             return (new StringBuilder()).append(Character.toUpperCase(s.charAt(0))).append(s.substring(1)).toString();
         }
     }
-
 
     /**
      * 替换Oracle like搜索的特殊字符串
@@ -141,31 +77,6 @@ public final class StringUtil {
         return str;
     }
 
-
-    /**
-     * check string equals
-     *
-     * @param s1
-     * @param s2
-     * @return
-     */
-    public static boolean equal(String s1, String s2) {
-        // all null
-        if (s1 == null && s2 == null) {
-            return true;
-        }
-        //one is null
-        if (s1 == null || s2 == null) {
-            return false;
-        }
-        //all not null
-        return s1.equals(s2);
-    }
-
-
-    public static boolean isNotEmpty(String target) {
-        return !isEmpty(target);
-    }
 
     public static String addDimmer(String target, String split, String dimmer) {
         if (target == null || target.length() == 0) {
@@ -194,24 +105,6 @@ public final class StringUtil {
         return (fen < 0 ? "-" : "") + str.substring(0, str.length() - 2) + "." + str.substring(str.length() - 2);
     }
 
-    /**
-     * 判断字符串数组中是否包含指定的字符串
-     *
-     * @param strArr
-     * @param str
-     * @return
-     */
-    public static boolean contains(String[] strArr, String str) {
-        if (null == strArr || null == str) {
-            return false;
-        }
-        for (String temp : strArr) {
-            if (temp.equals(str)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * 集合转string
@@ -232,12 +125,6 @@ public final class StringUtil {
         return sb.substring(0, sb.lastIndexOf(sep));
     }
 
-    public static boolean strIsEmpty(String str) {
-        if (str == null || str.trim().equals("")) {
-            return true;
-        }
-        return false;
-    }
 
     public static String deleteSpace(String str) {
         return str.replaceAll("\\s", StringUtils.EMPTY);
@@ -398,58 +285,6 @@ public final class StringUtil {
         return sb.toString();
     }
 
-    /**
-     * 检查指定的字符串列表是否不为空。
-     */
-    public static boolean areNotEmpty(String... values) {
-        boolean result = true;
-        if (values == null || values.length == 0) {
-            result = false;
-        } else {
-            for (String value : values) {
-                result &= !StringUtils.isEmpty(value);
-            }
-        }
-        return result;
-    }
-
-
-    /**
-     * 检查指定的字符串列表是否都不为空。
-     * <p>
-     * StringUtils.areNotBlank(" ")       = false
-     */
-    public static boolean areNotBlank(String... values) {
-        if (values == null || values.length == 0) {
-            return false;
-        } else {
-            for (String value : values) {
-                if (StringUtils.isBlank(value)) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
-     * 检查指定的字符串列表是否都为空。
-     * <p>
-     * StringUtils.areBlank(" ")       = true
-     */
-    public static boolean areBlank(String... values) {
-        if (values == null || values.length == 0) {
-            return true;
-        } else {
-            for (String value : values) {
-                if (StringUtils.isNotBlank(value)) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
 
     /**
      * trim String
@@ -458,7 +293,7 @@ public final class StringUtil {
      * @return string trimed
      */
     public static String trim(String str) {
-        if (isEmpty(str)) {
+        if (StringCheckUtil.isEmpty(str)) {
             return str;
         }
         return str.trim();
@@ -478,11 +313,11 @@ public final class StringUtil {
      * @return trimed string
      */
     public static String trimQuote(String str) {
-        if (isEmpty(str)) {
+        if (StringCheckUtil.isEmpty(str)) {
             return str; //nothing to trim quote
         }
         str = str.trim();
-        if (isEmpty(str)) {
+        if (StringCheckUtil.isEmpty(str)) {
             return str;//nothing to trim quote
         }
         int len = str.length();
@@ -636,33 +471,6 @@ public final class StringUtil {
         return retString;
     }
 
-    /**
-     * 查询数字是否存在数组中
-     *
-     * @param array  目标数组
-     * @param number 目标数字
-     * @return result
-     */
-    public static boolean numberInArray(int[] array, int number) {
-        int start = 0, end, middle, count = 0;
-        int N = array.length;
-        end = N;
-        middle = (start + end) / 2;
-        while (number != array[middle]) {
-            if (number > array[middle])
-                start = middle;
-            else if (number < array[middle])
-                end = middle;
-            middle = (start + end) / 2;
-            count++;
-            if (count > N / 2)
-                break;
-        }
-        if (count > N / 2)
-            return false;
-        else
-            return true;
-    }
 
     /**
      * add 0 in front of string until length equal vOutputLen
@@ -681,27 +489,6 @@ public final class StringUtil {
     }
 
     /**
-     * length >0 ?
-     *
-     * @param str charSeq
-     * @return is reach length
-     */
-    public static boolean hasLength(CharSequence str) {
-        return str != null && str.length() > 0;
-    }
-
-    /**
-     * length >0 ?
-     *
-     * @param str string
-     * @return is reach length
-     */
-    public static boolean hasLength(String str) {
-        return hasLength(((CharSequence) (str)));
-    }
-
-
-    /**
      * enumeration to string array
      *
      * @param enumeration
@@ -716,27 +503,10 @@ public final class StringUtil {
         }
     }
 
-    /**
-     * @param str
-     * @return
-     */
-    public static boolean hasText(CharSequence str) {
-        if (!hasLength(str))
-            return false;
-        int strLen = str.length();
-        for (int i = 0; i < strLen; i++)
-            if (!Character.isWhitespace(str.charAt(i)))
-                return true;
-        return false;
-    }
-
-    public static boolean hasText(String str) {
-        return hasText(((CharSequence) (str)));
-    }
 
     public static String replace(String inString, String oldPattern,
                                  String newPattern) {
-        if (!hasLength(inString) || !hasLength(oldPattern)
+        if (!StringCheckUtil.hasLength(inString) || !StringCheckUtil.hasLength(oldPattern)
                 || newPattern == null)
             return inString;
         StringBuilder sb = new StringBuilder();
@@ -785,59 +555,7 @@ public final class StringUtil {
     }
 
 
-    /**
-     * check T array exist one string empty
-     *
-     * @param targets T array
-     * @return
-     */
-    public static <T> boolean isEmptyExist(T... targets) {
-        if (targets == null || targets.length == 0) {
-            return true;
-        }
-        for (T str : targets) {
-            if (isEmpty(String.valueOf(str))) {
-                return true;
-            }
-        }
-        return false;
-    }
 
-
-    /**
-     * 判断两个字符串是否相等
-     *
-     * @param arg1 {@link String}
-     * @param arg2 {@link String}
-     * @return {@link Boolean}
-     */
-    public static Boolean isEqualString(String arg1, String arg2) {
-        return arg1.equals(arg2);
-    }
-
-
-    public static boolean isPisubstr(String qstr, String key) {
-        boolean flag = false;
-        if (null == qstr || "".equals(qstr.trim())) {
-            return flag;
-        }
-        String[] qstrarr = qstr.split("&#04");
-        String[] temparr = null;
-        if (null != qstrarr && qstrarr.length > 0 && null != key
-                && !"".equals(key.trim())) {
-            int i = 0, lenI = qstrarr.length;
-            for (; i < lenI; i++) {
-                temparr = qstrarr[i].split("=");
-                if (null != temparr && temparr.length > 0) {
-                    if (key.equals(temparr[0])) {
-                        flag = true;
-                        break;
-                    }
-                }
-            }
-        }
-        return flag;
-    }
 
 
     public static String getValByKey(String qstr, String key, String sign) {
@@ -864,7 +582,7 @@ public final class StringUtil {
     public static String setValByKey(String qstr, String key, String val,
                                      String sign) {
         String result = "";
-        if (isPisubstr(qstr, key)) {
+        if (StringCheckUtil.isPisubstr(qstr, key)) {
             String[] qstrarr = qstr.split(sign);
             String[] temparr = null;
             int idxS = 0;
@@ -900,7 +618,7 @@ public final class StringUtil {
         String[] qstrarr = qstr.split(sign);
         String[] temparr = null;
         if (null != qstrarr && qstrarr.length > 0 && null != key
-                && !"".equals(key.trim()) && isPisubstr(qstr, key.trim())) {
+                && !"".equals(key.trim()) && StringCheckUtil.isPisubstr(qstr, key.trim())) {
             int i = 0, lenI = qstrarr.length;
             for (; i < lenI; i++) {
                 temparr = qstrarr[i].split("=");
@@ -930,11 +648,6 @@ public final class StringUtil {
 
     public static char lastChar(String str) {
         return str.charAt(str.length() - 1);
-    }
-
-    public static boolean isIvrNull(String str) {
-        return str == null || str.equalsIgnoreCase(NULL)
-                || str.equalsIgnoreCase("");
     }
 
     /**
@@ -1066,14 +779,14 @@ public final class StringUtil {
 
 
     public final static String getNullString(String str) {
-        if (isEmpty(str)) {
+        if (StringCheckUtil.isEmpty(str)) {
             return null;
         }
         return str;
     }
 
     public final static String getIVRNullString(String str) {
-        if (isIvrNull(str)) {
+        if (StringCheckUtil.isNULL(str)) {
             return null;
         }
         return str;
@@ -1166,7 +879,7 @@ public final class StringUtil {
      * @return filtered string
      */
     public static String filterOuterQuote(String string) {
-        if (isEmpty(string) || string.length() < 2) {
+        if (StringCheckUtil.isEmpty(string) || string.length() < 2) {
             return string;
         }
         if (string.length() == 2) {

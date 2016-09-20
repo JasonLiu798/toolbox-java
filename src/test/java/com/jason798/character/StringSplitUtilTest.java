@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 
-public class StringSplitHelperTest {
+public class StringSplitUtilTest {
 
     @Before
     public void before() throws Exception {
