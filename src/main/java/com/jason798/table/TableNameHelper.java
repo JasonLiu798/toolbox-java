@@ -1,5 +1,6 @@
 package com.jason798.table;
 
+import com.jason798.character.StringCheckUtil;
 import com.jason798.character.StringUtil;
 import com.jason798.security.Crc32Helper;
 import org.slf4j.Logger;
@@ -45,20 +46,20 @@ public class TableNameHelper {
      */
     public static String getTableName(String value, String tableName, String tableRule, int tablenum) {
         long suffix = 0L;
-        if (StringUtil.equal(tableRule, TABLE_SPIT_MOD)) {
+        if (StringCheckUtil.equal(tableRule, TABLE_SPIT_MOD)) {
             suffix = Long.parseLong(value) % 10 + 1;
         }
-        if (StringUtil.equal(tableRule, TABLE_SPIT_HASH)) {
+        if (StringCheckUtil.equal(tableRule, TABLE_SPIT_HASH)) {
             try {
                 suffix = getHash(value) % 10 + 1;
             } catch (UnsupportedEncodingException e) {
                 logger.error("hash分表规则转换错误");
             }
         }
-        if (StringUtil.equal(tableRule, TABLE_SPIT_CRC32)) {
+        if (StringCheckUtil.equal(tableRule, TABLE_SPIT_CRC32)) {
             suffix = Crc32Helper.getCrc32(value) % (tablenum == 0 ? 10 : tablenum) + 1;
         }
-        if (StringUtil.equal(tableRule, TABLE_SPIT_MOBILE)) {
+        if (StringCheckUtil.equal(tableRule, TABLE_SPIT_MOBILE)) {
             char[] mobiles = value.substring(value.length() - 4, value.length()).toCharArray();
             suffix = (Integer.parseInt(String.valueOf(mobiles[0])) + Integer.parseInt(String.valueOf(mobiles[1])) + Integer.parseInt(String.valueOf(mobiles[2]))
                     + Integer.parseInt(String.valueOf(mobiles[3]))) % 10 + 1;

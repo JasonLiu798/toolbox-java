@@ -1,5 +1,6 @@
 package com.jason798.queue;
 
+import com.jason798.character.StringCheckUtil;
 import com.jason798.character.StringUtil;
 import com.jason798.collection.CollectionHelper;
 import com.jason798.config.ConfigUtil;
@@ -34,17 +35,17 @@ public class QueueManager {
             Properties properties = ConfigUtil.loadProperties(DFT_QUEUE_CONFIG_FILE);
 
             String queueStr = properties.getProperty(CONF_QUEUE_KEY);
-            if (!StringUtil.isEmpty(queueStr)) {
+            if (!StringCheckUtil.isEmpty(queueStr)) {
                 String queueSep = properties.getProperty(QUEUE_SEP_KEY);
                 //init queue sep
-                if (StringUtil.isEmpty(queueSep)) {
+                if (StringCheckUtil.isEmpty(queueSep)) {
                     queueSep = QUEUE_SEP_DFT;
                     if (LOG.isInfoEnabled())
                         LOG.info("key {} empty use {}", QUEUE_SEP_KEY, queueSep);
                 }
                 //init queue size sep
                 String queueSizeSep = properties.getProperty(QUEUE_SIZE_SEP_KEY);
-                if (StringUtil.isEmpty(queueSizeSep)) {
+                if (StringCheckUtil.isEmpty(queueSizeSep)) {
                     queueSizeSep = QUEUE_SIZE_SEP_DFT;
                     if (LOG.isInfoEnabled())
                         LOG.info("key {} empty use {}", QUEUE_SIZE_SEP_KEY, queueSizeSep);
@@ -89,7 +90,7 @@ public class QueueManager {
      * @return MessageConnect
      */
     public static IQueue getQueue(String queueName) {
-        if (StringUtil.isEmpty(queueName)) {
+        if (StringCheckUtil.isEmpty(queueName)) {
             throw new NullPointerException("queueName null");
         }
         if (CollectionHelper.isEmpty(messageQueues) || messageQueues.get(queueName) == null) {

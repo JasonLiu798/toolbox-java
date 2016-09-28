@@ -1,11 +1,15 @@
 package com.jason798.character;
 
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
+import org.junit.rules.ExpectedException;
 
 import java.util.Arrays;
 import java.util.HashSet;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class StringSplitUtilTest {
@@ -35,7 +39,6 @@ public class StringSplitUtilTest {
     }
 
 
-
     /**
      * Method: toStringArray(Collection<String> collection)
      */
@@ -54,7 +57,7 @@ public class StringSplitUtilTest {
     @Test
     public void testTokenizeToStringArrayForStrDelimiters() throws Exception {
 //TODO: Test goes here...
-        String[] arr = StringSplitHelper.tokenizeToStringArray("a,b,c", ",");
+        String[] arr = StringSplitUtil.tokenizeToStringArray("a,b,c", ",");
         for (int i = 0; i < arr.length; i++) {
             System.out.println(arr[i]);
         }
@@ -85,7 +88,6 @@ public class StringSplitUtilTest {
     }
 
 
-
     /**
      * Method: substringBeforeLast(String str, String separator)
      */
@@ -102,5 +104,30 @@ public class StringSplitUtilTest {
 //TODO: Test goes here... 
     }
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
-} 
+    @Test
+    public void splitCheckSize() {
+        String s = "test1:test2:test3";
+
+        String[] arr = StringSplitUtil.splitCheckSize(s, ":", 3);
+        String[] expec = {"test1", "test2", "test3"};
+        for (int i = 0; i < arr.length; i++) {
+            assertEquals(arr[i], expec[i]);
+        }
+
+        expectedException.expect(IllegalStateException.class);
+        arr = StringSplitUtil.splitCheckSize(s, ":", 4);
+    }
+
+    @Test
+    public void splitCheckSizeDelimerNotFound() {
+        String s = "test1:test2:test3";
+        String[] arr = StringSplitUtil.splitCheckSize(s, "a", 1);
+        System.out.println(Arrays.toString(arr));
+        assertEquals(1,arr.length);
+        assertEquals(s,arr[0]);
+    }
+
+}

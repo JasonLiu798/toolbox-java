@@ -1,5 +1,6 @@
 package com.jason798.config;
 
+import com.jason798.character.StringCheckUtil;
 import com.jason798.common.ReflectHelper;
 import com.jason798.character.RegexUtil;
 import com.jason798.character.StringUtil;
@@ -236,7 +237,7 @@ public class ConfigUtil {
      * @return filted key
      */
     private static String filterPrefix(String prefix, String key) {
-        if (!StringUtil.isEmpty(prefix)) {
+        if (!StringCheckUtil.isEmpty(prefix)) {
             key = prefix + "." + key;
         }
         return key;

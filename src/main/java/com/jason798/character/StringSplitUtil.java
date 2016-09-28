@@ -60,6 +60,28 @@ public final class StringSplitUtil {
         }
     }
 
+    /**
+     * split string by delimiter,arr.length = size
+     * @param str string
+     * @param delimiter sep
+     * @param size size
+     * @return arr
+     */
+    public static String[] splitCheckSize(String str, String delimiter,int size) {
+        if(!StringCheckUtil.isAllNotEmpty(str,delimiter)){
+            throw new IllegalArgumentException("parameter not null");
+        }
+        if(size<=0){
+            throw new IllegalArgumentException("size must > 0");
+        }
+        String[] arr = str.split(delimiter);
+        if(arr.length!=size){
+            throw new IllegalStateException("split result length not equal size");
+        }
+        return arr;
+    }
+
+
     public static String[] split(String toSplit, String delimiter) {
         if (delimiter.length() != 1)
             throw new IllegalArgumentException("Delimiter can only be one character in length");
@@ -82,7 +104,7 @@ public final class StringSplitUtil {
      * @return splited String[]
      */
     public static String[] splitTwo(String toSplit, String delimiter) {
-        if( StringUtil.isEmpty(toSplit) || StringUtil.isEmpty(delimiter) ){
+        if( StringCheckUtil.isEmpty(toSplit) || StringCheckUtil.isEmpty(delimiter) ){
             throw new IllegalArgumentException("argument can't be null");
         }
         if (  delimiter.length() != 1 ) {

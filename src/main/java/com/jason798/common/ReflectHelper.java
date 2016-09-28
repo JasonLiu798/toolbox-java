@@ -1,5 +1,6 @@
 package com.jason798.common;
 
+import com.jason798.character.StringCheckUtil;
 import com.jason798.character.StringUtil;
 import com.jason798.collection.CollectionHelper;
 import org.slf4j.Logger;
@@ -213,26 +214,40 @@ public class ReflectHelper {
      * ########################## getter method association ##########################
      **/
 
+    public static Object getterForceClz(Class clz, String fieldName) {
+        return getterForce(clz,null,fieldName);
+    }
+    public static Object getterForce(Object obj, String fieldName) {
+        return getterForce(obj.getClass(),obj,fieldName);
+    }
     /**
      * force get field value,[include private,protecte,parent's]
      *
-     * @param object    target object
+     * @param obj    target object
      * @param fieldName field name
      * @return field value
      */
-    public static Object getterForce(Object object, String fieldName) {
-        Field field = getDeclaredField(object, fieldName);
+    public static Object getterForce(Class clz,Object obj, String fieldName) {
+        Field field = getDeclaredField(clz, fieldName);
         if (field == null) {
+            if(LOG.isDebugEnabled()){
+                LOG.debug("field null");
+            }
             return null;
         }
         try {
             field.setAccessible(true);
-            return field.get(object);
+            if(obj!=null) {
+                return field.get(obj);
+            }else{
+                return field.get(null);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
+
 
     /**
      * get value from getter
@@ -652,6 +667,20 @@ public class ReflectHelper {
         return null;
     }
 
+    public static Field getDeclaredField(Class clz, String fieldName) {
+        Field field = null;
+        for (; clz != Object.class; clz = clz.getSuperclass()) {
+            try {
+                field = clz.getDeclaredField(fieldName);
+                return field;
+            } catch (Exception e) {
+                LOG.error("loop class parnet error {}",clz);
+                continue;
+            }
+        }
+        return null;
+    }
+
     /**
      * covert to String
      *
@@ -692,7 +721,7 @@ public class ReflectHelper {
      * @return String
      */
     private static String generateGetName(String field, boolean isBoolean) {
-        if (StringUtil.isEmpty(field)) {
+        if (StringCheckUtil.isEmpty(field)) {
             return null;
         }
         String upperFiled = StringUtil.toUpperCaseFirstOne(field);

@@ -1,5 +1,6 @@
 package com.jason798.character;
 
+import com.jason798.collection.CollectionHelper;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +70,7 @@ public final class StringCheckUtil {
      * @return
      */
     public static boolean isExistNotEmpty(String ...targets){
-        return isExistEmpty(targets);
+        return !isAllEmpty(targets);
     }
 
     /**
@@ -217,4 +218,25 @@ public final class StringCheckUtil {
         return flag;
     }
 
+
+    public static boolean strInStrings(String s,String ... strings){
+        if(CollectionHelper.isEmpty(strings)){
+            return false;
+        }
+
+        List<String> l = Arrays.asList(strings);
+        return strInCollection(s,l);
+    }
+
+    public static boolean strInCollection(String s,Collection<String> c){
+        if(StringCheckUtil.isEmpty(s)){
+            return false;
+        }
+        for(String str:c){
+            if(s.equals(str)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

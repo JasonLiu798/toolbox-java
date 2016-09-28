@@ -1,8 +1,9 @@
 package com.jason798.config;
 
-import com.jason798.character.StringUtil;
+import com.jason798.character.StringCheckUtil;
 import com.jason798.collection.CollectionHelper;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,8 @@ import java.util.Map;
  */
 public class ParameterConfigParser {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ParameterConfigParser.class);
+
     /**
      * "1101"
      * => 13
@@ -22,7 +25,7 @@ public class ParameterConfigParser {
      */
     public static int binaryString2Int(String binary){
         int res = 0;
-        if(StringUtil.isEmpty(binary)){
+        if(StringCheckUtil.isEmpty(binary)){
             return res;
         }
         byte[] bytes = binary.getBytes();
@@ -65,17 +68,24 @@ public class ParameterConfigParser {
      * 12,4
      * =>1100
      * =>true,true,false,false
-     * @param input
+     * @param configNum
      * @return
      */
-    public static List<Boolean> int2boolean(int input,int size){
+    public static List<Boolean> int2bits(int configNum, int size){
         List<Boolean> res = new ArrayList<>(size);
         if(size<0){
             return res;
         }
+        int max = (int) Math.pow(2,size)-1;
+        if(configNum<0){
+            throw new IllegalArgumentException("config num must > 0,config num "+configNum);
+        }
+        if(configNum>=max){
+            LOG.error("config num {} out of range 0~{},will only use the low bit",configNum,max);
+        }
         int mask = 1;
         for(int i=0;i<size;i++){
-            int bitVal = mask&input;
+            int bitVal = mask&configNum;
             if(bitVal==0 ){
                 res.add(false);
             }else{

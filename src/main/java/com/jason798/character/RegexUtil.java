@@ -39,7 +39,7 @@ public final class RegexUtil {
      */
     public static String leftNumStrCNUL(String str) {
         String pt2 = "[^a-zA-Z0-9_\\u4e00-\\u9fa5]";
-        if (StringUtil.isEmpty(str)) {
+        if (StringCheckUtil.isEmpty(str)) {
             str = str.replaceAll(pt2, "");
         }
         return str;
@@ -159,7 +159,7 @@ public final class RegexUtil {
      * @return is or not boolean
      */
     public static boolean isBoolean(String str) {
-        if (StringUtil.isEmpty(str)) {
+        if (StringCheckUtil.isEmpty(str)) {
             return false;
         }
         String tmp = str.toLowerCase();

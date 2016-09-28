@@ -1,5 +1,7 @@
 package com.jason798.common;
 
+import com.jason798.character.StringCheckUtil;
+import com.jason798.character.StringUtil;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
@@ -92,7 +94,8 @@ public class ReflectHelperTest {
 
     @Test
     public void testGetterForce() throws Exception {
-
+        Object res = ReflectHelper.getterForceClz(StringCheckUtil.class,"NULL");
+        System.out.println(res);
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.jason798.file;
 
+import com.jason798.character.StringCheckUtil;
 import com.jason798.character.StringUtil;
 import com.jason798.constant.SystemConstant;
 import org.apache.commons.io.FileUtils;
@@ -36,7 +37,7 @@ public final class FileHelper {
 	 * @return
 	 */
 	public static String className2FilePath(String className){
-		if(StringUtil.isEmpty(className)){
+		if(StringCheckUtil.isEmpty(className)){
 			return "";
 		}
 		// className.replaceAll(StringUtil.DOT_SEP_NO_REX,SystemConstant.FILE_SEP);

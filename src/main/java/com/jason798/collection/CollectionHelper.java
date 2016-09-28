@@ -1,5 +1,6 @@
 package com.jason798.collection;
 
+import com.jason798.character.StringCheckUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -514,6 +515,16 @@ public final class CollectionHelper {
             res.add(String.valueOf(i));
         }
         return res;
+    }
+
+
+    public static Set<String> string2Set(String str){
+        Set<String> s = new HashSet<>();
+        if(StringCheckUtil.isEmpty(str)){
+            return s;
+        }
+        s.add(str);
+        return s;
     }
 
 //    public static <T> T[] list2array(List<T> l){
