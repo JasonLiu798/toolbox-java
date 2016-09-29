@@ -18,11 +18,11 @@ import java.util.Map;
  */
 public class DataGetter {
 
-    public static Logger log = LoggerFactory.getLogger(DataGetter.class);
+    public static final Logger log = LoggerFactory.getLogger(DataGetter.class);
 
     public Connection conn = null;
-    public static final String driverName = "com.mysql.jdbc.Driver";
-    public static DruidDataSource dataSource = null;
+    private static final String driverName = "com.mysql.jdbc.Driver";
+    private static DruidDataSource dataSource = null;
 
     public static void init(String url, String user, String password) {
         dataSource = new DruidDataSource();
@@ -64,12 +64,17 @@ public class DataGetter {
                 }
                 list.add(row);
             }
-            rs.close();
-            pstmt.close();
+
         } catch (Exception e) {
             log.error(e.getMessage());
         } finally {
             try {
+                if(rs !=null){
+                    rs.close();
+                }
+                if(pstmt!=null){
+                    pstmt.close();
+                }
                 if (conn != null) {
                     conn.close();
                 }

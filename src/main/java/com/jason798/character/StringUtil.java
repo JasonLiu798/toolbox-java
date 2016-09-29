@@ -451,7 +451,7 @@ public final class StringUtil {
                 charStr = dataStr.substring(start + 2, end);
             }
             char letter = (char) Integer.parseInt(charStr, 16); // 16进制parse整形字符串。
-            buffer.append(new Character(letter).toString());
+            buffer.append(new Character(letter));
             start = end;
         }
         return buffer.toString();
@@ -464,11 +464,11 @@ public final class StringUtil {
      * @return unicode String
      */
     public static String encodeUnicode(final String dataStr) {
-        String retString = "";
+        StringBuilder retString = new StringBuilder();
         for (int i = 0; i < dataStr.length(); i++) {
-            retString += "\\u" + Integer.toHexString(dataStr.charAt(i) & 0xffff);
+            retString.append("\\u" + Integer.toHexString(dataStr.charAt(i) & 0xffff));
         }
-        return retString;
+        return retString.toString();
     }
 
 
@@ -553,9 +553,6 @@ public final class StringUtil {
         }
         return map;
     }
-
-
-
 
 
     public static String getValByKey(String qstr, String key, String sign) {
@@ -657,14 +654,16 @@ public final class StringUtil {
      * @return the result string
      */
     public static String arrayToString(Object array[]) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
+        result.append("[");
         for (int i = 0; i < array.length; i++) {
             if (result.length() > 0) {
-                result += ",";
+                result.append(",");
             }
-            result += array[i].toString();
+            result.append(array[i].toString());
         }
-        return "[" + result + "]";
+        result.append("]");
+        return result.toString();
     }
 
     /**
@@ -676,19 +675,20 @@ public final class StringUtil {
      * @return
      */
     public static String preComplement(String raw, int length, char complement) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < length - raw.length(); i++) {
-            result += complement;
+            result.append(complement);
         }
-        return result + raw;
+        result.append(raw);
+        return result.toString();
     }
 
     public static String sufComplement(String raw, int length, char complement) {
-        String result = raw;
+        StringBuilder result = new StringBuilder(raw);
         for (int i = 0; i < length - raw.length(); i++) {
-            result += complement;
+            result.append(complement);
         }
-        return result;
+        return result.toString();
     }
 
     /**
@@ -761,7 +761,7 @@ public final class StringUtil {
     public final static String encodeStr(String str) {
         StringTokenizer st = new StringTokenizer(str, " ");
         int count = st.countTokens();
-        String message = "";
+        StringBuilder message = new StringBuilder();
         String[] tokens = new String[count];
         for (int i = 0; i < count; i++) {
             try {
@@ -771,10 +771,9 @@ public final class StringUtil {
             }
         }
         for (int i = 0; i < tokens.length; i++) {
-            message += tokens[i];
+            message.append(tokens[i]);
         }
-
-        return message;
+        return message.toString();
     }
 
 

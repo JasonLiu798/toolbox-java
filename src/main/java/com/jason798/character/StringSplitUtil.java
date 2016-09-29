@@ -193,5 +193,26 @@ public final class StringSplitUtil {
         else
             return str.substring(pos + separator.length());
     }
+
+
+    /**
+     * s='/a/b/c'
+     * delimiter='/'
+     * ==> res='/a/b'
+     * @param str string to remove
+     * @param delimiter separater
+     * @return
+     */
+    public static String removeAfterLastDelimiter(String str, String delimiter){
+        if(StringCheckUtil.isExistEmpty(str,delimiter)){
+            return str;
+        }
+        int index = str.lastIndexOf(delimiter);
+        if(index<0 || index>str.length()){
+            return str;
+        }
+        return str.substring(0,index);
+    }
+
 }
 

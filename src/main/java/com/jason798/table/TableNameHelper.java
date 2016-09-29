@@ -16,22 +16,22 @@ public class TableNameHelper {
     /**
      * mod type
      **/
-    public static String TABLE_SPIT_MOD = "mod";
+    public static final String TABLE_SPIT_MOD = "mod";
 
     /**
      * hash type
      **/
-    public static String TABLE_SPIT_HASH = "hash";
+    public static final String TABLE_SPIT_HASH = "hash";
 
     /**
      * crc32 type
      **/
-    public static String TABLE_SPIT_CRC32 = "crc32";
+    public static final String TABLE_SPIT_CRC32 = "crc32";
 
     /**
      * mobile type
      **/
-    public static String TABLE_SPIT_MOBILE = "mobile";
+    public static final String TABLE_SPIT_MOBILE = "mobile";
 
     public static int DFT_TABLE_COUNT = 10;
 
@@ -69,7 +69,7 @@ public class TableNameHelper {
 
     private static int getHash(String key) throws UnsupportedEncodingException {
         key = key.toUpperCase();
-        byte[] byBuffer = new byte[4];
+        byte[] byBuffer = null;//new byte[4];
         byBuffer = key.getBytes("utf-8");
         int l = 0;
         int len = byBuffer.length > 4 ? 4 : byBuffer.length;

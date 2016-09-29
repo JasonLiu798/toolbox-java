@@ -73,13 +73,13 @@ public class RandomGenerator {
         for(int i=0;i<N-1;i++){
             num = num*10 + 9;
         }
-        String rawNum = String.valueOf(generateInt(num));
+        StringBuilder rawNum = new StringBuilder(String.valueOf(generateInt(num)));
         if(rawNum.length()<N){
             for(int i=rawNum.length();i<N;i++){
-                rawNum += String.valueOf(generateInt(9));
+                rawNum .append(String.valueOf(generateInt(9)));
             }
         }
-        return Integer.parseInt(rawNum);
+        return Integer.parseInt(rawNum.toString());
     }
 
     /**

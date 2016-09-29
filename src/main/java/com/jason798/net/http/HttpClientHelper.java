@@ -360,13 +360,14 @@ public final class HttpClientHelper {
         logger.info("sendGetRequest url = " + uri);
         HttpPost post = getHttpPost(uri);
         String retStr = "";
+        InputStreamReader reader = null;
         try {
             StringEntity myEntity = new StringEntity(formatStr, "UTF-8");
             post.addHeader("Content-Type", reqFormat);
             post.setEntity(myEntity);
             HttpResponse response = httpclient.execute(post);
             HttpEntity resEntity = response.getEntity();
-            InputStreamReader reader = new InputStreamReader(resEntity.getContent(), "UTF-8");
+            reader = new InputStreamReader(resEntity.getContent(), "UTF-8");
             char[] buff = new char[1024];
             int length = 0;
             while ((length = reader.read(buff)) != -1) {
@@ -378,6 +379,13 @@ public final class HttpClientHelper {
             logger.error("execute sendGetRequest exception ", e);
         } finally {
             httpclient.getConnectionManager().shutdown();
+            if(reader!=null){
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         logger.debug("execute sendGetRequest end");
         return retStr;

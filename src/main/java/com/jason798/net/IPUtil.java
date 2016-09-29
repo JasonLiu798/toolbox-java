@@ -14,7 +14,7 @@ public class IPUtil {
      */
     public static long ip2Long(String ip) {
         String[] ipAdress = ip.split("\\.");
-        long ipLong = 16777216L * Long.parseLong(ipAdress[0]) + 65536 * Integer.parseInt(ipAdress[1]) + 256 * Integer.parseInt(ipAdress[2]) + Integer.parseInt(ipAdress[3]);
+        long ipLong = 16777216L * Integer.parseInt(ipAdress[0]) + 65536 * Integer.parseInt(ipAdress[1]) + 256 * Integer.parseInt(ipAdress[2]) + Integer.parseInt(ipAdress[3]);
         return ipLong;
     }
 

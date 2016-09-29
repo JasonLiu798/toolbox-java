@@ -2,9 +2,7 @@ package com.jason798.file;
 
 import com.jason798.collection.CollectionHelper;
 import com.jason798.constant.SystemConstant;
-import com.jason798.serialize.SerializerHelper;
 import com.jason798.serialize.fst.FstSerializer1;
-import com.jason798.test.TestDto;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
@@ -15,7 +13,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 /**
- * FileHelper Tester.
+ * FileUtil Tester.
  *
  * @author <Authors name>
  * @version 1.0
@@ -65,10 +63,10 @@ public class FileHelperTest {
         /*
         FileDto fd = new FileDto("aaa","bbb");
         byte[] content = SerializerHelper.serialize(fd);
-        FileHelper.write2File(content);
+        FileUtil.write2File(content);
 
 
-        byte[] readByte = FileHelper.readBinaryFile();
+        byte[] readByte = FileUtil.readBinaryFile();
         for(int i=0;i<readByte.length;i++){
             char c=(char)readByte[i];
             System.out.print(c+",");
@@ -87,9 +85,9 @@ public class FileHelperTest {
 
 //        TestDto fd = new TestDto(1111,2222,333);
 //        byte[] content = fs.serialize(fd);
-//        FileHelper.write2File(content);
+//        FileUtil.write2File(content);
 		/*
-        byte[] readByte = FileHelper.readBinaryFile();
+        byte[] readByte = FileUtil.readBinaryFile();
         StringBuffer csb = new StringBuffer();
         StringBuffer bsb = new StringBuffer();
         for(int i=0;i<readByte.length;i++){
@@ -128,12 +126,12 @@ public class FileHelperTest {
 
 	@Test
 	public void testSepClassName(){
-//		System.out.println(FileHelper.className2FilePath(this.getClass().getName()));
-		assertEquals("", FileHelper.className2FilePath(""));
-		assertEquals("", FileHelper.className2FilePath(null));
-		assertEquals("haha", FileHelper.className2FilePath("haha"));
-		assertEquals("com\\haha",FileHelper.className2FilePath("com.haha"));
-		assertEquals("com\\haha\\HUJSDF",FileHelper.className2FilePath("com.haha.HUJSDF"));
+//		System.out.println(FileUtil.className2FilePath(this.getClass().getName()));
+		assertEquals("", FileUtil.className2FilePath(""));
+		assertEquals("", FileUtil.className2FilePath(null));
+		assertEquals("haha", FileUtil.className2FilePath("haha"));
+		assertEquals("com\\haha", FileUtil.className2FilePath("com.haha"));
+		assertEquals("com\\haha\\HUJSDF", FileUtil.className2FilePath("com.haha.HUJSDF"));
 	}
 
 
@@ -143,9 +141,9 @@ public class FileHelperTest {
     @Test
     public void testreadFilesByLine() throws Exception {
 		File dir = new File(this.getClass().getResource("/").getPath());
-		String filename = dir+ SystemConstant.FILE_SEP+FileHelper.className2FilePath(this.getClass().getName())+".class";
+		String filename = dir+ SystemConstant.FILE_SEP+ FileUtil.className2FilePath(this.getClass().getName())+".class";
 		System.out.println(filename);
-		List<String> list = FileHelper.readFilesByLine2StringList(filename);
+		List<String> list = FileUtil.readFilesByLine2StringList(filename);
 		CollectionHelper.printList(list);
 	}
 
@@ -154,29 +152,29 @@ public class FileHelperTest {
      */
     @Test
     public void testreadFilesByLine2String() throws Exception {
-		String res = FileHelper.readFilesByLine2String("Y:\\yp\\JL.txt");
+		String res = FileUtil.readFilesByLine2String("Y:\\yp\\JL.txt");
 		System.out.println(res);
 	}
 
 	@Test
     public void testDelete(){
 	    String file = "D:\\t1";
-	    FileHelper.writeLines2File(file,"aaa");
+	    FileUtil.writeLines2File(file,"aaa");
 
-        boolean exist = FileHelper.fileExist(file);
+        boolean exist = FileUtil.fileExist(file);
         System.out.println("file exist "+exist);
-        FileHelper.delete(file);
+        FileUtil.delete(file);
 
-        exist = FileHelper.fileExist(file);
+        exist = FileUtil.fileExist(file);
         System.out.println("file exist "+exist);
     }
 
     @Test
     public void testDeletDir(){
         String dir = "D:\\aaa\\bbb\\ccc";
-        FileHelper.makeDirs(dir);
+        FileUtil.makeDirs(dir);
         String dirA = "D:\\aaa";
-        FileHelper.delete(dirA);
+        FileUtil.delete(dirA);
     }
 
 }

@@ -78,7 +78,7 @@ public class ThreadPoolManager {
         return es;
     }
 
-    public void ShutDown() {
+    public void shutdown() {
         for (Iterator it = execs.entrySet().iterator(); it.hasNext(); ) {
             Map.Entry entry = (Map.Entry) it.next();
             ExecutorService exec = (ExecutorService) entry.getValue();
@@ -147,7 +147,7 @@ public class ThreadPoolManager {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
 		}
-		st.ShutDown();
+		st.shutdown();
     }
 
 

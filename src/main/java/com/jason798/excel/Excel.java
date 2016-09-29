@@ -152,12 +152,17 @@ public class Excel {
     /**
      * crateXSL
      *
-     * @throws IOException
      */
-    public void crateXSL(String filename) throws IOException {
+    public void crateXSL(String filename) {
         Workbook wb = new HSSFWorkbook();
-        FileOutputStream fileOut = new FileOutputStream(
-                filename);
+        FileOutputStream fileOut = null;
+        try {
+            fileOut = new FileOutputStream(
+                    filename);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
         Sheet sheet1 = wb.createSheet("new sheet");
         Sheet sheet2 = wb.createSheet("second sheet");
         // 设置sheet的标题
@@ -363,8 +368,20 @@ public class Excel {
             }
         }
 
-        wb.write(fileOut);
-        fileOut.close();
+        try {
+            wb.write(fileOut);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(fileOut!=null)    {
+                try {
+                    fileOut.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
 
     }
 

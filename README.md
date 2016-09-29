@@ -19,3 +19,4 @@
 
 
 v1.0.3 FileHelper update function api name,add functions
+v1.0.4 StringUtil->StringCheckUtil,StringSplitUtil

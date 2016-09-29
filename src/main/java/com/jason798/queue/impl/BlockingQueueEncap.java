@@ -19,7 +19,7 @@ public class BlockingQueueEncap<T> implements IQueue<T> {
 	/**
 	 * default max size 65535
 	 */
-	private static int maxSize = 65535;
+	private int maxSize = 65535;
 
 	/**
 	 * construct method
@@ -46,6 +46,13 @@ public class BlockingQueueEncap<T> implements IQueue<T> {
 	public void sendMessage(T message) throws InterruptedException {
 		if (message != null) {
 			linkq.put(message);
+		}
+	}
+
+
+	public void sendMessage(T message,long mstime) throws InterruptedException {
+		if (message != null) {
+			linkq.offer(message,mstime,TimeUnit.MILLISECONDS);
 		}
 	}
 

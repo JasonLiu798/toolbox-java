@@ -114,6 +114,8 @@ public class ExcelParser {
                     case "java.lang.String":
                         paramObject = paramObjectStr;
                         break;
+                    default:
+                        break;
                 }
                 Method setterMethod = parameterObject.getMethod(methodname, paramTypeClass);
                 res = parameterObject.newInstance();

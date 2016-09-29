@@ -10,7 +10,8 @@ import com.alibaba.druid.sql.parser.SQLParserUtils;
 import com.alibaba.druid.sql.parser.SQLStatementParser;
 import com.alibaba.druid.sql.visitor.SQLASTOutputVisitor;
 import com.alibaba.druid.util.JdbcUtils;
-import com.jason798.file.FileHelper;
+import com.jason798.file.FileUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ import java.util.Map;
  * @date 2015/10/23 10:20
  */
 public class SQLGenerator {
-    public static boolean log = true;
+    public static final boolean log = true;
 
     private static final String SPACE = " ";
 
@@ -86,7 +87,7 @@ public class SQLGenerator {
      * @param writepath
      */
     public static void batchGenerateInsert(String inputPath, String writepath) {
-        List<String> reads = FileHelper.readFile2StringList(inputPath);
+        List<String> reads = FileUtil.readFile2StringList(inputPath);
         String targetSql = null;
         List<String> writes = new ArrayList<>();
         for (String sql : reads) {
@@ -96,7 +97,7 @@ public class SQLGenerator {
             writes.add(targetSql);
             writes.add(sql.replace("delete", "delete from ") + ";");
         }
-        FileHelper.writeLines2File(writepath, writes);
+        FileUtil.writeLines2File(writepath, writes);
     }
 
 
@@ -107,8 +108,8 @@ public class SQLGenerator {
      * @return
      */
     public static String generateBatchDel(String sql) {
-        StringBuilder select = new StringBuilder();
-        StringBuilder from = new StringBuilder();
+//        StringBuilder select = new StringBuilder();
+//        StringBuilder from = new StringBuilder();
         StringBuilder where = new StringBuilder();
 //        StringBuilder order = new StringBuilder();
         StringBuilder res = new StringBuilder();
@@ -234,7 +235,7 @@ public class SQLGenerator {
      * @return
      */
     public static String select2union(String sql, int start, int end) {
-        StringBuilder selectBuf = new StringBuilder();
+//        StringBuilder selectBuf = new StringBuilder();
         StringBuilder from = new StringBuilder();
         StringBuilder select = new StringBuilder();
         StringBuilder whereBuf = new StringBuilder();
@@ -248,7 +249,7 @@ public class SQLGenerator {
 
         List<SQLStatement> stmtList = parser.parseStatementList();
         if (log)
-            System.out.println("sql stmt list "+stmtList);
+            System.out.println("sql stmt list " + stmtList);
 
         SQLASTOutputVisitor selectVisitor = SQLUtils.createFormatOutputVisitor(select, stmtList, JdbcUtils.MYSQL);
         SQLASTOutputVisitor fromVisitor = SQLUtils.createFormatOutputVisitor(from, stmtList, JdbcUtils.MYSQL);
@@ -267,14 +268,14 @@ public class SQLGenerator {
 
                 SQLSelectQueryBlock query = (SQLSelectQueryBlock) sqlselect.getQuery();
 
-                SQLSelectQuery query1 =  sqlselect.getQuery();
+                SQLSelectQuery query1 = sqlselect.getQuery();
                 sqlselect.getQuery();
                 Map map = query.getAttributes();
-                System.out.println("map "+map);
+                System.out.println("map " + map);
 
                 List<SQLSelectItem> sqlItemL = query.getSelectList();
 
-                System.out.println("order by " + orderByClause );
+                System.out.println("order by " + orderByClause);
 //                orderByClause.accept(orderbyVisitor);
                 int i = 0;
                 for (SQLSelectItem it : sqlItemL) {
@@ -301,7 +302,7 @@ public class SQLGenerator {
             }
         }
         if (log) {
-            System.out.println(SELECTS + ":" +select);
+            System.out.println(SELECTS + ":" + select);
             System.out.println(FROMS + ":" + from.toString());
             System.out.println(WHERES + ":" + whereBuf);
             System.out.println(GROUPS + ":" + groupByBuf);
@@ -309,13 +310,13 @@ public class SQLGenerator {
         }
 
         for (int i = start; i < end + 1; i++) {
-            res.append(SELECTS).append( select );
+            res.append(SELECTS).append(select);
             res.append(FROMS).append(from.toString()).append("_").append(i);
             if (whereBuf.length() > 0) {
-                res.append(WHERES).append( whereBuf );
+                res.append(WHERES).append(whereBuf);
             }
             if (groupByBuf.length() > 0) {
-                res.append(SPACE).append( groupByBuf );
+                res.append(SPACE).append(groupByBuf);
             }
             if (i != end) {
                 res.append(UNIONALLS);
@@ -364,7 +365,7 @@ public class SQLGenerator {
      * @param sql
      * @return
      */
-    public static String singleGenerate(String sql,int tableCount){
+    public static String singleGenerate(String sql, int tableCount) {
         StringBuilder select = new StringBuilder();
         StringBuilder from = new StringBuilder();
         StringBuilder where = new StringBuilder();
@@ -373,55 +374,55 @@ public class SQLGenerator {
 
         SQLStatementParser parser = SQLParserUtils.createSQLStatementParser(sql, JdbcUtils.MYSQL);
 
-        List<SQLStatement>  stmtList = parser.parseStatementList();
-        if(log)
+        List<SQLStatement> stmtList = parser.parseStatementList();
+        if (log)
             System.out.println(stmtList);
 
         SQLASTOutputVisitor fromVisitor = SQLUtils.createFormatOutputVisitor(from, stmtList, JdbcUtils.MYSQL);
         SQLASTOutputVisitor whereVisitor = SQLUtils.createFormatOutputVisitor(where, stmtList, JdbcUtils.MYSQL);
-        SQLASTOutputVisitor orderVisitor = SQLUtils.createFormatOutputVisitor(order,stmtList,JdbcUtils.MYSQL);
+        SQLASTOutputVisitor orderVisitor = SQLUtils.createFormatOutputVisitor(order, stmtList, JdbcUtils.MYSQL);
 
         for (SQLStatement stmt : stmtList) {
 //       stmt.accept(visitor);
-            if(stmt instanceof SQLSelectStatement){
-                SQLSelectStatement sstmt = (SQLSelectStatement)stmt;
+            if (stmt instanceof SQLSelectStatement) {
+                SQLSelectStatement sstmt = (SQLSelectStatement) stmt;
 //                sstmt.accept(mvisitor);
 //                System.out.println("visitor :");
 //                visitor.println();
                 SQLSelect sqlselect = sstmt.getSelect();
 //                System.out.println("sqlselect "+sqlselect);
-                SQLSelectQueryBlock query = (SQLSelectQueryBlock)sqlselect.getQuery();
+                SQLSelectQueryBlock query = (SQLSelectQueryBlock) sqlselect.getQuery();
 //                query.getSelectList();
                 List<SQLSelectItem> sqlItemL = query.getSelectList();
-                int i=0;
-                for(SQLSelectItem it:sqlItemL){
-                    if(i==sqlItemL.size()-1){
+                int i = 0;
+                for (SQLSelectItem it : sqlItemL) {
+                    if (i == sqlItemL.size() - 1) {
                         select.append(it);
-                    }else{
-                        select.append(it+",");
+                    } else {
+                        select.append(it + ",");
                     }
                     i++;
                 }
                 query.getFrom().accept(fromVisitor);
                 query.getWhere().accept(whereVisitor);
                 SQLSelectGroupByClause gcl = query.getGroupBy();
-                if(gcl!=null )
+                if (gcl != null)
                     gcl.accept(orderVisitor);
             }
         }
 
-        if(log) {
+        if (log) {
 //            System.out.println(SELECTS+":"+select);
 //            System.out.println(FROMS+":"+from.toString());
 //            System.out.println(WHERES+":"+where);
 //            System.out.println(ORDERS+":"+order);
         }
 
-        for(int i=0;i<tableCount;i++){
+        for (int i = 0; i < tableCount; i++) {
             res.append(SELECTS).append(select)
-                    .append(FROMS).append( processTableName(from.toString(),i+1))
+                    .append(FROMS).append(processTableName(from.toString(), i + 1))
                     .append(WHERES).append(where);
-            if(i!=tableCount-1){
+            if (i != tableCount - 1) {
                 res.append("\n");
                 res.append(UNIONALLS);
                 res.append("\n");
@@ -431,18 +432,18 @@ public class SQLGenerator {
         return res.toString();
     }
 
-    public static  String processTableName(String tableName,int num){
-        String res;
-        if ( tableName.indexOf(SPACE) >0){
+    public static String processTableName(String tableName, int num) {
+        StringBuilder res = new StringBuilder();
+        if (tableName.indexOf(SPACE) > 0) {
             String[] tnarr = tableName.split(SPACE);
-            res = tnarr[0]+"_"+num+SPACE;
-            for(int i=1;i<tnarr.length;i++){
-                res= res+tnarr[i]+SPACE;
+            res.append(tnarr[0]).append("_").append(num + SPACE);
+            for (int i = 1; i < tnarr.length; i++) {
+                res.append(tnarr[i]).append(SPACE);
             }
-        }else{
-            res = tableName;
+        } else {
+            res.append(tableName);
         }
-        return res;
+        return res.toString();
     }
 
     public static void main(String[] args) {

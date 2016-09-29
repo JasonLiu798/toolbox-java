@@ -130,4 +130,32 @@ public class StringSplitUtilTest {
         assertEquals(s,arr[0]);
     }
 
+    @Test
+    public void testRemoveTillDelimiter(){
+        String s = "/aaa/bbb/ccc";
+        String e = StringSplitUtil.removeAfterLastDelimiter(s,"/");
+        assertEquals("/aaa/bbb",e);
+        //one is null,do nothing
+        s = "/aaa/bbb/ccc";
+        e = StringSplitUtil.removeAfterLastDelimiter(s,null);
+        assertEquals(s,e);
+
+        s = null;
+        e = StringSplitUtil.removeAfterLastDelimiter(s,"c");
+        assertEquals(s,e);
+
+        // not find delimiter
+        s = "/aaa/bbb/ccc";
+        e = StringSplitUtil.removeAfterLastDelimiter(s,"=");
+        assertEquals(s,e);
+
+        //delimiter length > 1
+        s = "/aaa/bbb/ccc";
+        e = StringSplitUtil.removeAfterLastDelimiter(s,"bb");
+        assertEquals("/aaa/b",e);
+
+
+
+    }
+
 }

@@ -385,10 +385,9 @@ public class ReflectHelper {
             throw new IllegalArgumentException("parameter paramMap must have a value");
         if (bean == null)
             throw new IllegalArgumentException("bean the value of must be instantiated");
-        Iterator<String> it = paramMap.keySet().iterator();
-        while (it.hasNext()) {
-            String fieldName = it.next();
-            setterForce(bean, fieldName, paramMap.get(fieldName));
+        for(Map.Entry<String,Object> entry:paramMap.entrySet()){
+            //String fieldName = entry.getKey();
+            setterForce(bean, entry.getKey(), entry.getValue());
         }
     }
 
@@ -576,6 +575,7 @@ public class ReflectHelper {
                     //field.getType();
                     res.put(field.getName(), fieldVal);
                 } catch (Exception e) {
+                    LOG.error(e.getMessage());
                     continue;
                 }
             }
@@ -692,10 +692,9 @@ public class ReflectHelper {
         if (paramMap == null) {
             return null;
         }
-        Iterator<String> keys = paramMap.keySet().iterator();
-        while (keys.hasNext()) {
-            String mapKey = keys.next();
-            Object value = paramMap.get(mapKey);
+        for(Map.Entry<String,Object> entry:paramMap.entrySet()){
+            String mapKey = entry.getKey();
+            Object value = entry.getValue();
             params.put(mapKey, value == null ? "" : value.toString());
         }
         return params;
@@ -755,9 +754,9 @@ public class ReflectHelper {
      */
     public static Object invokeMethod(Object object, String methodName, Class<?>[] parameterTypes, Object[] parameters) {
         Method method = getDeclaredMethod(object, methodName, parameterTypes);
-        method.setAccessible(true);
         try {
             if (null != method) {
+                method.setAccessible(true);
                 // 调用object 的 method 所代表的方法，其方法的参数是 parameters
                 return method.invoke(object, parameters);
             }

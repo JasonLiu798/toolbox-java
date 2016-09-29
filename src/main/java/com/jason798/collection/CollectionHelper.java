@@ -363,6 +363,7 @@ public final class CollectionHelper {
         switch (level) {
             case 0:
                 System.out.println(sb.toString());
+                break;
             case 1:
                 LOG.debug(sb.toString());
                 break;
@@ -374,6 +375,9 @@ public final class CollectionHelper {
                 break;
             case 4:
                 LOG.error(sb.toString());
+                break;
+            default:
+                break;
         }
     }
 

@@ -148,21 +148,28 @@ public class RunTimeStatisticsHelper {
         return res;
     }
 
+    /**
+     * get median number
+     * @param countMap
+     * @param mid
+     * @param <T>
+     * @return
+     */
     public static <T> T getMedian(Map<T, Long> countMap, T mid) {
         T median = null;
         long maxCnt = 0;
         boolean first = true;
         boolean allOne = true;
-        for (T num : countMap.keySet()) {
+        for (Map.Entry<T,Long> entry : countMap.entrySet()) {
             if (first) {
-                maxCnt = countMap.get(num);
-                median = num;
+                maxCnt = entry.getValue();
+                median = entry.getKey();
                 first = false;
             } else {
-                if (countMap.get(num) > maxCnt) {
+                if (entry.getValue() > maxCnt) {
                     allOne = false;
-                    maxCnt = countMap.get(num);
-                    median = num;
+                    maxCnt = entry.getValue();
+                    median = entry.getKey();
                 }
             }
         }
@@ -172,6 +179,13 @@ public class RunTimeStatisticsHelper {
         return median;
     }
 
+    /**
+     * get middle number
+     * @param arr
+     * @param cmp
+     * @param <T>
+     * @return
+     */
     public static <T> T getMid(T[] arr, Comparator<T> cmp) {
         int i2find = arr.length % 2 == 0 ? arr.length / 2 : arr.length / 2 + 1;
         T midVal = SearchHelper.randomizedSelect(arr, cmp, i2find);

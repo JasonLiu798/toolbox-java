@@ -20,7 +20,7 @@ public class DbExecutor {
     private static DataSource dataSource;
 
     public void init(DataSource dataSource){
-        this.dataSource = dataSource;
+        DbExecutor.dataSource = dataSource;
     }
 
     public static List<Map<String, Object>> getTableData(String sql) {

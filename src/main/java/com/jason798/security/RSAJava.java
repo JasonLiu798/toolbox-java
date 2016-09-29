@@ -93,7 +93,7 @@ public class RSAJava {
      * @param module       big prime
      * @return
      */
-    public String Dencrypt(String encryptedStr, String delemen, String module) {
+    public String dencrypt(String encryptedStr, String delemen, String module) {
         byte[] encrypted = null;
         if (encryptedStr != null && !encryptedStr.equals("")) {
 

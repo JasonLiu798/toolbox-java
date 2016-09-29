@@ -22,7 +22,7 @@ public class JSONHelperF {
         return outMap;
     }
 
-	public static String ObjectToJson(Object object){
+	public static String objectToJson(Object object){
 		return JSON.toJSONString(object) ;
 	}
 	

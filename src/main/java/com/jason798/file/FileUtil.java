@@ -2,6 +2,7 @@ package com.jason798.file;
 
 import com.jason798.character.StringCheckUtil;
 import com.jason798.character.StringUtil;
+import com.jason798.collection.CollectionHelper;
 import com.jason798.constant.SystemConstant;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -12,9 +13,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public final class FileHelper {
+public final class FileUtil {
 
-	private static Logger LOG = LoggerFactory.getLogger(FileHelper.class);
+	private static Logger LOG = LoggerFactory.getLogger(FileUtil.class);
 	public static final String DFT_FILE = "/opt/logs/test.dat";
 
 	/**
@@ -154,27 +155,42 @@ public final class FileHelper {
 	 * @return
 	 * @throws IOException
 	 */
-	public static byte[] readFile2ByteArray(String filePath) throws IOException {
+	public static byte[] readFile2ByteArray(String filePath)  {
 		File file = new File(filePath);
 		long fileSize = file.length();
 		if (fileSize > Integer.MAX_VALUE) {
 			System.out.println("file too big...");
 			return null;
 		}
-		FileInputStream fi = new FileInputStream(file);
-		byte[] buffer = new byte[(int) fileSize];
-		int offset = 0;
-		int numRead = 0;
-		while (offset < buffer.length
-				&& (numRead = fi.read(buffer, offset, buffer.length - offset)) >= 0) {
-			offset += numRead;
+		FileInputStream fi = null;
+		byte[] buffer = null;
+		try {
+			fi = new FileInputStream(file);
+			buffer = new byte[(int) fileSize];
+			int offset = 0;
+			int numRead = 0;
+			while (offset < buffer.length
+					&& (numRead = fi.read(buffer, offset, buffer.length - offset)) >= 0) {
+				offset += numRead;
+			}
+			// 确保所有数据均被读取
+			if (offset != buffer.length) {
+				throw new IOException("Could not completely read file "
+						+ file.getName());
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if(fi!=null){
+				try {
+					fi.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
-		// 确保所有数据均被读取
-		if (offset != buffer.length) {
-			throw new IOException("Could not completely read file "
-					+ file.getName());
-		}
-		fi.close();
 		return buffer;
 	}
 
@@ -278,8 +294,9 @@ public final class FileHelper {
 
 
 	public static void writeLines2File(List<String> content){
-		writeLines2File("/opt/logs/perf/fav.LOG", content);
+		writeLines2File(DFT_FILE, content);
 	}
+
 	public static void writeOneLine2File(String content){
 		List<String> list = new LinkedList<>();
 		list.add(content);
@@ -372,13 +389,11 @@ public final class FileHelper {
 	 * @return
 	 */
 	public static boolean deleteFile(String sPath) {
-		boolean flag = false;
 		File file = new File(sPath);
 		if (file.isFile() && file.exists()) {
-			file.delete();
-			flag = true;
+			return file.delete();
 		}
-		return flag;
+		return false;
 	}
 
 	/**
@@ -396,6 +411,9 @@ public final class FileHelper {
 		}
 		boolean flag = true;
 		File[] files = dirFile.listFiles();
+		if(CollectionHelper.isEmpty(files)){
+			return flag;
+		}
 		for (int i = 0; i < files.length; i++) {
 			if (files[i].isFile()) {
 				flag = deleteFile(files[i].getAbsolutePath());

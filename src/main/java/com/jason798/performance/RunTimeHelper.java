@@ -87,11 +87,11 @@ public class RunTimeHelper {
 
     public static String getFmtTimeForStdout(RunTimeDto dto, int type) {
         List<String> lines = getFmtTimeForWrite(dto, type);
-        String res = "";
+        StringBuilder res = new StringBuilder() ;
         for (String line : lines) {
-            res += line + "\n";
+            res .append( line).append( "\n");
         }
-        return res;
+        return res.toString();
     }
 
     /**

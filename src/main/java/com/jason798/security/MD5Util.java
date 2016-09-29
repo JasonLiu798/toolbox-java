@@ -37,10 +37,9 @@ public class MD5Util {
     public static String MD5Encode(String origin) {
         String resultString = null;
         try {
-            resultString = new String(origin);
+            resultString = origin;
             MessageDigest md = MessageDigest.getInstance("MD5");
-            resultString = ByteHelper.byteArrayToHexString(md.digest(resultString
-                    .getBytes()));
+            resultString = ByteHelper.byteArrayToHexString(md.digest(resultString.getBytes()));
         } catch (Exception ex) {
             resultString = null;
         }

@@ -252,6 +252,7 @@ public class DateHelper {
             date = formatymdhms.parse(sb.toString());
         } catch (ParseException e) {
             e.printStackTrace();
+            return null;
         }
         calendar.setTimeZone(TimeZone.getTimeZone(timezone));
         calendar.setTime(date);
@@ -282,7 +283,8 @@ public class DateHelper {
         try {
             date = formatymdhms.parse(sb.toString());
         } catch (ParseException e) {
-            log.debug("SimpleDateFormat�����쳣");
+            log.debug("SimpleDateFormat error");
+            return null;
         }
         calendar.setTimeZone(TimeZone.getTimeZone(timezone));
         calendar.setTime(date);
@@ -297,6 +299,7 @@ public class DateHelper {
             date = formatymdhms.parse(sDate + sTime);
         } catch (ParseException e) {
             log.debug("SimpleDateFormat");
+            return null;
         }
         Calendar calendar = new GregorianCalendar();
         calendar.setTimeZone(TimeZone.getTimeZone(sTimezone));

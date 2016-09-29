@@ -16,7 +16,7 @@ import java.util.concurrent.TimeoutException;
  */
 public final class MemcacheHelper {
 
-    public static Logger logger = LoggerFactory.getLogger(MemcacheHelper.class);
+    public static final Logger logger = LoggerFactory.getLogger(MemcacheHelper.class);
     /**
      * 定义MemcachedConfiguration缓存配置信息
      */
