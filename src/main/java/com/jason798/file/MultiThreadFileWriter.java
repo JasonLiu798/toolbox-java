@@ -1,6 +1,6 @@
 package com.jason798.file;
 
-import com.jason798.collection.CollectionHelper;
+import com.jason798.collection.CollectionUtil;
 import com.jason798.queue.IQueue;
 import com.jason798.queue.QueueManager;
 
@@ -144,7 +144,7 @@ public class MultiThreadFileWriter implements Runnable {
 	private void doAdd(FileDto fd){
 		if(fd!=null) {
 			List<String> oldContent = memPage.get(fd.getPath());
-			if (CollectionHelper.isEmpty(oldContent)) {
+			if (CollectionUtil.isEmpty(oldContent)) {
 				memPage.put(fd.getPath(), fd.getContents());
 			} else {
 				oldContent.addAll(fd.getContents());

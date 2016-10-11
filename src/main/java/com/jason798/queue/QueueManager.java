@@ -1,8 +1,7 @@
 package com.jason798.queue;
 
 import com.jason798.character.StringCheckUtil;
-import com.jason798.character.StringUtil;
-import com.jason798.collection.CollectionHelper;
+import com.jason798.collection.CollectionUtil;
 import com.jason798.config.ConfigUtil;
 import com.jason798.queue.impl.BlockingQueueEncap;
 import com.jason798.queue.impl.ConcurrentLinkedBlockingQueue;
@@ -52,7 +51,7 @@ public class QueueManager {
                 }
 
                 String[] queueArr = queueStr.split(queueSep);
-                if (CollectionHelper.isEmpty(queueArr)) {
+                if (CollectionUtil.isEmpty(queueArr)) {
                     if (LOG.isWarnEnabled())
                         LOG.warn("read properties get null queue config");
                 } else {
@@ -93,7 +92,7 @@ public class QueueManager {
         if (StringCheckUtil.isEmpty(queueName)) {
             throw new NullPointerException("queueName null");
         }
-        if (CollectionHelper.isEmpty(messageQueues) || messageQueues.get(queueName) == null) {
+        if (CollectionUtil.isEmpty(messageQueues) || messageQueues.get(queueName) == null) {
             //LOG.warn("queue map null");
             //throw new NullPointerException();
             IQueue queue = new BlockingQueueEncap(CONF_DFT_QUEUE_SIZE);
@@ -113,7 +112,7 @@ public class QueueManager {
     }
 
     public static boolean queueExist(String queueName) {
-        if (CollectionHelper.isEmpty(messageQueues)) {
+        if (CollectionUtil.isEmpty(messageQueues)) {
             return false;
         }
         return messageQueues.containsKey(queueName);

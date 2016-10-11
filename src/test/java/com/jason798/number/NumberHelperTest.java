@@ -7,7 +7,7 @@ import java.util.HashMap;
 import static junit.framework.TestCase.assertEquals;
 
 /**
- * NumberHelper Tester.
+ * NumberUtil Tester.
  *
  * @author <Authors name>
  * @version 1.0
@@ -29,9 +29,9 @@ public class NumberHelperTest {
      */
     @Test
     public void testFilterDot() throws Exception {
-        assertEquals("23", NumberHelper.filterDot("23"));
-        assertEquals("1", NumberHelper.filterDot("1.23"));
-        assertEquals("0", NumberHelper.filterDot("0.23"));
+        assertEquals("23", NumberUtil.filterDot("23"));
+        assertEquals("1", NumberUtil.filterDot("1.23"));
+        assertEquals("0", NumberUtil.filterDot("0.23"));
     }
 
     /**

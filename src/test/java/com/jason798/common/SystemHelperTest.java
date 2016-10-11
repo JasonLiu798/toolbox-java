@@ -15,7 +15,7 @@ public class SystemHelperTest {
     
     @Test
     public void testGetPid() throws Exception { 
-        String pid = SystemHelper.getPid();
+        String pid = SystemUtil.getPid();
         System.out.println(pid);
     }
     

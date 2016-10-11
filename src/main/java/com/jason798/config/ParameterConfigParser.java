@@ -1,7 +1,7 @@
 package com.jason798.config;
 
 import com.jason798.character.StringCheckUtil;
-import com.jason798.collection.CollectionHelper;
+import com.jason798.collection.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class ParameterConfigParser {
      * @return
      */
     public static int booleanList2Int(List<Boolean> list){
-        if(CollectionHelper.isEmpty(list)){
+        if(CollectionUtil.isEmpty(list)){
             return 0;
         }
         int len = list.size();

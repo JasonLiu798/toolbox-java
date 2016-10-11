@@ -11,8 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 测试用，获取测试用数据
- *
+ * for test get db data
  * @author JasonLiu798
  * @date 2015/10/15 14:53
  */

@@ -1,7 +1,7 @@
 package com.jason798.file;
 
-import com.jason798.collection.CollectionHelper;
-import com.jason798.constant.SystemConstant;
+import com.jason798.collection.CollectionUtil;
+import com.jason798.common.PathUtil;
 import com.jason798.serialize.fst.FstSerializer1;
 import org.junit.Test;
 import org.junit.Before;
@@ -62,7 +62,7 @@ public class FileHelperTest {
     public void testWrite2FileContent() throws Exception {
         /*
         FileDto fd = new FileDto("aaa","bbb");
-        byte[] content = SerializerHelper.serialize(fd);
+        byte[] content = SerializerUtil.serialize(fd);
         FileUtil.write2File(content);
 
 
@@ -73,7 +73,7 @@ public class FileHelperTest {
         }
 
         System.out.println("");
-        FileDto fda = (FileDto) SerializerHelper.deserialize(readByte);
+        FileDto fda = (FileDto) SerializerUtil.deserialize(readByte);
         System.out.println(fda);
         */
 
@@ -102,7 +102,7 @@ public class FileHelperTest {
 
         System.out.println("");
         //TestDto fda = (TestDto) fs.deserialize(readByte);
-        TestDto fda = (TestDto)SerializerHelper.deserialize(readByte);
+        TestDto fda = (TestDto)SerializerUtil.deserialize(readByte);
         System.out.println(fda);
 		*/
     }
@@ -141,10 +141,10 @@ public class FileHelperTest {
     @Test
     public void testreadFilesByLine() throws Exception {
 		File dir = new File(this.getClass().getResource("/").getPath());
-		String filename = dir+ SystemConstant.FILE_SEP+ FileUtil.className2FilePath(this.getClass().getName())+".class";
+		String filename = dir+ PathUtil.DIR_SEP + FileUtil.className2FilePath(this.getClass().getName())+".class";
 		System.out.println(filename);
 		List<String> list = FileUtil.readFilesByLine2StringList(filename);
-		CollectionHelper.printList(list);
+		CollectionUtil.printList(list);
 	}
 
     /**

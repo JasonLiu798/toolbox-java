@@ -1,20 +1,21 @@
 package com.jason798.test;
 
 import com.jason798.character.StringUtil;
-import com.jason798.excel.Excel;
+import com.jason798.excel.ExcelUtil;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Excel parser
+ * ExcelUtil parser
  * @author JasonLiu798
  * @date 2015/11/27 9:44
  */
 public class ExcelParser {
 
-    public List<TestCase> getTestCases(Excel e) throws ClassNotFoundException {
+    public List<TestCase> getTestCases(ExcelUtil e) throws ClassNotFoundException {
         List<List<String>> tclists = e.getSheet(0);
         List<TestCase> res = new ArrayList<>();
 

@@ -106,7 +106,7 @@ public class SearchHelperTest {
     public void testRandomizedSelectForTComparatorI() throws Exception {
 
         Integer[] ints = new Integer[] { 31, 41, 59, 26, 41, 58 };
-        Integer positiong = SearchHelper.randomizedSelect(ints, new Comparator<Integer>() {
+        Integer positiong = SearchUtil.randomizedSelect(ints, new Comparator<Integer>() {
             public int compare(Integer o1, Integer o2) {
                 return o1.intValue() - o2.intValue();
             }

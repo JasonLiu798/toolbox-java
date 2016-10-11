@@ -5,6 +5,9 @@ import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.text.PDFTextStripper;
 import java.io.File;
 
+/**
+ * pdf read util
+ */
 public class PDFUtil {
     public static String readText(String filepath) throws Exception {
 

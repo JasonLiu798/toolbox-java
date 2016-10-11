@@ -1,6 +1,6 @@
 package com.jason798.collection; 
 
-import com.jason798.number.RangeHelper;
+import com.jason798.number.RangeUtil;
 import org.junit.Test;
 import org.junit.Before; 
 import org.junit.After;
@@ -138,9 +138,9 @@ public class CollectionHelperTest {
     
     @Test
     public void testRemoveListFirstN() throws Exception {
-        List<Integer> list =  RangeHelper.range(10);
+        List<Integer> list =  RangeUtil.range(10);
         System.out.println(list);
-        list = CollectionHelper.removeListFirstN(list,3);
+        list = CollectionUtil.removeListFirstN(list,3);
         assertEquals(7,list.size());
         for(int i=0;i<list.size();i++) {
             int num = list.get(i);
@@ -178,19 +178,19 @@ public class CollectionHelperTest {
         //empty
         List<String> l1 = new LinkedList<>();
         List<String> l2 = new LinkedList<>();
-        List<String> l = CollectionHelper.getDuplicateItemUseHash(l1,l2);
-        assertEquals(true,CollectionHelper.isEmpty(l));
+        List<String> l = CollectionUtil.getDuplicateItemUseHash(l1,l2);
+        assertEquals(true, CollectionUtil.isEmpty(l));
 
         //one empty
         l1=null;
         l2 = new LinkedList<>();
-        l = CollectionHelper.getDuplicateItemUseHash(l1,l2);
-        assertEquals(true,CollectionHelper.isEmpty(l));
+        l = CollectionUtil.getDuplicateItemUseHash(l1,l2);
+        assertEquals(true, CollectionUtil.isEmpty(l));
 
         l1 = new LinkedList<>();
         l2=null;
-        l = CollectionHelper.getDuplicateItemUseHash(l1,l2);
-        assertEquals(true,CollectionHelper.isEmpty(l));
+        l = CollectionUtil.getDuplicateItemUseHash(l1,l2);
+        assertEquals(true, CollectionUtil.isEmpty(l));
 
         //no duplicat
         l1 = new LinkedList<>();
@@ -200,8 +200,8 @@ public class CollectionHelperTest {
         l2 = new LinkedList<>();
         l2.add("4");
         l2.add("5");
-        l = CollectionHelper.getDuplicateItemUseHash(l1,l2);
-        assertEquals(true,CollectionHelper.isEmpty(l));
+        l = CollectionUtil.getDuplicateItemUseHash(l1,l2);
+        assertEquals(true, CollectionUtil.isEmpty(l));
 
         //contain one duplicate
         l1 = new LinkedList<>();
@@ -211,7 +211,7 @@ public class CollectionHelperTest {
         l2 = new LinkedList<>();
         l2.add("123");
         l2.add("2340");
-        l = CollectionHelper.getDuplicateItemUseHash(l1,l2);
+        l = CollectionUtil.getDuplicateItemUseHash(l1,l2);
         System.out.println(l);
         assertEquals(1,l.size());
         assertEquals("123",l.get(0));
@@ -224,7 +224,7 @@ public class CollectionHelperTest {
         l2 = new LinkedList<>();
         l2.add("1");
         l2.add("2");
-        l = CollectionHelper.getDuplicateItemUseHash(l1,l2);
+        l = CollectionUtil.getDuplicateItemUseHash(l1,l2);
         assertEquals(2,l.size());
         List<String> expecL = new LinkedList<>();
         expecL.add("1");
@@ -246,7 +246,7 @@ public class CollectionHelperTest {
         List<String> l2 = new LinkedList<>();
         l2.add("1");
         l2.add("2");
-        String item = CollectionHelper.getOneDuplicateItemUseHash(l1,l2);
+        String item = CollectionUtil.getOneDuplicateItemUseHash(l1,l2);
         assertEquals("1",item);
     }
         

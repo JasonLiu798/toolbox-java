@@ -20,7 +20,7 @@ public class MultiThreadFileWriterTest {
         Thread wt = new Thread(wr);
         wt.start();
 
-        MultiThreadFileWriter writer = new MultiThreadFileWriter("D:\\test.log", MultiThreadFileWriterHelper.DFT_QUEUNAME);
+        MultiThreadFileWriter writer = new MultiThreadFileWriter("D:\\test.log", MultiThreadFileWriterUtil.DFT_QUEUNAME);
         Thread t = new Thread(writer);
         t.start();
 
@@ -36,7 +36,7 @@ public class MultiThreadFileWriterTest {
         public void run() {
             int i = 0;
             while (i < 100) {
-                IQueue queue = QueueManager.getQueue(MultiThreadFileWriterHelper.DFT_QUEUNAME);
+                IQueue queue = QueueManager.getQueue(MultiThreadFileWriterUtil.DFT_QUEUNAME);
                 FileDto fd = new FileDto("D:\\test.log", "" + i);
                 try {
                     queue.sendMessage(fd);

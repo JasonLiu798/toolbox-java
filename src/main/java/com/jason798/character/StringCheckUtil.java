@@ -1,16 +1,7 @@
 package com.jason798.character;
 
-import com.jason798.collection.CollectionHelper;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.jason798.collection.CollectionUtil;
 
-import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public final class StringCheckUtil {
@@ -220,7 +211,7 @@ public final class StringCheckUtil {
 
 
     public static boolean strInStrings(String s,String ... strings){
-        if(CollectionHelper.isEmpty(strings)){
+        if(CollectionUtil.isEmpty(strings)){
             return false;
         }
 

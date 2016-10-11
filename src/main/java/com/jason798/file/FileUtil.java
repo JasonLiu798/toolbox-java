@@ -2,7 +2,8 @@ package com.jason798.file;
 
 import com.jason798.character.StringCheckUtil;
 import com.jason798.character.StringUtil;
-import com.jason798.collection.CollectionHelper;
+import com.jason798.collection.CollectionUtil;
+import com.jason798.common.PathUtil;
 import com.jason798.constant.SystemConstant;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -41,7 +42,7 @@ public final class FileUtil {
 		if(StringCheckUtil.isEmpty(className)){
 			return "";
 		}
-		// className.replaceAll(StringUtil.DOT_SEP_NO_REX,SystemConstant.FILE_SEP);
+		// className.replaceAll(StringUtil.DOT_SEP_NO_REX,SystemConstant.DIR_SEP);
 		String[] arr = className.split(StringUtil.DOT_SEP_NO_REX);
 		//System.out.println("arr size "+arr.length+","+className);
 		if(arr.length==1){
@@ -52,7 +53,7 @@ public final class FileUtil {
 		for(int i=0;i<arr.length;i++){
 			sb.append(arr[i]);
 			if(i!=lenMinus1){
-				sb.append(SystemConstant.FILE_SEP);
+				sb.append(PathUtil.DIR_SEP);
 			}
 		}
 		return sb.toString();
@@ -411,7 +412,7 @@ public final class FileUtil {
 		}
 		boolean flag = true;
 		File[] files = dirFile.listFiles();
-		if(CollectionHelper.isEmpty(files)){
+		if(CollectionUtil.isEmpty(files)){
 			return flag;
 		}
 		for (int i = 0; i < files.length; i++) {

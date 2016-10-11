@@ -1,6 +1,6 @@
 package com.jason798.performance;
 
-import com.jason798.collection.CollectionHelper;
+import com.jason798.collection.CollectionUtil;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -50,7 +50,7 @@ public class RunTimeDto implements Serializable {
      * @return interval time list
      */
     public List<Long> getIntervalTimes(){
-        if(CollectionHelper.isEmpty(times)){
+        if(CollectionUtil.isEmpty(times)){
             return null;
         }
         List<Long>  res = new LinkedList<>();
@@ -68,7 +68,7 @@ public class RunTimeDto implements Serializable {
      */
     public Long getTotalCostTime(){
         List<Long> intlist = getIntervalTimes();
-        if(CollectionHelper.isEmpty(intlist)){
+        if(CollectionUtil.isEmpty(intlist)){
             return 0L;
         }
         long res = 0;
@@ -83,7 +83,7 @@ public class RunTimeDto implements Serializable {
      * @return time count
      */
     public int getCount(){
-        if(CollectionHelper.isEmpty(times)){
+        if(CollectionUtil.isEmpty(times)){
             return 0;
         }
         return times.size();

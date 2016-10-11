@@ -1,9 +1,8 @@
 package com.jason798.config;
 
 import com.jason798.character.StringCheckUtil;
-import com.jason798.common.ReflectHelper;
+import com.jason798.common.ReflectUtil;
 import com.jason798.character.RegexUtil;
-import com.jason798.character.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.BufferedInputStream;
@@ -155,14 +154,14 @@ public class ConfigUtil {
         T res = null;
         try {
             res = clz.newInstance();
-            Set<String> fields = ReflectHelper.getAllFieldsHaveSetter(clz);
+            Set<String> fields = ReflectUtil.getAllFieldsHaveSetter(clz);
             for (String field : fields) {
                 Object val = null;
-                Class<?> fieldType = ReflectHelper.getFieldTypeAll(res, field);
+                Class<?> fieldType = ReflectUtil.getFieldTypeAll(res, field);
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("{} fieldType {}", field, fieldType);
                 }
-                Object defaultVal = ReflectHelper.getter(res, field);
+                Object defaultVal = ReflectUtil.getter(res, field);
                 Object propVal = prop.get(filterPrefix(prefix, field));
 
                 if (defaultVal == null) {
@@ -200,7 +199,7 @@ public class ConfigUtil {
                     }
                 }
                 if (val != null) {
-                    ReflectHelper.setter(res, field, fieldType, val);
+                    ReflectUtil.setter(res, field, fieldType, val);
                 }
             }
         } catch (InstantiationException | IllegalAccessException e) {

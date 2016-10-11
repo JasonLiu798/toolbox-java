@@ -98,8 +98,8 @@ public class XmlParser {
             reader.parse(inputSource);
             rootElement = parserHandler.getRootElement();
         } catch (Throwable t) {
-            log.error("couldn't parse xml document", t);
-            throw new XmlException("couldn't parse xml document : " + t.getMessage());
+            log.error("couldn't parseInner xml document", t);
+            throw new XmlException("couldn't parseInner xml document : " + t.getMessage());
         }
 
         if (parserHandler.hasErrors()) {

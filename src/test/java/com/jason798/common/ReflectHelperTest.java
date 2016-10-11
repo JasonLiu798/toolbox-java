@@ -1,7 +1,6 @@
 package com.jason798.common;
 
 import com.jason798.character.StringCheckUtil;
-import com.jason798.character.StringUtil;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
@@ -33,21 +32,21 @@ public class ReflectHelperTest {
         //interface
         Class clz = List.class;
         Class aclz = ArrayList.class;
-        boolean a = ReflectHelper.chkAInheritB(aclz,clz);
+        boolean a = ReflectUtil.chkAInheritB(aclz,clz);
         assertEquals(true,a);
         //abstract class
         Class abclz = AbstractList.class;
-        boolean b = ReflectHelper.chkAInheritB(aclz,abclz);
+        boolean b = ReflectUtil.chkAInheritB(aclz,abclz);
         assertEquals(true,b);
         //class
         Class ca = Vector.class;
         Class cb = Stack.class;
-        boolean c = ReflectHelper.chkAInheritB(cb,ca);
+        boolean c = ReflectUtil.chkAInheritB(cb,ca);
         assertEquals(true,c);
         //error
         ca = Vector.class;
         cb = Stack.class;
-        c = ReflectHelper.chkAInheritB(ca,cb);
+        c = ReflectUtil.chkAInheritB(ca,cb);
         assertEquals(false,c);
 
     }
@@ -94,7 +93,7 @@ public class ReflectHelperTest {
 
     @Test
     public void testGetterForce() throws Exception {
-        Object res = ReflectHelper.getterForceClz(StringCheckUtil.class,"NULL");
+        Object res = ReflectUtil.getterForceClz(StringCheckUtil.class,"NULL");
         System.out.println(res);
     }
 
@@ -238,7 +237,7 @@ public class ReflectHelperTest {
     public void testCheckGetMethod() throws Exception { 
                 /* 
                 try { 
-                   Method method = ReflectHelper.getClass().getMethod("checkGetMethod", Method[].class, String.class); 
+                   Method method = ReflectUtil.getClass().getMethod("checkGetMethod", Method[].class, String.class);
                    method.setAccessible(true); 
                    method.invoke(<Object>, <Parameters>); 
                 } catch(NoSuchMethodException e) { 
@@ -252,7 +251,7 @@ public class ReflectHelperTest {
     public void testIsBoolean() throws Exception { 
                 /* 
                 try { 
-                   Method method = ReflectHelper.getClass().getMethod("isBoolean", Field.class); 
+                   Method method = ReflectUtil.getClass().getMethod("isBoolean", Field.class);
                    method.setAccessible(true); 
                    method.invoke(<Object>, <Parameters>); 
                 } catch(NoSuchMethodException e) { 
@@ -266,7 +265,7 @@ public class ReflectHelperTest {
     public void testGenerateGetName() throws Exception { 
                 /* 
                 try { 
-                   Method method = ReflectHelper.getClass().getMethod("generateGetName", String.class, boolean.class); 
+                   Method method = ReflectUtil.getClass().getMethod("generateGetName", String.class, boolean.class);
                    method.setAccessible(true); 
                    method.invoke(<Object>, <Parameters>); 
                 } catch(NoSuchMethodException e) { 
@@ -280,7 +279,7 @@ public class ReflectHelperTest {
     public void testIsEmpty() throws Exception { 
                 /* 
                 try { 
-                   Method method = ReflectHelper.getClass().getMethod("isEmpty", Object.class); 
+                   Method method = ReflectUtil.getClass().getMethod("isEmpty", Object.class);
                    method.setAccessible(true); 
                    method.invoke(<Object>, <Parameters>); 
                 } catch(NoSuchMethodException e) { 
