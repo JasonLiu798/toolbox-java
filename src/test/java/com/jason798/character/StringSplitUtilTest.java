@@ -154,6 +154,9 @@ public class StringSplitUtilTest {
         e = StringSplitUtil.removeAfterLastDelimiter(s,"bb");
         assertEquals("/aaa/b",e);
 
+        s = "/";
+        e = StringSplitUtil.removeAfterLastDelimiter(s,"/");
+        assertEquals("",e);
 
 
     }

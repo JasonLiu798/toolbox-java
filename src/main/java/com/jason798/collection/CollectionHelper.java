@@ -186,9 +186,7 @@ public final class CollectionHelper {
         if (CollectionHelper.isEmpty(array)) {
             return null;
         }
-        List<T> res = new ArrayList<>(array.length);
-        Collections.addAll(res, array);
-        return res;
+        return Arrays.asList(array);
     }
 
     /**
