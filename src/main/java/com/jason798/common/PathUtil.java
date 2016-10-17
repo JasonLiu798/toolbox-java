@@ -150,7 +150,21 @@ public class PathUtil {
      * @return path string
      */
     public static String join(String... path) {
-        return joinInner(DIR_SEP, path);
+        if(DIR_SEP.equals(DIR_SEP_WIN)){
+            return joinInnerRelative(DIR_SEP, path);
+        }else{
+            return joinInnerAbs(DIR_SEP, path);
+        }
+    }
+//    public static String joinRelaive(String ... path){
+//        return joinInnerRelative(DIR_SEP,path);
+//    }
+    public static String joinInnerRelative(String sep, String... paths) {
+        return joinInner(false,sep,paths);
+    }
+
+    public static String joinInnerAbs(String sep, String... paths) {
+        return joinInner(true,sep,paths);
     }
 
     /**
@@ -160,7 +174,7 @@ public class PathUtil {
      * @param paths
      * @return path string
      */
-    public static String joinInner(String sep, String... paths) {
+    public static String joinInner(boolean isAbsolute,String sep, String... paths) {
         if (CollectionUtil.isEmpty(paths)) {
             return "";
         }
@@ -177,6 +191,9 @@ public class PathUtil {
             sb.append(path);
         }
         if (sb.toString().startsWith(sep + sep)) {
+            sb.deleteCharAt(0);
+        }
+        if( sb.toString().startsWith(sep) && !isAbsolute){
             sb.deleteCharAt(0);
         }
         return sb.toString();

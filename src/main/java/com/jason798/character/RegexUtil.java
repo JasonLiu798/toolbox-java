@@ -12,6 +12,11 @@ public final class RegexUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegexUtil.class);
 
+    public static final String FRAG_SPACE = "\\s";
+    public static final String FRAG_SPACES_OR_NE = "\\s*";
+    public static final String FRAG_NOT_SPACE = "\\S";
+    public static final String FRAG_NOT_SPACES = "\\S+";
+
     /**
      * email
      */
@@ -59,6 +64,11 @@ public final class RegexUtil {
         }
         Matcher matcher = pattern.matcher(targetStr);
         return matcher;
+    }
+
+    public static Pattern getPattern(String regex){
+        Pattern pattern = Pattern.compile(regex);
+        return pattern;
     }
 
     /**

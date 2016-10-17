@@ -20,34 +20,34 @@ public class PathUtilTest {
     public void testJoinPath() throws Exception { 
 //        String res = PathUtil.joinInner("/","a","b");
         String sep = "/";
-        String res = PathUtil.joinInner(sep,"");
+        String res = PathUtil.joinInner(true,sep,"");
         assertEquals("/",res);
 
-        res = PathUtil.joinInner(sep,"/");
+        res = PathUtil.joinInner(true,sep,"/");
         assertEquals("/",res);
 
-        res = PathUtil.joinInner(sep,"/","/a");
+        res = PathUtil.joinInner(true,sep,"/","/a");
         assertEquals("/a",res);
 
-        res = PathUtil.joinInner(sep,"/","a");
+        res = PathUtil.joinInner(true,sep,"/","a");
         assertEquals("/a",res);
 
-        res = PathUtil.joinInner(sep,"","a","b");
+        res = PathUtil.joinInner(true,sep,"","a","b");
         assertEquals("/a/b",res);
 
-        res = PathUtil.joinInner(sep,"");
+        res = PathUtil.joinInner(true,sep,"");
         assertEquals("/",res);
 
-        res = PathUtil.joinInner(sep,"","/bb");
+        res = PathUtil.joinInner(true,sep,"","/bb");
         assertEquals("/bb",res);
 
-        res =PathUtil.joinInner(sep,"","/","");
+        res =PathUtil.joinInner(true,sep,"","/","");
         assertEquals("/",res);
 
-        res = PathUtil.joinInner(sep,"/abc","/","");
+        res = PathUtil.joinInner(true,sep,"/abc","/","");
         assertEquals("/abc",res);
 
-        res = PathUtil.joinInner(sep,"abc","bb","cc");
+        res = PathUtil.joinInner(true,sep,"abc","bb","cc");
         assertEquals("/abc/bb/cc",res);
 
     }

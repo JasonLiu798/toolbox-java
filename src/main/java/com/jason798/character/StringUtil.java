@@ -11,6 +11,8 @@ import java.net.URLEncoder;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class StringUtil {
 
@@ -75,6 +77,19 @@ public final class StringUtil {
         str = str.replaceAll("_", "\\\\_");
         str = str.replaceAll("'", "\\\\'");
         return str;
+    }
+
+    public static String replaceBlank(String str) {
+        if(StringCheckUtil.isEmpty(str)){
+            return str;
+        }
+        String dest = "";
+        if (str!=null) {
+            Pattern p = Pattern.compile("\\s*|\t|\r|\n");
+            Matcher m = p.matcher(str);
+            dest = m.replaceAll("");
+        }
+        return dest;
     }
 
 

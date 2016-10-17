@@ -1,6 +1,7 @@
 package com.jason798.collection;
 
 import com.jason798.character.StringCheckUtil;
+import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,6 +70,26 @@ public final class CollectionUtil {
     public static <K, V> boolean isNotEmpty(Map<K, V> map) {
         return !isEmpty(map);
     }
+
+    /**
+     *
+     * @param c
+     * @param t
+     * @param <T>
+     * @return
+     */
+    public static <T> boolean isIn(Collection<T> c,T t){
+        if(isEmpty(c)){
+            return false;
+        }
+        for(T i:c){
+            if(i.equals(t)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     /**
      * ############################## getter functions ###################################

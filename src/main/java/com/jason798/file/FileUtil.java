@@ -29,6 +29,21 @@ public final class FileUtil {
 		return file.exists();
 	}
 
+	public static void touch(String filepath) throws IOException {
+		File file = new File(filepath);
+		if(file.exists()){
+			return;
+		}
+		file.createNewFile();
+	}
+
+	public static boolean dirExist(String filepath){
+		File file=new File(filepath);
+		return file.exists() && file.isDirectory();
+	}
+
+
+
 	/**
 	 * class name format to Path
 	 * example:
@@ -223,7 +238,7 @@ public final class FileUtil {
 		return res;
 	}
 
-	public static List<String> readFilesByLine2StringList(String filepath) throws IOException {
+	public static List<String> cat2List(String filepath) throws IOException {
 		File file = new File(filepath);
 		BufferedReader reader = null;
 		List<String> res = new ArrayList<>();
@@ -243,7 +258,7 @@ public final class FileUtil {
 		return res;
 	}
 
-	public static String readFilesByLine2String(String filepath) throws IOException {
+	public static String cat2Str(String filepath) throws IOException {
 		File file = new File(filepath);
 		BufferedReader reader = null;
 		StringBuilder res = new StringBuilder();
@@ -356,14 +371,16 @@ public final class FileUtil {
 	 * @param dirPath dirpath
 	 * @return success or not
 	 */
-	public static boolean makeDirs(String dirPath) {
-		String folderName = dirPath;
-		if (folderName == null || folderName.isEmpty()) {
+	public static boolean mkDir(String dirPath) {
+		if (dirPath == null || dirPath.isEmpty()) {
 			return false;
 		}
-		File folder = new File(folderName);
+		File folder = new File(dirPath);
 		return (folder.exists() && folder.isDirectory()) ? true : folder.mkdirs();
 	}
+
+
+
 
 	/**
 	 *
@@ -379,7 +396,7 @@ public final class FileUtil {
 			if (file.isFile()) {
 				return deleteFile(sPath);
 			} else {
-				return deleteDirectory(sPath);
+				return rmDir(sPath);
 			}
 		}
 	}
@@ -398,11 +415,11 @@ public final class FileUtil {
 	}
 
 	/**
-	 * delete dir
+	 * delete dir none recu
 	 * @param sPath dir path
 	 * @return success or not
 	 */
-	public static boolean deleteDirectory(String sPath) {
+	public static boolean rmDir(String sPath) {
 		if (!sPath.endsWith(File.separator)) {//add sep
 			sPath = sPath + File.separator;
 		}
@@ -420,7 +437,7 @@ public final class FileUtil {
 				flag = deleteFile(files[i].getAbsolutePath());
 				if (!flag) break;
 			} else {//recursive delete
-				flag = deleteDirectory(files[i].getAbsolutePath());
+				flag = rmDir(files[i].getAbsolutePath());
 				if (!flag) break;
 			}
 		}
@@ -431,6 +448,41 @@ public final class FileUtil {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+
+	/**
+	 *
+	 * @param dirPath
+	 * @return all reletive file path
+	 */
+	public static List<String> tree(String dirPath){
+		if(!dirExist(dirPath)){
+			return null;
+		}
+		List<String> res = new LinkedList<>();
+		traverseDir(dirPath,res);
+		return res;
+	}
+
+	/**
+	 * traverse dir
+	 * @param dirpath
+	 * @param res
+	 */
+	private static void traverseDir(String dirpath, List<String> res){
+		File parent = new File(dirpath);
+		File[] childs = parent.listFiles();
+		if(CollectionUtil.isEmpty(childs)){
+			return;
+		}
+		for(File c:childs){
+			if(c.isDirectory()){
+				traverseDir(PathUtil.join(dirpath,c.getName()),res);
+			}else{
+				res.add(PathUtil.join(dirpath,c.getName()));
+			}
 		}
 	}
 
