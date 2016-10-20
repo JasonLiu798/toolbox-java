@@ -158,7 +158,7 @@ public class MultiThreadFileWriter implements Runnable {
 			LOG.debug("before write map:"+memPage);
 		}
 		for(Map.Entry<String,List<String>> entry:memPage.entrySet()) {
-			FileUtil.writeLines2File(entry.getKey(),entry.getValue());
+			FileUtil.append(entry.getKey(),entry.getValue());
 		}
 		memPage.clear();
 		if(LOG.isDebugEnabled()){

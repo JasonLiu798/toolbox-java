@@ -146,18 +146,18 @@ public class FileUtilTest {
      */
     @Test
     public void testreadFilesByLine2String() throws Exception {
-        String res = FileUtil.cat2Str("Y:\\yp\\JL.txt");
+        String res = FileUtil.cat("Y:\\yp\\JL.txt");
         System.out.println(res);
     }
 
     @Test
     public void testDelete() {
         String file = "D:\\t1";
-        FileUtil.writeLines2File(file, "aaa");
+        FileUtil.append(file, "aaa");
 
         boolean exist = FileUtil.fileExist(file);
         System.out.println("file exist " + exist);
-        FileUtil.delete(file);
+        FileUtil.rm(file);
 
         exist = FileUtil.fileExist(file);
         System.out.println("file exist " + exist);
@@ -168,13 +168,13 @@ public class FileUtilTest {
         String dir = "D:\\aaa\\bbb\\ccc";
         FileUtil.mkDir(dir);
         String dirA = "D:\\aaa";
-        FileUtil.delete(dirA);
+        FileUtil.rm(dirA);
     }
 
     @Test
     public void testTraverse() throws IOException {
         String dirP = "D:\\d1";
-        FileUtil.delete(dirP);
+        FileUtil.rm(dirP);
         String dir = "D:\\d1\\d2";
         FileUtil.mkDir(dir);
         String f1 = PathUtil.join(dirP, "f1");
@@ -191,7 +191,7 @@ public class FileUtilTest {
         }
 
         String notExistDir = "D:\\notexistdir";
-        FileUtil.delete(notExistDir);
+        FileUtil.rm(notExistDir);
         files = FileUtil.tree(notExistDir);
         assertEquals(null, files);
     }
@@ -218,10 +218,19 @@ public class FileUtilTest {
         String d = "D:\\d1";
         String f1 = PathUtil.join(d, "f1");
         System.out.println(f1);
-        FileUtil.delete(d);
+        FileUtil.rm(d);
         FileUtil.mkDir(d);
         FileUtil.touch(f1);
         assertEquals(true, FileUtil.fileExist(f1));
+    }
+
+    @Test
+    public void testLs(){
+        List l = FileUtil.ls("D:\\");
+        System.out.println(l);
+        l = FileUtil.ll("D:\\");
+        System.out.println(l);
+
     }
 
 

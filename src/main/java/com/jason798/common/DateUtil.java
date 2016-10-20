@@ -18,12 +18,16 @@ import java.util.TimeZone;
 public class DateUtil {
 
     private static Logger log = LoggerFactory.getLogger(DateUtil.class);
+
+    public static final String DEFAULT_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS";
+
     public static final String yyyy_EN = "yyyy";
     public static final String yyyy_MM_dd_EN = "yyyy-MM-dd";
     public static final String yyyy_MM_dd_HH_mm_EN = "yyyy-MM-dd HH:mm";
     public static final String yyyyMMdd_EN = "yyyyMMdd";
     public static final String yyyy_MM_EN = "yyyy-MM";
     public static final String yyyyMM_EN = "yyyyMM";
+
 
     /** format(yyyy-MM-dd HH:mm:ss) */
     public static final String yyyy_MM_dd_HH_mm_ss_EN = "yyyy-MM-dd HH:mm:ss";
@@ -88,6 +92,43 @@ public class DateUtil {
         return new Date().getTime()/1000;
     }
 
+
+    /**
+     * ##################### formats ##################################
+     */
+    /**
+     *
+     * @param date
+     * @param fmt
+     * @return
+     */
+    public static String format(Date date,String fmt){
+        SimpleDateFormat sdf = new SimpleDateFormat(fmt);
+        return sdf.format(date);
+    }
+
+    public static String formatYYYYMMDD(Date date) {
+        return format(date,yyyyMMdd_EN);
+    }
+
+    public static String formatDefault(Date date) {
+        return format(date,DEFAULT_FORMAT);
+    }
+
+
+    /**
+     * ##################### coverter ##################################
+     */
+    /**
+     * unix timestamp long format to yyyymmdd long
+     * @param timestamp
+     * @return
+     */
+    public static long timestamp2yyymmddL(long timestamp){
+        return Long.parseLong(timestamp2yyymmdd(timestamp));
+    }
+
+
     /**
      * unix timestamp to Date
      * @param ltime
@@ -95,6 +136,12 @@ public class DateUtil {
      */
     public static Date long2Date(long ltime){
         return new Date(ltime*1000);
+    }
+    public static Date ts2Date(long ts){
+        return new Date(ts*1000);
+    }
+    public static Date tsms2Date(long ts){
+        return new Date(ts);
     }
 
     /**
@@ -114,16 +161,6 @@ public class DateUtil {
         SimpleDateFormat sdf = new SimpleDateFormat(yyyyMMdd_EN);
         return sdf.format(tmp);
     }
-
-    /**
-     * unix timestamp long format to yyyymmdd long
-     * @param timestamp
-     * @return
-     */
-    public static long timestamp2yyymmddL(long timestamp){
-        return Long.parseLong(timestamp2yyymmdd(timestamp));
-    }
-
 
     /**
      * get date

@@ -22,6 +22,25 @@ public class StringSplitUtilTest {
     public void after() throws Exception {
     }
 
+
+    @Test
+    public void testSplitSys(){
+        String s = "abc\r\ncde";
+        String s1 = "abc\ncde";
+        String s2 = "abc\rcde";
+
+        String type1 = "\\n|\\r|\\r\\n";
+        String[] arr = s.split(type1);
+        System.out.println(Arrays.toString(arr));
+
+        String type2 = "\\r\\n|\\n|\\r";
+        arr = s.split(type2);
+        System.out.println(Arrays.toString(arr));
+        arr = s1.split(type2);
+        System.out.println(Arrays.toString(arr));
+        arr = s2.split(type2);
+        System.out.println(Arrays.toString(arr));
+    }
     /**
      * Method: splitTwo(String toSplit, String delimiter)
      */

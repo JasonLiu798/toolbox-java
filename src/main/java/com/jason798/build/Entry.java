@@ -1,7 +1,5 @@
 package com.jason798.build;
 
-import com.jason798.file.FileUtil;
-
 import java.util.List;
 
 public class Entry {
@@ -12,7 +10,6 @@ public class Entry {
 
     public void toFile(){
         StringBuilder sb;
-        FileUtil.readFile2StringList("");
 
     }
 

@@ -298,7 +298,7 @@ public final class CollectionUtil {
 
 
     /**
-     * delete duplicate item
+     * rm duplicate item
      * algorithm:
      * two loop
      * mainList length = n

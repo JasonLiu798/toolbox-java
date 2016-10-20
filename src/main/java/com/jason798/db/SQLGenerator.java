@@ -87,7 +87,7 @@ public class SQLGenerator {
      * @param writepath
      */
     public static void batchGenerateInsert(String inputPath, String writepath) {
-        List<String> reads = FileUtil.readFile2StringList(inputPath);
+        List<String> reads = FileUtil.cat2List(inputPath);
         String targetSql = null;
         List<String> writes = new ArrayList<>();
         for (String sql : reads) {
@@ -95,14 +95,14 @@ public class SQLGenerator {
             System.out.println("src:" + sql);
             System.out.println("target:" + targetSql);
             writes.add(targetSql);
-            writes.add(sql.replace("delete", "delete from ") + ";");
+            writes.add(sql.replace("rm", "rm from ") + ";");
         }
-        FileUtil.writeLines2File(writepath, writes);
+        FileUtil.append(writepath, writes);
     }
 
 
     /**
-     * generate batch delete sql
+     * generate batch rm sql
      *
      * @param sql
      * @return
