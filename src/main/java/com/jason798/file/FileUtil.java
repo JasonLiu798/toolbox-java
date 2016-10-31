@@ -88,14 +88,14 @@ public final class FileUtil {
                 return list;
             }
             for (File f : childs) {
-                if (option!=null && option.equals("-l")) {
+                if (option!=null && option.indexOf("-l")>=0) {
                     list.add(formatFile(f));
                 } else {
                     list.add(f.getName());
                 }
             }
         } else {
-            if (option!=null && option.equals("-l")) {
+            if (option!=null && option.indexOf("-l")>=0) {
                 list.add(formatFile(file));
             } else {
                 list.add(file.getAbsolutePath());
@@ -282,7 +282,7 @@ public final class FileUtil {
     /**
      * *********************** read  file apis ************************
      */
-    public static String cat(String filepath) throws IOException {
+    public static String cat(String filepath) {
         File file = new File(filepath);
         BufferedReader reader = null;
         StringBuilder res = new StringBuilder();
@@ -297,8 +297,13 @@ public final class FileUtil {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (reader != null)
-                reader.close();
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return res.toString();
     }
@@ -427,6 +432,33 @@ public final class FileUtil {
 
 
     /**
+     * if exit ,not write,
+     * @param filepath
+     * @param content
+     */
+    public static void write(String filepath, String content,boolean force) {
+        List<String> list = new LinkedList<>();
+        list.add(content);
+        write(filepath,list,force);
+    }
+
+    public static void write(String filepath, List<String> content,boolean force) {
+        if(force && fileExist(filepath)){
+            rm(filepath);
+        }
+        append(filepath,content);
+    }
+    public static void writeForce(String filepath, String content) {
+        write(filepath,content,true);
+    }
+    public static void write(String filepath, List<String> content) {
+        write(filepath,content,false);
+    }
+    public static void writeForce(String filepath, List<String> content) {
+        write(filepath,content,true);
+    }
+
+    /**
      * write content to file,auto add "\n"
      *
      * @param filepath
@@ -450,6 +482,7 @@ public final class FileUtil {
             if (fileExist(filepath)) {
                 writer = new FileWriter(filepath, true);//exist,append
             } else {
+                //not exist,create
                 writer = new FileWriter(filepath, false);//if file exist ,it will rm the file then create
             }
             StringBuilder sb = new StringBuilder();

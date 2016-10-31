@@ -1,10 +1,10 @@
 package com.jason798.collection;
 
 import com.jason798.character.StringCheckUtil;
-import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -276,6 +276,22 @@ public final class CollectionUtil {
             return null;
         }
         return Arrays.asList(array);
+    }
+
+    /**
+     * list to array
+     * @param list
+     * @return
+     */
+    public static <T> T[] list2array(List<T> list){
+        if(isEmpty(list)){
+            return null;
+        }
+        int size = list.size();
+        T first = list.get(0);
+        Class clz = first.getClass();
+        T[] arr = (T[]) Array.newInstance(clz,size);
+        return list.toArray(arr);
     }
 
     /**
@@ -564,6 +580,8 @@ public final class CollectionUtil {
         s.add(str);
         return s;
     }
+
+
 
 //    public static <T> T[] list2array(List<T> l){
 //
