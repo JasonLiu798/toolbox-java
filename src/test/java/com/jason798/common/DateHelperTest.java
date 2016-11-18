@@ -238,4 +238,12 @@ public class DateHelperTest {
     }
 
 
+
+    @Test
+    public void testSelfAdpation()
+    {
+        long time = 1478855477734l;
+        Date d = DateUtil.long2DateSelfAdaption(time);
+        System.out.println(d);
+    }
 }

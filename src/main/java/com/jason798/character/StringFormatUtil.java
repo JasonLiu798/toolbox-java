@@ -14,9 +14,9 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class StringUtil {
+public final class StringFormatUtil {
 
-    private static Logger logger = LoggerFactory.getLogger(StringUtil.class);
+    private static Logger logger = LoggerFactory.getLogger(StringFormatUtil.class);
 
     private static final String NULL = "NULL";
     private static final int NULLNUMSTR = -1;
@@ -29,9 +29,9 @@ public final class StringUtil {
     public static final String DOT_SEP = ".";
     public static final String DOT_SEP_NO_REX = "\\.";
 
-    public static final String SPACE = " ";
     public static final String[] HEX_DIGITS = {"0", "1", "2", "3", "4", "5",
             "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
+
 
     /**
      * 首字母转小写
@@ -64,7 +64,7 @@ public final class StringUtil {
     }
 
     /**
-     * 替换Oracle like搜索的特殊字符串
+     * replace Oracle like special character
      *
      * @param str
      * @return
@@ -80,11 +80,11 @@ public final class StringUtil {
     }
 
     public static String replaceBlank(String str) {
-        if (StringCheckUtil.isEmpty(str)) {
+        if(StringCheckUtil.isEmpty(str)){
             return str;
         }
         String dest = "";
-        if (str != null) {
+        if (str!=null) {
             Pattern p = Pattern.compile("\\s*|\t|\r|\n");
             Matcher m = p.matcher(str);
             dest = m.replaceAll("");
@@ -122,9 +122,9 @@ public final class StringUtil {
 
 
     /**
-     * 集合转string
+     * format collection tring
      *
-     * @param sep 元素分隔符号
+     * @param sep separator
      * @return
      */
     public static String concat(Collection<String> collection, String sep) {
@@ -314,14 +314,6 @@ public final class StringUtil {
         return str.trim();
     }
 
-    public static List<String> trimAll(List<String> s){
-        List<String> res = new LinkedList<>();
-        for(String is:s){
-            res.add(trim(is));
-        }
-        return res;
-    }
-
 
     /**
      * null => null
@@ -509,35 +501,6 @@ public final class StringUtil {
             strNewString = "0" + strNewString;
         }
         return strNewString;
-    }
-
-    public static String addSpaceFront(String vSourceString, int count, int spaceSize) {
-        return addCharacterFront(vSourceString,SPACE,count, spaceSize);
-    }
-    /**
-     * add count's space in string's front
-     * @param vSourceString
-     * @param count
-     * @param duplicateCnt
-     * @return
-     */
-    public static String addCharacterFront(String vSourceString, String character, int count, int duplicateCnt) {
-        if(StringCheckUtil.isEmpty(character)){
-            character = SPACE;
-        }
-        if (duplicateCnt <= 0) {
-            duplicateCnt = 1;
-        }
-        if (count <= 0) {
-            count = 1;
-        }
-        int total = count*duplicateCnt;
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < total; i++) {
-            sb.append(character);
-        }
-        sb.append(vSourceString);
-        return sb.toString();
     }
 
     /**

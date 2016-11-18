@@ -1,21 +1,51 @@
 package com.jason798.collection; 
 
 import com.jason798.number.RangeUtil;
+import com.jason798.test.TestDto;
+import org.apache.commons.beanutils.BeanUtils;
 import org.junit.Test;
 import org.junit.Before; 
 import org.junit.After;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-public class CollectionHelperTest {
+public class CollectionUtilTest {
 
 
-    
+    @Test
+    public void freeze() throws Exception {
+        Map<String,TestDto> map = new HashMap<>();
+        TestDto t1 = new TestDto(1,"t1");
+        TestDto t2 = new TestDto(2,"t2");
+        map.put("t1",t1);
+        map.put("t2",t2);
+        System.out.println(map);
+        Map<String,TestDto> fmap = CollectionUtil.copyMap(map);
+        //Map fmap = (Map) BeanUtils.cloneBean(map);
+        t1.setS1("t3");
+        System.out.println(fmap);
+    }
+
+
+    @Test
+    public void testfilterDelListInner(){
+        List<String> tgt = new LinkedList<>();
+        tgt.add("abc");
+        tgt.add("def");
+        tgt.add("hij");
+        tgt.add("klm");
+        List<String> dellist = new LinkedList<>();
+        dellist.add("def");
+        dellist.add("klm");
+        List<String> res = CollectionUtil.filterDelListInner(tgt,dellist,CollectionUtil.TP_EXIST_STR);
+        System.out.println(res);
+    }
+
+
     @Test
     public void testIsEmptyArr() throws Exception { 
         

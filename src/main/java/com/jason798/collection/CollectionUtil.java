@@ -1,6 +1,7 @@
 package com.jason798.collection;
 
 import com.jason798.character.StringCheckUtil;
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +35,7 @@ public final class CollectionUtil {
         }
         return false;
     }
+
     public static <T> boolean isNotEmpty(T[] arr) {
         return !isEmpty(arr);
     }
@@ -50,12 +52,14 @@ public final class CollectionUtil {
         }
         return false;
     }
+
     public static <T> boolean isNotEmpty(Collection<T> collection) {
         return !isEmpty(collection);
     }
 
     /**
      * check map empty
+     *
      * @param map
      * @param <K>
      * @param <V>
@@ -67,23 +71,35 @@ public final class CollectionUtil {
         }
         return false;
     }
+
     public static <K, V> boolean isNotEmpty(Map<K, V> map) {
         return !isEmpty(map);
     }
 
     /**
-     *
      * @param c
      * @param t
      * @param <T>
      * @return
      */
-    public static <T> boolean isIn(Collection<T> c,T t){
-        if(isEmpty(c)){
+    public static <T> boolean isIn(Collection<T> c, T t) {
+        if (isEmpty(c)) {
             return false;
         }
-        for(T i:c){
-            if(i.equals(t)){
+        for (T i : c) {
+            if (i.equals(t)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static  boolean isLikeIn(Collection<String> c, String t) {
+        if (isEmpty(c)) {
+            return false;
+        }
+        for (String i : c) {
+            if (i.indexOf(t)>=0) {
                 return true;
             }
         }
@@ -124,6 +140,7 @@ public final class CollectionUtil {
 
     /**
      * get two list's same element
+     *
      * @param mainList
      * @param otherList
      * @param <T>
@@ -148,14 +165,15 @@ public final class CollectionUtil {
 
     /**
      * get the first duplicate item
+     *
      * @param mainList
      * @param otherList
      * @param <T>
      * @return
      */
-    public static <T> T getOneDuplicateItemUseHash(List<T> mainList,List<T> otherList){
-        List<T> list = getDuplicateItemUseHash(mainList,otherList);
-        if(CollectionUtil.isEmpty(list)){
+    public static <T> T getOneDuplicateItemUseHash(List<T> mainList, List<T> otherList) {
+        List<T> list = getDuplicateItemUseHash(mainList, otherList);
+        if (CollectionUtil.isEmpty(list)) {
             return null;
         }
         return list.get(0);
@@ -232,6 +250,21 @@ public final class CollectionUtil {
      * @return
      */
     public static <T> List<T> filterDelList(List<T> tgtList, List<T> delList) {
+        return filterDelListInner(tgtList, delList, TP_EQ);
+    }
+
+    public static List<String> filterDelListExistStr(List<String> tgtList, List<String> delList) {
+        return filterDelListInner(tgtList, delList, TP_EXIST_STR);
+    }
+
+    /**
+     * @param tgtList
+     * @param delList
+     * @param option  1,list  must be String,use index of
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> filterDelListInner(List<T> tgtList, List<T> delList, int option) {
         if (isEmpty(delList)) {
             return tgtList;
         }
@@ -242,13 +275,30 @@ public final class CollectionUtil {
         while (tgtIterator.hasNext()) {
             T tgt = tgtIterator.next();
             for (T item : delList) {
-                if (item.equals(tgt)) {
-                    tgtIterator.remove();
+                switch (option) {
+                    case TP_EQ:
+                        if (item.equals(tgt)) {
+                            tgtIterator.remove();
+                        }
+                        break;
+                    case TP_EXIST_STR:
+                        String itemStr = item.toString();
+                        String tgtStr = tgt.toString();
+                        if (tgtStr.indexOf(itemStr) >= 0) {
+                            tgtIterator.remove();
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
         }
         return tgtList;
     }
+
+    public static final int TP_EQ = 0;
+    public static final int TP_EXIST_STR = 1;
+
 
     /**
      * set转为list
@@ -280,17 +330,18 @@ public final class CollectionUtil {
 
     /**
      * list to array
+     *
      * @param list
      * @return
      */
-    public static <T> T[] list2array(List<T> list){
-        if(isEmpty(list)){
+    public static <T> T[] list2array(List<T> list) {
+        if (isEmpty(list)) {
             return null;
         }
         int size = list.size();
         T first = list.get(0);
         Class clz = first.getClass();
-        T[] arr = (T[]) Array.newInstance(clz,size);
+        T[] arr = (T[]) Array.newInstance(clz, size);
         return list.toArray(arr);
     }
 
@@ -564,24 +615,37 @@ public final class CollectionUtil {
         return list;
     }
 
-    public static List<String> castInt2String(List<Integer> list){
+    public static List<String> castInt2String(List<Integer> list) {
         List<String> res = new LinkedList<>();
-        for(Integer i:list){
+        for (Integer i : list) {
             res.add(String.valueOf(i));
         }
         return res;
     }
 
-    public static Set<String> string2Set(String str){
+    public static Set<String> string2Set(String str) {
         Set<String> s = new HashSet<>();
-        if(StringCheckUtil.isEmpty(str)){
+        if (StringCheckUtil.isEmpty(str)) {
             return s;
         }
         s.add(str);
         return s;
     }
 
+    public static <K, V> Map<K, V> freeze1(Map<K, V> map, final boolean copy) {
+        if (copy) {
+            map = new HashMap<>(map);
+        }
+        return Collections.unmodifiableMap(map);
+    }
 
+    public static <K, V> Map<K, V> copyMap(Map<K, V> map) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        Map nmap = new HashMap<>();
+        for (Map.Entry<K, V> entry : map.entrySet()) {
+            nmap.put(entry.getKey(), BeanUtils.cloneBean(entry.getValue()));//entry.getValue().clone());
+        }
+        return nmap;
+    }
 
 //    public static <T> T[] list2array(List<T> l){
 //

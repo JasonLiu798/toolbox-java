@@ -137,6 +137,25 @@ public class DateUtil {
     public static Date long2Date(long ltime){
         return new Date(ltime*1000);
     }
+
+    /**
+     * self adaption of ltime's length
+     * @param ltime
+     * @return
+     */
+    public static Date long2DateSelfAdaption(long ltime){
+        //1478855477
+        //9999999999
+        if(ltime> 9999999999L ){
+            //ms
+            return new Date(ltime);
+        }else{
+            //second
+            return new Date(ltime*1000);
+        }
+    }
+
+
     public static Date ts2Date(long ts){
         return new Date(ts*1000);
     }

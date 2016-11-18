@@ -4,6 +4,8 @@ import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * IPUtil Tester.
  *
@@ -29,12 +31,28 @@ public class IPUtilTest {
         }
     }
 
-    /**
-     * Method: long2ip(long ip)
-     */
-    @Test
-    public void testLong2ip() throws Exception {
 
+    @Test
+    public void testIsIp() throws Exception {
+        boolean res = IPUtil.isIp("127.0.0.1");
+        assertEquals(true, res);
+        res = IPUtil.isIp("255.255.255.255");
+        assertEquals(true, res);
+        res = IPUtil.isIp("1.2.23.4");
+        assertEquals(true, res);
+
+        res = IPUtil.isIp("23.4");
+        assertEquals(false, res);
+        res = IPUtil.isIp("256.123.23.4");
+        assertEquals(false, res);
+        res = IPUtil.isIp("123.2500.3.4");
+        assertEquals(false, res);
+        res = IPUtil.isIp("123.23.663.4");
+        assertEquals(false, res);
+        res = IPUtil.isIp("123.23.0.434");
+        assertEquals(false, res);
+        res = IPUtil.isIp("0.0.0.0");
+        assertEquals(true, res);
     }
 
     /**

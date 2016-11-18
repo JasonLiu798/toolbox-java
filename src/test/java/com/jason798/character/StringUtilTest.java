@@ -37,6 +37,12 @@ public class StringUtilTest {
     }
 
     @Test
+    public void testAddSpace(){
+        String res = StringUtil.addSpaceFront("123",2,3);
+        System.out.println(res+","+res.length());
+    }
+
+    @Test
     public void testReplaceBlank(){
         String s= StringUtil.replaceBlank("aa\n");
         assertEquals(s,"aa");
