@@ -765,4 +765,25 @@ public class ReflectUtil {
         }
         return null;
     }
+
+
+    /**
+     * 获取简化类名 手动取最后一节
+     * @param obj
+     * @return
+     */
+    public static String getClassSimpleName(Object obj){
+        String wholeName = obj.getClass().getName();
+        int dotIdx = wholeName.lastIndexOf(".");
+        String res = "";
+        if(dotIdx+1>0 && dotIdx+1!=wholeName.length()-1){
+            res = wholeName.substring(dotIdx+1);
+        }else{
+            res = wholeName;
+        }
+        return res;
+    }
+
+
+
 }

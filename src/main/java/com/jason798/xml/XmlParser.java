@@ -74,8 +74,7 @@ public class XmlParser {
      */
     public XmlElement parse() throws XmlException {
         if (isConsumed) {
-            throw new IllegalStateException("this XmlParser-instance has already been used, please create a new one " +
-                    "for each usage");
+            throw new IllegalStateException("this XmlParser-instance has already been used, please create a new one for each usage");
         }
         XmlElement rootElement = null;
         ParserHandler parserHandler = new ParserHandler();

@@ -45,10 +45,18 @@ public class CollectionUtilTest {
         System.out.println(res);
     }
 
+    @Test
+    public void testPrintKey(){
+        Map map = new HashMap();
+        map.put(1,2);
+        map.put(2,3);
+        String s = CollectionUtil.getKeySetString(map);
+        System.out.println(s);
+    }
 
     @Test
-    public void testIsEmptyArr() throws Exception { 
-        
+    public void testIsEmptyArr() throws Exception {
+
     }
     
     @Test

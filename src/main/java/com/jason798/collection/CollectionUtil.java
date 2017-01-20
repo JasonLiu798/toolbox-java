@@ -639,6 +639,17 @@ public final class CollectionUtil {
         return Collections.unmodifiableMap(map);
     }
 
+    /**
+     * 注：map value必须为 bean，原始类型不支持
+     * @param map
+     * @param <K>
+     * @param <V>
+     * @return
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     */
     public static <K, V> Map<K, V> copyMap(Map<K, V> map) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         Map nmap = new HashMap<>();
         for (Map.Entry<K, V> entry : map.entrySet()) {
@@ -647,6 +658,20 @@ public final class CollectionUtil {
         return nmap;
     }
 
+    public static String getKeySetString(Map map) {
+        int i = 0;
+        int last = map.keySet().size() - 1;
+        StringBuilder sb = new StringBuilder();
+        for (Object key : map.keySet()) {
+            if (i != last) {
+                sb.append(key + ",");
+            } else {
+                sb.append(key);
+            }
+            i++;
+        }
+        return sb.toString();
+    }
 //    public static <T> T[] list2array(List<T> l){
 //
 //        T[] = new T[l.size()];

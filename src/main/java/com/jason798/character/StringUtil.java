@@ -528,8 +528,8 @@ public final class StringUtil {
         if (duplicateCnt <= 0) {
             duplicateCnt = 1;
         }
-        if (count <= 0) {
-            count = 1;
+        if (count < 0) {
+            count = 0;
         }
         int total = count*duplicateCnt;
         StringBuilder sb = new StringBuilder();
