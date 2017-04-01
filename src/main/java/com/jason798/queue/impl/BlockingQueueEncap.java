@@ -4,6 +4,7 @@ import com.jason798.queue.IQueue;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Blocking queue use ArrayBlocking queue
@@ -18,7 +19,7 @@ public class BlockingQueueEncap<T> implements IQueue<T> {
 	/**
 	 * default max size 65535
 	 */
-	private static int maxSize = 65535;
+	private int maxSize = 65535;
 
 	/**
 	 * construct method
@@ -48,6 +49,13 @@ public class BlockingQueueEncap<T> implements IQueue<T> {
 		}
 	}
 
+
+	public void sendMessage(T message,long mstime) throws InterruptedException {
+		if (message != null) {
+			linkq.offer(message,mstime,TimeUnit.MILLISECONDS);
+		}
+	}
+
 	/**
 	 * receive message
 	 *
@@ -59,6 +67,12 @@ public class BlockingQueueEncap<T> implements IQueue<T> {
 	public T receiveMessage() throws InterruptedException {
 		return linkq.take();
 	}
+
+	@Override
+	public T receiveMessage(long mstime) throws InterruptedException{
+		return linkq.poll(mstime, TimeUnit.MILLISECONDS);
+	}
+
 
 	/**
 	 * get now size

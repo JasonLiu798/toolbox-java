@@ -13,6 +13,23 @@ public class TestDto implements Serializable{
 
     //private static final long serialVersionUID = 3741410167347221748L;
 
+    public TestDto(){}
+    public TestDto(int f1, int f2) {
+        this.f1 = f1;
+        this.f2 = f2;
+    }
+
+    public TestDto(int f1, int f2, int f3) {
+        this.f1 = f1;
+        this.f2 = f2;
+        this.f3 = f3;
+    }
+
+    public TestDto(int f1,String s1){
+        this.f1 = f1;
+        this.s1 = s1;
+    }
+
     private int f1;
 
     private int f2;
@@ -26,15 +43,54 @@ public class TestDto implements Serializable{
     @Version(127)
     private int f5;
 
-    public TestDto(int f1, int f2) {
+    private String s1;
+
+    public int getF1() {
+        return f1;
+    }
+
+    public void setF1(int f1) {
         this.f1 = f1;
+    }
+
+    public int getF2() {
+        return f2;
+    }
+
+    public void setF2(int f2) {
         this.f2 = f2;
     }
 
-    public TestDto(int f1, int f2, int f3) {
-        this.f1 = f1;
-        this.f2 = f2;
+    public int getF3() {
+        return f3;
+    }
+
+    public void setF3(int f3) {
         this.f3 = f3;
+    }
+
+    public int getF4() {
+        return f4;
+    }
+
+    public void setF4(int f4) {
+        this.f4 = f4;
+    }
+
+    public int getF5() {
+        return f5;
+    }
+
+    public void setF5(int f5) {
+        this.f5 = f5;
+    }
+
+    public String getS1() {
+        return s1;
+    }
+
+    public void setS1(String s1) {
+        this.s1 = s1;
     }
 
 //    @Override
@@ -55,6 +111,7 @@ public class TestDto implements Serializable{
                 ", f3=" + f3 +
                 ", f4=" + f4 +
                 ", f5=" + f5 +
+                ", s1='" + s1 + '\'' +
                 '}';
     }
 

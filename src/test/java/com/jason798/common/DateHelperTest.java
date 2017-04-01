@@ -1,8 +1,6 @@
 package com.jason798.common;
 
 import org.junit.Test;
-import org.junit.Before;
-import org.junit.After;
 
 import java.util.Date;
 
@@ -13,11 +11,11 @@ public class DateHelperTest {
      */
     @Test
     public void testGetNowLastNTS() throws Exception {
-        Date d = DateHelper.getDate(0);
+        Date d = DateUtil.getDate(0);
         System.out.println(d);
-        d = DateHelper.getDate(-1);
+        d = DateUtil.getDate(-1);
         System.out.println(d);
-        d = DateHelper.getDate(1);
+        d = DateUtil.getDate(1);
         System.out.println(d);
 
     }
@@ -240,4 +238,12 @@ public class DateHelperTest {
     }
 
 
+
+    @Test
+    public void testSelfAdpation()
+    {
+        long time = 1478855477734l;
+        Date d = DateUtil.long2DateSelfAdaption(time);
+        System.out.println(d);
+    }
 }

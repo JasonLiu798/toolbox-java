@@ -1,7 +1,7 @@
 package com.jason798.queue;
 
-import com.jason798.character.StringUtil;
-import com.jason798.collection.CollectionHelper;
+import com.jason798.character.StringCheckUtil;
+import com.jason798.collection.CollectionUtil;
 import com.jason798.config.ConfigUtil;
 import com.jason798.queue.impl.BlockingQueueEncap;
 import com.jason798.queue.impl.ConcurrentLinkedBlockingQueue;
@@ -34,24 +34,24 @@ public class QueueManager {
             Properties properties = ConfigUtil.loadProperties(DFT_QUEUE_CONFIG_FILE);
 
             String queueStr = properties.getProperty(CONF_QUEUE_KEY);
-            if (!StringUtil.isEmpty(queueStr)) {
+            if (!StringCheckUtil.isEmpty(queueStr)) {
                 String queueSep = properties.getProperty(QUEUE_SEP_KEY);
                 //init queue sep
-                if (StringUtil.isEmpty(queueSep)) {
+                if (StringCheckUtil.isEmpty(queueSep)) {
                     queueSep = QUEUE_SEP_DFT;
                     if (LOG.isInfoEnabled())
                         LOG.info("key {} empty use {}", QUEUE_SEP_KEY, queueSep);
                 }
                 //init queue size sep
                 String queueSizeSep = properties.getProperty(QUEUE_SIZE_SEP_KEY);
-                if (StringUtil.isEmpty(queueSizeSep)) {
+                if (StringCheckUtil.isEmpty(queueSizeSep)) {
                     queueSizeSep = QUEUE_SIZE_SEP_DFT;
                     if (LOG.isInfoEnabled())
                         LOG.info("key {} empty use {}", QUEUE_SIZE_SEP_KEY, queueSizeSep);
                 }
 
                 String[] queueArr = queueStr.split(queueSep);
-                if (CollectionHelper.isEmpty(queueArr)) {
+                if (CollectionUtil.isEmpty(queueArr)) {
                     if (LOG.isWarnEnabled())
                         LOG.warn("read properties get null queue config");
                 } else {
@@ -89,10 +89,10 @@ public class QueueManager {
      * @return MessageConnect
      */
     public static IQueue getQueue(String queueName) {
-        if (StringUtil.isEmpty(queueName)) {
+        if (StringCheckUtil.isEmpty(queueName)) {
             throw new NullPointerException("queueName null");
         }
-        if (CollectionHelper.isEmpty(messageQueues) || messageQueues.get(queueName) == null) {
+        if (CollectionUtil.isEmpty(messageQueues) || messageQueues.get(queueName) == null) {
             //LOG.warn("queue map null");
             //throw new NullPointerException();
             IQueue queue = new BlockingQueueEncap(CONF_DFT_QUEUE_SIZE);
@@ -112,7 +112,7 @@ public class QueueManager {
     }
 
     public static boolean queueExist(String queueName) {
-        if (CollectionHelper.isEmpty(messageQueues)) {
+        if (CollectionUtil.isEmpty(messageQueues)) {
             return false;
         }
         return messageQueues.containsKey(queueName);

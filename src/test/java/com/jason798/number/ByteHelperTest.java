@@ -1,8 +1,6 @@
 package com.jason798.number;
 
 import org.junit.Test;
-import org.junit.Before;
-import org.junit.After;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,9 +12,9 @@ public class ByteHelperTest {
      */
     @Test
     public void testByte2int() throws Exception {
-        assertEquals(12,ByteHelper.byte2int((byte) 12));
+        assertEquals(12, ByteUtil.byte2int((byte) 12));
         // ~0000 1100 = 1111 0011 +1 = 1111 0100 = 244
-        assertEquals(244,ByteHelper.byte2int((byte) -12));
+        assertEquals(244, ByteUtil.byte2int((byte) -12));
 
     }
 
@@ -25,9 +23,9 @@ public class ByteHelperTest {
      */
     @Test
     public void testByte2Int() throws Exception {
-        assertEquals(12,ByteHelper.bytes2Int(new byte[]{12}) );
+        assertEquals(12, ByteUtil.bytes2Int(new byte[]{12}) );
         // 12,12
-        assertEquals(12,ByteHelper.bytes2Int(new byte[]{12}) );
+        assertEquals(12, ByteUtil.bytes2Int(new byte[]{12}) );
     }
 
     /**
@@ -35,10 +33,10 @@ public class ByteHelperTest {
      */
     @Test
     public void testByteToHexString() throws Exception {
-        assertEquals("01",ByteHelper.byteToHexString((byte) 1));
-        assertEquals("0c",ByteHelper.byteToHexString((byte) 12));
-        assertEquals("ff",ByteHelper.byteToHexString((byte) 255));
-        assertEquals("f4",ByteHelper.byteToHexString((byte) -12));
+        assertEquals("01", ByteUtil.byteToHexString((byte) 1));
+        assertEquals("0c", ByteUtil.byteToHexString((byte) 12));
+        assertEquals("ff", ByteUtil.byteToHexString((byte) 255));
+        assertEquals("f4", ByteUtil.byteToHexString((byte) -12));
     }
 
     /**

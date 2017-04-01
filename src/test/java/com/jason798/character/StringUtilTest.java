@@ -36,6 +36,30 @@ public class StringUtilTest {
 
     }
 
+    @Test
+    public void testAddSpace(){
+        String res = StringUtil.addSpaceFront("123",2,3);
+        System.out.println(res+","+res.length());
+    }
+
+    @Test
+    public void testReplaceBlank(){
+        String s= StringUtil.replaceBlank("aa\n");
+        assertEquals(s,"aa");
+        s= StringUtil.replaceBlank("\n\taa");
+        assertEquals(s,"aa");
+        s= StringUtil.replaceBlank("");
+        assertEquals(s,"");
+        s= StringUtil.replaceBlank(null);
+        assertEquals(s,null);
+        s= StringUtil.replaceBlank(" aa ");
+        assertEquals(s,"aa");
+        s= StringUtil.replaceBlank("\n\taa\n\t");
+        assertEquals(s,"aa");
+        s= StringUtil.replaceBlank("\n\ta\n\ta\n\t");
+        assertEquals(s,"aa");
+
+    }
     /**
      * Method: getUUID()
      */

@@ -53,7 +53,7 @@ public class XmlParserTest {
     }
 
     /**
-     * Method: parse()
+     * Method: parseInner()
      */
     @Test
     public void testParse() throws Exception {

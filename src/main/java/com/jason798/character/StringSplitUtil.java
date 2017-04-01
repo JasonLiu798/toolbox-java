@@ -8,6 +8,95 @@ public final class StringSplitUtil {
     private StringSplitUtil() {
     }
 
+
+    /**
+     * split string to array by delimiers
+     * @param str
+     * @param delimiters
+     * @return
+     */
+    public static String[] tokenizeToStringArray(String str, String delimiters) {
+        return tokenizeToStringArray(str, delimiters, true, true);
+    }
+
+    /**
+     * split
+     *
+     * @param str
+     * @param delimiters
+     * @param trimTokens
+     * @param ignoreEmptyTokens
+     * @return
+     */
+    public static String[] tokenizeToStringArray(String str, String delimiters,
+                                                 boolean trimTokens, boolean ignoreEmptyTokens) {
+        if (str == null)
+            return null;
+        StringTokenizer st = new StringTokenizer(str, delimiters);
+        List tokens = new ArrayList();
+        while (st.hasMoreTokens()) {
+            String token = st.nextToken();
+            if (trimTokens)
+                token = token.trim();
+            if (!ignoreEmptyTokens || token.length() > 0)
+                tokens.add(token);
+        }
+        return toStringArray(tokens);
+    }
+
+
+    /**
+     * enumeration to string array
+     *
+     * @param enumeration
+     * @return
+     */
+    public static String[] toStringArray(Enumeration enumeration) {
+        if (enumeration == null) {
+            return null;
+        } else {
+            List list = (List) Collections.list(enumeration);
+            return (String[]) list.toArray(new String[list.size()]);
+        }
+    }
+
+    /**
+     * split string by delimiter,arr.length = size
+     * @param str string
+     * @param delimiter sep
+     * @param size size
+     * @return arr
+     */
+    public static String[] splitCheckSize(String str, String delimiter,int size) {
+        if(!StringCheckUtil.isAllNotEmpty(str,delimiter)){
+            throw new IllegalArgumentException("parameter not null");
+        }
+        if(size<=0){
+            throw new IllegalArgumentException("size must > 0");
+        }
+        String[] arr = str.split(delimiter);
+        if(arr.length!=size){
+            throw new IllegalStateException("split result length not equal size");
+        }
+        return arr;
+    }
+
+
+    public static String[] split(String toSplit, String delimiter) {
+        if (delimiter.length() != 1)
+            throw new IllegalArgumentException("Delimiter can only be one character in length");
+        int offset = toSplit.indexOf(delimiter);
+        if (offset < 0) {
+            return null;
+        } else {
+            String beforeDelimiter = toSplit.substring(0, offset);
+            String afterDelimiter = toSplit.substring(offset + 1);
+            return (new String[]{
+                    beforeDelimiter, afterDelimiter
+            });
+        }
+    }
+
     /**
      * split two optimize
      * @param toSplit string to split
@@ -15,7 +104,7 @@ public final class StringSplitUtil {
      * @return splited String[]
      */
     public static String[] splitTwo(String toSplit, String delimiter) {
-        if( StringUtil.isEmpty(toSplit) || StringUtil.isEmpty(delimiter) ){
+        if( StringCheckUtil.isEmpty(toSplit) || StringCheckUtil.isEmpty(delimiter) ){
             throw new IllegalArgumentException("argument can't be null");
         }
         if (  delimiter.length() != 1 ) {
@@ -67,40 +156,7 @@ public final class StringSplitUtil {
         return tokenizeToStringArray(str,DFT_SEP);
     }
 
-    /**
-     *
-     * @param str
-     * @param delimiters
-     * @return
-     */
-    public static String[] tokenizeToStringArray(String str, String delimiters) {
-        return tokenizeToStringArray(str, delimiters, true, true);
-    }
 
-    /**
-     * split string by delimiter,
-     *
-     * @param str string to split
-     * @param delimiters sep
-     * @param trimTokens
-     * @param ignoreEmptyTokens
-     * @return
-     */
-    public static String[] tokenizeToStringArray(String str, String delimiters,
-                                                 boolean trimTokens, boolean ignoreEmptyTokens) {
-        if (str == null)
-            return null;
-        StringTokenizer st = new StringTokenizer(str, delimiters);
-        List<String> tokens = new ArrayList<>();
-        while (st.hasMoreTokens()) {
-            String token = st.nextToken();
-            if (trimTokens)
-                token = token.trim();
-            if (!ignoreEmptyTokens || token.length() > 0)
-                tokens.add(token);
-        }
-        return toStringArray(tokens);
-    }
 
     /**
      * collection to string array
@@ -137,5 +193,26 @@ public final class StringSplitUtil {
         else
             return str.substring(pos + separator.length());
     }
+
+
+    /**
+     * s='/a/b/c'
+     * delimiter='/'
+     * ==> res='/a/b'
+     * @param str string to remove
+     * @param delimiter separater
+     * @return
+     */
+    public static String removeAfterLastDelimiter(String str, String delimiter){
+        if(StringCheckUtil.isExistEmpty(str,delimiter)){
+            return str;
+        }
+        int index = str.lastIndexOf(delimiter);
+        if(index<0 || index>str.length()){
+            return str;
+        }
+        return str.substring(0,index);
+    }
+
 }
 

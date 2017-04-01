@@ -74,8 +74,7 @@ public class XmlParser {
      */
     public XmlElement parse() throws XmlException {
         if (isConsumed) {
-            throw new IllegalStateException("this XmlParser-instance has already been used, please create a new one " +
-                    "for each usage");
+            throw new IllegalStateException("this XmlParser-instance has already been used, please create a new one for each usage");
         }
         XmlElement rootElement = null;
         ParserHandler parserHandler = new ParserHandler();
@@ -98,8 +97,8 @@ public class XmlParser {
             reader.parse(inputSource);
             rootElement = parserHandler.getRootElement();
         } catch (Throwable t) {
-            log.error("couldn't parse xml document", t);
-            throw new XmlException("couldn't parse xml document : " + t.getMessage());
+            log.error("couldn't parseInner xml document", t);
+            throw new XmlException("couldn't parseInner xml document : " + t.getMessage());
         }
 
         if (parserHandler.hasErrors()) {

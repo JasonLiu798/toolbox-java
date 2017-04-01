@@ -27,6 +27,15 @@ public interface IQueue <T> {
 	 * @throws InterruptedException
 	 */
 	T receiveMessage() throws InterruptedException;
+
+	/**
+	 * wait mstime
+	 * @param mstime
+	 * @return
+	 * @throws InterruptedException
+	 */
+	T receiveMessage(long mstime) throws InterruptedException;
+
 	/**
 	 * chk producer buffer
 	 *

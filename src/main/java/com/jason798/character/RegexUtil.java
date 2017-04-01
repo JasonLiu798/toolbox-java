@@ -12,6 +12,11 @@ public final class RegexUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegexUtil.class);
 
+    public static final String FRAG_SPACE = "\\s";
+    public static final String FRAG_SPACES_OR_NE = "\\s*";
+    public static final String FRAG_NOT_SPACE = "\\S";
+    public static final String FRAG_NOT_SPACES = "\\S+";
+
     /**
      * email
      */
@@ -39,7 +44,7 @@ public final class RegexUtil {
      */
     public static String leftNumStrCNUL(String str) {
         String pt2 = "[^a-zA-Z0-9_\\u4e00-\\u9fa5]";
-        if (StringUtil.isEmpty(str)) {
+        if (StringCheckUtil.isEmpty(str)) {
             str = str.replaceAll(pt2, "");
         }
         return str;
@@ -59,6 +64,11 @@ public final class RegexUtil {
         }
         Matcher matcher = pattern.matcher(targetStr);
         return matcher;
+    }
+
+    public static Pattern getPattern(String regex){
+        Pattern pattern = Pattern.compile(regex);
+        return pattern;
     }
 
     /**
@@ -159,7 +169,7 @@ public final class RegexUtil {
      * @return is or not boolean
      */
     public static boolean isBoolean(String str) {
-        if (StringUtil.isEmpty(str)) {
+        if (StringCheckUtil.isEmpty(str)) {
             return false;
         }
         String tmp = str.toLowerCase();

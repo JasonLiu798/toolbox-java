@@ -1,14 +1,12 @@
 package com.jason798.file;
 
-import com.jason798.performance.RunTimeHelper;
+import com.jason798.performance.RunTimeUtil;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
 
-import java.util.Collections;
-
 /**
- * FileHelperNio Tester.
+ * FileNioUtil Tester.
  *
  * @author <Authors name>
  * @version 1.0
@@ -27,8 +25,8 @@ public class FileHelperNioTest {
 
 	@Test
 	public void testWrite(){
-//		FileHelperNio.appendFile("Y:\\aaa1.txt","aaa");
-		FileHelperNio.writeFile("Y:\\aaa.txt","bbb");
+//		FileNioUtil.appendFile("Y:\\aaa1.txt","aaa");
+		FileNioUtil.writeFile("Y:\\aaa.txt","bbb");
 
 	}
 
@@ -37,10 +35,10 @@ public class FileHelperNioTest {
 	 */
 	@Test
 	public void testReadBigFile() throws Exception {
-		RunTimeHelper.addTime();
-//		FileHelperNio.readBigFile("Y:\\img\\IMG_0003.CR2");
-		RunTimeHelper.addTime();
-		System.out.println(RunTimeHelper.getFmtTimeForStdout());
+		RunTimeUtil.addTime();
+//		FileNioUtil.readBigFile("Y:\\img\\IMG_0003.CR2");
+		RunTimeUtil.addTime();
+		System.out.println(RunTimeUtil.getFmtTimeForStdout());
 
 	}
 

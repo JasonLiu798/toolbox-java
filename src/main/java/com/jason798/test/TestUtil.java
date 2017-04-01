@@ -1,6 +1,6 @@
 package com.jason798.test;
 
-import com.jason798.file.FileHelper;
+import com.jason798.file.FileUtil;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -22,8 +22,8 @@ public class TestUtil {
 //        Map<String,List<String>> res = new HashMap<>();
 //        res.put(file1,);
 		List<String> lostData = new LinkedList<>();
-		List<String> fileList1 = FileHelper.readFile2StringList(file1);
-		List<String> fileList2 = FileHelper.readFile2StringList(file2);
+		List<String> fileList1 = FileUtil.cat2List(file1);
+		List<String> fileList2 = FileUtil.cat2List(file2);
 		Set<String> file1Set = new HashSet<>();
 		file1Set.addAll(fileList2);
 		for(String f1Str:fileList1){
