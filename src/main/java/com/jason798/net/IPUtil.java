@@ -2,9 +2,12 @@ package com.jason798.net;
 
 import com.jason798.character.StringCheckUtil;
 import com.jason798.collection.CollectionUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -18,6 +21,8 @@ import java.util.regex.Pattern;
  * @date 2015/12/29 17:30
  */
 public class IPUtil {
+    private static final Logger LOG = LoggerFactory.getLogger(IPUtil.class);
+
     //public static final String REGEX_IP = "^\\d+\\.\\d+\\.\\d+\\.\\d+$";
     public static final String REGEX_IP = "^((?:(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))$";
     public static final String LOCAL_IP = "127.0.0.1";
@@ -146,6 +151,22 @@ public class IPUtil {
         }
         return list;
     }
+
+
+    public static String getLocalOneIP() {
+        try {
+            return InetAddress.getLocalHost().getHostAddress().toString();
+        } catch (UnknownHostException var1) {
+            LOG.error("get local ip UnknownHostException", var1, new Object[0]);
+            return "";
+        }
+    }
+
+
+    public static Long getLocalIPLong() {
+        return Long.valueOf(ip2Long(getLocalOneIP()));
+    }
+
 
 
 }
