@@ -672,6 +672,26 @@ public final class CollectionUtil {
         }
         return sb.toString();
     }
+
+
+    /**
+     * filter duplicate element in list
+     * @param l
+     * @return
+     */
+    public static List<String> filterDuplicate(List<String> l){
+        if(isEmpty(l)){
+            return l;
+        }
+        Set<String> set = new HashSet<>();
+        for(String s:l){
+            set.add(s);
+        }
+        List<String> res = new LinkedList<>();
+        res.addAll(set);
+        return res;
+    }
+
 //    public static <T> T[] list2array(List<T> l){
 //
 //        T[] = new T[l.size()];

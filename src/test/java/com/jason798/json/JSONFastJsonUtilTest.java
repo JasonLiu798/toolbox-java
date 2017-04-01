@@ -7,7 +7,6 @@ import org.junit.rules.ExpectedException;
 
 public class JSONFastJsonUtilTest {
 
-
     
     @Test
     public void testJsonToObjectJsonStr() throws Exception { 
