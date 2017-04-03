@@ -5,7 +5,7 @@
     <groupId>com.jason798</groupId>
     <artifactId>toolbox</artifactId>
 
-    <version>1.3.3</version>
+    <version>1.4.0</version>
     <packaging>jar</packaging>
 
     <name>toolbox</name>
@@ -352,52 +352,31 @@
 
 
 
-            <!-- mvn mybatis-generator:generate -->
-            <plugin>
-                <groupId>org.mybatis.generator</groupId>
-                <artifactId>mybatis-generator-maven-plugin</artifactId>
-                <version>1.3.2</version>
-                <configuration>
-                    <verbose>true</verbose>
-                    <overwrite>true</overwrite>
-                    <configurationFile>src/main/resources/generatorConfig.xml</configurationFile>
-                </configuration>
-                <dependencies>
-                    <!-- 数据库驱-->
-                    <dependency>
-                        <groupId>mysql</groupId>
-                        <artifactId>mysql-connector-java</artifactId>
-                        <!--<version>${mysql.version}</version>-->
-                    </dependency>
-                </dependencies>
-            </plugin>
 
-
-
-            <plugin>
-                <!-- jetty:run -Dorg.eclipse.jetty.annotations.maxWait=120 -->
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.2.1.v20140609</version>
-                <configuration>
-                    <scanIntervalSeconds>3</scanIntervalSeconds>
-                    <stopKey>foo</stopKey>
-                    <stopPort>9999</stopPort>
-                    <httpConnector>
-                        <port>8080</port>
-                    </httpConnector>
-                    <scanTargets>
-                        <!--<scanTarget>./target/classes</scanTarget>-->
-                        <scanTarget>../module-1/target/classes</scanTarget>
-                        <scanTarget>../module-2/target/classes</scanTarget>
-                    </scanTargets>
-                    <!--<useTestClasspath>true</useTestClasspath>-->
-                    <webAppConfig>
-                        <contextPath>/</contextPath>
-                        <defaultsDescriptor>D:\tools\jetty\jetty-distribution-9.2.7.v20150116\etc\webdefault.xml</defaultsDescriptor>
-                    </webAppConfig>
-                </configuration>
-            </plugin>
+            <!--<plugin>-->
+                <!--&lt;!&ndash; jetty:run -Dorg.eclipse.jetty.annotations.maxWait=120 &ndash;&gt;-->
+                <!--<groupId>org.eclipse.jetty</groupId>-->
+                <!--<artifactId>jetty-maven-plugin</artifactId>-->
+                <!--<version>9.2.1.v20140609</version>-->
+                <!--<configuration>-->
+                    <!--<scanIntervalSeconds>3</scanIntervalSeconds>-->
+                    <!--<stopKey>foo</stopKey>-->
+                    <!--<stopPort>9999</stopPort>-->
+                    <!--<httpConnector>-->
+                        <!--<port>8080</port>-->
+                    <!--</httpConnector>-->
+                    <!--<scanTargets>-->
+                        <!--&lt;!&ndash;<scanTarget>./target/classes</scanTarget>&ndash;&gt;-->
+                        <!--<scanTarget>../module-1/target/classes</scanTarget>-->
+                        <!--<scanTarget>../module-2/target/classes</scanTarget>-->
+                    <!--</scanTargets>-->
+                    <!--&lt;!&ndash;<useTestClasspath>true</useTestClasspath>&ndash;&gt;-->
+                    <!--<webAppConfig>-->
+                        <!--<contextPath>/</contextPath>-->
+                        <!--<defaultsDescriptor>D:\tools\jetty\jetty-distribution-9.2.7.v20150116\etc\webdefault.xml</defaultsDescriptor>-->
+                    <!--</webAppConfig>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
 
             <!--<plugin>-->
                 <!--<groupId>org.apache.maven.plugins</groupId>-->
