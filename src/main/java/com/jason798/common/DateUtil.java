@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * date util
@@ -473,6 +474,11 @@ public class DateUtil {
         Date tgtDate = getIntervalDate(startDate, unit, diff);
         return getIntervalSec(startDate, tgtDate);
     }
+	
+	public static Long getInterval(Date start, Date end, TimeUnit tu) {
+    	//start.() ;
+		return date2Timestamp(end) - date2Timestamp(start);
+	}
 
     /**
      * get interval second
