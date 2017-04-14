@@ -911,11 +911,11 @@ public final class StringUtil {
     }
 
 
-    public final static String formatDate(Date date, SimpleDateFormat sf) {
+    public final static String formatDate(Date date, SimpleDateFormat sdf) {
         if (date == null) {
             return NULL;
         } else {
-            return sf.format(date);
+            return sdf.format(date);
         }
     }
 

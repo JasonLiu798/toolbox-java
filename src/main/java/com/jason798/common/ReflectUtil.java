@@ -5,18 +5,27 @@ import com.jason798.character.StringUtil;
 import com.jason798.collection.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
+/**
+ * @author JasonLiu
+ */
 public class ReflectUtil {
 
     private static Logger LOG = LoggerFactory.getLogger(ReflectUtil.class);
 
+    /**
+     * ################## methods ######################
+     */
     private static final String SET_PREFIX = "set";
     private static final String GET_PREFIX = "get";
     private static final String GET_BOOL_PREFIX = "is";
+
+
     /**
      * get field map type
      * 0   self and parents
@@ -31,7 +40,7 @@ public class ReflectUtil {
         ALLPARENT
     }
 
-    private static Map<Class<?>, Class<?>> boxTypeMap     = new HashMap<Class<?>, Class<?>>();
+    private static Map<Class<?>, Class<?>> boxTypeMap = new HashMap<Class<?>, Class<?>>();
 
     static {
         boxTypeMap.put(byte.class, Byte.class);
@@ -46,16 +55,18 @@ public class ReflectUtil {
 
 
     /**
-     * Returns boxer of c or c if c can't be boxed.
-     * */
-    public static Class<?> tryConvertToBoxClass(Class<?> c) {
-        if(c==null){
-            return null;
-        }
-        if (boxTypeMap.containsKey(c)) {
-            return boxTypeMap.get(c);
-        }
-        return c;
+     * ######################### check methods ###########################
+     */
+    /**
+     * is empty
+     *
+     * @param obj object
+     * @return is empty or not
+     */
+    private static boolean isEmpty(Object obj) {
+        if (obj == null)
+            return true;
+        return false;
     }
 
     /**
@@ -74,6 +85,22 @@ public class ReflectUtil {
     }
 
     /**
+     * Returns boxer of c or c if c can't be boxed.
+     */
+    public static Class<?> tryConvertToBoxClass(Class<?> c) {
+        if (c == null) {
+            return null;
+        }
+        if (boxTypeMap.containsKey(c)) {
+            return boxTypeMap.get(c);
+        }
+        return c;
+    }
+
+    /**
+     * ########################### new #################################
+     */
+    /**
      * get instance by string
      *
      * @param classStr class str
@@ -89,24 +116,30 @@ public class ReflectUtil {
 
 
     /**
-     * check is implement interface
+     * ################## interface ############################
+     */
+    /**
+     * check A is implement interface B
      *
      * @param A check class
      * @param B parent or interface
      * @return is impl
      */
-    public static boolean chkAInheritB(Class<?> A, Class<?> B) {
+    public static boolean isAImplementB(Class<?> A, Class<?> B) {
         return B.isAssignableFrom(A);
     }
-    public static boolean chkAInheritB(Object A, Class<?> B) {
-        return chkAInheritB(A.getClass(), B);
+
+    public static boolean isAImplementB(Object A, Class<?> B) {
+        return isAImplementB(A.getClass(), B);
     }
-    public static boolean chkAInheritBList(Object A, List<Class<?>> B) {
-        return chkAInheritBList(A.getClass(), B);
+
+    public static boolean isAImplementBList(Object A, List<Class<?>> B) {
+        return isAImplementBList(A.getClass(), B);
     }
-    public static boolean chkAInheritBList(Class<?> A, List<Class<?>> B) {
+
+    public static boolean isAImplementBList(Class<?> A, List<Class<?>> B) {
         for (Class<?> intf : B) {
-            if (chkAInheritB(A, intf)) {
+            if (isAImplementB(A, intf)) {
                 return true;
             }
         }
@@ -114,6 +147,9 @@ public class ReflectUtil {
     }
 
 
+    /**
+     * ######################### fields #############################
+     */
     /**
      * get field set,class self
      *
@@ -127,30 +163,6 @@ public class ReflectUtil {
             set.add(field.getName());
         }
         return set;
-    }
-
-
-    /**
-     * get filed have setter method ,not include  parents's field
-     *
-     * @param clz class to get
-     * @return field got set-method Set
-     */
-    public static Set<String> getFieldsHaveSetter(Class<?> clz) {
-        Method[] methods = clz.getMethods();
-        Set<String> sets = new HashSet<>();
-        for (Method m : methods) {
-            String name = m.getName();
-            if (name.startsWith(SET_PREFIX)) {
-                name = name.substring(SET_PREFIX.length());
-                if (name.length() > 0) {
-                    name = StringUtil.toLowerCaseFirstOne(name);
-                    sets.add(name);
-                }
-
-            }
-        }
-        return sets;
     }
 
     /**
@@ -167,6 +179,7 @@ public class ReflectUtil {
         }
         return sets;
     }
+
 
     /**
      * get field type
@@ -209,194 +222,12 @@ public class ReflectUtil {
         return null;
     }
 
-
-    /**
-     * ########################## getter method association ##########################
-     **/
-
-    public static Object getterForceClz(Class clz, String fieldName) {
-        return getterForce(clz,null,fieldName);
-    }
-    public static Object getterForce(Object obj, String fieldName) {
-        return getterForce(obj.getClass(),obj,fieldName);
-    }
-    /**
-     * force get field value,[include private,protecte,parent's]
-     *
-     * @param obj    target object
-     * @param fieldName field name
-     * @return field value
-     */
-    public static Object getterForce(Class clz,Object obj, String fieldName) {
-        Field field = getDeclaredField(clz, fieldName);
-        if (field == null) {
-            if(LOG.isDebugEnabled()){
-                LOG.debug("field null");
-            }
-            return null;
-        }
-        try {
-            field.setAccessible(true);
-            if(obj!=null) {
-                return field.get(obj);
-            }else{
-                return field.get(null);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-    /**
-     * get value from getter
-     *
-     * @param obj   target object
-     * @param field field name
-     * @return
-     */
-    public static <T> Object getter(T obj, String field) {
-        Class clz = obj.getClass();
-        Method getterMethod = getGetterMethod(clz, field);
-        try {
-            return getterInner(obj, getterMethod);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * check get method exist
-     *
-     * @param methods     method list
-     * @param fieldGetMet get method name string
-     * @return is equal
-     */
-    private static boolean checkGetMethod(Method[] methods, String fieldGetMet) {
-        for (Method met : methods) {
-            if (fieldGetMet.equals(met.getName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * get getter method,if type is boolean ,try to get is method
-     *
-     * @param clz   class
-     * @param field field string
-     * @return method
-     */
-    public static Method getGetterMethod(Class clz, String field) {
-        String methodName = generateGetName(field, false);
-
-        boolean methodNotFound = false;
-        Method getterMethod = null;
-        try {
-            getterMethod = clz.getMethod(methodName);
-        } catch (NoSuchMethodException e) {
-            methodNotFound = true;
-        }
-
-        // if boolean try to find exist isXXX
-        if (methodNotFound) {
-            try {
-                getterMethod = clz.getMethod(generateGetName(field, true));
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            }
-        }
-        return getterMethod;
-    }
-
-    public static Object getterInner(Object obj, Method method) throws InvocationTargetException, IllegalAccessException {
-        if (method != null) {
-            Object res = method.invoke(obj, (Object[]) null);
-            return res;
-        }
-        return null;
-    }
-
-
-
-    /**
-     * ########################## setter method association ##########################
-     **/
-    /**
-     * set 指定类型 value
-     *
-     * @param obj     target object
-     * @param field   field
-     * @param valType field type
-     * @param val     value
-     */
-    public static <T> void setter(T obj, String field, Class<?> valType, Object val) {
-        String methodName = SET_PREFIX + StringUtil.toUpperCaseFirstOne(field);
-        Method setter = null;
-        Class clz = obj.getClass();
-        try {
-            setter = clz.getMethod(methodName, valType);
-            setter.invoke(obj, val);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
-    public static <T> void setter(T obj, String field, Object val) {
-        setter(obj, field, val.getClass(), val);
-    }
-
-    /**
-     * force set,[include private,protecte,parent's]
-     *
-     * @param object    object
-     * @param fieldName field name
-     * @param value     value
-     */
-    public static void setterForce(Object object, String fieldName, Object value) {
-        Field field = getDeclaredField(object, fieldName);
-        try {
-            if (field == null) {//do nothing
-                return;
-            }
-            field.setAccessible(true);
-            field.set(object, value);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * set bean use map K-field,V-value
-     *
-     * @param paramMap parameter map
-     * @param bean     bean
-     */
-    public static void setBean(Map<String, Object> paramMap, Object bean) {
-        if (paramMap == null || paramMap.isEmpty())
-            throw new IllegalArgumentException("parameter paramMap must have a value");
-        if (bean == null)
-            throw new IllegalArgumentException("bean the value of must be instantiated");
-        for(Map.Entry<String,Object> entry:paramMap.entrySet()){
-            //String fieldName = entry.getKey();
-            setterForce(bean, entry.getKey(), entry.getValue());
-        }
-    }
-
-
     /**
      * copy field
-     * @param source source obj
-     * @param target target obj
-     * @param ignores ignore field
+     *
+     * @param source    source obj
+     * @param target    target obj
+     * @param ignores   ignore field
      * @param allowNull allow null field
      */
     public static void copyField(Object source, Object target, String[] ignores, boolean allowNull) {
@@ -416,74 +247,10 @@ public class ReflectUtil {
             setterForce(target, fieldName, sourceFieldValue);
         }
     }
+
     public static void copyField(Object source, Object target) {
         copyField(source, target, null, true);
     }
-
-
-    /**
-     * ########################## class list association ##########################
-     **/
-
-    /**
-     * get class list,include self,all parent
-     *
-     * @param bean bean object
-     * @return class list
-     */
-    public static List<Class<?>> getSelfAndParentClassList(Object bean) {
-        return getClassList(bean.getClass(), ParentOpt.ALL);
-    }
-
-    public static List<Class<?>> getSelfAndParentClassList(Class<?> clz) {
-        return getClassList(clz, ParentOpt.ALL);
-    }
-
-    /**
-     * get class list by option
-     *
-     * @param clz target class
-     * @param opt option
-     *            ALL self,parent,....gp
-     *            PARENT parent
-     *            ALLPARENT parent,....gp
-     *            SELF return this
-     * @return class list
-     */
-    public static List<Class<?>> getClassList(Class<?> clz, ParentOpt opt) {
-        List<Class<?>> res = new LinkedList<>();
-        switch (opt) {
-            case ALL:
-                for (Class<?> clazz = clz; clazz != Object.class; clazz = clazz.getSuperclass()) {
-                    res.add(clazz);
-                }
-                break;
-            case PARENT://only get parent
-                Class<?> parClz = clz.getSuperclass();
-                if (parClz == Object.class || parClz == null) {//no parent or Object.class
-                    return null;
-                }
-                res.add(clz);
-                break;
-            case ALLPARENT:
-                for (Class<?> clazz = clz; clazz != Object.class; clazz = clazz.getSuperclass()) {
-                    if (clazz == clz) {
-                        continue;
-                    }
-                    res.add(clazz);
-                }
-                break;
-            default://默认只获取本类
-                res.add(clz);
-                break;
-        }
-        return res;
-    }
-
-    public static List<Class<?>> getClassList(Object bean, ParentOpt opt) {
-        return getClassList(bean.getClass(), opt);
-    }
-
 
     /**
      * get field-value map
@@ -582,6 +349,18 @@ public class ReflectUtil {
         }
         return res;
     }
+    /**
+     * is boolean field
+     *
+     * @param field field name
+     * @return
+     */
+    private static boolean isBoolean(Field field) {
+        if (field.getType() == boolean.class || field.getType() == Boolean.class) {
+            return true;
+        }
+        return false;
+    }
 
     public static Map<String, Object> getFieldValueMapIncludeNull(Object bean) throws Exception {
         return getFieldValueMap(bean, true, ParentOpt.SELF, null, null);
@@ -625,6 +404,35 @@ public class ReflectUtil {
 
 
     /**
+     * get declare field
+     *
+     * @param clz       target object
+     * @param fieldName field
+     * @return field
+     */
+    public static Field getDeclaredField(Class clz, String fieldName) {
+        Field field = null;
+        for (; clz != Object.class; clz = clz.getSuperclass()) {
+            try {
+                field = clz.getDeclaredField(fieldName);
+                return field;
+            } catch (Exception e) {
+                //LOG.error("loop class parnet get field error {}", clz);
+                continue;
+            }
+        }
+        return null;
+    }
+
+    public static Field getDeclaredField(Object object, String fieldName) {
+        Class<?> clazz = object.getClass();
+        return getDeclaredField(clazz, fieldName);
+    }
+
+    /**
+     * ####################### methods #############################
+     */
+    /**
      * get object DeclaredMethod ,include all parent
      *
      * @param object         object
@@ -647,101 +455,27 @@ public class ReflectUtil {
     }
 
     /**
-     * @param object    target object
-     * @param fieldName field
-     * @return field
+     * get filed have setter method ,not include  parents's field
+     *
+     * @param clz class to get
+     * @return field got set-method Set
      */
-    public static Field getDeclaredField(Object object, String fieldName) {
-        Field field = null;
-        Class<?> clazz = object.getClass();
-        for (; clazz != Object.class; clazz = clazz.getSuperclass()) {
-            try {
-                field = clazz.getDeclaredField(fieldName);
-                return field;
-            } catch (Exception e) {
-                // 这里甚么都不要做！并且这里的异常必须这样写，不能抛出去。
-                // 如果这里的异常打印或者往外抛，则就不会执行clazz =
-                // clazz.getSuperclass(),最后就不会进入到父类中了
+    public static Set<String> getFieldsHaveSetter(Class<?> clz) {
+        Method[] methods = clz.getMethods();
+        Set<String> sets = new HashSet<>();
+        for (Method m : methods) {
+            String name = m.getName();
+            if (name.startsWith(SET_PREFIX)) {
+                name = name.substring(SET_PREFIX.length());
+                if (name.length() > 0) {
+                    name = StringUtil.toLowerCaseFirstOne(name);
+                    sets.add(name);
+                }
+
             }
         }
-        return null;
+        return sets;
     }
-
-    public static Field getDeclaredField(Class clz, String fieldName) {
-        Field field = null;
-        for (; clz != Object.class; clz = clz.getSuperclass()) {
-            try {
-                field = clz.getDeclaredField(fieldName);
-                return field;
-            } catch (Exception e) {
-                LOG.error("loop class parnet error {}",clz);
-                continue;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * covert to String
-     *
-     * @param paramMap feild - value Object map
-     * @return field-value String
-     */
-    public static Map<String, String> convert(Map<String, Object> paramMap) {
-        Map<String, String> params = new HashMap<>();
-        if (paramMap == null) {
-            return null;
-        }
-        for(Map.Entry<String,Object> entry:paramMap.entrySet()){
-            String mapKey = entry.getKey();
-            Object value = entry.getValue();
-            params.put(mapKey, value == null ? "" : value.toString());
-        }
-        return params;
-    }
-
-    /**
-     * is boolean field
-     *
-     * @param field field name
-     * @return
-     */
-    private static boolean isBoolean(Field field) {
-        if (field.getType() == boolean.class || field.getType() == Boolean.class) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * generate Get method
-     *
-     * @param field
-     * @return String
-     */
-    private static String generateGetName(String field, boolean isBoolean) {
-        if (StringCheckUtil.isEmpty(field)) {
-            return null;
-        }
-        String upperFiled = StringUtil.toUpperCaseFirstOne(field);
-        if (isBoolean) {
-            return GET_BOOL_PREFIX + upperFiled;
-        }
-        return GET_PREFIX + upperFiled;
-    }
-
-    /**
-     * is empty
-     *
-     * @param obj object
-     * @return is empty or not
-     */
-    private static boolean isEmpty(Object obj) {
-        if (obj == null)
-            return true;
-        return false;
-    }
-
 
     /**
      * invoke method,include private protected and parent's method
@@ -768,22 +502,310 @@ public class ReflectUtil {
 
 
     /**
+     * ###################### class #########################
+     */
+    /**
      * 获取简化类名 手动取最后一节
+     *
      * @param obj
      * @return
      */
-    public static String getClassSimpleName(Object obj){
+    public static String getClassSimpleName(Object obj) {
         String wholeName = obj.getClass().getName();
         int dotIdx = wholeName.lastIndexOf(".");
         String res = "";
-        if(dotIdx+1>0 && dotIdx+1!=wholeName.length()-1){
-            res = wholeName.substring(dotIdx+1);
-        }else{
+        if (dotIdx + 1 > 0 && dotIdx + 1 != wholeName.length() - 1) {
+            res = wholeName.substring(dotIdx + 1);
+        } else {
             res = wholeName;
         }
         return res;
     }
 
+
+    /**
+     * ########################## getter method association ##########################
+     **/
+
+    /**
+     * check get method exist
+     *
+     * @param methods     method list
+     * @param fieldGetMet get method name string
+     * @return is equal
+     */
+    private static boolean checkGetMethod(Method[] methods, String fieldGetMet) {
+        for (Method met : methods) {
+            if (fieldGetMet.equals(met.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Object getterForceClz(Class clz, String fieldName) {
+        return getterForce(clz, null, fieldName);
+    }
+
+    public static Object getterForce(Object obj, String fieldName) {
+        return getterForce(obj.getClass(), obj, fieldName);
+    }
+
+    /**
+     * force get field value,[include private,protecte,parent's]
+     *
+     * @param obj       target object
+     * @param fieldName field name
+     * @return field value
+     */
+    public static Object getterForce(Class clz, Object obj, String fieldName) {
+        Field field = getDeclaredField(clz, fieldName);
+        if (field == null) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("field null");
+            }
+            return null;
+        }
+        try {
+            field.setAccessible(true);
+            if (obj != null) {
+                return field.get(obj);
+            } else {
+                return field.get(null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * get value from getter
+     *
+     * @param obj   target object
+     * @param field field name
+     * @return
+     */
+    public static <T> Object getter(T obj, String field) {
+        Class clz = obj.getClass();
+        Method getterMethod = getGetterMethod(clz, field);
+        try {
+            return getterInner(obj, getterMethod);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * get getter method,if type is boolean ,try to get is method
+     *
+     * @param clz   class
+     * @param field field string
+     * @return method
+     */
+    public static Method getGetterMethod(Class clz, String field) {
+        String methodName = generateGetName(field, false);
+
+        boolean methodNotFound = false;
+        Method getterMethod = null;
+        try {
+            getterMethod = clz.getMethod(methodName);
+        } catch (NoSuchMethodException e) {
+            methodNotFound = true;
+        }
+
+        // if boolean try to find exist isXXX
+        if (methodNotFound) {
+            try {
+                getterMethod = clz.getMethod(generateGetName(field, true));
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        }
+        return getterMethod;
+    }
+
+    public static Object getterInner(Object obj, Method method) throws InvocationTargetException, IllegalAccessException {
+        if (method != null) {
+            Object res = method.invoke(obj, (Object[]) null);
+            return res;
+        }
+        return null;
+    }
+
+
+    /**
+     * ########################## setter method association ##########################
+     **/
+    /**
+     * set 指定类型 value
+     *
+     * @param obj     target object
+     * @param field   field
+     * @param valType field type
+     * @param val     value
+     */
+    public static <T> void setter(T obj, String field, Class<?> valType, Object val) {
+        String methodName = SET_PREFIX + StringUtil.toUpperCaseFirstOne(field);
+        Method setter = null;
+        Class clz = obj.getClass();
+        try {
+            setter = clz.getMethod(methodName, valType);
+            setter.invoke(obj, val);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static <T> void setter(T obj, String field, Object val) {
+        setter(obj, field, val.getClass(), val);
+    }
+
+    /**
+     * force set,[include private,protecte,parent's]
+     *
+     * @param object    object
+     * @param fieldName field name
+     * @param value     value
+     */
+    public static void setterForce(Object object, String fieldName, Object value) {
+        Field field = getDeclaredField(object, fieldName);
+        try {
+            if (field == null) {//do nothing
+                return;
+            }
+            field.setAccessible(true);
+            field.set(object, value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * set bean use map K-field,V-value
+     *
+     * @param paramMap parameter map
+     * @param bean     bean
+     */
+    public static void setBean(Map<String, Object> paramMap, Object bean) {
+        if (paramMap == null || paramMap.isEmpty())
+            throw new IllegalArgumentException("parameter paramMap must have a value");
+        if (bean == null)
+            throw new IllegalArgumentException("bean the value of must be instantiated");
+        for (Map.Entry<String, Object> entry : paramMap.entrySet()) {
+            //String fieldName = entry.getKey();
+            setterForce(bean, entry.getKey(), entry.getValue());
+        }
+    }
+
+
+    /**
+     * ########################## class list association ##########################
+     **/
+
+    /**
+     * get class list,include self,all parent
+     *
+     * @param bean bean object
+     * @return class list
+     */
+    public static List<Class<?>> getSelfAndParentClassList(Object bean) {
+        return getClassList(bean.getClass(), ParentOpt.ALL);
+    }
+
+    public static List<Class<?>> getSelfAndParentClassList(Class<?> clz) {
+        return getClassList(clz, ParentOpt.ALL);
+    }
+
+    /**
+     * get class list by option
+     *
+     * @param clz target class
+     * @param opt option
+     *            ALL self,parent,....gp
+     *            PARENT parent
+     *            ALLPARENT parent,....gp
+     *            SELF return this
+     * @return class list
+     */
+    public static List<Class<?>> getClassList(Class<?> clz, ParentOpt opt) {
+        List<Class<?>> res = new LinkedList<>();
+        switch (opt) {
+            case ALL:
+                for (Class<?> clazz = clz; clazz != Object.class; clazz = clazz.getSuperclass()) {
+                    res.add(clazz);
+                }
+                break;
+            case PARENT://only get parent
+                Class<?> parClz = clz.getSuperclass();
+                if (parClz == Object.class || parClz == null) {//no parent or Object.class
+                    return null;
+                }
+                res.add(clz);
+                break;
+            case ALLPARENT:
+                for (Class<?> clazz = clz; clazz != Object.class; clazz = clazz.getSuperclass()) {
+                    if (clazz == clz) {
+                        continue;
+                    }
+                    res.add(clazz);
+                }
+                break;
+            default://默认只获取本类
+                res.add(clz);
+                break;
+        }
+        return res;
+    }
+
+    public static List<Class<?>> getClassList(Object bean, ParentOpt opt) {
+        return getClassList(bean.getClass(), opt);
+    }
+
+
+    /**
+     * covert to String
+     *
+     * @param paramMap feild - value Object map
+     * @return field-value String
+     */
+    public static Map<String, String> convert(Map<String, Object> paramMap) {
+        Map<String, String> params = new HashMap<>();
+        if (paramMap == null) {
+            return null;
+        }
+        for (Map.Entry<String, Object> entry : paramMap.entrySet()) {
+            String mapKey = entry.getKey();
+            Object value = entry.getValue();
+            params.put(mapKey, value == null ? "" : value.toString());
+        }
+        return params;
+    }
+
+
+    /**
+     * generate Get method
+     *
+     * @param field
+     * @return String
+     */
+    private static String generateGetName(String field, boolean isBoolean) {
+        if (StringCheckUtil.isEmpty(field)) {
+            return null;
+        }
+        String upperFiled = StringUtil.toUpperCaseFirstOne(field);
+        if (isBoolean) {
+            return GET_BOOL_PREFIX + upperFiled;
+        }
+        return GET_PREFIX + upperFiled;
+    }
 
 
 }

@@ -27,6 +27,8 @@ public class ConfigUtil {
 
     public static String[] jsStrings = new String[1];
 
+
+    //TP_CLASSPATH
     private ConfigUtil() {
     }
 
