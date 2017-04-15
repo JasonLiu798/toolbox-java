@@ -95,18 +95,18 @@ public class ReflectUtil {
      * @param B parent or interface
      * @return is impl
      */
-    public static boolean chkAInheritB(Class<?> A, Class<?> B) {
+    public static boolean chkAImplementB(Class<?> A, Class<?> B) {
         return B.isAssignableFrom(A);
     }
-    public static boolean chkAInheritB(Object A, Class<?> B) {
-        return chkAInheritB(A.getClass(), B);
+    public static boolean chkAImplementB(Object A, Class<?> B) {
+        return chkAImplementB(A.getClass(), B);
     }
-    public static boolean chkAInheritBList(Object A, List<Class<?>> B) {
-        return chkAInheritBList(A.getClass(), B);
+    public static boolean chkAImplementBList(Object A, List<Class<?>> B) {
+        return chkAImplementBList(A.getClass(), B);
     }
-    public static boolean chkAInheritBList(Class<?> A, List<Class<?>> B) {
+    public static boolean chkAImplementBList(Class<?> A, List<Class<?>> B) {
         for (Class<?> intf : B) {
-            if (chkAInheritB(A, intf)) {
+            if (chkAImplementB(A, intf)) {
                 return true;
             }
         }
