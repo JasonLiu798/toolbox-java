@@ -142,16 +142,26 @@ public class RandomUtil {
      * @return
      */
     public static List<Integer> generateBatchNum(int n, int start, int end) throws InterruptedException {
+        if(end<start){
+            throw new IllegalArgumentException();
+        }
+        long aStart = start;
+        long aEnd = end;
+        boolean add = false;
+        if(start<0){
+            aStart = 0;
+            aEnd = end -start;
+            add = true;
+        }
+        System.out.println("start:"+aStart+",aEnd:"+aEnd);
         List<Integer> res = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
-            int num = generateInt(start, end);
-            try {
-                Thread.sleep(num % 1000);// sleep
-                // 随机时间，以便产生的system.currentTimeMillis不同
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            long num = generateLong(aStart,aEnd);
+            Thread.sleep(1L);// sleep
+            if(add){
+                num = num+start;
             }
-            res.add(num);
+            res.add(NumberUtil.long2Int(num));
         }
         return res;
     }
