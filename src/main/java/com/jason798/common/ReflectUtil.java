@@ -446,7 +446,7 @@ public class ReflectUtil {
                 return method;
             } catch (Exception e) {
                 continue;
-                //LOG.warn("getDeclaredMethod method not found,{}", e.getMessage());
+                //LOG.warn("getDeclaredMethod method not found,{}", e.getMsg());
             }
         }
         return null;

@@ -38,9 +38,9 @@ public class BlockingQueueEncap<T> implements IQueue<T> {
 	}
 
 	/**
-	 * send one message
+	 * send one msg
 	 *
-	 * @param message send message object
+	 * @param message send msg object
 	 * @throws InterruptedException interrupt exception
 	 */
 	public void sendMessage(T message) throws InterruptedException {
@@ -57,11 +57,11 @@ public class BlockingQueueEncap<T> implements IQueue<T> {
 	}
 
 	/**
-	 * receive message
+	 * receive msg
 	 *
 	 * @return
 	 * @throws InterruptedException interrupt exception
-	 * @return Object recv message object
+	 * @return Object recv msg object
 	 */
 	@Override
 	public T receiveMessage() throws InterruptedException {

@@ -18,6 +18,15 @@ public class SystemUtil {
             e.printStackTrace();
         }
     }
+    
+    public static void sleepForever(){
+		sleep(Integer.MAX_VALUE);
+	}
+	
+	public static void main(String[] args) {
+		sleepForever();
+		System.out.println("aa");
+	}
 
     public static String getPid(){
         String name = ManagementFactory.getRuntimeMXBean().getName();

@@ -17,7 +17,7 @@ public class MailUtil {
 		Session session = Session.getDefaultInstance(props, null);
 		session.setDebug(debug);
 
-		// create a message
+		// create a msg
 		Message msg = new MimeMessage(session);
 
 		// set the from and to address

@@ -32,21 +32,21 @@ public class ReflectHelperTest {
         //interface
         Class clz = List.class;
         Class aclz = ArrayList.class;
-        boolean a = ReflectUtil.isAImplementB(aclz,clz);
+        boolean a = ReflectUtil.chkAImplementB(aclz,clz);
         assertEquals(true,a);
         //abstract class
         Class abclz = AbstractList.class;
-        boolean b = ReflectUtil.isAImplementB(aclz,abclz);
+        boolean b = ReflectUtil.chkAImplementB(aclz,abclz);
         assertEquals(true,b);
         //class
         Class ca = Vector.class;
         Class cb = Stack.class;
-        boolean c = ReflectUtil.isAImplementB(cb,ca);
+        boolean c = ReflectUtil.chkAImplementB(cb,ca);
         assertEquals(true,c);
         //error
         ca = Vector.class;
         cb = Stack.class;
-        c = ReflectUtil.isAImplementB(ca,cb);
+        c = ReflectUtil.chkAImplementB(ca,cb);
         assertEquals(false,c);
 
     }

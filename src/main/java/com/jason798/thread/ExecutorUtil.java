@@ -91,7 +91,7 @@ public final class ExecutorUtil {
             result = future.get(timeout, TimeUnit.MILLISECONDS);
         } catch (TimeoutException e) {
             String message = callable.getClass().getName();
-            logger.error("timeout message|{}, e.message{}", message, e.getMessage(), e);
+            logger.error("timeout msg|{}, e.msg{}", message, e.getMessage(), e);
             e.printStackTrace();
             future.cancel(true);
             result = timeoutHandle.handle();

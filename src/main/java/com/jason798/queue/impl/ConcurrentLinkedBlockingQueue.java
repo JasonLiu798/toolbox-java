@@ -51,9 +51,9 @@ public class ConcurrentLinkedBlockingQueue<T> implements IQueue<T> {
     }
 
     /**
-     * send one message
+     * send one msg
      *
-     * @param message message to send
+     * @param message msg to send
      * @throws InterruptedException interrupted exception
      */
     public void sendMessage(T message) throws InterruptedException {
@@ -74,7 +74,7 @@ public class ConcurrentLinkedBlockingQueue<T> implements IQueue<T> {
     }
 
     /**
-     * receive message
+     * receive msg
      *
      * @return Object polled  object
      * @throws InterruptedException interrupted exception
