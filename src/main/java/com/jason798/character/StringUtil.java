@@ -920,26 +920,6 @@ public final class StringUtil {
     }
 
 
-    /**
-     * 过滤 外边双引号
-     * null => null
-     * ""   =>  空字符串
-     * "aaa" => aaa
-     *
-     * @param string string to filter
-     * @return filtered string
-     */
-    public static String filterOuterQuote(String string) {
-        if (StringCheckUtil.isEmpty(string) || string.length() < 2) {
-            return string;
-        }
-        if (string.length() == 2) {
-            return "";
-        }
-        int len = string.length();
-        string = string.substring(1, len - 1);
-        return string;
-    }
 
 
 }

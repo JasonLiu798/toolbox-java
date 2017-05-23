@@ -431,6 +431,7 @@ public class DateUtil {
 
     /**
      * get
+     *
      * @param d
      * @param diff
      * @return
@@ -474,11 +475,11 @@ public class DateUtil {
         Date tgtDate = getIntervalDate(startDate, unit, diff);
         return getIntervalSec(startDate, tgtDate);
     }
-	
-	public static Long getInterval(Date start, Date end, TimeUnit tu) {
-    	//start.() ;
-		return date2Timestamp(end) - date2Timestamp(start);
-	}
+
+    public static Long getInterval(Date start, Date end, TimeUnit tu) {
+        //start.() ;
+        return date2Timestamp(end) - date2Timestamp(start);
+    }
 
     /**
      * get interval second
@@ -492,15 +493,15 @@ public class DateUtil {
     }
 
 
-
     /**
      * 获取月份，返回秒数
+     *
      * @param date
      * @param monthAdd
      * @return
      */
     public static Long getMonth(Long date, int monthAdd) {
-        Date now = new Date(date*1000);
+        Date now = new Date(date * 1000);
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(now);
         calendar.add(Calendar.MONTH, monthAdd);
@@ -509,11 +510,12 @@ public class DateUtil {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        return calendar.getTimeInMillis()/1000;
+        return calendar.getTimeInMillis() / 1000;
     }
 
     /**
      * 获取月份，返回秒数
+     *
      * @param date
      * @return
      */
@@ -525,16 +527,17 @@ public class DateUtil {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        return calendar.getTimeInMillis()/1000;
+        return calendar.getTimeInMillis() / 1000;
     }
 
     /**
      * 获取年，返回秒数
+     *
      * @param date
      * @return
      */
     public static Long getYear(Long date) {
-        Date now = new Date(date*1000);
+        Date now = new Date(date * 1000);
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(now);
         calendar.set(Calendar.MONTH, Calendar.JANUARY);
@@ -543,11 +546,12 @@ public class DateUtil {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        return calendar.getTimeInMillis()/1000;
+        return calendar.getTimeInMillis() / 1000;
     }
 
     /**
      * 获取年，返回秒数
+     *
      * @param date
      * @return
      */
@@ -560,11 +564,12 @@ public class DateUtil {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        return calendar.getTimeInMillis()/1000;
+        return calendar.getTimeInMillis() / 1000;
     }
 
     /**
      * 获取明年，返回秒数
+     *
      * @param date
      * @return
      */
@@ -578,16 +583,17 @@ public class DateUtil {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        return calendar.getTimeInMillis()/1000;
+        return calendar.getTimeInMillis() / 1000;
     }
 
     /**
      * 获取去年，返回秒数
+     *
      * @param date
      * @return
      */
     public static Long getLastYear(Long date) {
-        Date now = new Date(date*1000);
+        Date now = new Date(date * 1000);
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(now);
         calendar.add(Calendar.YEAR, -1);
@@ -597,16 +603,17 @@ public class DateUtil {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        return calendar.getTimeInMillis()/1000;
+        return calendar.getTimeInMillis() / 1000;
     }
 
     /**
      * 获取次年，返回秒数
+     *
      * @param date
      * @return
      */
     public static Long getNextYear(Long date) {
-        Date now = new Date(date*1000);
+        Date now = new Date(date * 1000);
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(now);
         calendar.add(Calendar.YEAR, 1);
@@ -616,7 +623,38 @@ public class DateUtil {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        return calendar.getTimeInMillis()/1000;
+        return calendar.getTimeInMillis() / 1000;
+    }
+
+    /**
+     * ms to formatted string
+     * 0~60, xx s
+     * 0~60min, xx m
+     * >60min, xx h
+     *
+     * @param mslong
+     * @return
+     */
+    public static String msFmt(Long mslong) {
+        String delayStr = "";
+        if (mslong != null) {
+            long sec = mslong / 1000;
+            if (sec < 60) {//0~60
+                delayStr = sec + "s";
+                return delayStr;
+            }
+            long min = sec / 60;
+            long secMod = sec % 60;
+            if (min < 60) {// 60*60S
+                delayStr = min + "m" + secMod + "s";
+                return delayStr;
+            }
+            long hour = min / 60;
+            long hourMod = min % 60;
+            delayStr = hour + "h" + hourMod + "m" + secMod + "s";
+            return delayStr;
+        }
+        return delayStr;
     }
 
 }

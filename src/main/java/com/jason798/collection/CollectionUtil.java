@@ -692,6 +692,41 @@ public final class CollectionUtil {
         return res;
     }
 
+
+    /**
+     *
+     */
+    /**
+     *
+     * @param el
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> newList(T el) {
+        List<T> l = new LinkedList<>();
+        l.add(el);
+        return l;
+    }
+    public static <T> List<T> newList(T... els) {
+        List<T> l = new LinkedList<>();
+        if (els == null || els.length == 0) {
+            return l;
+        }
+        for (T e : els) {
+            l.add(e);
+        }
+        return l;
+    }
+    public static <K,V> Map<K,V> newMap(K key,V value) {
+        Map<K,V> map = new HashMap<>();
+        map.put(key,value);
+        return map;
+    }
+    public static <K,V> Map<K,V> addKV(Map<K,V> map,K key,V value) {
+        map.put(key,value);
+        return map;
+    }
+
 //    public static <T> T[] list2array(List<T> l){
 //
 //        T[] = new T[l.size()];

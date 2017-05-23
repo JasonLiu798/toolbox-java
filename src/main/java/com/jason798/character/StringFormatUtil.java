@@ -905,4 +905,33 @@ public final class StringFormatUtil {
     }
 
 
+
+    /**
+     * rm <xxxx> of string
+     * @param raw
+     * @param n
+     * @return
+     */
+    public static String rmHtml(String raw,int n){
+        if(n<=0){
+            return raw;
+        }
+        for(int i=0;i<n;i++){
+            raw = rmHtmlInner(raw,"<",">");
+        }
+        return raw;
+    }
+
+    public static String rmHtmlInner(String raw,String left,String right) {
+        if (StringCheckUtil.isEmpty(raw)) {
+            return raw;
+        }
+        int idxLeft = raw.indexOf(left);
+        int idxRight = raw.indexOf(right);
+        if (idxLeft < 0 || idxRight < 0 || idxRight < idxLeft || idxLeft > raw.length() || idxRight > raw.length()) {
+            return raw;
+        }
+        raw = raw.substring(0, idxLeft) + raw.substring(idxRight + 1);
+        return raw;
+    }
 }

@@ -173,6 +173,31 @@ public final class FileUtil {
         }
     }
 
+    public static List<String> lsPrefix(String dirPath,String prefix,String[] black){
+        List<String> res = new LinkedList<>();
+        File parent = new File(dirPath);
+        File[] childs = parent.listFiles();
+        if (CollectionUtil.isEmpty(childs)) {
+            return res;
+        }
+        for (File c : childs) {
+            if(c.getName().contains(prefix) ) {
+                boolean inBlack = false;
+                if(!CollectionUtil.isEmpty(black)){
+                    for(String b:black){
+                        if(c.getName().contains(b)){
+                            inBlack = true;
+                        }
+                    }
+                }
+                if(!inBlack) {
+                    res.add(PathUtil.join(dirPath, c.getName()));
+                }
+            }
+        }
+        return res;
+    }
+
     /**
      * ############################# new #############################
      */

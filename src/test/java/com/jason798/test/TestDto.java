@@ -4,6 +4,7 @@ package com.jason798.test;
 import org.nustaq.serialization.annotations.Version;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 /**
  *
@@ -115,6 +116,14 @@ public class TestDto implements Serializable{
                 '}';
     }
 
+    public static void main(String[] args) {
+
+        for(int i=0;i<1000;i++) {
+            UUID uuid = UUID.randomUUID();
+
+            System.out.println("uuid:" + uuid + ",len " + uuid.toString().length());
+        }
+    }
 //    @Override
 //    public String toString() {
 //        return "TestDto{" +

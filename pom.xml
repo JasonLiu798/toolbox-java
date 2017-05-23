@@ -211,8 +211,6 @@
             <version>0.1.53</version>
         </dependency>
 
-
-
         <!-- memcache -->
         <dependency>
             <groupId>com.googlecode.xmemcached</groupId>
@@ -256,27 +254,26 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.7</version>
-		</dependency>
+            <version>1.2.28</version>
+        </dependency>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
 			<version>3.12</version>
 		</dependency>
-        <!-- jackson -->
+
+
+        <!-- jackson start -->
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
             <version>1.9.13</version>
-            <!--<version>${jsckson.version}</version>-->
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
             <version>${jsckson.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -287,8 +284,7 @@
             <artifactId>jackson-annotations</artifactId>
             <version>${jsckson.version}</version>
         </dependency>
-
-
+        <!-- jackson end -->
 
 		<!--mail-->
 		<dependency>
