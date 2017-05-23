@@ -8,75 +8,20 @@ import com.jason798.queue.IQueue;
 import com.jason798.queue.QueueManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 
 /**
- * 日志工具类，统一日志打印
+ * log client,send data to queue for async write or sync write to file
  */
 public class LogClient {
     private static Logger LOG = LoggerFactory.getLogger(LogClient.class);
-    /**
-     * 是否打开日志，初始化打开
-     */
-    public static boolean enable = true;
-    /**
-     * 打印日志级别，初始化为info
-     */
-    public static LogLevel level = LogLevel.INFO;
-
+    
     public static final String LOG_QUEUE = "logq";
-    /**
-     * 异步日志队列
-     */
+
     private static IQueue logQueue;
+    
+    private static boolean enable;
+    private static LogLevel level;
 
-    /**
-     * AOP 日志黑名单
-     * <p>
-     * LogServiceImpl,ThreadManager,LogController,LoginController
-     */
-    private static String[] BLACK = new String[]{
-            "LogService", "LogServiceImpl",
-            "ThreadManager", "LogController",
-            "LoginController"
-    };
-
-    /**
-     * 日志 白名单
-     CommonController
-     DictionaryController
-     LoginController
-     ModuleController
-     TsRoleController
-     TsRoleModuleController
-     TsUserController
-     TsUserRoleController
-     */
-    private static String[] WHITE = new String[]{
-        "CommonController", "DictionaryController",
-        "LoginController",
-        "ModuleController",
-        "TsRoleController",
-        "TsRoleModuleController",
-        "TsUserController",
-        "TsUserRoleController"
-    };
-
-    /**
-     * 设置黑名单
-     *
-     * @param blackList
-     */
-    public static void setBlackList(String[] blackList) {
-        if (!CollectionUtil.isEmpty(blackList)) {
-            LogClient.BLACK = blackList;
-        }
-    }
-
-    /**
-     * 初始化
-     */
     static {
         logQueue = QueueManager.getQueue(LOG_QUEUE);
         if (logQueue == null) {
@@ -91,7 +36,7 @@ public class LogClient {
      * @return
      */
     public static boolean isClzInWhiteList(String clz) {
-        for (String s : WHITE) {
+        for (String s : LogConstant.WHITE) {
             if (StringCheckUtil.equal(clz, s)) {
                 return true;
             }
@@ -106,7 +51,7 @@ public class LogClient {
      * @return
      */
     public static boolean isClzInBlackList(String clz) {
-        for (String s : BLACK) {
+        for (String s : LogConstant.BLACK) {
             if (StringCheckUtil.equal(clz, s)) {
                 return true;
             }
@@ -209,7 +154,7 @@ public class LogClient {
         if(DevContext.isDev()){
             e.printStackTrace();
         }
-        String content = getStackTrace(e);
+        String content = LogCommonUtil.getStackTrace(e);
         writeLogRaw(LogConstant.LV_ERROR, opModule, null, LogConstant.OTHER,
                 null, null, content, ref,
                 LogConstant.DFT_USER, null, null);
@@ -233,7 +178,7 @@ public class LogClient {
      * @param e
      */
     public static void writeErrorSync(String opModule, String ref, Throwable e) {
-        String content = getStackTrace(e);
+        String content = LogCommonUtil.getStackTrace(e);
         writeLogRawSync(LogConstant.LV_ERROR, opModule, null, LogConstant.OTHER,
                 null, null, content, ref,
                 LogConstant.DFT_USER, null, null);
@@ -387,7 +332,7 @@ public class LogClient {
             }
             logQueue.sendMessage(log);
         } catch (InterruptedException e) {
-            LOG.error("send log error,raw log {},exception {}", logStr, e.getMessage());
+            LOG.error("send log error,raw log {},exception {}", logStr, e.getMsg());
         }
     }*/
 
@@ -457,51 +402,14 @@ public class LogClient {
                         "opRes='" + res + '\'' +
                         ", opContent='" + content + '\'';
             }
-            LOG.error("write sync log exception,{},content {}", e.getMessage(),logStr);
+            LOG.error("write sync log exception,{},content {}", e.getMsg(),logStr);
         }
     }
 */
 
 
 
-    /**
-     * 获取异常的堆栈信息
-     *
-     * @param t
-     * @return
-     */
-    public static String getStackTrace(Throwable t) {
-        if (t == null) {
-            return "exception null";
-        }
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        String res = "get stack trace fail,throwable " + t;
-        try {
-            t.printStackTrace(pw);
-            res = sw.toString();
-            return res;
-        } catch (Exception e) {
-            res = res + "," + e.getMessage();
-        } finally {
-            pw.close();
-        }
-        return res;
-    }
 
-    /**
-     * 开发环境必开，否则看不到异常
-     */
-    public static void enableDev() {
-        enable = true;
-        level = LogLevel.DEBUG;
-    }
-
-    public static final int OUTER_CALLER_LEVEL = 4;
-
-    public enum LogLevel {
-        DEBUG, INFO, WARN, ERROR
-    }
 
     static {
         /**
@@ -557,13 +465,13 @@ public class LogClient {
      */
     public static void debug(String msg, Object... param) {
         if (isDebugEnable()) {
-            debug(msg, OUTER_CALLER_LEVEL, null, param);
+            debug(msg, LogConstant.OUTER_CALLER_LEVEL, null, param);
         }
     }
 
     public static void debug(String msg, Throwable e, Object... param) {
         if (isDebugEnable()) {
-            debug(msg, OUTER_CALLER_LEVEL, e, param);
+            debug(msg, LogConstant.OUTER_CALLER_LEVEL, e, param);
         }
     }
 
@@ -577,7 +485,7 @@ public class LogClient {
      */
     public static void debug(String msg, int level, Throwable e, Object... param) {
         if (isDebugEnable()) {
-            String msgStack = getStackAndMsg(msg, level);
+            String msgStack = LogCommonUtil.getStackAndMsg(msg, level);
             LOG.info(msgStack, param);//注： 测试环境logback使用info级别，设为debu，将不会打印
             if (e != null) {
                 e.printStackTrace();
@@ -609,14 +517,14 @@ public class LogClient {
      */
     public static void info(String msg, Object... param) {
         if (isInfoEnable()) {
-            info(msg, OUTER_CALLER_LEVEL, null, param);
+            info(msg, LogConstant.OUTER_CALLER_LEVEL, null, param);
         }
     }
 
     public static void infoJson(String msg, Object... param) {
         if (isInfoEnable()) {
             Object[] jparam = filter2Json(param);
-            info(msg, OUTER_CALLER_LEVEL, null, jparam);
+            info(msg, LogConstant.OUTER_CALLER_LEVEL, null, jparam);
         }
     }
 
@@ -624,13 +532,13 @@ public class LogClient {
     public static void infoJson(String msg, Throwable e, Object... param) {
         if (isInfoEnable()) {
             Object[] jparam = filter2Json(param);
-            info(msg, OUTER_CALLER_LEVEL, e, jparam);
+            info(msg, LogConstant.OUTER_CALLER_LEVEL, e, jparam);
         }
     }
 
     public static void info(String msg, Throwable e, Object... param) {
         if (isInfoEnable()) {
-            info(msg, OUTER_CALLER_LEVEL, e, param);
+            info(msg, LogConstant.OUTER_CALLER_LEVEL, e, param);
         }
     }
 
@@ -644,7 +552,7 @@ public class LogClient {
      */
     public static void info(String msg, int level, Throwable e, Object... param) {
         if (isInfoEnable()) {
-            String msgStack = getStackAndMsg(msg, level);
+            String msgStack = LogCommonUtil.getStackAndMsg(msg, level);
             LOG.info(msgStack, param);//注： 测试环境logback使用info级别，如使用debug()，将不会打印
             if (e != null && isDebugEnable()) {
                 e.printStackTrace();//开发环境打印堆栈，错误更快暴露
@@ -658,13 +566,13 @@ public class LogClient {
      */
     public static void warn(String msg, Object... param) {
         if (isWarnEnable()) {
-            warn(msg, OUTER_CALLER_LEVEL, null, param);
+            warn(msg, LogConstant.OUTER_CALLER_LEVEL, null, param);
         }
     }
 
     public static void warn(String msg, Throwable e, Object... param) {
         if (isWarnEnable()) {
-            warn(msg, OUTER_CALLER_LEVEL, e, param);
+            warn(msg, LogConstant.OUTER_CALLER_LEVEL, e, param);
         }
     }
 
@@ -678,7 +586,7 @@ public class LogClient {
      */
     public static void warn(String msg, int level, Throwable e, Object... param) {
         if (isWarnEnable()) {
-            String msgStack = getStackAndMsg(msg, level);
+            String msgStack = LogCommonUtil.getStackAndMsg(msg, level);
             LOG.warn(msgStack, param);//注： 测试环境logback使用info级别，设为debu，将不会打印
             if (e != null && isDebugEnable()) {
                 e.printStackTrace();//开发环境打印堆栈，错误更快暴露
@@ -691,14 +599,14 @@ public class LogClient {
      */
     public static void error(String msg, Object... param) {
         if (isErrorEnable()) {
-            error(msg, OUTER_CALLER_LEVEL, null, param);
+            error(msg, LogConstant.OUTER_CALLER_LEVEL, null, param);
         }
     }
 
     public static void errorJson(String msg, Object... param) {
         if (isErrorEnable()) {
             Object[] jparam = filter2Json(param);
-            error(msg, OUTER_CALLER_LEVEL, null, jparam);
+            error(msg, LogConstant.OUTER_CALLER_LEVEL, null, jparam);
         }
     }
 
@@ -714,10 +622,9 @@ public class LogClient {
     public static void errorJson(String msg, Throwable e, Object... param) {
         if (isErrorEnable()) {
             Object[] jparam = filter2Json(param);
-            error(msg, OUTER_CALLER_LEVEL, e, jparam);
+            error(msg, LogConstant.OUTER_CALLER_LEVEL, e, jparam);
         }
     }
-
 
     /**
      * 错误日志打印，如果开启debug，则打印堆栈
@@ -729,121 +636,42 @@ public class LogClient {
      */
     public static void error(String msg, int level, Throwable e, Object... param) {
         if (isErrorEnable()) {
-            String msgStack = getStackAndMsg(msg, level);
+            String msgStack = LogCommonUtil.getStackAndMsg(msg, level);
             LOG.error(msgStack, param);//注： 测试环境logback使用info级别，设为debu，将不会打印
             if (e != null && isDebugEnable()) {
                 e.printStackTrace();//开发环境打印堆栈，错误更快暴露
             }
         }
     }
-
-    /**
-     * level 1
-     *
-     * @param msg
-     * @return
-     */
-    private static String getStackAndMsg(String msg, int level) {
-        String msgStack = "";
-        msgStack = getStack(level);//直接调用，本层为1层，本类调用方还有2层，类外调用方1层 = 4
-        return msgStack + " " + msg;
-    }
-
-    /**
-     * 获取第几层 caller
-     * level 0
-     *
-     * @param preLevel
-     * @return
-     */
-    private static String getStack(int preLevel) {
-        if (preLevel < 0) {
-            preLevel = 0;
-        }
-        Throwable throwable = new Throwable();
-        StackTraceElement[] stes = throwable.getStackTrace();
-        if (stes.length > preLevel) {
-            StringBuilder sb = new StringBuilder();
-            //get upper caller stack trace
-            sb.append(stes[preLevel].toString());
-            return sb.toString();
-        }
-        return "";
-    }
-
-    public static boolean isDebugEnable() {
-        if (enable && level == LogLevel.DEBUG) {
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean isInfoEnable() {
-        if (enable && (level == LogLevel.INFO || level == LogLevel.DEBUG)) {
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean isWarnEnable() {
-        if (enable && (level == LogLevel.INFO || level == LogLevel.DEBUG || level == LogLevel.WARN)) {
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean isErrorEnable() {
-        if (enable && (level == LogLevel.INFO || level == LogLevel.DEBUG || level == LogLevel.ERROR || level == LogLevel.WARN)) {
-            return true;
-        }
-        return false;
-    }
-
-    public static LogLevel getLevel() {
-        return level;
-    }
-
-    public static void debugEnable() {
-        enable();
-        setLevel(LogLevel.DEBUG);
-    }
-
-    public static void infoEnable() {
-        enable();
-        setLevel(LogLevel.INFO);
-    }
-
-    public static void errorEnable() {
-        enable();
-        setLevel(LogLevel.ERROR);
-    }
-
-    public static void setLevel(LogLevel level) {
-        level = level;
-    }
-
-    public static void setEnable(boolean on) {
-        enable = on;
-    }
-
-    public static void enable() {
-        enable = true;
-    }
-
-    public static void disable() {
-        enable = false;
-    }
-
-    public static String format(String locate, String exception) {
-        return format(locate, exception, null);
-    }
-
-    public static String format(String locate, String exception, String data) {
-        if (data == null) {
-            return String.format("%s,%s", locate, exception);
-        }
-        return String.format("%s,%s,data %s", locate, exception, data);
-    }
-
-
+	
+	
+	
+	public static boolean isDebugEnable() {
+		if (enable && level == LogLevel.DEBUG) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isInfoEnable() {
+		if (enable && (level == LogLevel.INFO || level == LogLevel.DEBUG)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isWarnEnable() {
+		if (enable && (level == LogLevel.INFO || level == LogLevel.DEBUG || level == LogLevel.WARN)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isErrorEnable() {
+		if (enable && (level == LogLevel.INFO || level == LogLevel.DEBUG || level == LogLevel.ERROR || level == LogLevel.WARN)) {
+			return true;
+		}
+		return false;
+	}
+	
 }

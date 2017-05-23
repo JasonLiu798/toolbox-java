@@ -20,6 +20,7 @@ public class ConfigUtil {
 
     private static final Map<String, ResourceBundle> resourceBundles = new HashMap<>();
     private static final String DFT_PREFIX = "";
+    public static final String TP_CLASSPATH = "";
     //private static final String DFT_FILE = "config";
     //private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(DFT_FILE);
 

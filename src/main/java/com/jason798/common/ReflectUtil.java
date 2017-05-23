@@ -125,21 +125,19 @@ public class ReflectUtil {
      * @param B parent or interface
      * @return is impl
      */
-    public static boolean isAImplementB(Class<?> A, Class<?> B) {
+    public static boolean chkAImplementB(Class<?> A, Class<?> B) {
         return B.isAssignableFrom(A);
     }
-
-    public static boolean isAImplementB(Object A, Class<?> B) {
-        return isAImplementB(A.getClass(), B);
+    public static boolean chkAImplementB(Object A, Class<?> B) {
+        return chkAImplementB(A.getClass(), B);
     }
-
-    public static boolean isAImplementBList(Object A, List<Class<?>> B) {
-        return isAImplementBList(A.getClass(), B);
+    public static boolean chkAImplementBList(Object A, List<Class<?>> B) {
+        return chkAImplementBList(A.getClass(), B);
     }
-
-    public static boolean isAImplementBList(Class<?> A, List<Class<?>> B) {
+    public static boolean chkAImplementBList(Class<?> A, List<Class<?>> B) {
         for (Class<?> intf : B) {
-            if (isAImplementB(A, intf)) {
+            if (chkAImplementB(A, intf)) {
+
                 return true;
             }
         }
@@ -448,7 +446,7 @@ public class ReflectUtil {
                 return method;
             } catch (Exception e) {
                 continue;
-                //LOG.warn("getDeclaredMethod method not found,{}", e.getMessage());
+                //LOG.warn("getDeclaredMethod method not found,{}", e.getMsg());
             }
         }
         return null;

@@ -123,6 +123,27 @@ public final class StringCheckUtil {
         //all not null
         return s1.equals(s2);
     }
+	
+	/**
+	 * exist one string equal,if src and tgt all null,return true
+	 * @param src
+	 * @param tgt
+	 * @return
+	 */
+	public static boolean equalExist(String src,String ...tgt){
+		//all null
+    	if(src==null && CollectionUtil.isEmpty(tgt)){
+    		return true;
+		}
+		if(!CollectionUtil.isEmpty(tgt)){
+    		for(String t:tgt){
+    			if(equal(src,t)){
+    				return true;
+				}
+			}
+		}
+		return false;
+	}
 
     /**
      * string array contain target string

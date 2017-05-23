@@ -491,7 +491,10 @@ public class DateUtil {
     public static Long getIntervalSec(Date start, Date end) {
         return date2Timestamp(end) - date2Timestamp(start);
     }
-
+	
+	public static Long getIntervalMs(Date start,Date end){
+		return end.getTime() - start.getTime();
+	}
 
     /**
      * 获取月份，返回秒数
