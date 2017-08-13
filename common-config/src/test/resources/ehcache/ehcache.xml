@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+    <diskStore path="java.io.tempdir"/>
+
+    <defaultCache maxElementsInMemory="10000" eternal="false"
+                  timeToIdleSeconds="120" timeToLiveSeconds="120"
+                  overflowToDisk="true"
+                  diskSpoolBufferSizeMB="30" maxElementsOnDisk="10000000"
+                  diskPersistent="false" diskExpiryThreadIntervalSeconds="120"
+                  memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="CONFIGCACHE" maxElementsInMemory="10000" eternal="false"
+           timeToIdleSeconds="120" timeToLiveSeconds="120" overflowToDisk="true"
+           diskSpoolBufferSizeMB="30" maxElementsOnDisk="10000000"
+           diskPersistent="false" diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="CONFIGCACHE_M" maxElementsInMemory="10000" eternal="false"
+           timeToIdleSeconds="120" timeToLiveSeconds="120" overflowToDisk="true"
+           diskSpoolBufferSizeMB="30" maxElementsOnDisk="10000000"
+           diskPersistent="false" diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="CONFIGCACHE_MK" maxElementsInMemory="10000" eternal="false"
+           timeToIdleSeconds="120" timeToLiveSeconds="120" overflowToDisk="true"
+           diskSpoolBufferSizeMB="30" maxElementsOnDisk="10000000"
+           diskPersistent="false" diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LRU"/>
+
+
+
+    <cache name="DICTVALUECACHE" maxElementsInMemory="10000" eternal="false"
+           timeToIdleSeconds="120" timeToLiveSeconds="120" overflowToDisk="true"
+           diskSpoolBufferSizeMB="30" maxElementsOnDisk="10000000"
+           diskPersistent="false" diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="USER_URL_CACHE" maxElementsInMemory="10000" eternal="false"
+           timeToIdleSeconds="120" timeToLiveSeconds="120" overflowToDisk="true"
+           diskSpoolBufferSizeMB="30" maxElementsOnDisk="10000000"
+           diskPersistent="false" diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="URL_WHITELIST_CHACHE" maxElementsInMemory="10000" eternal="false"
+           timeToIdleSeconds="120" timeToLiveSeconds="120" overflowToDisk="true"
+           diskSpoolBufferSizeMB="30" maxElementsOnDisk="10000000"
+           diskPersistent="false" diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="DICTKEYCACHE" maxElementsInMemory="10000" eternal="false"
+           timeToIdleSeconds="120" timeToLiveSeconds="120" overflowToDisk="true"
+           diskSpoolBufferSizeMB="30" maxElementsOnDisk="10000000"
+           diskPersistent="false" diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="DICTNAMECACHE" maxElementsInMemory="10000" eternal="false"
+           timeToIdleSeconds="120" timeToLiveSeconds="120" overflowToDisk="true"
+           diskSpoolBufferSizeMB="30" maxElementsOnDisk="10000000"
+           diskPersistent="false" diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LRU"/>
+</ehcache>
+

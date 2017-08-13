@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atjl.configdb.dao.ConfigDbDao">
+
+    <resultMap id="configMap" type="java.util.Map">
+        <result property="key" column="dictKey" />
+        <result property="value" column="dictValue" />
+    </resultMap>
+    
+    <update id="set" >
+        UPDATE ts_dictionary c SET c.DIC_VALUE = #{value}
+        <where>
+            CONCAT_WS('',c.PKEY_PATH,'.',c.DIC_KEY) = #{key} and c.`STATUS`=1
+        </where>
+    </update>
+
+    <select id="get"
+            resultType="java.lang.String"
+            parameterType="java.lang.String">
+    select c.DIC_VALUE dictValue
+    from ts_dictionary c
+    where CONCAT_WS('',c.PKEY_PATH,'.',c.DIC_KEY) = #{_parameter} and c.`STATUS`=1
+    </select>
+
+    <select id="gets"
+            resultMap="configMap"
+            parameterType="java.lang.String">
+        select c.DIC_KEY dictKey,
+            c.DIC_VALUE dictValue
+        from ts_dictionary c
+        where c.PKEY_PATH = #{_parameter} and c.`STATUS`=1
+    </select>
+
+
+    <select id="getBatch"
+            resultMap="configMap" parameterType="java.lang.String">
+        select
+        CONCAT_WS('',c.PKEY_PATH,'.',c.DIC_KEY) dictKey,
+        c.DIC_VALUE dictValue
+        from ts_dictionary c
+        where CONCAT_WS('',c.PKEY_PATH,'.',c.DIC_KEY) in (
+        <foreach item="item" collection="list" separator=",">
+            #{item}
+        </foreach>
+        ) and c.`STATUS`=1
+    </select>
+
+
+
+</mapper>
