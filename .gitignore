@@ -1,6 +1,7 @@
 *.iml
 *.idea
 target
+java.io.tempdir
 *.log
 logs
 backup
