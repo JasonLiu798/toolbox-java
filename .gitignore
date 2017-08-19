@@ -6,4 +6,7 @@ java.io.tempdir
 logs
 backup
 a*.sh
-
+frame-db-simple
+frame-main
+common-cas
+*.bak

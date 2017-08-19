@@ -10,9 +10,9 @@ public class LogUtilTest {
     @Test
     public void testSetLevel() throws Exception {
 
-
         LogUtil.setLevel(LogLevel.DEBUG);
-        LogUtil.d("test {} hahah ", "ssss", "dfdf");
+        LogUtil.debug("test {} hahah ", "ssss", "dfdf");
+
 
     }
 

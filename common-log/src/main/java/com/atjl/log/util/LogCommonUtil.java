@@ -13,7 +13,6 @@ public class LogCommonUtil {
         super();
     }
 
-
     public static Object[] filter2Json(Object... params) {
         if (CollectionUtil.isEmpty(params)) {
             return params;
@@ -50,7 +49,7 @@ public class LogCommonUtil {
         } catch (Exception e) {
             res = res + "," + e.getMessage();
             if (LogUtil.isDebugEnabled()) {
-                LogUtil.d("exception2str {}", e);
+                LogUtil.debug("exception2str {}", e);
             }
         } finally {
             pw.close();

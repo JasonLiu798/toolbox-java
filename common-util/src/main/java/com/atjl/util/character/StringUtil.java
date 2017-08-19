@@ -1,5 +1,6 @@
 package com.atjl.util.character;
 
+import com.atjl.util.collection.CollectionUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +16,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class StringUtil {
-	private StringUtil(){
-		throw new UnsupportedOperationException();
-	}
+    private StringUtil() {
+        throw new UnsupportedOperationException();
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(StringUtil.class);
 
     private static final String UTF8 = "UTF-8";
@@ -84,14 +86,13 @@ public final class StringUtil {
         }
         return dest;
     }
-	
-	/**
-	 *
-	 * @param target
-	 * @param split
-	 * @param dimmer
-	 * @return
-	 */
+
+    /**
+     * @param target
+     * @param split
+     * @param dimmer
+     * @return
+     */
     public static String addDimmer(String target, String split, String dimmer) {
         if (target == null || target.length() == 0) {
             return "";
@@ -313,9 +314,12 @@ public final class StringUtil {
         return str.trim();
     }
 
-    public static List<String> trimAll(List<String> s){
+    public static List<String> trimAll(List<String> s) {
+        if (CollectionUtil.isEmpty(s)) {
+            return s;
+        }
         List<String> res = new LinkedList<>();
-        for(String is:s){
+        for (String is : s) {
             res.add(trim(is));
         }
         return res;
@@ -511,17 +515,19 @@ public final class StringUtil {
     }
 
     public static String addSpaceFront(String vSourceString, int count, int spaceSize) {
-        return addCharacterFront(vSourceString,SPACE,count, spaceSize);
+        return addCharacterFront(vSourceString, SPACE, count, spaceSize);
     }
+
     /**
      * add count's space in string's front
+     *
      * @param vSourceString
      * @param count
      * @param duplicateCnt
      * @return
      */
     public static String addCharacterFront(String vSourceString, String character, int count, int duplicateCnt) {
-        if(StringCheckUtil.isEmpty(character)){
+        if (StringCheckUtil.isEmpty(character)) {
             character = SPACE;
         }
         if (duplicateCnt <= 0) {
@@ -530,7 +536,7 @@ public final class StringUtil {
         if (count < 0) {
             count = 0;
         }
-        int total = count*duplicateCnt;
+        int total = count * duplicateCnt;
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < total; i++) {
             sb.append(character);
@@ -918,20 +924,6 @@ public final class StringUtil {
         }
     }
 
-    /**
-     * cut string length to len
-     *
-     * @param rawStr
-     * @param len
-     * @return
-     */
-    public static String strCutFilter(String rawStr, int len) {
-        if (StringCheckUtil.isEmpty(rawStr) || rawStr.length() <= len) {
-            return rawStr;
-        }
-        return rawStr.substring(0, len);
-    }
-
 
     /**
      * 简化类名
@@ -941,11 +933,11 @@ public final class StringUtil {
      * @return
      */
     public static String simplifyFullClassName(String raw, int tgtLen) {
-        if(StringCheckUtil.isEmpty(raw)||raw.length()<=tgtLen||tgtLen<0){
+        if (StringCheckUtil.isEmpty(raw) || raw.length() <= tgtLen || tgtLen < 0) {
             return raw;
         }
         String[] rawArr = raw.split("\\.");
-        if(rawArr.length<=1){
+        if (rawArr.length <= 1) {
             return raw;
         }
         StringBuilder sb = new StringBuilder();
@@ -954,12 +946,12 @@ public final class StringUtil {
             if (tgtLen <= minSize) {
                 for (int i = 0; i < rawArr.length; i++) {
                     sb.append(rawArr[i].substring(0, 1));
-                    if(i!=rawArr.length-1){
+                    if (i != rawArr.length - 1) {
                         sb.append(".");
                     }
                 }
             } else {
-                int removeCnt = raw.length()-tgtLen ;
+                int removeCnt = raw.length() - tgtLen;
                 int i = 0;
                 while (removeCnt > 0 && i < rawArr.length) {
                     if (rawArr[i].length() > 1) {
@@ -969,7 +961,7 @@ public final class StringUtil {
                     } else {
                         sb.append(rawArr[i]);
                     }
-                    if(i!=rawArr.length-1) {
+                    if (i != rawArr.length - 1) {
                         sb.append(".");
                     }
                     i++;
@@ -988,5 +980,21 @@ public final class StringUtil {
     }
 
 
+    /**
+     * ###################### filters ###########################
+     */
+    /**
+     * cut string length to len
+     *
+     * @param rawStr
+     * @param len
+     * @return
+     */
+    public static String filter2len(String rawStr, int len) {
+        if (StringCheckUtil.isEmpty(rawStr) || rawStr.length() <= len) {
+            return rawStr;
+        }
+        return rawStr.substring(0, len);
+    }
 
 }

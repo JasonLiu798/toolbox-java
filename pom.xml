@@ -28,18 +28,17 @@
         <maven.test.skip>true</maven.test.skip>
     </properties>
 
-	<dependencies>
-			<dependency>
-				<groupId>io.springfox</groupId>
-				<artifactId>springfox-swagger2</artifactId>
-				<version>${swagger.version}</version>
-			</dependency>
-	</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <finalName>${project.artifactId}-${project.version}</finalName>
         <plugins>
-
             <!-- skip test -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -106,7 +105,7 @@
     </build>
 
     <modules>
-		<module>common-dep</module>
+        <module>common-dep</module>
         <module>common-api</module>
 
         <module>common-util</module>
@@ -117,8 +116,9 @@
         <module>common-config-db</module>
         <module>common-config-prop</module>
 
-		<module>common-email</module>
+        <module>common-email</module>
 
-		<module>common-cache-memcache</module>
+        <!-- <module>common-cas</module> -->
+        <module>common-cache-memcache</module>
     </modules>
 </project>

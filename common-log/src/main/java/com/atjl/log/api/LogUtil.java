@@ -54,28 +54,28 @@ public class LogUtil {
      * @param msg
      * @param param
      */
-    public static void d(String msg, Object... param) {
+    public static void debug(String msg, Object... param) {
         if (isDebugEnabled()) {
             String stack = LogFmtUtil.getStackAndMsg(LogLevel.DEBUG, msg, LogConstantInner.STACK_PRE_LV);
             logger.info(stack, param);
         }
     }
 
-    public static void i(String msg, Object... param) {
+    public static void info(String msg, Object... param) {
         if (isInfoEnabled()) {
             String stack = LogFmtUtil.getStackAndMsg(LogLevel.INFO, msg, LogConstantInner.STACK_PRE_LV);
             logger.info(stack, param);
         }
     }
 
-    public static void w(String msg, Object... param) {
+    public static void warn(String msg, Object... param) {
         if (isWarnEnabled()) {
             String stack = LogFmtUtil.getStackAndMsg(LogLevel.WARN, msg, LogConstantInner.STACK_PRE_LV);
             logger.warn(stack, param);
         }
     }
 
-    public static void e(String msg, Object... param) {
+    public static void error(String msg, Object... param) {
         if (isErrorEnabled()) {
             String stack = LogFmtUtil.getStackAndMsg(LogLevel.ERROR, msg, LogConstantInner.STACK_PRE_LV);
             logger.error(stack, param);

@@ -17,10 +17,10 @@ import java.util.*;
  * @date 2014/11/20 16:20
  */
 public final class CollectionUtil {
-	private CollectionUtil(){
-		throw new UnsupportedOperationException();
-	}
-	
+    private CollectionUtil() {
+        throw new UnsupportedOperationException();
+    }
+
     private static final Logger LOG = LoggerFactory.getLogger(CollectionUtil.class);
 
     /**
@@ -97,12 +97,12 @@ public final class CollectionUtil {
         return false;
     }
 
-    public static  boolean isLikeIn(Collection<String> c, String t) {
+    public static boolean isLikeIn(Collection<String> c, String t) {
         if (isEmpty(c)) {
             return false;
         }
         for (String i : c) {
-            if (i.indexOf(t)>=0) {
+            if (i.indexOf(t) >= 0) {
                 return true;
             }
         }
@@ -644,6 +644,7 @@ public final class CollectionUtil {
 
     /**
      * 注：map value必须为 bean，原始类型不支持
+     *
      * @param map
      * @param <K>
      * @param <V>
@@ -679,15 +680,16 @@ public final class CollectionUtil {
 
     /**
      * filter duplicate element in list
+     *
      * @param l
      * @return
      */
-    public static List<String> filterDuplicate(List<String> l){
-        if(isEmpty(l)){
+    public static List<String> filterDuplicate(List<String> l) {
+        if (isEmpty(l)) {
             return l;
         }
         Set<String> set = new HashSet<>();
-        for(String s:l){
+        for (String s : l) {
             set.add(s);
         }
         List<String> res = new LinkedList<>();
@@ -700,7 +702,6 @@ public final class CollectionUtil {
      *
      */
     /**
-     *
      * @param el
      * @param <T>
      * @return
@@ -710,6 +711,7 @@ public final class CollectionUtil {
         l.add(el);
         return l;
     }
+
     public static <T> List<T> newList(T... els) {
         List<T> l = new LinkedList<>();
         if (els == null || els.length == 0) {
@@ -720,13 +722,15 @@ public final class CollectionUtil {
         }
         return l;
     }
-    public static <K,V> Map<K,V> newMap(K key,V value) {
-        Map<K,V> map = new HashMap<>();
-        map.put(key,value);
+
+    public static <K, V> Map<K, V> newMap(K key, V value) {
+        Map<K, V> map = new HashMap<>();
+        map.put(key, value);
         return map;
     }
-    public static <K,V> Map<K,V> addKV(Map<K,V> map,K key,V value) {
-        map.put(key,value);
+
+    public static <K, V> Map<K, V> addKV(Map<K, V> map, K key, V value) {
+        map.put(key, value);
         return map;
     }
 
@@ -748,8 +752,31 @@ public final class CollectionUtil {
         return res;
     }
 
-    public static <T> T[] newArr(T... v){
-    	return v;
-	}
+    public static <T> T[] newArr(T... v) {
+        return v;
+    }
+
+
+    /**
+     * ########################## filters ###########################
+     */
+    /**
+     * @param raw
+     * @param <T>
+     * @return
+     */
+    public static <T> T[] filterNull(T[] raw) {
+        if (CollectionUtil.isEmpty(raw)) {
+            return raw;
+        }
+        List<T> n = new ArrayList<T>(raw.length);
+        for (T t : raw) {
+            if (t != null) {
+                n.add(t);
+            }
+        }
+        return CollectionUtil.list2array(n);
+    }
+
 
 }

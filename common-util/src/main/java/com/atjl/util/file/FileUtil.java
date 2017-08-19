@@ -13,8 +13,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.net.URL;
 import java.nio.channels.FileChannel;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,9 +26,10 @@ import java.util.List;
  * API style unix like
  */
 public final class FileUtil {
-	private FileUtil(){
-		throw new UnsupportedOperationException();
-	}
+    private FileUtil() {
+        throw new UnsupportedOperationException();
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
     /**
@@ -58,6 +62,14 @@ public final class FileUtil {
         return file.exists() && file.isDirectory();
     }
 
+    public static boolean checkFree(String uploadpath) {
+        File f = new File(uploadpath);
+        if (!(f.exists())) {
+            return false;
+        }
+        return (f.getFreeSpace() != 0L);
+    }
+
     /**
      * ############################# ls #############################
      */
@@ -84,10 +96,11 @@ public final class FileUtil {
 
     /**
      * 获取 classpath 下文件全路径
+     *
      * @param fileName
      * @return
      */
-    public static String getFileFromClasspath(String fileName){
+    public static String getFileFromClasspath(String fileName) {
         ClassLoader classLoader = FileUtil.class.getClassLoader();
         /**
          getResource()方法会去classpath下找这个文件，获取到url resource, 得到这个资源后，调用url.getFile获取到 文件 的绝对路径
@@ -97,11 +110,12 @@ public final class FileUtil {
         /**
          * url.getFile() 得到这个文件的绝对路径
          *
-        System.out.println(url.getFile());
-        File file = new File(url.getFile());
-        System.out.println(file.exists());
+         System.out.println(url.getFile());
+         File file = new File(url.getFile());
+         System.out.println(file.exists());
          */
     }
+
     public static List<String> lsInner(String dirPath, String option) {
         File file = new File(dirPath);
         List<String> list = new LinkedList<>();
@@ -200,7 +214,7 @@ public final class FileUtil {
     }
 
 
-    public static List<String> lsPrefix(String dirPath,String prefix,String[] black){
+    public static List<String> lsPrefix(String dirPath, String prefix, String[] black) {
         List<String> res = new LinkedList<>();
         File parent = new File(dirPath);
         File[] childs = parent.listFiles();
@@ -218,7 +232,7 @@ public final class FileUtil {
                         }
                     }
                 }
-                if(!inBlack) {
+                if (!inBlack) {
                     res.add(PathUtil.join(dirPath, c.getName()));
                 }
             }
@@ -372,11 +386,12 @@ public final class FileUtil {
 
     /**
      * not skip space line
+     *
      * @param path
      * @return
      */
     public static List<String> cat2List(String path) {
-        return cat2List(path,0);
+        return cat2List(path, 0);
     }
 
     /**
@@ -526,15 +541,15 @@ public final class FileUtil {
             }
         } catch (Exception e) {
             logger.error("{}", e);
-        }finally {
-            if(fileOutputStream!=null){
+        } finally {
+            if (fileOutputStream != null) {
                 try {
                     fileOutputStream.close();
                 } catch (IOException e) {
                     logger.error("writeBytes2File close fileOutputStream {}", e);
                 }
             }
-            if(dataOutputStream!=null){
+            if (dataOutputStream != null) {
                 try {
                     dataOutputStream.close();
                 } catch (IOException e) {
@@ -542,7 +557,7 @@ public final class FileUtil {
                 }
             }
         }
-        if(logger.isDebugEnabled()) {
+        if (logger.isDebugEnabled()) {
             logger.debug("write to file {} finish,bin mode", filepath);
         }
         return;
@@ -591,7 +606,6 @@ public final class FileUtil {
         list.add(content);
         append(filepath, list);
     }
-
 
 
     /**
@@ -719,6 +733,37 @@ public final class FileUtil {
         }
     }
 
+
+    public static String getMd5(String filepath) {
+        FileInputStream fis = null;
+        try {
+            File file = new File(filepath);
+            fis = new FileInputStream(file);
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = fis.read(buffer, 0, 1024)) != -1) {
+                md.update(buffer, 0, length);
+            }
+            String md5raw = new BigInteger(1, md.digest()).toString(16);
+            if (32 - md5raw.length() > 0) {
+                return StringUtil.addCharacterFront(md5raw, "0", 32 - md5raw.length(), 1);
+            } else {
+                return md5raw;
+            }
+        } catch (IOException | NoSuchAlgorithmException e) {
+            logger.error("{}", e);
+            return "";
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    logger.error("getMd5 close stream fail {}", e.getMessage());
+                }
+            }
+        }
+    }
 
 }
 

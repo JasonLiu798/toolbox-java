@@ -22,6 +22,13 @@ import static org.junit.Assert.assertEquals;
  */
 public class FileUtilTest {
 
+    @Test
+    public void testGetMd5() {
+        String f = "D:\\a.pdf";
+        String md5 = FileUtil.getMd5(f);
+        System.out.println("res:" + md5);
+    }
+
     @Before
     public void before() throws Exception {
 
@@ -38,7 +45,7 @@ public class FileUtilTest {
     @Test
     public void testFileExist() throws Exception {
         String f = FileUtil.getFileFromClasspath("input.xls");
-        System.out.println("res:"+f);
+        System.out.println("res:" + f);
 
     }
 
@@ -227,7 +234,7 @@ public class FileUtilTest {
     }
 
     @Test
-    public void testLs(){
+    public void testLs() {
         List l = FileUtil.ls("D:\\");
         System.out.println(l);
         l = FileUtil.ll("D:\\");

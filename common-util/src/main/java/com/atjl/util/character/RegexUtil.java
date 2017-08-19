@@ -2,6 +2,7 @@ package com.atjl.util.character;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,9 +10,9 @@ import java.util.regex.Pattern;
  * 常用正则
  */
 public final class RegexUtil {
-	private RegexUtil(){
-		throw new UnsupportedOperationException();
-	}
+    private RegexUtil() {
+        throw new UnsupportedOperationException();
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(RegexUtil.class);
 
@@ -19,36 +20,27 @@ public final class RegexUtil {
     public static final String FRAG_SPACES_OR_NE = "\\s*";
     public static final String FRAG_NOT_SPACE = "\\S";
     public static final String FRAG_NOT_SPACES = "\\S+";
-	public static final String DOT_SEP_NO_REX = "\\.";
+    public static final String DOT_SEP_NO_REX = "\\.";
 
     // email
     public static final String REGEXP_MAIL_VALUE = "^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z0-9]+$";
 
     // phone
     public static final String REGEXP_PHONE_VALUE = "^\\d{11}$";
-	
+
     public static final String REGEXP_POSITIVE = "^[1-9]{1}\\d*$";
 
     public static final String REGEXP_NATURAL = "^\\d+$";
 
     public static final String REGEXP_INTEGER = "^-*\\d+$";
 
+//    public static final String REG_RATIONAL_NUM = "^-{0,1}([1-9]\\d*|0)\\.{0,1}\\d*|0\\.\\d*[1-9]\\d*$";
+    public static final String REG_RATIONAL_NUM = "^-{0,1}([1-9]\\d*|0)\\.{0,1}\\d*$";
+
     public static final String TRUE = "true";
     public static final String FALSE = "false";
 
-    /**
-     * 只保留数字、字母、汉字、下划线
-     *
-     * @param str
-     * @return
-     */
-    public static String leftNumStrCNUL(String str) {
-        String pt2 = "[^a-zA-Z0-9_\\u4e00-\\u9fa5]";
-        if (StringCheckUtil.isEmpty(str)) {
-            str = str.replaceAll(pt2, "");
-        }
-        return str;
-    }
+
 
     /**
      * 返回对应的Matcher
@@ -66,32 +58,12 @@ public final class RegexUtil {
         return matcher;
     }
 
-    public static Pattern getPattern(String regex){
+    public static Pattern getPattern(String regex) {
         Pattern pattern = Pattern.compile(regex);
         return pattern;
     }
 
-    /**
-     * 校验手机号
-     *
-     * @param str
-     * @return boolean
-     */
-    public static boolean isMobile(String str) {
-        return getMatcher(REGEXP_PHONE_VALUE, str).matches();
-    }
-
-    /**
-     * 校验邮箱
-     *
-     * @param str
-     * @return boolean
-     */
-    public static boolean isEmail(String str) {
-        return getMatcher(REGEXP_MAIL_VALUE, str).matches();
-    }
-
-    public static String getDigits(String raw){
+    public static String getDigits(String raw) {
 //        String regex = "\\d=([^(,+})]*)";
         String regex = "(\\d+)";
         Pattern mPattern = Pattern.compile(regex);
@@ -100,8 +72,9 @@ public final class RegexUtil {
         while (mMatcher.find()) {
             res.append(mMatcher.group(1));
         }
-        return  res.toString();
+        return res.toString();
     }
+
     /**
      * 是否数字
      *
@@ -122,6 +95,31 @@ public final class RegexUtil {
         return flag;
     }
 
+    public static boolean chk(String raw, String regex) {
+        Matcher matcher = getMatcher(regex, raw);
+        return matcher != null && matcher.matches();
+    }
+
+    /**
+     * 校验手机号
+     *
+     * @param str
+     * @return boolean
+     */
+    public static boolean isMobile(String str) {
+        return chk(str, REGEXP_PHONE_VALUE);
+    }
+
+    /**
+     * 校验邮箱
+     *
+     * @param str
+     * @return boolean
+     */
+    public static boolean isEmail(String str) {
+        return chk(str, REGEXP_MAIL_VALUE);
+    }
+
     /**
      * positive number
      * 1~9999...999
@@ -130,13 +128,7 @@ public final class RegexUtil {
      * @return is or not
      */
     public static boolean isPositive(String str) {
-        //boolean flag = true;
-        Matcher matcher = getMatcher(REGEXP_POSITIVE, str);
-        if (matcher != null) {
-            return matcher.matches();
-        } else {
-            return false;
-        }
+        return chk(str, REGEXP_POSITIVE);
     }
 
     /**
@@ -147,14 +139,8 @@ public final class RegexUtil {
      * @return is or not
      */
     public static boolean isNatural(String str) {
-        Matcher matcher = getMatcher(REGEXP_NATURAL, str);
-        if (matcher != null) {
-            return matcher.matches();
-        } else {
-            return false;
-        }
+        return chk(str, REGEXP_NATURAL);
     }
-
 
     /**
      * is integer
@@ -163,12 +149,17 @@ public final class RegexUtil {
      * @return
      */
     public static boolean isInteger(String str) {
-        Matcher matcher = getMatcher(REGEXP_INTEGER, str);
-        if (matcher != null) {
-            return matcher.matches();
-        } else {
-            return false;
-        }
+        return chk(str, REGEXP_INTEGER);
+    }
+
+    /**
+     * 是否有理数
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isRationalNum(String str) {
+        return chk(str, REG_RATIONAL_NUM);
     }
 
     /**
@@ -184,9 +175,21 @@ public final class RegexUtil {
             return false;
         }
         String tmp = str.toLowerCase();
-        if (tmp.equals(TRUE) || tmp.equals(FALSE)) {
-            return true;
+        return tmp.equals(TRUE) || tmp.equals(FALSE);
+    }
+
+
+    /**
+     * 只保留数字、字母、汉字、下划线
+     *
+     * @param str
+     * @return
+     */
+    public static String leftNumStrCNUL(String str) {
+        String pt2 = "[^a-zA-Z0-9_\\u4e00-\\u9fa5]";
+        if (StringCheckUtil.isEmpty(str)) {
+            str = str.replaceAll(pt2, "");
         }
-        return false;
+        return str;
     }
 }

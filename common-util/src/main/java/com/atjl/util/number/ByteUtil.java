@@ -601,4 +601,22 @@ public class ByteUtil {
     }
 
 
+
+    public static String bytesToHexString(byte[] src) {
+        StringBuilder builder = new StringBuilder();
+        if (src == null || src.length <= 0) {
+            return null;
+        }
+        String hv;
+        for (int i = 0; i < src.length; i++) {
+            // 以十六进制（基数 16）无符号整数形式返回一个整数参数的字符串表示形式，并转换为大写
+            hv = Integer.toHexString(src[i] & 0xFF).toUpperCase();
+            if (hv.length() < 2) {
+                builder.append(0);
+            }
+            builder.append(hv);
+        }
+        return builder.toString();
+    }
+
 }

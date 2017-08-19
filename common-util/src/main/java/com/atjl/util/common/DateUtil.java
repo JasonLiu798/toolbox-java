@@ -3,10 +3,13 @@ package com.atjl.util.common;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 /**
  * date util
@@ -15,9 +18,9 @@ import java.util.concurrent.TimeUnit;
  * @date 2014/2/6 11:41
  */
 public class DateUtil {
-	private DateUtil(){
-		throw new UnsupportedOperationException();
-	}
+    private DateUtil() {
+        throw new UnsupportedOperationException();
+    }
 
     private static Logger log = LoggerFactory.getLogger(DateUtil.class);
 
@@ -36,81 +39,82 @@ public class DateUtil {
     public static final String yyyy_MM_dd_HH_mm_ss_CN = "yyyy年MM月dd日HH时mm分ss秒";
     public static final String yyyy_MM_dd_HH_mm_CN = "yyyy年MM月dd日HH时mm分";
     public static final String GTM_DATE_FROM = "EEE, d MMM yyyy HH:mm:ss 'GMT'";
-	
 
-	
-	/**
-	 * ########################## unix timestamp #########################
-	 */
-	/**
-	 * get now timestamp
-	 * format:long
-	 *
-	 * @return
-	 */
-	public static long getNowTS() {
-		return new Date().getTime() / 1000;
-	}
-	
-	public static Date ts2Date(long ts) {
-		return new Date(ts * 1000);
-	}
-	
-	public static Date tsms2Date(long ts) {
-		return new Date(ts);
-	}
-	/**
-	 * date format to unix timestamp
-	 *
-	 * @param date
-	 * @return
-	 */
-	public static long date2ts(Date date) {
-		return date.getTime() / 1000;
-	}
-	
-	/**
-	 * self adaption of ltime's length
-	 *
-	 * @param ltime
-	 * @return
-	 */
-	public static Date long2DateSelfAdaption(long ltime) {
-		//1478855477
-		//9999999999
-		if (ltime > 9999999999L) {
-			//ms
-			return new Date(ltime);
-		} else {
-			//second
-			return new Date(ltime * 1000);
-		}
-	}
-	
-	/**
-	 * unix timestamp long format to yyyymmdd long
-	 *
-	 * @param timestamp
-	 * @return
-	 */
-	public static long ts2yyymmddL(long timestamp) {
-		return Long.parseLong(ts2yyymmdd(timestamp));
-	}
-	/**
-	 * unix timestamp long format to yyyymmdd String
-	 */
-	public static String ts2yyymmdd(long timestamp) {
-		Date tmp = ts2Date(timestamp);
-		SimpleDateFormat sdf = new SimpleDateFormat(yyyyMMdd_EN);
-		return sdf.format(tmp);
-	}
-	
-	
-	
-	/**
-	 * 获取秒
-	 * @return
-	 */
+
+    /**
+     * ########################## unix timestamp #########################
+     */
+    /**
+     * get now timestamp
+     * format:long
+     *
+     * @return
+     */
+    public static long getNowTS() {
+        return new Date().getTime() / 1000;
+    }
+
+    public static Date ts2Date(long ts) {
+        return new Date(ts * 1000);
+    }
+
+    public static Date tsms2Date(long ts) {
+        return new Date(ts);
+    }
+
+    /**
+     * date format to unix timestamp
+     *
+     * @param date
+     * @return
+     */
+    public static long date2ts(Date date) {
+        return date.getTime() / 1000;
+    }
+
+    /**
+     * self adaption of ltime's length
+     *
+     * @param ltime
+     * @return
+     */
+    public static Date long2DateSelfAdaption(long ltime) {
+        //1478855477
+        //9999999999
+        if (ltime > 9999999999L) {
+            //ms
+            return new Date(ltime);
+        } else {
+            //second
+            return new Date(ltime * 1000);
+        }
+    }
+
+    /**
+     * unix timestamp long format to yyyymmdd long
+     *
+     * @param timestamp
+     * @return
+     */
+    public static long ts2yyymmddL(long timestamp) {
+        return Long.parseLong(ts2yyymmdd(timestamp));
+    }
+
+    /**
+     * unix timestamp long format to yyyymmdd String
+     */
+    public static String ts2yyymmdd(long timestamp) {
+        Date tmp = ts2Date(timestamp);
+        SimpleDateFormat sdf = new SimpleDateFormat(yyyyMMdd_EN);
+        return sdf.format(tmp);
+    }
+
+
+    /**
+     * 获取秒
+     *
+     * @return
+     */
     public static long getTimeSeconds() {
         long l = 0;
         Date date = new Date();
@@ -120,7 +124,6 @@ public class DateUtil {
         l = second + min * 60 + hour * 60 * 60;
         return l;
     }
-
 
 
     /**
@@ -143,11 +146,11 @@ public class DateUtil {
     public static String formatDefault(Date date) {
         return format(date, DEFAULT_FORMAT);
     }
-	
-	
-	/**
-	 * ########################## target time ###############################
-	 */
+
+
+    /**
+     * ########################## target time ###############################
+     */
     /**
      * get date
      *
@@ -253,6 +256,7 @@ public class DateUtil {
         return getLastMonthSameDayBeforOneDay().getTime() / 1000;
     }
 
+
     public final static Date strToDateTime(String year, String month, String day, String hour, String minute, String
             second, String timezone) {
         Calendar calendar = new GregorianCalendar();
@@ -282,6 +286,7 @@ public class DateUtil {
 //		calendar.add(Calendar.HOUR_OF_DAY, 8);
         return calendar.getTime();
     }
+
 
     public final static Date getGMT2East8TimeZone(String year, String month, String day, String hour, String minute,
                                                   String second, String timezone) {
@@ -334,8 +339,6 @@ public class DateUtil {
         SimpleDateFormat formatymdhms = new SimpleDateFormat("yyyyMMddHHmmss");
         return formatymdhms.format(date);
     }
-
-
 
 
     /**
@@ -500,6 +503,11 @@ public class DateUtil {
             return delayStr;
         }
         return delayStr;
+    }
+
+    public static Date str2date(String raw, String fmt) throws ParseException {
+        DateFormat logRawFormat = new SimpleDateFormat(fmt);
+        return logRawFormat.parse(raw);
     }
 
 }

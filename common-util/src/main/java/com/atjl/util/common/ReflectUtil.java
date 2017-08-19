@@ -14,12 +14,13 @@ import java.util.*;
 /**
  * 反射相关util
  * PS:大部分异常 只记录，不抛出
+ *
  * @author JasonLiu
  */
 public class ReflectUtil {
-	private ReflectUtil(){
-		throw new UnsupportedOperationException();
-	}
+    private ReflectUtil() {
+        throw new UnsupportedOperationException();
+    }
 
     private static Logger LOG = LoggerFactory.getLogger(ReflectUtil.class);
 
@@ -133,12 +134,15 @@ public class ReflectUtil {
     public static boolean chkAImplementB(Class<?> A, Class<?> B) {
         return B.isAssignableFrom(A);
     }
+
     public static boolean chkAImplementB(Object A, Class<?> B) {
         return chkAImplementB(A.getClass(), B);
     }
+
     public static boolean chkAImplementBList(Object A, List<Class<?>> B) {
         return chkAImplementBList(A.getClass(), B);
     }
+
     public static boolean chkAImplementBList(Class<?> A, List<Class<?>> B) {
         for (Class<?> intf : B) {
             if (chkAImplementB(A, intf)) {
@@ -225,6 +229,22 @@ public class ReflectUtil {
         return null;
     }
 
+    public static Field[] getFieldAll(Object obj) {
+        List<Class<?>> list = getSelfAndParentClassList(obj);
+        for (Class<?> clz : list) {
+            Field field = null;
+            try {
+
+            } catch (NoSuchFieldException e) {
+                LOG.warn("class field not found ");
+            }
+            if (field != null) {
+                return field.getType();
+            }
+        }
+        return null;
+    }
+
     /**
      * copy field
      *
@@ -234,6 +254,7 @@ public class ReflectUtil {
      * @param allowNull allow null field
      */
     public static void copyField(Object source, Object target, String[] ignores, boolean allowNull) {
+//        Field[] fields = getFieldValueMapAll(source,allowNull);//source.getClass().getDeclaredFields();
         Field[] fields = source.getClass().getDeclaredFields();
         for (Field field : fields) {
             if ("serialVersionUID".equals(field.getName())) {
@@ -352,6 +373,10 @@ public class ReflectUtil {
         }
         return res;
     }
+
+
+//    public static Filed[] get
+
     /**
      * is boolean field
      *

@@ -20,9 +20,9 @@ import java.util.Map;
 /**
  * 库配置读取
  */
-@Component(ConfigDbConstant.CONF_DB_SERVICE)
-public class ConfigDbServiceImpl implements ConfigDbService {
-    private static final Logger logger = LoggerFactory.getLogger(ConfigDbServiceImpl.class);
+@Component(ConfigDbConstant.CONF_DB_PLAIN_SERVICE)
+public class ConfigDbPlainServiceImpl implements ConfigDbService {
+    private static final Logger logger = LoggerFactory.getLogger(ConfigDbPlainServiceImpl.class);
     @Resource
     private ConfigTreeMapper configDbDao;
     @Resource

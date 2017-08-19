@@ -82,8 +82,13 @@ public class StringCheckUtilTest {
     }
     
     @Test
-    public void testEqual() throws Exception { 
-        
+    public void testBatchContain() throws Exception {
+        String[] ss = new String[]{"123","456","123123123","324909803"};
+        assertEquals(true, StringCheckUtil.batchContain("123",ss));
+        assertEquals(true, StringCheckUtil.batchContain("456",ss));
+        assertEquals(true, StringCheckUtil.batchContain("123123",ss));
+        assertEquals(false, StringCheckUtil.batchContain("567",ss));
+
     }
     
     @Test

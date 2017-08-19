@@ -2,13 +2,12 @@ package com.atjl.util.collection;
 
 import com.atjl.util.number.RangeUtil;
 import com.atjl.util.test.TestDto;
-import org.junit.Test;
-import org.junit.Before; 
 import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.*;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public class CollectionUtilTest {
@@ -284,6 +283,14 @@ public class CollectionUtilTest {
         l2.add("2");
         String item = CollectionUtil.getOneDuplicateItemUseHash(l1,l2);
         assertEquals("1",item);
+    }
+
+
+    @Test
+    public void testFilterNull(){
+        String[] arr = {"123",null,"343",null,null};
+        String[] newA = CollectionUtil.filterNull(arr);
+        System.out.println("res:"+Arrays.toString(newA));
     }
         
     @Before
