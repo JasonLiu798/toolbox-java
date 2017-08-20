@@ -22,7 +22,7 @@ public class ReflectUtil {
         throw new UnsupportedOperationException();
     }
 
-    private static Logger LOG = LoggerFactory.getLogger(ReflectUtil.class);
+    private static Logger logger = LoggerFactory.getLogger(ReflectUtil.class);
 
     /**
      * ################## methods ######################
@@ -240,7 +240,7 @@ public class ReflectUtil {
             try {
                 field = clz.getDeclaredField(fieldName);
             } catch (NoSuchFieldException e) {
-                LOG.warn("class field not found ");
+                logger.warn("class field not found ");
             }
             if (field != null) {
                 return field.getType();
@@ -260,8 +260,12 @@ public class ReflectUtil {
      * @param allowNull allow null field
      */
     public static void copyField(Object source, Object target, String[] ignores, boolean allowNull) {
-//        Field[] fields = getFieldValueMapAll(source,allowNull);//source.getClass().getDeclaredFields();
-        Field[] fields = source.getClass().getDeclaredFields();
+        List<Field> fields = getAllField(source);
+		if(CollectionUtil.isEmpty(fields)){
+			if(logger.isWarnEnabled()){
+				logger.warn("copy fields,source filed empty {}",source);
+			}
+		}
         for (Field field : fields) {
             if ("serialVersionUID".equals(field.getName())) {
                 continue;
@@ -372,7 +376,7 @@ public class ReflectUtil {
                     //field.getType();
                     res.put(field.getName(), fieldVal);
                 } catch (Exception e) {
-                    LOG.error(e.getMessage());
+                    logger.error(e.getMessage());
                     continue;
                 }
             }
@@ -451,7 +455,7 @@ public class ReflectUtil {
                 field = clz.getDeclaredField(fieldName);
                 return field;
             } catch (Exception e) {
-                //LOG.error("loop class parnet get field error {}", clz);
+                //logger.error("loop class parnet get field error {}", clz);
                 continue;
             }
         }
@@ -482,7 +486,7 @@ public class ReflectUtil {
                 return method;
             } catch (Exception e) {
                 continue;
-                //LOG.warn("getDeclaredMethod method not found,{}", e.getMsg());
+                //logger.warn("getDeclaredMethod method not found,{}", e.getMsg());
             }
         }
         return null;
@@ -595,8 +599,8 @@ public class ReflectUtil {
     public static Object getterForce(Class clz, Object obj, String fieldName) {
         Field field = getDeclaredField(clz, fieldName);
         if (field == null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("field null");
+            if (logger.isDebugEnabled()) {
+                logger.debug("field null");
             }
             return null;
         }
