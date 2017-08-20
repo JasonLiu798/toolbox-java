@@ -32,13 +32,10 @@
 		<sgs-framework-boot-common.version>1.0.9-SNAPSHOT</sgs-framework-boot-common.version>
 		<sgs-framework-boot-cache.version>1.0.1-SNAPSHOT</sgs-framework-boot-cache.version>
 		<sgs-locale.version>1.0.1-SNAPSHOT</sgs-locale.version>
-		<!-- dubbo-sf版本号 -->
-		<dubbo-sf.version>sf.2.0.4</dubbo-sf.version>
 		<zookeeper.version>3.4.6</zookeeper.version>
 		<zkclient.version>0.4</zkclient.version>
 		<!-- kafka -->
 		<kafka-clients.version>0.8.2.1</kafka-clients.version>
-		<sf-kafka.version>1.11</sf-kafka.version>
 		<jsoup.version>1.8.1</jsoup.version>
 		<scala-library.version>2.10.4</scala-library.version>
 		<metrics-core.version>2.2.0</metrics-core.version>
@@ -52,8 +49,6 @@
 		<!-- mybatis版本号 -->
 		<mybatis.version>3.2.7</mybatis.version>
 		<mybatis-spring.version>1.2.2</mybatis-spring.version>
-		<!-- disconf -->
-		<disconf.version>sf.1.0.0</disconf.version>
 		<!-- oval -->
 		<oval.version>1.85</oval.version>
 		<druid.version>1.0.6</druid.version>
@@ -115,7 +110,6 @@
 		<junit.version>4.12</junit.version>
 		<liquibase.version>3.3.2</liquibase.version>
 		<log4j.version>1.2.17</log4j.version>
-		<sflog.version>1.0.3</sflog.version>
 		<log4j2.version>2.1</log4j2.version>
 		<logback.version>1.1.3</logback.version>
 		<mockito.version>1.10.19</mockito.version>
@@ -156,6 +150,8 @@
 		<velocity.version>1.7</velocity.version>
 		<velocity-tools.version>2.0</velocity-tools.version>
 		<wsdl4j.version>1.6.3</wsdl4j.version>
+
+		<dubbo.version>2.2.0</dubbo.version>
 
 		<!-- Build  -->
 		<java.version>1.8</java.version>
@@ -200,7 +196,7 @@
 			<dependency>
 				<groupId>com.alibaba</groupId>
 				<artifactId>dubbo</artifactId>
-				<version>${dubbo-sf.version}</version>
+				<version>${dubbo.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.zookeeper</groupId>
@@ -223,21 +219,23 @@
 				<artifactId>kafka-clients</artifactId>
 				<version>${kafka-clients.version}</version>
 			</dependency>
-			<dependency>
+
+			<!--<dependency>
 				<groupId>com.atjl.kafka</groupId>
-				<artifactId>sf-kafka_2.10_1.6_1.0</artifactId>
+				<artifactId> kafka_2.10_1.6_1.0</artifactId>
 				<version>${kafka-clients.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.atjl.kafka</groupId>
-				<artifactId>sf-kafka-api-core</artifactId>
-				<version>${sf-kafka.version}</version>
+				<artifactId>-kafka-api-core</artifactId>
+				<version>${-kafka.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.atjl.kafka</groupId>
-				<artifactId>sf-kafka-api-check-valid</artifactId>
-				<version>${sf-kafka.version}</version>
-			</dependency>
+				<artifactId>-kafka-api-check-valid</artifactId>
+				<version>${kafka.version}</version>
+			</dependency>-->
+
 			<dependency>
 				<groupId>org.jsoup</groupId>
 				<artifactId>jsoup</artifactId>
@@ -658,11 +656,12 @@
 				<version>${junit.version}</version>
 			</dependency>
 
+			<!--
 			<dependency>
 				<groupId>com.atjl.sgs</groupId>
-				<artifactId>sflog-log4j</artifactId>
-				<version>${sflog.version}</version>
-			</dependency>
+				<artifactId>log-log4j</artifactId>
+				<version>${log.version}</version>
+			</dependency>-->
 			<dependency>
 				<groupId>log4j</groupId>
 				<artifactId>log4j</artifactId>

@@ -1,124 +1,125 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.atjl</groupId>
-        <artifactId>common-parent</artifactId>
-        <version>1.0.0</version>
-        <relativePath>./common-dep</relativePath>
-    </parent>
+	<parent>
+		<groupId>com.atjl</groupId>
+		<artifactId>common-parent</artifactId>
+		<version>1.0.0</version>
+		<relativePath>./common-dep</relativePath>
+	</parent>
 
-    <groupId>com.atjl</groupId>
-    <artifactId>common-tools-parent</artifactId>
-    <version>1.0.0</version>
+	<groupId>com.atjl</groupId>
+	<artifactId>common-tools-parent</artifactId>
+	<version>1.0.0</version>
 
-    <packaging>pom</packaging>
-    <name>common-tools-parent</name>
-    <description>prj management</description>
+	<packaging>pom</packaging>
+	<name>common-tools-parent</name>
+	<description>prj management</description>
 
-    <properties>
-        <util.version>1.0.0</util.version>
-        <prj.version>1.0.0</prj.version>
-        <!-- Build args -->
-        <java.version>1.8</java.version>
-        <swagger.version>2.2.2</swagger.version>
-        <maven.test.skip>true</maven.test.skip>
-    </properties>
+	<properties>
+		<util.version>1.0.0</util.version>
+		<prj.version>1.0.0</prj.version>
+		<!-- Build args -->
+		<java.version>1.8</java.version>
+		<swagger.version>2.2.2</swagger.version>
+		<maven.test.skip>true</maven.test.skip>
+	</properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${swagger.version}</version>
-        </dependency>
-    </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+	</dependencies>
 
-    <build>
-        <finalName>${project.artifactId}-${project.version}</finalName>
-        <plugins>
-            <!-- skip test -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <skipTests>true</skipTests>
-                </configuration>
-            </plugin>
+	<build>
+		<finalName>${project.artifactId}-${project.version}</finalName>
+		<plugins>
+			<!-- skip test -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skipTests>true</skipTests>
+				</configuration>
+			</plugin>
 
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>UTF-8</encoding>
-                    <compilerArguments>
-                        <!--<extdirs></extdirs>-->
-                    </compilerArguments>
-                </configuration>
-            </plugin>
-
-
-            <!--fix maven install,Mark invalid-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.7</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.shared</groupId>
-                        <artifactId>maven-filtering</artifactId>
-                        <version>1.3</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <skipTests>${maven.test.skip}</skipTests>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <encoding>UTF-8</encoding>
-                    <compilerArguments>
-                        <!--<extdirs>${basedir}/WEB-INF/lib</extdirs>-->
-                    </compilerArguments>
-                </configuration>
-            </plugin>
-        </plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+					<compilerArguments>
+						<!--<extdirs></extdirs>-->
+					</compilerArguments>
+				</configuration>
+			</plugin>
 
 
-    </build>
+			<!--fix maven install,Mark invalid-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.7</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.shared</groupId>
+						<artifactId>maven-filtering</artifactId>
+						<version>1.3</version>
+					</dependency>
+				</dependencies>
+			</plugin>
 
-    <modules>
-        <module>common-dep</module>
-        <module>common-api</module>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+			</plugin>
 
-        <module>common-util</module>
-        <module>common-util-ex</module>
-        <module>common-log</module>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skipTests>${maven.test.skip}</skipTests>
+				</configuration>
+			</plugin>
 
-        <module>common-config</module>
-        <module>common-config-db</module>
-        <module>common-config-prop</module>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>UTF-8</encoding>
+					<compilerArguments>
+						<!--<extdirs>${basedir}/WEB-INF/lib</extdirs>-->
+					</compilerArguments>
+				</configuration>
+			</plugin>
+		</plugins>
 
-        <module>common-email</module>
 
-        <!-- <module>common-cas</module> -->
-        <module>common-cache-memcache</module>
-    </modules>
+	</build>
+
+	<modules>
+		<module>common-dep</module>
+		<module>common-api</module>
+
+		<module>common-util</module>
+		<module>common-util-ex</module>
+		<module>common-log</module>
+
+		<module>common-config</module>
+		<module>common-config-db</module>
+		<module>common-config-prop</module>
+
+		<module>common-cache-memcache</module>
+
+		<module>common-email</module>
+
+		<module>common-cas-client</module>
+	</modules>
 </project>
