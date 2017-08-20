@@ -24,7 +24,7 @@ import java.util.Map;
 public class ConfigServiceUsePropImpl implements ConfigService {
     private static final Logger logger = LoggerFactory.getLogger(ConfigServiceUsePropImpl.class);
 
-    @Resource(name = ConfigDbConstant.CONF_DB_SERVICE)
+    @Resource(name = ConfigDbConstant.CONF_DB_TREE_SERVICE)
     private ConfigDbService configDbService;
 
     /**

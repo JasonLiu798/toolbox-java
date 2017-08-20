@@ -157,6 +157,26 @@ public class ReflectUtil {
     /**
      * ######################### fields #############################
      */
+	/**
+	 * get fields
+	 * @param obj
+	 * @return
+	 */
+	public static List<Field> getAllField(Object obj) {
+		List<Class<?>> clzList = getSelfAndParentClassList(obj);
+		if(CollectionUtil.isEmpty(clzList)){
+			return new ArrayList<>();
+		}
+		List<Field> fieldList = new ArrayList<>(10);
+		for (Class<?> clz : clzList) {
+			Field[] fields = clz.getDeclaredFields();
+			if(!CollectionUtil.isEmpty(fields)){
+				fieldList.addAll(CollectionUtil.array2List(fields));
+			}
+		}
+		return fieldList;
+	}
+	
     /**
      * get field set,class self
      *
@@ -229,21 +249,7 @@ public class ReflectUtil {
         return null;
     }
 
-    public static Field[] getFieldAll(Object obj) {
-        List<Class<?>> list = getSelfAndParentClassList(obj);
-        for (Class<?> clz : list) {
-            Field field = null;
-            try {
 
-            } catch (NoSuchFieldException e) {
-                LOG.warn("class field not found ");
-            }
-            if (field != null) {
-                return field.getType();
-            }
-        }
-        return null;
-    }
 
     /**
      * copy field

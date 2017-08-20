@@ -5,7 +5,7 @@ import com.atjl.common.constant.RespConstant;
 /**
  * 对外response dto,包含附加数据
  *
- * @author 01174604
+ * @author atjl
  * @since 1.0
  */
 public class ResponseDataDtoV1 extends ResponseDtoV1 {

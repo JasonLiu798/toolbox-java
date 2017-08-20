@@ -2,7 +2,7 @@ package com.atjl.configdb.service.impl;
 
 import com.atjl.configdb.api.ConfigDbConstant;
 import com.atjl.configdb.api.ConfigDbService;
-import com.atjl.configdb.mapper.ConfigTreeMapper;
+import com.atjl.configdb2.mapper.ConfigTreeMapper;
 import com.atjl.util.collection.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

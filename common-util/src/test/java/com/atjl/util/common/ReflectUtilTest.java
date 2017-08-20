@@ -1,15 +1,18 @@
 package com.atjl.util.common;
 
 import com.atjl.util.character.StringCheckUtil;
+import com.atjl.util.dto.TestDtoChild;
+import com.atjl.util.test.TestDto;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
-public class ReflectHelperTest {
+public class ReflectUtilTest {
 
 
     @Test
@@ -65,6 +68,13 @@ public class ReflectHelperTest {
     public void testChkImpiIntfForClzIntfs() throws Exception {
 
     }
+    
+    @Test
+	public void testGetAllField(){
+		TestDtoChild child = new TestDtoChild();
+    	List<Field> fields = ReflectUtil.getAllField(child);
+		System.out.println("res:"+fields);
+	}
 
     @Test
     public void testGetFieldSet() throws Exception {

@@ -17,7 +17,7 @@ public class CasAuthenticationFilter implements Filter {
     private CasService casService;
 
     //cas 服务器
-    private String casServerUrlPrefix;
+    private String casServer;
     /**
      * 登出uri
      */
@@ -26,24 +26,12 @@ public class CasAuthenticationFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-//        this.casServerLoginUrl = CasHelper.getPropertyFromInitParams(
-//                "casServerLoginUrl", null);
-//        this.casServerLogoutUrl = CasHelper.getPropertyFromInitParams(
-//                "casServerLogoutUrl", null);
-
-        this.casServerUrlPrefix = CasHelper.getPropertyFromInitParams(
-                "casServerUrlPrefix", null);
+        this.casServer = CasHelper.getPropertyFromInitParams(
+                "casServer", null);
         this.logoutUri = CasHelper.getPropertyFromInitParams("logoutUri", null);
 
-//        this.loginUri = CasHelper.getPropertyFromInitParams("loginUri", null);
-//        this.casSrv = CasHelper.getPropertyFromInitParams("casSrv", null);
-//        Assert.notNull(this.casServerLoginUrl, "casServerLoginUrl can not be null");
-
-//        Assert.notNull(this.loginUri, "loginUri can not be null");
-
         Assert.notNull(this.logoutUri, "logoutUri can not be null");
-//        Assert.notNull(this.casSrv, "casSrv can not be null");
-        Assert.notNull(this.casServerUrlPrefix, "casServerUrlPrefix can not be null");
+        Assert.notNull(this.casServer, "casServer can not be null");
 
         this.casService = CasHelper.getPostCallBack();
     }
@@ -52,22 +40,6 @@ public class CasAuthenticationFilter implements Filter {
     public void destroy() {
         // Do nothing because of nothing.
     }
-
-    /**
-     * 在重定向到CAS Server之前调用。在此可以进行SSO验证、安全url过滤
-     *
-     * @param request
-     * @return
-     *
-    private boolean beforeRedirect(HttpServletRequest request) {
-    //		boolean isLoginUri = request.getRequestURI().equals(this.loginUri);
-    //		boolean isLogoutUri = request.getRequestURI().equals(this.logoutUri);
-    boolean isSafeUri = AuthenticationUtil.isInWhiteListUrl(
-    request.getRequestURI(), AuthenticationUtil.getWhiteListUrls());
-
-    return isSafeUri;
-    //		return isLoginUri || isLogoutUri || isSafeUri;
-    }*/
 
     /**
      * 单点登陆认证，排除白名单和带ticket的请求
@@ -90,10 +62,10 @@ public class CasAuthenticationFilter implements Filter {
         if (request.getRequestURI().equals(this.logoutUri)) {
             CasHelper.deleteToken(request, response);
             //
-            //this.casServerUrlPrefix
+            //this.casServer
             ///logout?service=
             String rawUrl = CasUrlGenUtil.getUrl(request);
-            String redirect = this.casServerUrlPrefix + "/logout?service=" + rawUrl;
+            String redirect = this.casServer + "/logout?service=" + rawUrl;
             response.sendRedirect(redirect);
             return;
         }
@@ -127,7 +99,7 @@ public class CasAuthenticationFilter implements Filter {
 //        url.append("?").append(request.getQueryString());
 
         String rawUrl = CasUrlGenUtil.getRawUrl(request);
-        String redirect = this.casServerUrlPrefix + "/login?service=" + rawUrl;
+        String redirect = this.casServer + "/login?service=" + rawUrl;
         response.sendRedirect(redirect);
     }
 

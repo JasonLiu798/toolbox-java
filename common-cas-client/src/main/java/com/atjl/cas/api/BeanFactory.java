@@ -12,21 +12,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-/**
- * 
- * 描述：BeanFactory
- * 
- * <pre>
- * HISTORY
- * ****************************************************************************
- *  ID   DATE           PERSON          REASON
- *  1    2014年8月25日     014767          Create
- * ****************************************************************************
- * </pre>
- * 
- * @author 014767
- * @since 1.0
- */
+
 public class BeanFactory implements ServletContextListener {
 
     private static final Log logger = LogFactory.getLog(BeanFactory.class);

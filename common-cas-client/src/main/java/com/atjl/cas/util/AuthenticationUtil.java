@@ -26,7 +26,7 @@ public class AuthenticationUtil {
 	}
 
 	/**
-	 * 获取sys.conf url白名单
+	 * 获取url白名单
 	 * 
 	 * @return
 	 */

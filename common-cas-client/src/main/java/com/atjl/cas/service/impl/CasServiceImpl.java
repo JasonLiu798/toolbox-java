@@ -28,8 +28,7 @@ public class CasServiceImpl implements CasService {
         try {
             return casUserService.exist(userName);
         } catch (Exception e) {
-            logger.error("can't find user [" + userName
-                    + "] in system.", e);
+            logger.error("can't find user [" + userName + "] in system.", e);
             return false;
         }
     }
