@@ -6,7 +6,7 @@ public class ConfigDbConstant {
         super();
     }
 
-    public static final String CONF_DB_SERVICE = "configDbService";
+    public static final String CONF_DB_TREE_SERVICE = "configDbTreeService";
     public static final String CONF_DB_PLAIN_SERVICE = "configDbPlainService";
 
     public static final String CONFIG_CACHE = "CONFIGCACHE";

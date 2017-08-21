@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.atjl</groupId>
@@ -127,7 +127,6 @@
 		<junit.version>4.12</junit.version>
 		<liquibase.version>3.3.2</liquibase.version>
 		<log4j.version>1.2.17</log4j.version>
-		<sflog.version>1.0.3</sflog.version>
 		<log4j2.version>2.1</log4j2.version>
 		<logback.version>1.1.3</logback.version>
 		<mockito.version>1.10.19</mockito.version>
@@ -308,14 +307,14 @@
 			</dependency>
 			<!-- resteasy -->
 			<dependency>
-			    <groupId>org.jboss.resteasy</groupId>
-			    <artifactId>resteasy-jaxrs</artifactId>
-			    <version>${resteasy.version}</version>
+				<groupId>org.jboss.resteasy</groupId>
+				<artifactId>resteasy-jaxrs</artifactId>
+				<version>${resteasy.version}</version>
 			</dependency>
 			<dependency>
-			    <groupId>org.jboss.resteasy</groupId>
-			    <artifactId>resteasy-client</artifactId>
-			    <version>${resteasy.version}</version>
+				<groupId>org.jboss.resteasy</groupId>
+				<artifactId>resteasy-client</artifactId>
+				<version>${resteasy.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.el</groupId>
@@ -329,32 +328,32 @@
 			</dependency>
 			<!-- 如果要使用json序列化 -->
 			<dependency>
-			    <groupId>org.jboss.resteasy</groupId>
-			    <artifactId>resteasy-jackson-provider</artifactId>
-			    <version>${resteasy.version}</version>
+				<groupId>org.jboss.resteasy</groupId>
+				<artifactId>resteasy-jackson-provider</artifactId>
+				<version>${resteasy.version}</version>
 			</dependency>
 			<!-- 如果要使用xml序列化 -->
 			<dependency>
-			    <groupId>org.jboss.resteasy</groupId>
-			    <artifactId>resteasy-jaxb-provider</artifactId>
-			    <version>${resteasy.version}</version>
+				<groupId>org.jboss.resteasy</groupId>
+				<artifactId>resteasy-jaxb-provider</artifactId>
+				<version>${resteasy.version}</version>
 			</dependency>
 			<dependency>
-	            <groupId>javax.ws.rs</groupId>
-	            <artifactId>javax.ws.rs-api</artifactId>
-	            <version>${rs-api.version}</version>
-	        </dependency>
-	        <!-- 如果要使用netty server -->
+				<groupId>javax.ws.rs</groupId>
+				<artifactId>javax.ws.rs-api</artifactId>
+				<version>${rs-api.version}</version>
+			</dependency>
+			<!-- 如果要使用netty server -->
 			<dependency>
-			    <groupId>org.jboss.resteasy</groupId>
-			    <artifactId>resteasy-netty</artifactId>
-			    <version>${resteasy.version}</version>
+				<groupId>org.jboss.resteasy</groupId>
+				<artifactId>resteasy-netty</artifactId>
+				<version>${resteasy.version}</version>
 			</dependency>
 			<!-- 如果要使用Sun HTTP server -->
 			<dependency>
-			    <groupId>org.jboss.resteasy</groupId>
-			    <artifactId>resteasy-jdk-http</artifactId>
-			    <version>${resteasy.version}</version>
+				<groupId>org.jboss.resteasy</groupId>
+				<artifactId>resteasy-jdk-http</artifactId>
+				<version>${resteasy.version}</version>
 			</dependency>
 
 			<!-- Third Party -->
@@ -420,10 +419,10 @@
 				<version>${shiro-spring.version}</version>
 			</dependency>
 			<dependency>
-	            <groupId>javax.annotation</groupId>
-	            <artifactId>javax.annotation-api</artifactId>
-	            <version>${annotation-api.version}</version>
-	        </dependency>
+				<groupId>javax.annotation</groupId>
+				<artifactId>javax.annotation-api</artifactId>
+				<version>${annotation-api.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
@@ -678,11 +677,7 @@
 				<version>${junit.version}</version>
 			</dependency>
 
-			<dependency>
-				<groupId>com.sf.sgs</groupId>
-				<artifactId>sflog-log4j</artifactId>
-				<version>${sflog.version}</version>
-			</dependency>
+
 			<dependency>
 				<groupId>log4j</groupId>
 				<artifactId>log4j</artifactId>
@@ -1566,6 +1561,13 @@
 				<artifactId>wsdl4j</artifactId>
 				<version>${wsdl4j.version}</version>
 			</dependency>
+			<!--
+<dependency>
+	<groupId>com.sf.sgs</groupId>
+	<artifactId>log-log4j</artifactId>
+	<version>${log.version}</version>
+</dependency>-->
+
 		</dependencies>
 	</dependencyManagement>
 	<repositories>
@@ -1582,7 +1584,6 @@
 	</repositories>
 
 	<distributionManagement>
-		<!-- 顺丰maven仓库发布路径 -->
 		<repository>
 			<id>releases</id>
 			<name>Nexus Release Repository</name>
@@ -1593,12 +1594,6 @@
 			<name>Nexus Snapshot Repository</name>
 			<url>xx</url>
 		</snapshotRepository>
-		<!-- javadoc site -->
-		<site>
-			<id>sf-javadoc-site</id>
-			<url>${site.deploy.url}</url>
-		</site>
-		<!-- mvn site:deploy -->
 	</distributionManagement>
 
 	<issueManagement>
@@ -1624,10 +1619,10 @@
 		</notifiers>
 	</ciManagement>
 
-<!-- 	<scm>
-		<url>${scm.source.url}</url>
-		<connection>${scm.source.connection}</connection>
-	</scm> -->
+	<!-- 	<scm>
+			<url>${scm.source.url}</url>
+			<connection>${scm.source.connection}</connection>
+		</scm> -->
 
 	<mailingLists>
 		<mailingList>
@@ -1865,77 +1860,77 @@
 									</reportSet>
 								</reportSets>
 							</plugin>-->
-							<!-- 生成java代码交叉引用和源代码的html格式
-							<plugin>
-								<groupId>org.apache.maven.plugins</groupId>
-								<artifactId>maven-jxr-plugin</artifactId>
-								<version>2.4</version>
-								<configuration>
-									<aggregate>true</aggregate>
-								</configuration>
-							</plugin>-->
-							<!-- 单元测试报告
-							<plugin>
-								<groupId>org.apache.maven.plugins</groupId>
-								<artifactId>maven-surefire-report-plugin</artifactId>
-								<configuration>
-									<aggregate>true</aggregate>
-								</configuration>
-							</plugin>-->
-							<!-- 格式化统计报告
-							<plugin>
-								<groupId>org.codehaus.mojo</groupId>
-								<artifactId>jdepend-maven-plugin</artifactId>
-								<version>2.0</version>
-								<configuration>
-									<aggregate>true</aggregate>
-								</configuration>
-							</plugin>-->
-							<!-- java代码的度量工具
-							<plugin>
-								<groupId>org.codehaus.mojo</groupId>
-								<artifactId>javancss-maven-plugin</artifactId>
-								<version>2.1</version>
-								<configuration>
-									<encoding>${file_encoding}</encoding>
-									<aggregate>true</aggregate>
-								</configuration>
-							</plugin>-->
-							<!-- TODO检查报告
-							<plugin>
-								<groupId>org.codehaus.mojo</groupId>
-								<artifactId>taglist-maven-plugin</artifactId>
-								<version>2.4</version>
-								<configuration>
-									<aggregate>true</aggregate>
-								</configuration>
-							</plugin>-->
-							<!-- 代码检查checkstyle
-							<plugin>
-								<groupId>org.apache.maven.plugins</groupId>
-								<artifactId>maven-checkstyle-plugin</artifactId>
-							</plugin>-->
-							<!-- 代码检查findbugs
-							<plugin>
-								<groupId>org.codehaus.mojo</groupId>
-								<artifactId>findbugs-maven-plugin</artifactId>
-							</plugin>-->
-							<!-- 代码检查pmd
-							<plugin>
-								<groupId>org.apache.maven.plugins</groupId>
-								<artifactId>maven-pmd-plugin</artifactId>
-							</plugin>-->
-							<!-- 项目总报告
-							<plugin>
-								<groupId>org.apache.maven.plugins</groupId>
-								<artifactId>maven-project-info-reports-plugin</artifactId>
-								<version>2.7</version>
-								<configuration>
-				                	<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-				                	<dependencyDetailsEnabled>false</dependencyDetailsEnabled>
-				                </configuration>
-							</plugin>
-						</reportPlugins>-->
+						<!-- 生成java代码交叉引用和源代码的html格式
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-jxr-plugin</artifactId>
+							<version>2.4</version>
+							<configuration>
+								<aggregate>true</aggregate>
+							</configuration>
+						</plugin>-->
+						<!-- 单元测试报告
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-surefire-report-plugin</artifactId>
+							<configuration>
+								<aggregate>true</aggregate>
+							</configuration>
+						</plugin>-->
+						<!-- 格式化统计报告
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>jdepend-maven-plugin</artifactId>
+							<version>2.0</version>
+							<configuration>
+								<aggregate>true</aggregate>
+							</configuration>
+						</plugin>-->
+						<!-- java代码的度量工具
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>javancss-maven-plugin</artifactId>
+							<version>2.1</version>
+							<configuration>
+								<encoding>${file_encoding}</encoding>
+								<aggregate>true</aggregate>
+							</configuration>
+						</plugin>-->
+						<!-- TODO检查报告
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>taglist-maven-plugin</artifactId>
+							<version>2.4</version>
+							<configuration>
+								<aggregate>true</aggregate>
+							</configuration>
+						</plugin>-->
+						<!-- 代码检查checkstyle
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-checkstyle-plugin</artifactId>
+						</plugin>-->
+						<!-- 代码检查findbugs
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>findbugs-maven-plugin</artifactId>
+						</plugin>-->
+						<!-- 代码检查pmd
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-pmd-plugin</artifactId>
+						</plugin>-->
+						<!-- 项目总报告
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-project-info-reports-plugin</artifactId>
+							<version>2.7</version>
+							<configuration>
+								<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+								<dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+							</configuration>
+						</plugin>
+					</reportPlugins>-->
 					</configuration>
 					<dependencies>
 						<dependency><!-- add support for ssh/scp -->

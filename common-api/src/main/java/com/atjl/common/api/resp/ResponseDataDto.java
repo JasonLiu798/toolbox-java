@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * 对外response dto,包含附加数据
  *
- * @author 01174604
+ * @author atjl
  * @since 1.0
  */
 @ApiModel

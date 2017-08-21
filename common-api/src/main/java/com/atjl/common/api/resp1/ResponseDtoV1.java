@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * @author 01174604
+ * @author atjl
  * @since 1.0
  */
 @ApiModel

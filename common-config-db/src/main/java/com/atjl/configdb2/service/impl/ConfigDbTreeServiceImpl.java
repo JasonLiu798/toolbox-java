@@ -1,8 +1,8 @@
-package com.atjl.configdb.service.impl;
+package com.atjl.configdb2.service.impl;
 
 import com.atjl.configdb.api.ConfigDbConstant;
 import com.atjl.configdb.api.ConfigDbService;
-import com.atjl.configdb.mapper.ConfigTreeMapper;
+import com.atjl.configdb2.mapper.ConfigTreeMapper;
 import com.atjl.util.collection.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +20,9 @@ import java.util.Map;
 /**
  * 库配置读取
  */
-@Component(ConfigDbConstant.CONF_DB_SERVICE)
-public class ConfigDbServiceImpl implements ConfigDbService {
-    private static final Logger logger = LoggerFactory.getLogger(ConfigDbServiceImpl.class);
+@Component(ConfigDbConstant.CONF_DB_TREE_SERVICE)
+public class ConfigDbTreeServiceImpl implements ConfigDbService {
+    private static final Logger logger = LoggerFactory.getLogger(ConfigDbTreeServiceImpl.class);
     @Resource
     private ConfigTreeMapper configDbDao;
     @Resource
