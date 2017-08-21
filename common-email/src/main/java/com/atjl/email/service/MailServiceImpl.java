@@ -32,13 +32,13 @@ public class MailServiceImpl implements MailService {
     private static final Logger logger = LoggerFactory
             .getLogger(MailServiceImpl.class);
 
-    @Resource(name = ConfigConstant.CONF_SERVICE_USE_DICT)
+    @Resource(name = ConfigConstant.CONF_SERVICE_USE_DB_TREE)
     private ConfigService configService;
 
     private MailConfigDto getConfig() {
         MailConfigDto configDto = new MailConfigDto();
 
-        Map<String, String> map = configService.getStrValueBatch(MailConstant.CONFS);
+        Map<String, String> map = configService.getBatch(MailConstant.CONFS);
         for (String confKey : MailConstant.CONFS) {
             if (StringCheckUtil.isEmpty(map.get(confKey))) {
                 throw new MailException("get config null,keys:" + confKey);
@@ -116,8 +116,8 @@ public class MailServiceImpl implements MailService {
 
         MailConfigDto conf = getConfig();
         try {
-            Map<String, Object> confMap = ReflectUtil.getFieldValueMap(conf, true, ReflectUtil.ParentOpt.ALL, CollectionUtil.newArr("srvUrl", "connectionTimeOut", "socketTimeOut"), null);
-            Map<String, Object> contentMap = ReflectUtil.getFieldValueMap(contentDto, true, ReflectUtil.ParentOpt.ALL, CollectionUtil.newArr("attachmentType","attachmentPath" ,"content"), null);
+            Map<String, Object> confMap = ReflectUtil.getFieldValueMap(conf, true, ReflectUtil.GetClzOpt.ALL, CollectionUtil.newArr("srvUrl", "connectionTimeOut", "socketTimeOut"), null);
+            Map<String, Object> contentMap = ReflectUtil.getFieldValueMap(contentDto, true, ReflectUtil.GetClzOpt.ALL, CollectionUtil.newArr("attachmentType","attachmentPath" ,"content"), null);
 //            Map<String, Object> contentMap = ReflectUtil.getFieldValueMapAll(contentDto, true);
             Map<String, Object> sendMap = new HashMap<>();
             sendMap.putAll(confMap);

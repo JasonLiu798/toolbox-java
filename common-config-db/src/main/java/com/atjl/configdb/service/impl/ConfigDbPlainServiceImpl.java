@@ -1,8 +1,8 @@
 package com.atjl.configdb.service.impl;
 
+import com.atjl.config.api.ConfigService;
 import com.atjl.configdb.api.ConfigDbConstant;
-import com.atjl.configdb.api.ConfigDbService;
-import com.atjl.configdb2.mapper.ConfigTreeMapper;
+import com.atjl.configdb.mapper.ConfigPlainMapper;
 import com.atjl.util.collection.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +21,10 @@ import java.util.Map;
  * 库配置读取
  */
 @Component(ConfigDbConstant.CONF_DB_PLAIN_SERVICE)
-public class ConfigDbPlainServiceImpl implements ConfigDbService {
+public class ConfigDbPlainServiceImpl implements ConfigService {
     private static final Logger logger = LoggerFactory.getLogger(ConfigDbPlainServiceImpl.class);
     @Resource
-    private ConfigTreeMapper configDbDao;
+    private ConfigPlainMapper configPlainDao;
     @Resource
     EhCacheCacheManager ehCacheCacheManager;
 
@@ -44,7 +44,7 @@ public class ConfigDbPlainServiceImpl implements ConfigDbService {
         } catch (Exception e) {
             logger.error("clear cache CONFIG_M,CONFIG_MK error {}", e.getMessage());
         }
-        return configDbDao.set(pathKey, v) == 1;
+        return configPlainDao.set(pathKey, v) == 1;
     }
 
     /**
@@ -56,7 +56,7 @@ public class ConfigDbPlainServiceImpl implements ConfigDbService {
     @Override
     @Cacheable(value = ConfigDbConstant.CONFIG_CACHE, key = "#pathKey")
     public String get(String pathKey) {
-        return configDbDao.get(pathKey);
+        return configPlainDao.get(pathKey);
     }
 
     /**
@@ -66,7 +66,7 @@ public class ConfigDbPlainServiceImpl implements ConfigDbService {
      */
     @Override
     public String getNoCache(String key) {
-        return configDbDao.get(key);
+        return configPlainDao.get(key);
     }
 
     /**
@@ -79,7 +79,7 @@ public class ConfigDbPlainServiceImpl implements ConfigDbService {
     @Override
     @Cacheable(value = ConfigDbConstant.CONFIG_CACHE_M, key = "#path.hashCode()")
     public Map<String, String> gets(String path) {
-        return list2map(configDbDao.gets(path));
+        return list2map(configPlainDao.gets(path));
     }
 
     /**
@@ -92,7 +92,12 @@ public class ConfigDbPlainServiceImpl implements ConfigDbService {
     @Override
     @Cacheable(value = ConfigDbConstant.CONFIG_CACHE_MK, key = "#keys.toString()")
     public Map<String, String> getBatch(List<String> keys) {
-        return list2map(configDbDao.getBatch(keys));
+        return list2map(configPlainDao.getBatch(keys));
+    }
+
+    @Override
+    public Map<String, String> getBatchNoCache(List<String> keys) {
+        return list2map(configPlainDao.getBatch(keys));
     }
 
 

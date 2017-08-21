@@ -245,6 +245,11 @@ public final class CollectionUtil {
     }
 
 
+
+    // 相等
+    public static final int TP_EQ = 0;
+    // 字符串，比较使用indexOf
+    public static final int TP_EXIST_STR = 1;
     /**
      * 删除tgtlist中所有存在于dellist的item
      *
@@ -264,7 +269,6 @@ public final class CollectionUtil {
      * @param tgtList
      * @param delList
      * @param option  1,list  must be String,use index of
-     * @param <T>
      * @return
      */
     public static <T> List<T> filterDelListInner(List<T> tgtList, List<T> delList, int option) {
@@ -274,33 +278,32 @@ public final class CollectionUtil {
         if (isEmpty(tgtList)) {
             return tgtList;
         }
-        Iterator<T> tgtIterator = tgtList.iterator();
-        while (tgtIterator.hasNext()) {
-            T tgt = tgtIterator.next();
-            for (T item : delList) {
+//        Iterator<T> tgtIterator = tgtList.iterator();
+        List<T> res = new ArrayList<T>(tgtList.size());
+        for (T tgtItem : tgtList) {
+            for (T delItem : delList) {
                 switch (option) {
                     case TP_EQ:
-                        if (item.equals(tgt)) {
-                            tgtIterator.remove();
+                        if (delItem.equals(tgtItem)) {
+                            continue;
                         }
                         break;
                     case TP_EXIST_STR:
-                        String itemStr = item.toString();
-                        String tgtStr = tgt.toString();
-                        if (tgtStr.indexOf(itemStr) >= 0) {
-                            tgtIterator.remove();
+                        String delItemStr = delItem.toString();
+                        String tgtStr = tgtItem.toString();
+                        if (tgtStr.indexOf(delItemStr) >= 0) {
+                            continue;
                         }
                         break;
                     default:
                         break;
                 }
+                res.add(tgtItem);
             }
         }
-        return tgtList;
+        return res;
     }
 
-    public static final int TP_EQ = 0;
-    public static final int TP_EXIST_STR = 1;
 
 
     /**

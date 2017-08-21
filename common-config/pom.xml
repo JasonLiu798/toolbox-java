@@ -16,16 +16,20 @@
     <packaging>jar</packaging>
     <name>common-config</name>
 
-    <properties>
-        <prj.version>1.1.1</prj.version>
-    </properties>
-
     <dependencies>
+        <!-- other pkg -->
+        <dependency>
+            <groupId>com.atjl</groupId>
+            <artifactId>common-config-api</artifactId>
+            <version>${prj.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.atjl</groupId>
             <artifactId>common-config-db</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <!-- other pkg end -->
+
 
         <dependency>
             <groupId>org.springframework</groupId>

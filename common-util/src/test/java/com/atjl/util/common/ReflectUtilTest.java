@@ -1,12 +1,12 @@
 package com.atjl.util.common;
 
 import com.atjl.util.character.StringCheckUtil;
+import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.dto.TestDtoChild;
 import com.atjl.util.json.JSONFastJsonUtil;
-import com.atjl.util.test.TestDto;
-import org.junit.Test;
-import org.junit.Before;
 import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -201,6 +201,43 @@ public class ReflectUtilTest {
 
     @Test
     public void testGetFieldValueMapAll() throws Exception {
+        /**
+         * Object obj,boolean allowNullValue, GetClzOpt parentOpt, String[] blackList, String[] whiteList
+         */
+        TestDtoChild src = new TestDtoChild();
+        src.setChildField(100L);
+        src.setF1(1);
+        src.setF2(2);
+        Map res = ReflectUtil.getFieldValueMap(src,true, ReflectUtil.GetClzOpt.ALL,null,null);
+        System.out.println("res all:"+JSONFastJsonUtil.objectToJson(res));
+
+        res = ReflectUtil.getFieldValueMap(src,true, ReflectUtil.GetClzOpt.SELF,null,null);
+        System.out.println("res self:"+JSONFastJsonUtil.objectToJson(res));
+
+        res = ReflectUtil.getFieldValueMap(src,true, ReflectUtil.GetClzOpt.PARENT,null,null);
+        System.out.println("res parent:"+JSONFastJsonUtil.objectToJson(res));
+
+        res = ReflectUtil.getFieldValueMap(src,true, ReflectUtil.GetClzOpt.ALLPARENT,null,null);
+        System.out.println("res all parent:"+JSONFastJsonUtil.objectToJson(res));
+    }
+
+    @Test
+    public void testGetFieldBlackWihte(){
+        TestDtoChild src = new TestDtoChild();
+        src.setChildField(2L);
+        src.setF1(1);
+        src.setF2(2);
+
+        Map res = ReflectUtil.getFieldValueMap(src,true, ReflectUtil.GetClzOpt.ALL, CollectionUtil.newArr("f2"),null);
+        System.out.println("res black:"+JSONFastJsonUtil.objectToJson(res));
+
+        res = ReflectUtil.getFieldValueMap(src,true, ReflectUtil.GetClzOpt.ALL, null,CollectionUtil.newArr("f1","childField"));
+        System.out.println("res white:"+JSONFastJsonUtil.objectToJson(res));
+
+        res = ReflectUtil.getFieldValueMap(src,true, ReflectUtil.GetClzOpt.ALL, CollectionUtil.newArr("f1"),CollectionUtil.newArr("f1"));
+        System.out.println("res white and black:"+JSONFastJsonUtil.objectToJson(res));
+
+
 
     }
 

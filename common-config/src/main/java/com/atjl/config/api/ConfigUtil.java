@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,11 +21,15 @@ public class ConfigUtil {
         super();
     }
 
-    public static final String DFT_TP = ConfigConstant.CONF_SERVICE_USE_DICT;
+    /**
+     * 默认使用 tm_config表实现
+     */
+    private static final String DFT_TP = ConfigConstant.CONF_SERVICE_USE_DB_PLAIN;
 
     /**
      * 获取一个
      * 默认从 db取
+     *
      * @param key
      * @return
      */
@@ -35,6 +40,7 @@ public class ConfigUtil {
     /**
      * 获取一个，不存在则使用默认
      * 默认从 db取
+     *
      * @param key
      * @param dftVal
      * @return
@@ -45,6 +51,7 @@ public class ConfigUtil {
 
     /**
      * 获取一个
+     *
      * @param type
      * @param key
      * @param dftVal
@@ -52,43 +59,28 @@ public class ConfigUtil {
      */
     public static String get(String type, String key, String dftVal) {
         switch (type) {
-            case ConfigConstant.CONF_SERVICE_USE_DICT:
-                String v = ConfigDbUtil.get(key);
-                return StringCheckUtil.isEmpty(v) ? dftVal : v;
+            case ConfigConstant.CONF_SERVICE_USE_DB_PLAIN:
+            case ConfigConstant.CONF_SERVICE_USE_DB_TREE:
+                String rawV = ConfigDbUtil.get(type, key);
+                if (StringCheckUtil.isEmpty(rawV)) {
+                    if (logger.isInfoEnabled()) {
+                        logger.info("config get raw null,type {},key {},dft {}", type, key, dftVal);
+                    }
+                    return dftVal;
+                }
+                return rawV;
             case ConfigConstant.CONF_SERVICE_PROP:
+
                 return null;
             default:
                 logger.error("unknown config source,{}", type);
                 return null;
         }
     }
-
-
-
-    /**
-     * 获取多个子项
-     * @param type
-     * @param key
-     * @return
-     */
-    public static Map<String, String> gets(String type, String key) {
-        switch (type) {
-            case ConfigConstant.CONF_SERVICE_USE_DICT:
-                return ConfigDbUtil.gets(key);
-            case ConfigConstant.CONF_SERVICE_PROP:
-                return null;
-            default:
-                logger.error("unknown config source,{}", type);
-                return null;
-        }
-    }
-    public static Map<String, String> gets(String key) {
-        return gets(DFT_TP, key);
-    }
-
 
     /**
      * 批量获取，有默认值
+     *
      * @param type
      * @param keyAndDfts
      * @return
@@ -98,8 +90,9 @@ public class ConfigUtil {
             return new HashMap<>();
         }
         switch (type) {
-            case ConfigConstant.CONF_SERVICE_USE_DICT:
-                return ConfigDftValUtil.rawFilterAddDft(ConfigDbUtil.getBatch(CollectionUtil.map2list(keyAndDfts,true)), keyAndDfts);
+            case ConfigConstant.CONF_SERVICE_USE_DB_PLAIN:
+            case ConfigConstant.CONF_SERVICE_USE_DB_TREE:
+                return ConfigDftValUtil.rawFilterAddDft(ConfigDbUtil.getBatch(type, CollectionUtil.map2list(keyAndDfts, true)), keyAndDfts);
             case ConfigConstant.CONF_SERVICE_PROP:
                 return null;
             default:
@@ -112,5 +105,25 @@ public class ConfigUtil {
         return getBatch(DFT_TP, keyAndDfts);
     }
 
-
+    /**
+     * 批量获取无默认值
+     * @param type
+     * @param keys
+     * @return
+     */
+    public static Map<String, String> getBatch(String type, List<String> keys) {
+        if (CollectionUtil.isEmpty(keys)) {
+            return new HashMap<>();
+        }
+        switch (type) {
+            case ConfigConstant.CONF_SERVICE_USE_DB_PLAIN:
+            case ConfigConstant.CONF_SERVICE_USE_DB_TREE:
+                return ConfigDbUtil.getBatch(type, keys);
+            case ConfigConstant.CONF_SERVICE_PROP:
+                return null;
+            default:
+                logger.error("unknown config source,{}", type);
+                return null;
+        }
+    }
 }

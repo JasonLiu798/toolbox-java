@@ -1,8 +1,8 @@
-package com.atjl.configdb2.service.impl;
+package com.atjl.configdbtree.service.impl;
 
+import com.atjl.config.api.ConfigService;
 import com.atjl.configdb.api.ConfigDbConstant;
-import com.atjl.configdb.api.ConfigDbService;
-import com.atjl.configdb2.mapper.ConfigTreeMapper;
+import com.atjl.configdbtree.mapper.ConfigTreeMapper;
 import com.atjl.util.collection.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ import java.util.Map;
  * 库配置读取
  */
 @Component(ConfigDbConstant.CONF_DB_TREE_SERVICE)
-public class ConfigDbTreeServiceImpl implements ConfigDbService {
+public class ConfigDbTreeServiceImpl implements ConfigService {
     private static final Logger logger = LoggerFactory.getLogger(ConfigDbTreeServiceImpl.class);
     @Resource
     private ConfigTreeMapper configDbDao;
@@ -92,6 +92,11 @@ public class ConfigDbTreeServiceImpl implements ConfigDbService {
     @Override
     @Cacheable(value = ConfigDbConstant.CONFIG_CACHE_MK, key = "#keys.toString()")
     public Map<String, String> getBatch(List<String> keys) {
+        return list2map(configDbDao.getBatch(keys));
+    }
+
+    @Override
+    public Map<String, String> getBatchNoCache(List<String> keys) {
         return list2map(configDbDao.getBatch(keys));
     }
 

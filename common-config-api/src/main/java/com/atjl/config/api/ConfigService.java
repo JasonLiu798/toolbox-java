@@ -1,10 +1,12 @@
-package com.atjl.configdb.api;
+package com.atjl.config.api;
 
 import java.util.List;
 import java.util.Map;
 
-public interface ConfigDbService {
-
+/**
+ * 通用 配置 读取接口
+ */
+public interface ConfigService {
     /**
      * 设值
      *
@@ -43,4 +45,13 @@ public interface ConfigDbService {
      * @return
      */
     Map<String, String> getBatch(List<String> keys);
+
+    /**
+     * 获取多个，无缓存
+     * @param keys
+     * @return
+     */
+    Map<String, String> getBatchNoCache(List<String> keys);
+
+
 }

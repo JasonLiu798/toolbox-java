@@ -25,18 +25,17 @@
             <artifactId>common-api</artifactId>
             <version>1.0.0</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.atjl</groupId>-->
-            <!--<artifactId>common-util</artifactId>-->
-            <!--<version>1.0.0</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.atjl</groupId>
+            <artifactId>common-config-api</artifactId>
+            <version>${prj.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.atjl</groupId>
             <artifactId>common-util-ex</artifactId>
             <version>1.0.0</version>
         </dependency>
         <!-- other -->
-
 
 
         <dependency>

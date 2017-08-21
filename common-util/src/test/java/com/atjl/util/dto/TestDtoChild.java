@@ -1,10 +1,6 @@
 package com.atjl.util.dto;
 
 
-import com.atjl.util.test.*;
-
-import java.io.Serializable;
-
 public class TestDtoChild extends com.atjl.util.test.TestDto {
     private Long childField;
 

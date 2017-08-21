@@ -41,13 +41,12 @@
                 <!--<value>classpath*:/sqlmap/system/*Mapper.xml</value>-->
             </list>
         </property>
-        <!--<property name="mapperLocations" value="classpath*:/sqlmap/**/*Mapper.xml" />-->
         <property name="configLocation" value="classpath:mybatis-config.xml"></property>
     </bean>
 
     <!-- ScanMapperFiles -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.atjl.**.dao" />
+        <property name="basePackage" value="com.atjl.**.mapper" />
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 

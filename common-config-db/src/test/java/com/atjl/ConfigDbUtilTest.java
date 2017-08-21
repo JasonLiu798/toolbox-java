@@ -1,5 +1,6 @@
 package com.atjl;
 
+import com.atjl.configdb.api.ConfigDbConstant;
 import com.atjl.configdb.api.ConfigDbUtil;
 import com.atjl.util.collection.CollectionUtil;
 import org.junit.*;
@@ -17,29 +18,32 @@ public class ConfigDbUtilTest {
 
     @Test
     public void testGet() throws Exception {
-        String v = ConfigDbUtil.get("BaseSetting.MailSendSetting.toControl.toControl");
+        //
+        String key = "DD-RoleTypeValue1";
+        String v = ConfigDbUtil.get(ConfigDbConstant.CONF_DB_PLAIN_SERVICE, key);
         System.out.println("res:" + v);
+
     }
 
     @Test
     public void testGets() throws Exception {
-        Map res = ConfigDbUtil.gets("BisArguSetting.prjType");
-        System.out.println("res:" + res);
+//        Map res = ConfigDbUtil.gets("BisArguSetting.prjType");
+//        System.out.println("res:" + res);
     }
 
     @Test
     public void testGetBatch() throws Exception {
-        Map res = ConfigDbUtil.getBatch(CollectionUtil.newList("BisArguSetting.prjStatus.running", "BisArguSetting.prjStage.end"));
+        Map res = ConfigDbUtil.getBatch(ConfigDbConstant.CONF_DB_PLAIN_SERVICE, CollectionUtil.newList("DD-RoleTypeValue1", "DD-RoleTypeValue2"));
         System.out.println("res:" + res);
     }
 
 
     @Test
-    public void testGetConfDbService() throws Exception { 
+    public void testGetConfDbService() throws Exception {
     }
 
     @Test
-    public void testPreChk() throws Exception { 
+    public void testPreChk() throws Exception {
     }
 
     @Before

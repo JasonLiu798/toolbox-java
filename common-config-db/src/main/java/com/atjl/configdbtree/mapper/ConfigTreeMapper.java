@@ -1,4 +1,4 @@
-package com.atjl.configdb2.mapper;
+package com.atjl.configdbtree.mapper;
 
 
 import org.apache.ibatis.annotations.Param;

@@ -16,20 +16,21 @@ public class ConfigUtilTest {
 
     @Test
     public void testGetForKeyDftVal() throws Exception {
-        String v = ConfigUtil.get("BaseSetting.MailSendSetting.toControl.toControl", "123123");
+        String kye = "DD-RoleStatusValue1";
+        String v = ConfigUtil.get(kye, "123123");
         System.out.println("res:" + v);
     }
 
     @Test
     public void testGetForTypeKeyDftVal() throws Exception {
-        Map res = ConfigUtil.gets("BisArguSetting.prjType");
-        System.out.println("res:" + res);
+//        Map res = ConfigUtil.gets("BisArguSetting.prjType");
+//        System.out.println("res:" + res);
     }
 
     @Test
     public void testGetBatch() throws Exception {
-        Map<String, String> param = CollectionUtil.newMap("BisArguSetting.prjStatus.running", "running");
-        param.put("BisArguSetting.prjStage.end", "end");
+        Map<String, String> param = CollectionUtil.newMap("DD-RoleStatusValue1", "hahah");
+        param.put("DD-RoleStatusValue2", "lala");
         Map res = ConfigUtil.getBatch(param);
         System.out.println("res:" + JSONFastJsonUtil.objectToJson(res));
 
@@ -37,7 +38,8 @@ public class ConfigUtilTest {
 
     @Test
     public void testGets() throws Exception {
-
+        Map res = ConfigUtil.getBatch(ConfigConstant.CONF_SERVICE_USE_DB_PLAIN,CollectionUtil.newList("DD-RoleStatusValue1","DD-RoleStatusValue2"));
+        System.out.println("res:" + JSONFastJsonUtil.objectToJson(res));
     }
 
 

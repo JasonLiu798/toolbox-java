@@ -17,7 +17,9 @@ public class ConfigDbConstant {
     public static final String VALUE = "value";
 
     public static final String METHOD_GET = "get";
+    public static final String METHOD_GET_NOCACHE = "getNoCache";
     public static final String METHOD_GETS = "gets";
     public static final String METHOD_GET_BATCH = "getBatch";
+    public static final String METHOD_GET_BATCH_NOCACHE = "getBatchNoCache";
 
 }
