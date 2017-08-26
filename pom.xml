@@ -124,5 +124,7 @@
         <module>common-email</module>
 
         <module>common-cas-client</module><!-- 简单 cas cliet封装 -->
+        <!--<module>frame-db-simple</module>-->
+        <!--<module>frame-main</module>-->
     </modules>
 </project>

@@ -39,10 +39,10 @@ public class ReflectUtil {
      * 3   all parent classes
      */
     public enum GetClzOpt {
-        ALL,
-        SELF,
-        PARENT,
-        ALLPARENT
+        ALL,//所有类
+        SELF,//自身
+        PARENT,//上一层父类
+        ALLPARENT//所有父类
     }
 
     /**
@@ -159,37 +159,77 @@ public class ReflectUtil {
     /**
      * ######################### fields #############################
      */
+
+
     /**
-     * get fields
+     * 获取 fields
      *
      * @param obj
+     * @param parentOpt
+     * @param blackArr
+     * @param whiteArr  优先级高于blackArr
      * @return
      */
-    public static List<Field> getAllField(Object obj) {
-        List<Class<?>> clzList = getSelfAndParentClassList(obj);
-        if (CollectionUtil.isEmpty(clzList)) {
+    public static List<Field> getFields(Object obj, GetClzOpt parentOpt, String[] blackArr, String[] whiteArr) {
+        List<Class<?>> clazzList = getClassList(obj, parentOpt);
+        if (logger.isDebugEnabled()) {
+            logger.debug("getField clz list:{}", clazzList);
+        }
+        if (CollectionUtil.isEmpty(clazzList)) {
             return new ArrayList<>();
         }
-        List<Field> fieldList = new ArrayList<>(10);
-        for (Class<?> clz : clzList) {
-            Field[] fields = clz.getDeclaredFields();
-            if (!CollectionUtil.isEmpty(fields)) {
-                fieldList.addAll(CollectionUtil.array2List(fields));
+        List<Field> res = new ArrayList<>();
+        //init white list
+        boolean filterWhite = false;
+        List<String> whiteList = null;
+        if (whiteArr != null && whiteArr.length != 0) {
+            filterWhite = true;
+            whiteList = Arrays.asList(whiteArr);
+        }
+
+        //init black list
+        boolean filterBlack = false;
+        List<String> blackList = null;
+        if (blackArr != null && blackArr.length != 0) {
+            filterBlack = true;
+            blackList = Arrays.asList(blackArr);
+            if (filterWhite) {
+                blackList = CollectionUtil.filterDelList(blackList, whiteList);
             }
         }
-        return fieldList;
+
+        for (Class<?> cls : clazzList) {
+            Field[] fields = cls.getDeclaredFields();//get all field
+            for (Field field : fields) {
+                try {
+                    //process black list
+                    if (filterBlack &&
+                            blackList.indexOf(field.getName()) >= 0) {
+                        continue;
+                    }
+                    //process white list
+                    if (filterWhite &&
+                            whiteList.indexOf(field.getName()) < 0) {
+                        continue;
+                    }
+                    res.add(field);
+                } catch (Exception e) {
+                    logger.error("getFieldValue {}", e.getMessage());
+                    continue;
+                }
+            }
+        }
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("get fields res {}", res);
+        }
+        return res;
+    }
+    public static List<Field> getFieldAll(Object obj) {
+        return getFields(obj,GetClzOpt.ALL,null,null);
     }
 
-    public static List<String> filed2string(List<Field> filesList) {
-        if (!CollectionUtil.isEmpty(filesList)) {
-            List<String> res = new ArrayList<>(filesList.size());
-            for (Field f : filesList) {
-                res.add(f.getName());
-            }
-            return res;
-        }
-        return new ArrayList<>();
-    }
+
 
     /**
      * get filed have setter method ,include parents
@@ -248,21 +288,23 @@ public class ReflectUtil {
         return null;
     }
 
-
     /**
-     * copy field
+     * 字段拷贝
      *
-     * @param source    source obj
-     * @param target    target obj
-     * @param ignores   ignore field
-     * @param allowNull allow null field
+     * @param source
+     * @param target
+     * @param opt
+     * @param allowNull
+     * @param blackList
+     * @param whiteList
      */
-    public static void copyField(Object source, Object target, String[] ignores, boolean allowNull) {
-        List<Field> fields = getAllField(source);
+    public static void copyField(Object source, Object target, GetClzOpt opt, boolean allowNull, String[] blackList, String[] whiteList) {
+        List<Field> fields = getFields(source, opt, blackList, whiteList);
         if (CollectionUtil.isEmpty(fields)) {
             if (logger.isWarnEnabled()) {
                 logger.warn("copy fields,source filed empty {}", source);
             }
+            return;
         }
         for (Field field : fields) {
             if ("serialVersionUID".equals(field.getName())) {
@@ -270,9 +312,6 @@ public class ReflectUtil {
             }
             String fieldName = field.getName();
             Object sourceFieldValue = getterForce(source, fieldName);
-            if (ignores != null && ignores.length != 0 && Arrays.asList(ignores).indexOf(fieldName) != -1) {
-                continue;
-            }
             if (!allowNull && sourceFieldValue == null || isEmpty(sourceFieldValue)) {
                 continue;
             }
@@ -281,111 +320,78 @@ public class ReflectUtil {
     }
 
     public static void copyField(Object source, Object target) {
-        copyField(source, target, null, true);
+        copyField(source, target, GetClzOpt.ALL, true, null, null);
     }
+
 
     /**
      * get field-value map
      *
      * @param obj            待取值的bean
-     * @param allowNullValue {@link Boolean} 允许空值
      * @param parentOpt      {@link Integer}
      *                       获取父类值选项：
-     *                       0 只获取本类
-     *                       1 获取本类和所有父类所有字段
-     *                       2 只获取上一级父类
-     *                       3 只获取所有父类
-     * @param whiteArr       specified list
-     *                       null,no effect
-     *                       not null, only get list's feild
-     *                       设置后，只取此列表指定的field
+     * @param allowNullValue {@link Boolean} 允许空值
      * @param blackArr       ignore field list
      *                       null, no effect
      *                       not null,list feilds not add to res
      *                       注：白名单优先级高于黑名单
+     * @param whiteArr       specified list
+     *                       null,no effect
+     *                       not null, only get list's feild
+     *                       设置后，只取此列表指定的field
      * @return field name - value object
      */
-    public static Map<String, Object> getFieldValueMap(Object obj, boolean allowNullValue, GetClzOpt parentOpt, String[] blackArr, String[] whiteArr) {
-        List<Class<?>> clazzList = getClassList(obj, parentOpt);
-        if (logger.isDebugEnabled()) {
-            logger.debug("getFieldValueMap clz list:{}", clazzList);
+    public static Map<String, Object> getFieldValue(Object obj, GetClzOpt parentOpt, boolean allowNullValue, String[] blackArr, String[] whiteArr) {
+        List<Field> fields = getFields(obj, parentOpt, blackArr, whiteArr);
+        if (CollectionUtil.isEmpty(fields)) {
+            return new HashMap<>();
         }
-        if (CollectionUtil.isEmpty(clazzList)) {
-            return null;
-        }
+
         Map<String, Object> res = new HashMap<>();
-        //init white list
-        boolean filterWhite = false;
-        List<String> whiteList = null;
-        if (whiteArr != null && whiteArr.length != 0) {
-            filterWhite = true;
-            whiteList = Arrays.asList(whiteArr);
-        }
+        for (Field field : fields) {
+            try {
+                //String fieldGetName = generateGetName(field.getName(), false);
+                field.setAccessible(true);
+                Object fieldVal = field.get(obj);
 
-        //init black list
-        boolean filterBlack = false;
-        List<String> blackList = null;
-        if (blackArr != null && blackArr.length != 0) {
-            filterBlack = true;
-            blackList = Arrays.asList(blackArr);
-            if (filterWhite) {
-                blackList = CollectionUtil.filterDelList(blackList, whiteList);
-            }
-        }
-
-        for (Class<?> cls : clazzList) {
-            Method[] methods = cls.getDeclaredMethods();//get all method
-            Field[] fields = cls.getDeclaredFields();//get all field
-            for (Field field : fields) {
-                try {
-
-                    String fieldGetName = generateGetName(field.getName(), false);
-                    //process boolean field
-                    if (fieldGetName == null && isBoolean(field)) {
-                        fieldGetName = generateGetName(field.getName(), true);
-                    }
-
-                    //process black list
-                    if (filterBlack &&
-                            blackList.indexOf(field.getName()) >= 0) {
-                        continue;
-                    }
-
-                    //process white list
-                    if (filterWhite &&
-                            whiteList.indexOf(field.getName()) < 0) {
-                        continue;
-                    }
-
-                    //check get method exist
-                    if (!checkGetMethod(methods, fieldGetName)) {
-                        continue;
-                    }
-                    Method fieldGetMet = cls.getMethod(fieldGetName, new Class[]{});
-                    Object fieldVal = fieldGetMet.invoke(obj, new Object[]{});
-
-                    //process allow null
-                    if (allowNullValue) {
-                        res.put(field.getName(), fieldVal);
-                        continue;
-                    }
-
-                    //not allow null,not add
-                    if (fieldVal == null || isEmpty(fieldVal)) {
-                        continue;
-                    }
+                //process allow null
+                if (allowNullValue) {
                     res.put(field.getName(), fieldVal);
-                } catch (Exception e) {
-                    logger.error("getFieldValueMap {}", e.getMessage());
                     continue;
                 }
+                //not allow null,not add
+                if (fieldVal == null || isEmpty(fieldVal)) {
+                    continue;
+                }
+                res.put(field.getName(), fieldVal);
+            } catch (Exception e) {
+                logger.error("getFieldValue {}", e.getMessage());
+                continue;
             }
         }
         return res;
     }
 
+    public static Map<String, Object> getFieldValue(Object obj, String[] blackList) {
+        return getFieldValue(obj, GetClzOpt.ALL, true, blackList, null);
+    }
 
-//    public static Filed[] get
+    public static Map<String, Object> getFieldValue(Object obj) {
+        return getFieldValue(obj, GetClzOpt.ALL, true, null, null);
+    }
+
+    /**
+     * 取Bean的属性和值对应关系的MAP
+     */
+    public static Map<String, String> getFieldMap(Object bean,GetClzOpt opt, boolean allowNullValue,  String[] black, String[] white) {
+        return convert(getFieldValue(bean, opt, allowNullValue, black, white));
+    }
+
+    public static Map<String, String> getFieldMapAll(Object bean) {
+        return convert(getFieldValue(bean, GetClzOpt.ALL,true,null,null ));
+    }
+
+
 
     /**
      * is boolean field
@@ -399,46 +405,6 @@ public class ReflectUtil {
         }
         return false;
     }
-
-    public static Map<String, Object> getFieldValueMapIncludeNull(Object bean) throws Exception {
-        return getFieldValueMap(bean, true, GetClzOpt.SELF, null, null);
-    }
-
-    public static Map<String, Object> getFieldValueMapAllIncludeNull(Object bean) throws Exception {
-        return getFieldValueMap(bean, true, GetClzOpt.ALL, null, null);
-    }
-
-    public static Map<String, Object> getFieldValueMap(Object bean, boolean allowNullValue) {
-        return getFieldValueMap(bean, allowNullValue, GetClzOpt.SELF, null, null);
-    }
-
-    public static Map<String, Object> getFieldValueMapAll(Object bean, boolean allowNullValue) {
-        return getFieldValueMap(bean, allowNullValue, GetClzOpt.ALL, null, null);
-    }
-
-    public static Map<String, Object> getFieldValueMapIncludeNullSpec(Object bean, String[] sepcifies) {
-        return getFieldValueMap(bean, true, GetClzOpt.ALL, null, sepcifies);
-    }
-
-    /**
-     * 取Bean的属性和值对应关系的MAP
-     */
-    public static Map<String, String> getFieldMap(Object bean, boolean allowNullValue, GetClzOpt opt, String[] ignores, String[] specifies) {
-        return convert(getFieldValueMap(bean, allowNullValue, opt, ignores, specifies));
-    }
-
-    public static Map<String, String> getFieldMap(Object bean) {
-        return convert(getFieldValueMap(bean, false));
-    }
-
-    public static Map<String, String> getFieldMapAll(Object bean) {
-        return convert(getFieldValueMapAll(bean, false));
-    }
-
-    public static Map<String, String> getFieldMap(Object bean, boolean allowNullValue) throws Exception {
-        return convert(getFieldValueMap(bean, allowNullValue));
-    }
-
 
     /**
      * get declare field
@@ -803,6 +769,9 @@ public class ReflectUtil {
     }
 
     public static List<Class<?>> getClassList(Object bean, GetClzOpt opt) {
+        if (bean == null) {
+            return new ArrayList<>();
+        }
         return getClassList(bean.getClass(), opt);
     }
 
@@ -844,5 +813,23 @@ public class ReflectUtil {
         return GET_PREFIX + upperFiled;
     }
 
+    /**
+     * #################### coverters #######################
+     */
+    /**
+     * field 转 field数组
+     * @param filesList
+     * @return
+     */
+    public static List<String> filed2string(List<Field> filesList) {
+        if (!CollectionUtil.isEmpty(filesList)) {
+            List<String> res = new ArrayList<>(filesList.size());
+            for (Field f : filesList) {
+                res.add(f.getName());
+            }
+            return res;
+        }
+        return new ArrayList<>();
+    }
 
 }

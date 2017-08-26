@@ -245,11 +245,11 @@ public final class CollectionUtil {
     }
 
 
-
     // 相等
     public static final int TP_EQ = 0;
     // 字符串，比较使用indexOf
     public static final int TP_EXIST_STR = 1;
+
     /**
      * 删除tgtlist中所有存在于dellist的item
      *
@@ -278,32 +278,23 @@ public final class CollectionUtil {
         if (isEmpty(tgtList)) {
             return tgtList;
         }
-//        Iterator<T> tgtIterator = tgtList.iterator();
-        List<T> res = new ArrayList<T>(tgtList.size());
+        List<T> res = new ArrayList<>(tgtList.size());
         for (T tgtItem : tgtList) {
-            for (T delItem : delList) {
-                switch (option) {
-                    case TP_EQ:
-                        if (delItem.equals(tgtItem)) {
-                            continue;
-                        }
-                        break;
-                    case TP_EXIST_STR:
-                        String delItemStr = delItem.toString();
-                        String tgtStr = tgtItem.toString();
-                        if (tgtStr.indexOf(delItemStr) >= 0) {
-                            continue;
-                        }
-                        break;
-                    default:
-                        break;
-                }
+            boolean gotEq = false;
+            if (option == TP_EQ) {
+                gotEq = isIn(delList, tgtItem);
+            } else if (option == TP_EXIST_STR) {
+                gotEq = isLikeIn((List<String>) delList, tgtItem.toString());
+            }
+
+            if (gotEq) {
+                continue;
+            } else {
                 res.add(tgtItem);
             }
         }
         return res;
     }
-
 
 
     /**

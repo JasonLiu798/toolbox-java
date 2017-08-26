@@ -116,8 +116,8 @@ public class MailServiceImpl implements MailService {
 
         MailConfigDto conf = getConfig();
         try {
-            Map<String, Object> confMap = ReflectUtil.getFieldValueMap(conf, true, ReflectUtil.GetClzOpt.ALL, CollectionUtil.newArr("srvUrl", "connectionTimeOut", "socketTimeOut"), null);
-            Map<String, Object> contentMap = ReflectUtil.getFieldValueMap(contentDto, true, ReflectUtil.GetClzOpt.ALL, CollectionUtil.newArr("attachmentType","attachmentPath" ,"content"), null);
+            Map<String, Object> confMap = ReflectUtil.getFieldValue(conf, ReflectUtil.GetClzOpt.ALL, true, CollectionUtil.newArr("srvUrl", "connectionTimeOut", "socketTimeOut"), null);
+            Map<String, Object> contentMap = ReflectUtil.getFieldValue(contentDto, ReflectUtil.GetClzOpt.ALL, true, CollectionUtil.newArr("attachmentType","attachmentPath" ,"content"), null);
 //            Map<String, Object> contentMap = ReflectUtil.getFieldValueMapAll(contentDto, true);
             Map<String, Object> sendMap = new HashMap<>();
             sendMap.putAll(confMap);

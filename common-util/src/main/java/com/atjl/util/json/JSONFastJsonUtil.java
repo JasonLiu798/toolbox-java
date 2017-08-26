@@ -12,38 +12,32 @@ import java.util.Map;
  */
 public class JSONFastJsonUtil {
 
-	@SuppressWarnings({"rawtypes","unchecked"})
-	public static Map<String ,Object> jsonToObject(String jsonStr) {
+    public static Map<String, Object> jsonToMapObj(String jsonStr) {
+        return JSON.parseObject(jsonStr);
+    }
+
+    /**
+     * @param jsonStr
+     * @return
+     */
+    public static Map<String, String> jsonToMap(String jsonStr) {
         Map jsonObject = JSON.parseObject(jsonStr);
-        Map<String, Object> outMap = new HashMap<String, Object>();
+        Map<String, String> outMap = new HashMap<>();
         for (Object o : jsonObject.entrySet()) {
             Map.Entry<String, String> entry = (Map.Entry<String, String>) o;
             outMap.put(entry.getKey(), entry.getValue());
         }
-
         return outMap;
     }
 
-    /*
-    public static Map<String ,Object> jsonToArray(String jsonStr) {
-        JSONArray jsonObject = JSON.parseArray(jsonStr);
-        Map<String, Object> outMap = new HashMap<String, Object>();
-        for (Object o : jsonObject.entrySet()) {
-            Map.Entry<String, String> entry = (Map.Entry<String, String>) o;
-            outMap.put(entry.getKey(), entry.getValue());
-        }
 
-        return outMap;
-    }*/
+    public static String objectToJson(Object object) {
+        return JSON.toJSONString(object);
+    }
 
+    public static <T> T jsonToObject(String jsonStr, Class<T> clazz) {
+        JSONObject json = JSONObject.parseObject(jsonStr);
+        return JSONObject.toJavaObject(json, clazz);
+    }
 
-	public static String objectToJson(Object object){
-		return JSON.toJSONString(object) ;
-	}
-	
-	public static <T> T jsonToObject(String jsonStr, Class<T> clazz){        
-		JSONObject json = JSONObject.parseObject(jsonStr);
-		return JSONObject.toJavaObject(json, clazz);
-    } 
-	
 }

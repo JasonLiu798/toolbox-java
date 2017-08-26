@@ -12,6 +12,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
+/**
+ * 暂不用：性能优化用
+ */
 public class FmtContext {
     private FmtContext() {
         throw new UnsupportedOperationException();

@@ -19,25 +19,29 @@ public class FmtUtil {
     private static final Logger logger = LoggerFactory.getLogger(FmtUtil.class);
     private static final String DFT_TEMPLATE_NAME = "dftTemplate";
 
-    private static Configuration conf;
-    private static Map<String, String> templateMap;
+//    private static Configuration conf;
+//    private static Map<String, String> templateMap;
 
-    public static void init(Map<String, String> templates) {
-        FmtContext.constructConfig();
-        templateMap = templates;
-    }
+//    public static void init(Map<String, String> templates) {
+//        FmtContext.constructConfig();
+//        templateMap = templates;
+//    }
 
-
-
-
+    /**
+     * 渲染
+     * @param templateContent
+     * @param parameters
+     * @return
+     */
     public static String render(String templateContent, Map<String, String> parameters) {
         try {
             Configuration cfg = new Configuration();
+            cfg.setObjectWrapper(new DefaultObjectWrapper());
+            cfg.setTemplateExceptionHandler(TemplateExceptionHandler.IGNORE_HANDLER);
+
             StringTemplateLoader stringLoader = new StringTemplateLoader();
             stringLoader.putTemplate(DFT_TEMPLATE_NAME, templateContent);
             cfg.setTemplateLoader(stringLoader);
-            cfg.setObjectWrapper(new DefaultObjectWrapper());
-            cfg.setTemplateExceptionHandler(TemplateExceptionHandler.IGNORE_HANDLER);
             Template template = cfg.getTemplate(DFT_TEMPLATE_NAME, "utf-8");
             StringWriter writer = new StringWriter();
             template.process(parameters, writer);
