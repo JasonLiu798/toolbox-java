@@ -118,35 +118,35 @@ public class StringCheckUtilTest {
         for(int i=0;i<5;i++){
             l.add(i+"");
         }
-        boolean res = StringCheckUtil.strInCollection(s,l);
+        boolean res = StringCheckUtil.batchContainInCollection(s,l);
         assertEquals(true,res);
 
         s = "6";
-        res = StringCheckUtil.strInCollection(s,l);
+        res = StringCheckUtil.batchContainInCollection(s,l);
         assertEquals(false,res);
     }
 
     @Test
     public void strInStrings(){
         String s = "1";
-        boolean res = StringCheckUtil.strInStrings(s,"1","2","3");
+        boolean res = StringCheckUtil.batchContain(s,"1","2","3");
         assertEquals(true,res);
 
         s = "6";
-        res = StringCheckUtil.strInStrings(s,"1","2","3");
+        res = StringCheckUtil.batchContain(s,"1","2","3");
         assertEquals(false,res);
 
         s = null;
-        res = StringCheckUtil.strInStrings(s,"1","2","3");
+        res = StringCheckUtil.batchContain(s,"1","2","3");
         assertEquals(false,res);
 
-        res = StringCheckUtil.strInStrings(null,null);
+        res = StringCheckUtil.batchContainInCollection(null,null);
         assertEquals(false,res);
 
-        res = StringCheckUtil.strInStrings(null,"1");
+        res = StringCheckUtil.batchContain(null,"1");
         assertEquals(false,res);
 
-        res = StringCheckUtil.strInStrings("1",null);
+        res = StringCheckUtil.batchContainInCollection("1",null);
         assertEquals(false,res);
     }
 

@@ -69,18 +69,7 @@ public class ConfigDbTreeServiceImpl implements ConfigService {
         return configDbDao.get(key);
     }
 
-    /**
-     * get子项
-     * 缓存失效时间: after call set
-     *
-     * @param path
-     * @return
-     */
-    @Override
-    @Cacheable(value = ConfigDbConstant.CONFIG_CACHE_M, key = "#path.hashCode()")
-    public Map<String, String> gets(String path) {
-        return list2map(configDbDao.gets(path));
-    }
+
 
     /**
      * 获取多个
@@ -110,5 +99,17 @@ public class ConfigDbTreeServiceImpl implements ConfigService {
             res.put(item.get(ConfigDbConstant.KEY), item.get(ConfigDbConstant.VALUE));
         }
         return res;
+    }
+
+    /**
+     * get子项
+     * 缓存失效时间: after call set
+     *
+     * @param path
+     * @return
+     */
+    @Cacheable(value = ConfigDbConstant.CONFIG_CACHE_M, key = "#path.hashCode()")
+    public Map<String, String> gets(String path) {
+        return list2map(configDbDao.gets(path));
     }
 }

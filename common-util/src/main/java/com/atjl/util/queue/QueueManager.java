@@ -2,14 +2,11 @@ package com.atjl.util.queue;
 
 import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.collection.CollectionUtil;
-import com.atjl.util.config.ConfigUtil;
 import com.atjl.util.queue.impl.BlockingQueueEncap;
-import com.atjl.util.queue.impl.ConcurrentLinkedBlockingQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * memory queue manager
  */
 public class QueueManager {
-    private static final Logger LOG = LoggerFactory.getLogger(QueueManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(QueueManager.class);
     // queueName -> Queue
     private static Map<String, IQueue> messageQueues = new ConcurrentHashMap<>();
 
@@ -30,6 +27,7 @@ public class QueueManager {
     public static final String QUEUE_SIZE_SEP_DFT = ":";
 
     static {
+        /*
         if (ConfigUtil.checkPropertiesExist(DFT_QUEUE_CONFIG_FILE)) {
             Properties properties = ConfigUtil.loadProperties(DFT_QUEUE_CONFIG_FILE);
 
@@ -67,7 +65,7 @@ public class QueueManager {
                 if (LOG.isInfoEnabled())
                     LOG.info("init bus manager");
             }
-        }
+        }*/
 
     }
 

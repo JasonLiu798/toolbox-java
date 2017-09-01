@@ -249,36 +249,13 @@ public final class StringCheckUtil {
         return flag;
     }
 
-
-    public static boolean strInStrings(String s, String... strings) {
-        if (CollectionUtil.isEmpty(strings)) {
-            return false;
-        }
-
-        List<String> l = Arrays.asList(strings);
-        return strInCollection(s, l);
-    }
-
-    public static boolean strInCollection(String s, Collection<String> c) {
-        if (StringCheckUtil.isEmpty(s)) {
-            return false;
-        }
-        for (String str : c) {
-            if (s.equals(str)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     /**
-     * exist one retur true
      *
      * @param raw
      * @param arr
      * @return
      */
-    public static boolean batchContain(String raw, String[] arr) {
+    public static boolean batchContainInCollection(String raw, Collection<String> arr) {
         if (CollectionUtil.isEmpty(arr) || StringCheckUtil.isEmpty(raw)) {
             return false;
         }
@@ -288,5 +265,12 @@ public final class StringCheckUtil {
             }
         }
         return false;
+    }
+    public static boolean batchContain(String raw, String... arr) {
+        if (CollectionUtil.isEmpty(arr)) {
+            return false;
+        }
+        List<String> l = Arrays.asList(arr);
+        return batchContainInCollection(raw, l);
     }
 }

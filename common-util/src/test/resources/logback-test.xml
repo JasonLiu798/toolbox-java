@@ -15,14 +15,14 @@
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<!-- 日志输出编码 -->
 		<encoder charset="UTF-8">
-			<pattern>${LOG_FORMAT_SIMPLE}</pattern>
+			<pattern>${LOG_FORMAT}</pattern>
 		</encoder>
 	</appender>
 
 	<!-- 按照每天生成日志文件 -->
 	<appender name="DAILYFILE" class="ch.qos.logback.core.rolling.RollingFileAppender" >
 		<encoder charset="UTF-8">
-			<pattern>${LOG_FORMAT_SIMPLE}</pattern>
+			<pattern>${LOG_FORMAT}</pattern>
 		</encoder>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!--日志文件输出的文件名-->

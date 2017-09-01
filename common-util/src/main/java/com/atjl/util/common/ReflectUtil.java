@@ -159,7 +159,13 @@ public class ReflectUtil {
     /**
      * ######################### fields #############################
      */
-
+    public static List<Field> getFields(Object obj, GetClzOpt parentOpt, String[] blackArr, String[] whiteArr) {
+        if (obj == null) {
+            logger.warn("get fields,obj null");
+            return new ArrayList<>();
+        }
+        return getFields(obj.getClass(), parentOpt, blackArr, whiteArr);
+    }
 
     /**
      * 获取 fields
@@ -170,7 +176,7 @@ public class ReflectUtil {
      * @param whiteArr  优先级高于blackArr
      * @return
      */
-    public static List<Field> getFields(Object obj, GetClzOpt parentOpt, String[] blackArr, String[] whiteArr) {
+    public static List<Field> getFields(Class obj, GetClzOpt parentOpt, String[] blackArr, String[] whiteArr) {
         List<Class<?>> clazzList = getClassList(obj, parentOpt);
         if (logger.isDebugEnabled()) {
             logger.debug("getField clz list:{}", clazzList);
@@ -225,10 +231,10 @@ public class ReflectUtil {
         }
         return res;
     }
-    public static List<Field> getFieldAll(Object obj) {
-        return getFields(obj,GetClzOpt.ALL,null,null);
-    }
 
+    public static List<Field> getFieldAll(Object obj) {
+        return getFields(obj, GetClzOpt.ALL, null, null);
+    }
 
 
     /**
@@ -383,14 +389,13 @@ public class ReflectUtil {
     /**
      * 取Bean的属性和值对应关系的MAP
      */
-    public static Map<String, String> getFieldMap(Object bean,GetClzOpt opt, boolean allowNullValue,  String[] black, String[] white) {
+    public static Map<String, String> getFieldMap(Object bean, GetClzOpt opt, boolean allowNullValue, String[] black, String[] white) {
         return convert(getFieldValue(bean, opt, allowNullValue, black, white));
     }
 
     public static Map<String, String> getFieldMapAll(Object bean) {
-        return convert(getFieldValue(bean, GetClzOpt.ALL,true,null,null ));
+        return convert(getFieldValue(bean, GetClzOpt.ALL, true, null, null));
     }
-
 
 
     /**
@@ -818,6 +823,7 @@ public class ReflectUtil {
      */
     /**
      * field 转 field数组
+     *
      * @param filesList
      * @return
      */

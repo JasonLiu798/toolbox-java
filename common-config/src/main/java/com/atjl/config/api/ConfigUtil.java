@@ -4,6 +4,7 @@ import com.atjl.config.util.ConfigDftValUtil;
 import com.atjl.configdb.api.ConfigDbUtil;
 import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.config.ConfigPropUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,12 +42,12 @@ public class ConfigUtil {
      * 获取一个，不存在则使用默认
      * 默认从 db取
      *
+     * @param type
      * @param key
-     * @param dftVal
      * @return
      */
-    public static String get(String key, String dftVal) {
-        return get(DFT_TP, key, dftVal);
+    public static String get(String type, String key) {
+        return get(type, key, null);
     }
 
     /**
@@ -58,24 +59,26 @@ public class ConfigUtil {
      * @return
      */
     public static String get(String type, String key, String dftVal) {
+        String rawV = null;
         switch (type) {
             case ConfigConstant.CONF_SERVICE_USE_DB_PLAIN:
             case ConfigConstant.CONF_SERVICE_USE_DB_TREE:
-                String rawV = ConfigDbUtil.get(type, key);
-                if (StringCheckUtil.isEmpty(rawV)) {
-                    if (logger.isInfoEnabled()) {
-                        logger.info("config get raw null,type {},key {},dft {}", type, key, dftVal);
-                    }
-                    return dftVal;
-                }
-                return rawV;
+                rawV = ConfigDbUtil.get(type, key);
+                break;
             case ConfigConstant.CONF_SERVICE_PROP:
-
-                return null;
+                rawV = ConfigPropUtil.get(key);
+                break;
             default:
                 logger.error("unknown config source,{}", type);
-                return null;
+                break;
         }
+        if (StringCheckUtil.isEmpty(rawV)) {
+            if (logger.isInfoEnabled()) {
+                logger.info("config get raw null,type {},key {},dft {}", type, key, dftVal);
+            }
+            return dftVal;
+        }
+        return rawV;
     }
 
     /**
@@ -94,7 +97,7 @@ public class ConfigUtil {
             case ConfigConstant.CONF_SERVICE_USE_DB_TREE:
                 return ConfigDftValUtil.rawFilterAddDft(ConfigDbUtil.getBatch(type, CollectionUtil.map2list(keyAndDfts, true)), keyAndDfts);
             case ConfigConstant.CONF_SERVICE_PROP:
-                return null;
+                return ConfigDftValUtil.rawFilterAddDft(ConfigPropUtil.getBatch(CollectionUtil.map2list(keyAndDfts, true)), keyAndDfts);
             default:
                 logger.error("unknown config source,{}", type);
                 return null;
@@ -107,6 +110,7 @@ public class ConfigUtil {
 
     /**
      * 批量获取无默认值
+     *
      * @param type
      * @param keys
      * @return
@@ -120,7 +124,7 @@ public class ConfigUtil {
             case ConfigConstant.CONF_SERVICE_USE_DB_TREE:
                 return ConfigDbUtil.getBatch(type, keys);
             case ConfigConstant.CONF_SERVICE_PROP:
-                return null;
+                return ConfigPropUtil.getBatch(keys);
             default:
                 logger.error("unknown config source,{}", type);
                 return null;

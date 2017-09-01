@@ -5,7 +5,6 @@ import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.character.StringUtil;
 import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.common.DateUtil;
-import com.atjl.util.common.PathUtil;
 import com.atjl.util.config.ParameterConfigParser;
 import com.atjl.util.constant.SystemConstant;
 import org.apache.commons.io.FileUtils;

@@ -12,6 +12,8 @@ public class ConfigDbConstant {
     public static final String CONFIG_CACHE = "CONFIGCACHE";
     public static final String CONFIG_CACHE_M = "CONFIGCACHE_M";
     public static final String CONFIG_CACHE_MK = "CONFIGCACHE_MK";
+    public static final String CONFIG_PROP_CACHE = "CONFIGPROP_CACHE";
+    public static final String CONFIG_PROP_CACHE_MK = "CONFIGPROP_CACHE_MK";
 
     public static final String KEY = "key";
     public static final String VALUE = "value";

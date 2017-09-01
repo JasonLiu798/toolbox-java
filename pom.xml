@@ -117,14 +117,16 @@
         <module>common-config-api</module><!-- 配置对外接口 -->
         <module>common-config</module><!-- 配置 封装 读取 统一封装 -->
         <module>common-config-db</module><!-- db读配置实现类 -->
-        <module>common-config-prop</module><!-- properties 读取实现类 -->
+        <!--<module>common-config-prop</module>&lt;!&ndash; properties 读取实现类 &ndash;&gt;-->
 
         <module>common-cache-memcache</module>
 
         <module>common-email</module>
 
+        <module>common-validator</module>
+
         <module>common-cas-client</module><!-- 简单 cas cliet封装 -->
-        <!--<module>frame-db-simple</module>-->
-        <!--<module>frame-main</module>-->
+        <module>frame-db-simple</module>
+        <module>frame-main</module>
     </modules>
 </project>

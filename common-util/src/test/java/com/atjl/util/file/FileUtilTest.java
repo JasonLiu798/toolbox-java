@@ -1,7 +1,6 @@
 package com.atjl.util.file;
 
 import com.atjl.util.collection.CollectionUtil;
-import com.atjl.util.common.PathUtil;
 import com.atjl.util.serialize.fst.FstSerializer1;
 import org.junit.Test;
 import org.junit.Before;

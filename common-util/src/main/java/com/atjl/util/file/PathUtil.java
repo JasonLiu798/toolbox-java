@@ -1,4 +1,4 @@
-package com.atjl.util.common;
+package com.atjl.util.file;
 
 import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.collection.CollectionUtil;
@@ -11,9 +11,9 @@ import java.util.List;
  * https://nodejs.org/docs/latest/api/path.html
  */
 public class PathUtil {
-	private PathUtil(){
-		throw new UnsupportedOperationException();
-	}
+    private PathUtil() {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * dir separator ("/" on UNIX,"\" on Win)
@@ -21,6 +21,7 @@ public class PathUtil {
     public static final String DIR_SEP = System.getProperty("file.separator");
     public static final String DIR_SEP_POSIX = "/";
     public static final String DIR_SEP_WIN = "\\";
+    public static final String DIR_SEP_UNKNOWN = "unknown";
     /**
      * win disk separator
      * : in C:\\aa.txt
@@ -38,6 +39,29 @@ public class PathUtil {
      * current dir
      */
     public static final String CURRENT_DIR = ".";
+
+    /**
+     * 获取路径分隔类型
+     *
+     * @param filepath
+     * @return
+     */
+    public static String getPathSep(String filepath) {
+        if (StringCheckUtil.isEmpty(filepath)) {
+            return DIR_SEP_UNKNOWN;
+        }
+        if (filepath.indexOf(DIR_SEP_POSIX) >= 0) {
+            return DIR_SEP_POSIX;
+        }
+        if (filepath.indexOf(DIR_SEP_WIN) >= 0) {
+            return DIR_SEP_WIN;
+        }
+        return DIR_SEP_UNKNOWN;
+    }
+
+    public static boolean isUnknownPathSep(String sep) {
+        return StringCheckUtil.equal(sep, DIR_SEP_UNKNOWN);
+    }
 
     /**
      * ######################### POSIX #########################
@@ -108,18 +132,18 @@ public class PathUtil {
         Path resPath = new Path();
         switch (sep) {
             case DIR_SEP_POSIX:
-                if(str.length==1){
+                if (str.length == 1) {
                     resPath = Path.buildUnixRoot();
-                }else{
+                } else {
                     String root = str[0];
                     resPath.setRoot(root);
                     if (haveBase) {
                         String base = str[str.length - 1];
-                        Path ext = parseExt(base);
-                        Path.mergeBasePart( resPath,ext);
-                        String dir = pathStr.substring(0,root.length()+sep.length());
+                        Path ext = null;//parseExt(base);
+                        Path.mergeBasePart(resPath, ext);
+                        String dir = pathStr.substring(0, root.length() + sep.length());
                         //TODO:
-                    }else{
+                    } else {
                         resPath.setDir(pathStr);
                     }
 
@@ -133,10 +157,28 @@ public class PathUtil {
         return null;
     }
 
-    public static Path parseExt(String base) {
-        String[] arr = base.split(EXT_SEP);
-        return null;
+    /**
+     * 获取文件名
+     *
+     * @param filePath
+     * @return
+     */
+    public static String getFileName(String filePath) {
+        String sep = getPathSep(filePath);
+        if (isUnknownPathSep(sep)) {
+            return filePath;
+        }
+        int sepIdx = filePath.lastIndexOf(sep);
+        if (sepIdx+1 >= 0 && sepIdx+1 < filePath.length()) {
+            return filePath.substring(sepIdx+1);
+        }
+        return "";
     }
+
+//    public static Path parseExt(String base) {
+//        String[] arr = base.split(EXT_SEP);
+//        return null;
+//    }
 
     public static String normalize(String path) {
         return "";
@@ -154,21 +196,22 @@ public class PathUtil {
      * @return path string
      */
     public static String join(String... path) {
-        if(DIR_SEP.equals(DIR_SEP_WIN)){
+        if (DIR_SEP.equals(DIR_SEP_WIN)) {
             return joinInnerRelative(DIR_SEP, path);
-        }else{
+        } else {
             return joinInnerAbs(DIR_SEP, path);
         }
     }
-//    public static String joinRelaive(String ... path){
+
+    //    public static String joinRelaive(String ... path){
 //        return joinInnerRelative(DIR_SEP,path);
 //    }
     public static String joinInnerRelative(String sep, String... paths) {
-        return joinInner(false,sep,paths);
+        return joinInner(false, sep, paths);
     }
 
     public static String joinInnerAbs(String sep, String... paths) {
-        return joinInner(true,sep,paths);
+        return joinInner(true, sep, paths);
     }
 
     /**
@@ -178,7 +221,7 @@ public class PathUtil {
      * @param paths
      * @return path string
      */
-    public static String joinInner(boolean isAbsolute,String sep, String... paths) {
+    public static String joinInner(boolean isAbsolute, String sep, String... paths) {
         if (CollectionUtil.isEmpty(paths)) {
             return "";
         }
@@ -197,7 +240,7 @@ public class PathUtil {
         if (sb.toString().startsWith(sep + sep)) {
             sb.deleteCharAt(0);
         }
-        if( sb.toString().startsWith(sep) && !isAbsolute){
+        if (sb.toString().startsWith(sep) && !isAbsolute) {
             sb.deleteCharAt(0);
         }
         return sb.toString();
@@ -270,7 +313,7 @@ public class PathUtil {
         }
 
         public static void mergeBasePart(Path target, Path extPath) {
-            if(extPath==null){
+            if (extPath == null) {
                 return;
             }
             target.setBase(extPath.getBase());

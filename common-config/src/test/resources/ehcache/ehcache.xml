@@ -27,6 +27,17 @@
            diskPersistent="false" diskExpiryThreadIntervalSeconds="120"
            memoryStoreEvictionPolicy="LRU"/>
 
+    <cache name="CONFIGPROP_CACHE" maxElementsInMemory="10000" eternal="true"
+           overflowToDisk="true" diskSpoolBufferSizeMB="30" maxElementsOnDisk="10000000"
+           diskPersistent="false" diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="CONFIGPROP_CACHE_MK" maxElementsInMemory="10000" eternal="true"
+           overflowToDisk="true" diskSpoolBufferSizeMB="30" maxElementsOnDisk="10000000"
+           diskPersistent="false" diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LRU"/>
+
+
 
 
     <cache name="DICTVALUECACHE" maxElementsInMemory="10000" eternal="false"

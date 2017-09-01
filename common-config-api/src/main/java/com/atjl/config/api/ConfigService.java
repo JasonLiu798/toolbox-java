@@ -34,10 +34,7 @@ public interface ConfigService {
     /**
      * 获取多个
      *
-     * @param key
-     * @return
-     */
-    Map<String, String> gets(String key);
+    Map<String, String> gets(String key);*/
 
     /**
      * 获取多个

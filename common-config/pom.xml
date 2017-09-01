@@ -20,6 +20,11 @@
         <!-- other pkg -->
         <dependency>
             <groupId>com.atjl</groupId>
+            <artifactId>common-util</artifactId>
+            <version>${prj.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.atjl</groupId>
             <artifactId>common-config-api</artifactId>
             <version>${prj.version}</version>
         </dependency>
