@@ -13,6 +13,7 @@ public class Length extends BaseValidator {
 
     public Length(Long compare) {
         super(DFT_MSG + compare);
+        this.compare = compare;
     }
 
     public Length(Long compare, String msg) {
@@ -21,9 +22,9 @@ public class Length extends BaseValidator {
     }
 
     public void validate(ValidateForm form, ValidateField field) {
-        String raw = field.getValue();
+        String raw = field.getRawValue();
         if (!StringCheckUtil.isEmpty(raw)) {
-            if (raw.length() > compare) {
+            if (raw.length() > this.compare) {
                 throw new ValidateException(this.msg);
             }
         }

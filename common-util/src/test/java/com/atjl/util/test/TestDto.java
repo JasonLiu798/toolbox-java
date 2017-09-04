@@ -12,6 +12,20 @@ import java.util.UUID;
  */
 public class TestDto implements Serializable{
 
+    private int f1;
+
+    private int f2;
+
+    @Version(1)
+    private int f3;
+
+    @Version(2)
+    private int f4;
+
+    @Version(127)
+    private int f5;
+
+    private String s1;
     //private static final long serialVersionUID = 3741410167347221748L;
 
     public TestDto(){}
@@ -31,20 +45,6 @@ public class TestDto implements Serializable{
         this.s1 = s1;
     }
 
-    private int f1;
-
-    private int f2;
-
-    @Version(1)
-    private int f3;
-
-    @Version(2)
-    private int f4;
-
-    @Version(127)
-    private int f5;
-
-    private String s1;
 
     public int getF1() {
         return f1;

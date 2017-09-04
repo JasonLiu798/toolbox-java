@@ -8,21 +8,17 @@ import java.util.List;
 
 public class StringField implements ValidateField {
 
+    private String label;
+    private String rawValue;
+    private List<Validator> validators;
+
     public StringField(String label) {
         this.label = label;
     }
 
-
     public StringField(String label, Validator... validators) {
         this.label = label;
-
     }
-
-
-    private String label;
-    private String value;
-
-    private List<Validator> validators;
 
     public List<Validator> getValidators() {
         return validators;
@@ -40,11 +36,12 @@ public class StringField implements ValidateField {
         this.label = label;
     }
 
-    public String getValue() {
-        return value;
+    @Override
+    public String getRawValue() {
+        return rawValue;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setRawValue(String rawValue) {
+        this.rawValue = rawValue;
     }
 }

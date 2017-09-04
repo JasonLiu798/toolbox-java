@@ -13,6 +13,8 @@ public class LogCommonUtil {
         super();
     }
 
+
+
     public static Object[] filter2Json(Object... params) {
         if (CollectionUtil.isEmpty(params)) {
             return params;

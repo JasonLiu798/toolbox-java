@@ -15,13 +15,13 @@ public class CollectionUtilTest {
 
     @Test
     public void freeze() throws Exception {
-        Map<String,TestDto> map = new HashMap<>();
-        TestDto t1 = new TestDto(1,"t1");
-        TestDto t2 = new TestDto(2,"t2");
-        map.put("t1",t1);
-        map.put("t2",t2);
+        Map<String, TestDto> map = new HashMap<>();
+        TestDto t1 = new TestDto(1, "t1");
+        TestDto t2 = new TestDto(2, "t2");
+        map.put("t1", t1);
+        map.put("t2", t2);
         System.out.println(map);
-        Map<String,TestDto> fmap = CollectionUtil.copyMap(map);
+        Map<String, TestDto> fmap = CollectionUtil.copyMap(map);
         //Map fmap = (Map) BeanUtils.cloneBean(map);
         t1.setS1("t3");
         System.out.println(fmap);
@@ -29,7 +29,7 @@ public class CollectionUtilTest {
 
 
     @Test
-    public void testfilterDelListInner(){
+    public void testfilterDelListInner() {
         List<String> tgt = new LinkedList<>();
         tgt.add("abc");
         tgt.add("def");
@@ -38,156 +38,183 @@ public class CollectionUtilTest {
         List<String> dellist = new LinkedList<>();
         dellist.add("def");
         dellist.add("klm");
-        List<String> res = CollectionUtil.filterDelListInner(tgt,dellist,CollectionUtil.TP_EXIST_STR);
+        List<String> res = CollectionUtil.filterDelListInner(tgt, dellist, CollectionUtil.TP_EXIST_STR);
         System.out.println(res);
     }
 
     @Test
-    public void testPrintKey(){
+    public void testPrintKey() {
         Map map = new HashMap();
-        map.put(1,2);
-        map.put(2,3);
+        map.put(1, 2);
+        map.put(2, 3);
         String s = CollectionUtil.getKeySetString(map);
         System.out.println(s);
+    }
+
+
+    @Test
+    public void testExistDuplicate() {
+
+        List<String> l = CollectionUtil.newList("123", "1", "1");
+        boolean res = CollectionUtil.existDuplicate(l);
+        assertEquals(true, res);
+
+
+        l = CollectionUtil.newList("112312", "1", "213421", "323sdf", "1");
+        res = CollectionUtil.existDuplicate(l);
+        assertEquals(true, res);
+
+
+        l = CollectionUtil.newList("112312", "1", "213421", "1", "323sdf", "1");
+        res = CollectionUtil.existDuplicate(l);
+        assertEquals(true, res);
+
+        l = CollectionUtil.newList("123", "1");
+        res = CollectionUtil.existDuplicate(l);
+        assertEquals(false, res);
+
+        l = CollectionUtil.newList("123");
+        res = CollectionUtil.existDuplicate(l);
+        assertEquals(false, res);
     }
 
     @Test
     public void testIsEmptyArr() throws Exception {
 
     }
-    
+
     @Test
-    public void testIsNotEmptyArr() throws Exception { 
-        
+    public void testIsNotEmptyArr() throws Exception {
+
     }
-    
+
     @Test
-    public void testIsEmptyCollection() throws Exception { 
-        
+    public void testIsEmptyCollection() throws Exception {
+
     }
-    
+
     @Test
-    public void testIsNotEmptyCollection() throws Exception { 
-        
+    public void testIsNotEmptyCollection() throws Exception {
+
     }
-    
+
     @Test
-    public void testIsEmptyMap() throws Exception { 
-        
+    public void testIsEmptyMap() throws Exception {
+
     }
-    
+
     @Test
-    public void testGetPreNode() throws Exception { 
-        
+    public void testGetPreNode() throws Exception {
+
     }
-    
+
     @Test
-    public void testGetNextNode() throws Exception { 
-        
+    public void testGetNextNode() throws Exception {
+
     }
-    
+
     @Test
-    public void testFilterList2Size() throws Exception { 
-        
+    public void testFilterList2Size() throws Exception {
+
     }
-    
+
     @Test
-    public void testFilterMap() throws Exception { 
-        
+    public void testFilterMap() throws Exception {
+
     }
-    
+
     @Test
-    public void testFilterDelList() throws Exception { 
-        
+    public void testFilterDelList() throws Exception {
+
     }
-    
+
     @Test
-    public void testSet2List() throws Exception { 
-        
+    public void testSet2List() throws Exception {
+
     }
-    
+
     @Test
-    public void testArray2List() throws Exception { 
-        
+    public void testArray2List() throws Exception {
+
     }
-    
+
     @Test
-    public void testArray2Set() throws Exception { 
-        
+    public void testArray2Set() throws Exception {
+
     }
-    
+
     @Test
-    public void testDeleteDuplicatItemLoop() throws Exception { 
-        
+    public void testDeleteDuplicatItemLoop() throws Exception {
+
     }
-    
+
     @Test
-    public void testDeleteDuplicatItemHash() throws Exception { 
-        
+    public void testDeleteDuplicatItemHash() throws Exception {
+
     }
-    
+
     @Test
-    public void testPrintListC() throws Exception { 
-        
+    public void testPrintListC() throws Exception {
+
     }
-    
+
     @Test
-    public void testPrintListForCName() throws Exception { 
-        
+    public void testPrintListForCName() throws Exception {
+
     }
-    
+
     @Test
-    public void testPrintListForCLevel() throws Exception { 
-        
+    public void testPrintListForCLevel() throws Exception {
+
     }
-    
+
     @Test
-    public void testPrintListForCNameLevel() throws Exception { 
-        
+    public void testPrintListForCNameLevel() throws Exception {
+
     }
-    
+
     @Test
-    public void testSeparateList() throws Exception { 
-        
+    public void testSeparateList() throws Exception {
+
     }
-    
+
     @Test
-    public void testGetInterval() throws Exception { 
-        
+    public void testGetInterval() throws Exception {
+
     }
-    
+
     @Test
-    public void testCopyList() throws Exception { 
-        
+    public void testCopyList() throws Exception {
+
     }
-    
+
     @Test
-    public void testCopyForListStartEnd() throws Exception { 
-        
+    public void testCopyForListStartEnd() throws Exception {
+
     }
-    
+
     @Test
-    public void testResizeArray() throws Exception { 
-        
+    public void testResizeArray() throws Exception {
+
     }
-    
+
     @Test
     public void testRemoveListFirstN() throws Exception {
-        List<Integer> list =  RangeUtil.range(10);
+        List<Integer> list = RangeUtil.range(10);
         System.out.println(list);
-        list = CollectionUtil.removeListFirstN(list,3);
-        assertEquals(7,list.size());
-        for(int i=0;i<list.size();i++) {
+        list = CollectionUtil.removeListFirstN(list, 3);
+        assertEquals(7, list.size());
+        for (int i = 0; i < list.size(); i++) {
             int num = list.get(i);
-            assertEquals(i+3 , num);
+            assertEquals(i + 3, num);
         }
         System.out.println(list);
     }
 
     @Test
-    public void testList(){
+    public void testList() {
         List<Integer> list = new ArrayList<>();
-        for(int i=0;i<10;i++){
+        for (int i = 0; i < 10; i++) {
             list.add(i);
         }
         System.out.println(list);
@@ -197,7 +224,7 @@ public class CollectionUtilTest {
         System.out.println(res);
 
         list = new LinkedList<>();
-        for(int i=0;i<10;i++){
+        for (int i = 0; i < 10; i++) {
             list.add(i);
         }
         System.out.println(list);
@@ -209,22 +236,22 @@ public class CollectionUtilTest {
     }
 
     @Test
-    public void getDup(){
+    public void getDup() {
         //empty
         List<String> l1 = new LinkedList<>();
         List<String> l2 = new LinkedList<>();
-        List<String> l = CollectionUtil.getDuplicateItemUseHash(l1,l2);
+        List<String> l = CollectionUtil.getDuplicateItemUseHash(l1, l2);
         assertEquals(true, CollectionUtil.isEmpty(l));
 
         //one empty
-        l1=null;
+        l1 = null;
         l2 = new LinkedList<>();
-        l = CollectionUtil.getDuplicateItemUseHash(l1,l2);
+        l = CollectionUtil.getDuplicateItemUseHash(l1, l2);
         assertEquals(true, CollectionUtil.isEmpty(l));
 
         l1 = new LinkedList<>();
-        l2=null;
-        l = CollectionUtil.getDuplicateItemUseHash(l1,l2);
+        l2 = null;
+        l = CollectionUtil.getDuplicateItemUseHash(l1, l2);
         assertEquals(true, CollectionUtil.isEmpty(l));
 
         //no duplicat
@@ -235,7 +262,7 @@ public class CollectionUtilTest {
         l2 = new LinkedList<>();
         l2.add("4");
         l2.add("5");
-        l = CollectionUtil.getDuplicateItemUseHash(l1,l2);
+        l = CollectionUtil.getDuplicateItemUseHash(l1, l2);
         assertEquals(true, CollectionUtil.isEmpty(l));
 
         //contain one duplicate
@@ -246,10 +273,10 @@ public class CollectionUtilTest {
         l2 = new LinkedList<>();
         l2.add("123");
         l2.add("2340");
-        l = CollectionUtil.getDuplicateItemUseHash(l1,l2);
+        l = CollectionUtil.getDuplicateItemUseHash(l1, l2);
         System.out.println(l);
-        assertEquals(1,l.size());
-        assertEquals("123",l.get(0));
+        assertEquals(1, l.size());
+        assertEquals("123", l.get(0));
 
         //contain two dup
         l1 = new LinkedList<>();
@@ -259,13 +286,13 @@ public class CollectionUtilTest {
         l2 = new LinkedList<>();
         l2.add("1");
         l2.add("2");
-        l = CollectionUtil.getDuplicateItemUseHash(l1,l2);
-        assertEquals(2,l.size());
+        l = CollectionUtil.getDuplicateItemUseHash(l1, l2);
+        assertEquals(2, l.size());
         List<String> expecL = new LinkedList<>();
         expecL.add("1");
         expecL.add("2");
 
-        System.out.println(l+","+expecL);
+        System.out.println(l + "," + expecL);
         assertEquals(expecL.get(0), l.get(0));
         assertEquals(expecL.get(1), l.get(1));
 
@@ -281,23 +308,23 @@ public class CollectionUtilTest {
         List<String> l2 = new LinkedList<>();
         l2.add("1");
         l2.add("2");
-        String item = CollectionUtil.getOneDuplicateItemUseHash(l1,l2);
-        assertEquals("1",item);
+        String item = CollectionUtil.getOneDuplicateItemUseHash(l1, l2);
+        assertEquals("1", item);
     }
 
 
     @Test
-    public void testFilterNull(){
-        String[] arr = {"123",null,"343",null,null};
+    public void testFilterNull() {
+        String[] arr = {"123", null, "343", null, null};
         String[] newA = CollectionUtil.filterNull(arr);
-        System.out.println("res:"+Arrays.toString(newA));
+        System.out.println("res:" + Arrays.toString(newA));
     }
-        
+
     @Before
-    public void before() throws Exception { 
-    } 
+    public void before() throws Exception {
+    }
 
     @After
-    public void after() throws Exception { 
+    public void after() throws Exception {
     }
 } 

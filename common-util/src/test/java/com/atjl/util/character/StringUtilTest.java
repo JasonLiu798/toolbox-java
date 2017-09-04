@@ -594,4 +594,15 @@ public class StringUtilTest {
 //        assertEquals(,LogFmtUtil.simplifyFullClassName(null, 10));
 
     }
+
+
+    @Test
+    public void testgetFirstUpperBefore() {
+        assertEquals("asdf", StringUtil.getFirstUpperBefore("asdfAA"));
+        assertEquals("", StringUtil.getFirstUpperBefore("AA"));
+        assertEquals("aaa", StringUtil.getFirstUpperBefore("aaa"));
+        assertEquals(null, StringUtil.getFirstUpperBefore(null));
+        assertEquals("a", StringUtil.getFirstUpperBefore("a"));
+        assertEquals("", StringUtil.getFirstUpperBefore("A"));
+    }
 }

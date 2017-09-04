@@ -6,6 +6,7 @@ package com.atjl.validate.api;
  * e.g.
  */
 public class ValidateRuleConstants {
+
     //可以为空
     public static String NULL_KEY = "null";
 

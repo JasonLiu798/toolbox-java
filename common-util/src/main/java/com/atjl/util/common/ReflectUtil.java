@@ -167,13 +167,35 @@ public class ReflectUtil {
         return getFields(obj.getClass(), parentOpt, blackArr, whiteArr);
     }
 
+    public static List<Field> filterField(List<Field> fields, Class[] whiteClzArr) {
+        if (CollectionUtil.isEmpty(fields)) {
+            return fields;
+        }
+        boolean filterClzWhite = false;
+        List<Class> whiteClzList = null;
+        if (whiteClzArr != null && whiteClzArr.length > 0) {
+            filterClzWhite = true;
+            whiteClzList = Arrays.asList(whiteClzArr);
+        }
+        if (!filterClzWhite) {
+            return fields;
+        }
+
+        List<Field> res = new ArrayList<>(fields.size());
+        for (Field f : fields) {
+            if (filterClzWhite && whiteClzList.indexOf(f.getType()) < 0) {
+                continue;
+            }
+            res.add(f);
+        }
+        return res;
+    }
+
     /**
-     * 获取 fields
-     *
      * @param obj
      * @param parentOpt
      * @param blackArr
-     * @param whiteArr  优先级高于blackArr
+     * @param whiteArr
      * @return
      */
     public static List<Field> getFields(Class obj, GetClzOpt parentOpt, String[] blackArr, String[] whiteArr) {
@@ -204,6 +226,13 @@ public class ReflectUtil {
             }
         }
 
+//        boolean filterClzWhite = false;
+//        List<Class> whiteClzList = null;
+//        if (whiteClzArr != null && whiteClzArr.length > 0) {
+//            filterClzWhite = true;
+//            whiteClzList = Arrays.asList(whiteClzArr);
+//        }
+
         for (Class<?> cls : clazzList) {
             Field[] fields = cls.getDeclaredFields();//get all field
             for (Field field : fields) {
@@ -218,6 +247,10 @@ public class ReflectUtil {
                             whiteList.indexOf(field.getName()) < 0) {
                         continue;
                     }
+                    //process white class list
+//                    if (filterClzWhite && whiteClzList.indexOf(field.getType()) < 0) {
+//                        continue;
+//                    }
                     res.add(field);
                 } catch (Exception e) {
                     logger.error("getFieldValue {}", e.getMessage());

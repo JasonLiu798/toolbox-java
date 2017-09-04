@@ -979,6 +979,31 @@ public final class StringUtil {
         return sb.toString();
     }
 
+    /**
+     * 获取第一个大写之前的字符串
+     * @param str
+     * @return
+     */
+    public static String getFirstUpperBefore(String str) {
+        if (StringCheckUtil.isEmpty(str)) {
+            return str;
+        }
+        char[] chars = str.toCharArray();
+        int i = 0;
+        int len = chars.length;
+        for (i = 0; i < len; i++) {
+            char c = chars[i];
+            if (c >= 'A' && c <= 'Z') {
+                break;
+            }
+        }
+        if (i <= len) {
+            return str.substring(0, i);
+        } else {
+            return str;
+        }
+    }
+
 
     /**
      * ###################### filters ###########################

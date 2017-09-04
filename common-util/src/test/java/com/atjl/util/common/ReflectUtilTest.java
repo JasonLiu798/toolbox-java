@@ -141,6 +141,7 @@ public class ReflectUtilTest {
 
     /**
      * get field
+     *
      * @throws Exception
      */
     @Test
@@ -232,6 +233,13 @@ public class ReflectUtilTest {
         res = ReflectUtil.getFields(src, ReflectUtil.GetClzOpt.ALLPARENT, null, null);
         res = ReflectUtil.filed2string(res);
         System.out.println("res all parent:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(res)));
+
+        System.out.println("#########################");
+        res = ReflectUtil.getFields(src.getClass(), ReflectUtil.GetClzOpt.ALL, null, null);
+        res = ReflectUtil.filterField(res, CollectionUtil.newArr(Long.class));
+        res = ReflectUtil.filed2string(res);
+        System.out.println("res Long:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(res)));
+
     }
 
     @Test
@@ -269,11 +277,10 @@ public class ReflectUtilTest {
         res = ReflectUtil.getFieldValue(src, ReflectUtil.GetClzOpt.ALL, true, null, CollectionUtil.newArr("f1", "childField"));
         System.out.println("res white:" + JSONFastJsonUtil.objectToJson(res));
 
-        res = ReflectUtil.getFieldValue(src, ReflectUtil.GetClzOpt.ALL, true, CollectionUtil.newArr("f1"), CollectionUtil.newArr("f1","f2"));
+        res = ReflectUtil.getFieldValue(src, ReflectUtil.GetClzOpt.ALL, true, CollectionUtil.newArr("f1"), CollectionUtil.newArr("f1", "f2"));
         System.out.println("res white and black:" + JSONFastJsonUtil.objectToJson(res));
 
     }
-
 
 
     @Test

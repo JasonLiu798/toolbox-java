@@ -109,6 +109,24 @@ public final class CollectionUtil {
         return false;
     }
 
+    public static <T> boolean existDuplicate(Collection<T> collection) {
+        if (isEmpty(collection)) {
+            return false;
+        }
+        if (collection.size() == 1) {
+            return false;
+        }
+        Set<T> set = new HashSet<>();
+        for (T t : collection) {
+            if (set.contains(t)) {
+                return true;
+            } else {
+                set.add(t);
+            }
+        }
+        return false;
+    }
+
 
     /**
      * ############################## getter functions ###################################

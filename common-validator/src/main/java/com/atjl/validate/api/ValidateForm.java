@@ -1,8 +1,16 @@
 package com.atjl.validate.api;
 
 
+import java.util.Map;
+
 public interface ValidateForm {
 
-    void validate();
+    boolean validate();
+
+    /**
+     * validate = false时，有值
+     * @return
+     */
+    Map<String, String> getErrors();
 
 }

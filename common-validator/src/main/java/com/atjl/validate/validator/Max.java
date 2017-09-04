@@ -22,7 +22,7 @@ public class Max extends BaseValidator {
 
 
     public void validate(ValidateForm form, ValidateField field) {
-        String raw = field.getValue();
+        String raw = field.getRawValue();
         if (!RegexUtil.isInteger(raw)) {
             throw new ValidateException(this.msg);
         }
