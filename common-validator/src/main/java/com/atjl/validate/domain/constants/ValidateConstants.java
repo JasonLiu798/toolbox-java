@@ -5,6 +5,8 @@ package com.atjl.validate.domain.constants;
  *
  */
 public class ValidateConstants {
+
+    public static final String VALIDATE_PROP_FILE = "validate";
     //aop method
     public static String CHKFUNC="check";
 

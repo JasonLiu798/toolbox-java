@@ -9,5 +9,6 @@ a*.sh
 frame-db-simple
 frame-main
 common-cas
+common-kafka
 *.bak
 *.zip

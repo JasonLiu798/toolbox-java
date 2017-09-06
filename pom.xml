@@ -126,6 +126,9 @@
         <module>common-validator</module>
 
         <module>common-cas-client</module><!-- 简单 cas cliet封装 -->
+
+
+        <module>common-kafka</module>
         <module>frame-db-simple</module>
         <module>frame-main</module>
     </modules>

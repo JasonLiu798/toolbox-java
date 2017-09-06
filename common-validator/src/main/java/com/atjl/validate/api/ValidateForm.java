@@ -9,8 +9,13 @@ public interface ValidateForm {
 
     /**
      * validate = false时，有值
+     *
      * @return
      */
     Map<String, String> getErrors();
+
+    ValidateField getField(String fieldKey);
+
+    //String getFieldRawVal(String fieldKey);
 
 }

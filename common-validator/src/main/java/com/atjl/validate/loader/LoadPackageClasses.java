@@ -19,7 +19,10 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.core.type.filter.TypeFilter;
 import org.springframework.util.ClassUtils;
 
-
+/**
+ * 包扫描
+ * @author jasonliu
+ */
 public class LoadPackageClasses {
 	
 	protected final Log logger = LogFactory.getLog(getClass());

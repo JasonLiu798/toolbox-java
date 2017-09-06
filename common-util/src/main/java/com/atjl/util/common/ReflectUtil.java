@@ -6,6 +6,7 @@ import com.atjl.util.collection.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -120,6 +121,25 @@ public class ReflectUtil {
     public static Object getInstance(String classStr) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         Class<?> clz = Class.forName(classStr);
         return clz.newInstance();
+    }
+
+    public static Object getInstance(Class clz) {
+        try {
+            return clz.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            logger.error("{}", e.getMessage());
+            return null;
+        }
+    }
+
+    public static Object getInstance(Class clz, Class[] paramClz, Object[] params) {
+        try {
+            Constructor c = clz.getConstructor(paramClz);
+            return c.newInstance(params);
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            logger.error("new instance {}", e.getMessage());
+            return null;
+        }
     }
 
 
@@ -381,7 +401,14 @@ public class ReflectUtil {
      * @return field name - value object
      */
     public static Map<String, Object> getFieldValue(Object obj, GetClzOpt parentOpt, boolean allowNullValue, String[] blackArr, String[] whiteArr) {
-        List<Field> fields = getFields(obj, parentOpt, blackArr, whiteArr);
+        if (obj == null) {
+            return null;
+        }
+        return getFieldValue(obj.getClass(), parentOpt, allowNullValue, blackArr, whiteArr);
+    }
+
+    public static Map<String, Object> getFieldValue(Class clz, GetClzOpt parentOpt, boolean allowNullValue, String[] blackArr, String[] whiteArr) {
+        List<Field> fields = getFields(clz, parentOpt, blackArr, whiteArr);
         if (CollectionUtil.isEmpty(fields)) {
             return new HashMap<>();
         }
@@ -391,7 +418,7 @@ public class ReflectUtil {
             try {
                 //String fieldGetName = generateGetName(field.getName(), false);
                 field.setAccessible(true);
-                Object fieldVal = field.get(obj);
+                Object fieldVal = field.get(clz);
 
                 //process allow null
                 if (allowNullValue) {
@@ -468,6 +495,16 @@ public class ReflectUtil {
     public static Field getDeclaredField(Object object, String fieldName) {
         Class<?> clazz = object.getClass();
         return getDeclaredField(clazz, fieldName);
+    }
+
+    public static Object getDeclaredFieldValue(Class clz, String fieldName) {
+        Field f = getDeclaredField(clz, fieldName);
+        try {
+            return f.get(null);
+        } catch (IllegalAccessException e) {
+            logger.error("{}", e.getMessage());
+            return null;
+        }
     }
 
     /**

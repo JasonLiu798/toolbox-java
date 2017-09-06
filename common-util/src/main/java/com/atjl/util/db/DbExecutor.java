@@ -1,13 +1,12 @@
 package com.atjl.util.db;
 
+//import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.sql.DataSource;
 
 /**
@@ -15,56 +14,44 @@ import javax.sql.DataSource;
  */
 public class DbExecutor {
 
-    private static Logger log = LoggerFactory.getLogger(DbExecutor.class);
+    private static Logger logger = LoggerFactory.getLogger(DbExecutor.class);
 
-    private static DataSource dataSource;
-
-    public void init(DataSource dataSource){
-        DbExecutor.dataSource = dataSource;
-    }
-
-    public static List<Map<String, Object>> getTableData(String sql) {
-        List<Map<String, Object>> list = new LinkedList<>();
-//        Map<String, Object> res = new HashMap<>();
-        //Iterator<String> it = param.keySet().iterator();
-//        while (it.hasNext()) {
-//            String key = it.next();
-//            String sql = param.get(key);
+    public static List<Map<String, Object>> getTableData(DataSource ds, String sql) {
+        List<Map<String, Object>> list = new ArrayList<>();
         Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        PreparedStatement pstmt;
+        ResultSet rs;
         try {
-            conn = dataSource.getConnection() ;
+            conn = ds.getConnection();
             pstmt = conn.prepareStatement(sql);
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 Map<String, Object> row = new HashMap<>();
                 ResultSetMetaData metaData = rs.getMetaData();
                 int columnCount = metaData.getColumnCount();
-//                metaData.getColumnType();
-                log.debug("column count {}",columnCount);
                 for (int i = 1; i <= columnCount; i++) {
                     String columnName = metaData.getColumnName(i);
-//                    metaData.getColumnClassName(i);
                     Object val = rs.getObject(i);
-                    log.debug("column name {},val {}",columnName,val);
                     row.put(columnName, val);
                 }
                 list.add(row);
             }
             rs.close();
             pstmt.close();
+        }catch (MySQLSyntaxErrorException e){
+            throw new DbExecutorSyntaxException();
         } catch (Exception e) {
-            log.error(e.getMessage());
+            logger.error("DbExecutor select exception {}", e);
         } finally {
             try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("datasource close {}", e);
             }
         }
         return list;
     }
+
 }

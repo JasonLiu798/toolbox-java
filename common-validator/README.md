@@ -72,17 +72,4 @@ ValidateResultDto Validator.validate(String url,Object param);
 ValidateResultDto res = Validator.validate(String url,);
 ```
 
-----
-#todo list
-* 使用配置文件配置正则规则
-* 返回 出错提示 类型改为 list
-* 自定义方法
-* 区间校验
-* before:date
-* 存在性校验(db)
-* Unique (Database)
-* Not In
-* Max
-* Min
-* length
-* 自定义出错提示
+

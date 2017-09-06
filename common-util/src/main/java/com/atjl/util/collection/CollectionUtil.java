@@ -328,6 +328,13 @@ public final class CollectionUtil {
         return list;
     }
 
+    public static <T> T[] set2array(Set<T> set) {
+        if (!CollectionUtil.isEmpty(set)) {
+            return null;
+        }
+        return (T[]) set.toArray();
+    }
+
 
     /**
      * array to arrayList

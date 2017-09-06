@@ -9,14 +9,13 @@ import java.util.Map;
 
 public class BaseFormTest {
 
-
     @Test
     public void testInit() throws Exception {
-        BaseForm form = BaseForm.newForm(TestForm.class);
+        BaseForm form = new BaseForm(FormEg.class);
 
         Map<String, String> values = new HashMap<>();
-        values.put("f1", "aaa@sdfj.com");
-        values.put("f2", "1234");
+        values.put("f1", "aaa@aa");
+        values.put("f2", null);
 
         form.setValue(values);
         boolean res = form.validate();
@@ -27,9 +26,9 @@ public class BaseFormTest {
 
     @Test
     public void testSetValue() throws Exception {
-        BaseForm form = BaseForm.newForm(TestForm.class);
+        BaseForm form = BaseForm.newForm(FormEg.class);
 
-        TestReq req = new TestReq();
+        ReqEg req = new ReqEg();
         req.setF1(null);//"aaasdfds");
 //        req.setF1(null);//"aaasdfds");
         req.setF2("1234");

@@ -2,16 +2,23 @@ package com.atjl.validate.api;
 
 
 import com.atjl.util.collection.CollectionUtil;
-import com.atjl.validate.validator.Optional;
-import com.atjl.validate.validator.Require;
+import com.atjl.validate.validator.noparam.Optional;
+import com.atjl.validate.validator.noparam.Require;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 校验字段
+ * String类型字段
+ * <p>
+ * 目前z只支持 string类型
+ *
+ * @author jasonliu
+ */
 public class StringField implements ValidateField {
 
     private String rawValue;//原始值
-
     private String label;//标签
     private List<Validator> validators;//校验器列表
 
