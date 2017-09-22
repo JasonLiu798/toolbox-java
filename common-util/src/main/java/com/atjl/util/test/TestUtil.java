@@ -25,8 +25,8 @@ public class TestUtil {
 //        Map<String,List<String>> res = new HashMap<>();
 //        res.put(file1,);
 		List<String> lostData = new LinkedList<>();
-		List<String> fileList1 = FileUtil.cat2List(file1);
-		List<String> fileList2 = FileUtil.cat2List(file2);
+		List<String> fileList1 = FileUtil.cat2list(file1);
+		List<String> fileList2 = FileUtil.cat2list(file2);
 		Set<String> file1Set = new HashSet<>();
 		file1Set.addAll(fileList2);
 		for(String f1Str:fileList1){

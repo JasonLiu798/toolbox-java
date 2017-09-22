@@ -7,6 +7,6 @@ public interface ICache<T> extends LifeCycle {
     void put(String key, T data);
     T get(String key);
     boolean contain(String key);
-    void remove(String key);
+    T remove(String key);
     String getStatus();
 }

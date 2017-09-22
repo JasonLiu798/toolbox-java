@@ -6,6 +6,8 @@ import com.atjl.util.common.CovertUtil;
 import com.atjl.util.common.ReflectUtil;
 import com.atjl.util.config.util.ConfigPropCommonUtil;
 import com.atjl.util.file.PathUtil;
+import com.atjl.util.reflect.ReflectFieldUtil;
+import com.atjl.util.reflect.ReflectSetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +27,6 @@ public class ConfigModelUtil {
     private static final Logger logger = LoggerFactory.getLogger(ConfigModelUtil.class);
 
     /**
-     *
      * @param filePath
      * @param type
      * @param clz
@@ -34,6 +35,44 @@ public class ConfigModelUtil {
      */
     public static <T> T generateConfigModel(String filePath, int type, Class<T> clz) {
         return generateConfigModel(filePath, type, clz, null, null);
+    }
+
+    public static <T> T generateConfigModel(Map<String, String> configs, Class<T> clz, boolean force) {
+        if (CollectionUtil.isEmpty(configs) || clz == null) {
+            logger.warn("generateConfigModel config null or clz null");
+            return null;
+        }
+        T res = null;
+        try {
+            res = clz.newInstance();
+
+            List<String> keyList = CollectionUtil.map2list(configs, true);
+            Map<String, Field> fieldMap = ReflectFieldUtil.getFieldMap(clz, ReflectUtil.GetClzOpt.ALL, null, CollectionUtil.list2array(keyList));
+            for (Map.Entry<String, String> configEntry : configs.entrySet()) {
+                /**
+                 * 配置项值不为空
+                 * 对应对象的field不为空
+                 */
+                if (configEntry != null && fieldMap.get(configEntry.getKey()) != null) {
+                    Field field = fieldMap.get(configEntry.getKey());
+                    boolean set = false;
+                    if (!StringCheckUtil.isEmpty(configEntry.getValue())) {
+                        Object val = CovertUtil.covert(configEntry.getValue(), field.getType());
+                        if (val != null) {
+                            ReflectSetUtil.setter(res, field.getName(), field.getType(), val);
+                            set = true;
+                        }
+                    }
+                    if (!set && force) {
+                        ReflectSetUtil.setter(res, field.getName(), field.getType(), null);
+                    }
+                    //为空则使用默认值
+                }
+            }
+        } catch (InstantiationException | IllegalAccessException e) {
+            logger.error("generateConfigModel {}", e);
+        }
+        return res;
     }
 
     /**
@@ -90,7 +129,7 @@ public class ConfigModelUtil {
                     val = CovertUtil.covert(propStrVal, fieldType);
                 }
                 if (val != null) {
-                    ReflectUtil.setter(res, field.getName(), fieldType, val);
+                    ReflectSetUtil.setter(res, field.getName(), fieldType, val);
                 }
             }
         } catch (InstantiationException | IllegalAccessException e) {

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="300 seconds" debug="false">
+    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+    <!--<property name="LOG_HOME" value="${jetty.base:-.}/logs" />-->
+    <property name="LOG_HOME" value="D:/project/logs" />
+
+    <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+    <!--参考ch.qos.logback.classic.PatternLayout -->
+    <!--  property name="LOG_FORMAT" value="%d{MM-dd HH:mm:ss.SSS} [%thread] %-5level %class.%method\\(%F:%L\\) - %msg%n" / -->
+    <property name="LOG_FORMAT" value="%d{MM-dd HH:mm:ss.SSS} [%thread] %-5level %class.%method\\(%F:%L\\) - %msg%n" />
+    <!--<property name="LOG_FORMAT" value="%d{MM-dd HH:mm:ss.SSS} [%thread] %-5level - %msg%n" />-->
+
+    <property name="LOG_FORMAT_SIMPLE" value="%msg%n"/>
+
+    <!-- 控制台输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 日志输出编码 -->
+        <encoder charset="UTF-8" >
+            <pattern>${LOG_FORMAT}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- force commit -->
+    <appender name="TESTA" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- Support intervalCoefficient-JVM writing to the same log file 效率低，默认false -->
+        <!--<prudent>true</prudent>-->
+        <level>DEBUG</level>
+        <encoder charset="UTF-8">
+            <pattern>${LOG_FORMAT_SIMPLE}</pattern>
+            <immediateFlush>true</immediateFlush>
+            <!--备份数据，立即写入-->
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>D:/project/log/test.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!--<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+                <!--<maxFileSize>100MB</maxFileSize>-->
+            <!--</timeBasedFileNamingAndTriggeringPolicy>-->
+            <maxHistory>15</maxHistory><!-- 最多保存的历史文件个数 -->
+            <totalSizeCap>3GB</totalSizeCap><!-- -->
+        </rollingPolicy>
+        <!--<layout class="ch.qos.logback.classic.PatternLayout">-->
+            <!--<pattern>%msg%n</pattern>-->
+        <!--</layout>-->
+    </appender>
+
+
+    <logger name="testt" level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="TESTA"/>
+    </logger>
+
+    <!-- 日志输出级别 -->
+    <!-- OFF, ERROR, WARN, INFO, DEBUG, TRACE, ALL. -->
+    <root level="DEBUG">
+        <appender-ref ref="DAILYFILE" />
+        <appender-ref ref="STDOUT" />
+    </root>
+
+</configuration>

@@ -2,10 +2,14 @@ package com.atjl.validate.util;
 
 import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.common.ReflectUtil;
+import com.atjl.util.reflect.ReflectFieldUtil;
 import com.atjl.validate.api.ValidateParseException;
 import com.atjl.validate.api.Validator;
 import com.atjl.validate.api.Validators;
 
+/**
+ *
+ */
 public class ValidateParseUtil {
     private ValidateParseUtil() {
         throw new UnsupportedOperationException();
@@ -58,7 +62,7 @@ public class ValidateParseUtil {
 
         String clzName = clz.getSimpleName();
         String clzNameUpper = clzName.toUpperCase();
-        Object val = ReflectUtil.getDeclaredFieldValue(Validators.class, clzNameUpper);
+        Object val = ReflectFieldUtil.getDeclaredFieldValue(Validators.class, clzNameUpper);
         if (val == null) {
             throw new ValidateParseException(MSG_ + ",不存在的校验器");
         }

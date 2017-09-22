@@ -2,6 +2,7 @@ package com.atjl.validate.form;
 
 import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.common.ReflectUtil;
+import com.atjl.util.reflect.ReflectFieldUtil;
 import com.atjl.validate.api.*;
 import com.atjl.validate.api.exception.ValidateException;
 import com.atjl.validate.api.exception.ValidateNotRecMsgException;
@@ -40,6 +41,7 @@ public class BaseForm implements ValidateForm {
         return form;
     }
 
+
     /**
      * 初始化
      * <p>
@@ -47,8 +49,13 @@ public class BaseForm implements ValidateForm {
      * 子类父类存在相同名称字段
      */
     public void init() {
-        List<Field> fields = ReflectUtil.getFields(this.formClz, ReflectUtil.GetClzOpt.ALL, null, null);
-        fields = ReflectUtil.filterField(fields, CollectionUtil.newArr(StringField.class));
+        Object formObj = ReflectUtil.getInstance(this.formClz);
+        if (formObj == null) {
+            throw new ValidateInitException("自定义表单对象无法创建");
+        }
+
+        List<Field> fields = ReflectFieldUtil.getFieldList(formObj, ReflectUtil.GetClzOpt.ALL, null, null);
+        fields = ReflectFieldUtil.filterField(fields, CollectionUtil.newArr(StringField.class));
         if (CollectionUtil.isEmpty(fields)) {
             logger.warn("init form,field null");
             return;
@@ -62,7 +69,12 @@ public class BaseForm implements ValidateForm {
         for (Field f : fields) {
             try {
                 f.setAccessible(true);
-                ValidateField vf = (ValidateField) f.get(null);
+                ValidateField vf = (ValidateField) f.get(formObj);
+                List<Validator> validators = vf.getValidators();
+                if(CollectionUtil.isEmpty(validators)){
+                    throw new ValidateInitException("校验器为空");
+                }
+
                 fieldMap.put(f.getName(), vf);
                 labelMap.put(f.getName(), vf.getLabel());
             } catch (IllegalAccessException e) {
@@ -80,6 +92,7 @@ public class BaseForm implements ValidateForm {
      *
      * @param valueMap
      */
+    @Override
     public void setValue(Map<String, String> valueMap) {
         if (CollectionUtil.isEmpty(valueMap)) {
             return;
@@ -93,7 +106,7 @@ public class BaseForm implements ValidateForm {
     }
 
     public void setValue(Object param) {
-        Map<String, String> paramStrMap = ReflectUtil.getFieldMapAll(param);
+        Map<String, String> paramStrMap = ReflectFieldUtil.getFieldValueStringAll(param);
         setValue(paramStrMap);
     }
 
@@ -102,6 +115,15 @@ public class BaseForm implements ValidateForm {
      */
     @Override
     public boolean validate() {
+        long t = System.currentTimeMillis();
+        boolean res = vlidateInner();
+        long cost = System.currentTimeMillis() - t;
+        logger.debug("validate res {},cost {}", res, cost);
+        return res;
+    }
+
+
+    private boolean vlidateInner() {
         if (CollectionUtil.isEmpty(this.fieldMap)) {
             return true;
         }
@@ -118,7 +140,7 @@ public class BaseForm implements ValidateForm {
                     //Optional null do nothing
                 } catch (ValidateException e) {
                     existError = true;
-                    errorMap.put(entry.getKey(), field.getLabel() + e.getMessage());
+                    errorMap.put(entry.getKey(), field.getLabel() + ":" + e.getMessage());
                 }
             }
         }
@@ -128,6 +150,7 @@ public class BaseForm implements ValidateForm {
     public ValidateField getField(String fieldKey) {
         return fieldMap.get(fieldKey);
     }
+
     public String getFieldRawVal(String fieldKey) {
         ValidateField vf = fieldMap.get(fieldKey);
         if (vf == null) {
@@ -146,8 +169,15 @@ public class BaseForm implements ValidateForm {
             return "";
         }
         StringBuilder sb = new StringBuilder();
+        int last = this.errorMap.entrySet().size() - 1;
+        int i = 0;
         for (Map.Entry<String, String> entry : this.errorMap.entrySet()) {
-            sb.append(this.labelMap.get(entry.getKey())).append(entry.getValue());
+//            sb.append(this.labelMap.get(entry.getKey())).append(entry.getValue());
+            sb.append(entry.getValue());
+            if (i != last) {
+                sb.append(",");
+            }
+
         }
         return sb.toString();
     }

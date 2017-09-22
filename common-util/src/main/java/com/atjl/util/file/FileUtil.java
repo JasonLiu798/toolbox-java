@@ -93,13 +93,21 @@ public final class FileUtil {
     }
 
 
+    public static File getFileFromClasspath(String filename) {
+        ClassLoader classLoader = FileUtil.class.getClassLoader();
+        URL url = classLoader.getResource(filename);
+        File file = new File(url.getFile());
+        return file;
+    }
+
+
     /**
      * 获取 classpath 下文件全路径
      *
      * @param fileName
      * @return
      */
-    public static String getFileFromClasspath(String fileName) {
+    public static String getFilePathFromClasspath(String fileName) {
         ClassLoader classLoader = FileUtil.class.getClassLoader();
         /**
          getResource()方法会去classpath下找这个文件，获取到url resource, 得到这个资源后，调用url.getFile获取到 文件 的绝对路径
@@ -348,8 +356,7 @@ public final class FileUtil {
     /**
      * *********************** read  file apis ************************
      */
-    public static String cat(String filepath) {
-        File file = new File(filepath);
+    public static String cat(File file) {
         FileReader fileReader = null;
         BufferedReader reader = null;
         StringBuilder res = new StringBuilder();
@@ -383,14 +390,19 @@ public final class FileUtil {
         return res.toString();
     }
 
+    public static String cat(String filepath) {
+        File file = new File(filepath);
+        return cat(file);
+    }
+
     /**
      * not skip space line
      *
      * @param path
      * @return
      */
-    public static List<String> cat2List(String path) {
-        return cat2List(path, 0);
+    public static List<String> cat2list(String path) {
+        return cat2list(path, 0);
     }
 
     /**
@@ -400,7 +412,7 @@ public final class FileUtil {
      * @param path
      * @return
      */
-    public static List<String> cat2List(String path, int option) {
+    public static List<String> cat2list(String path, int option) {
         List<String> res = new ArrayList<>();
         String line;
         BufferedReader in = null;

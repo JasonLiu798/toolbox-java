@@ -6,7 +6,9 @@ import org.junit.*;
 import org.junit.rules.ExpectedException;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class ConfigModelUtilTest {
@@ -32,7 +34,32 @@ public class ConfigModelUtilTest {
 
         System.out.println("res:" + fields);
     }
-    
+
+    /**
+     *
+     *     private String p1;
+     private Long pl;
+     private Integer pi;
+     private Short ps;
+     private Double pd;
+     private Float pf;
+     private int pri;
+     private Byte pb=12;
+     *
+     */
+
+    @Test
+    public void map() throws Exception {
+        Map<String,String> config = new HashMap<>();
+        config.put("p1","234324");
+        config.put("pi","2344");
+        config.put("pd","234.324");
+        config.put("ps","");
+
+        TestConfig tc = ConfigModelUtil.generateConfigModel(config, TestConfig.class,true);
+
+        System.out.println("res:" + JSONFastJsonUtil.objectToJson(tc));
+    }
         
     @Before
     public void before() throws Exception { 

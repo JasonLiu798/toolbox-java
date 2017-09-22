@@ -5,8 +5,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-
-    <!--<bean id="commonApplicationContextHepler" class="com.sf.util.common.ApplicationContextHepler" />-->
     <context:component-scan base-package="com.atjl.configdb"/>
 
     <!-- ScanMapperFiles
@@ -19,8 +17,6 @@
     	<bean id="ehcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
 		<property name="configLocation" value="classpath:ehcache/ehcache.xml"/>
 	</bean>
-
-	<bean id="commonApplicationContextHepler" class="com.sf.util.common.ApplicationContextHepler" />
-
     -->
+
 </beans>

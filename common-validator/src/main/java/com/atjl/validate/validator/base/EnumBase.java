@@ -7,7 +7,6 @@ import com.atjl.validate.api.ValidateForm;
 import com.atjl.validate.api.ValidateInitException;
 import com.atjl.validate.api.exception.ValidateException;
 import com.atjl.validate.util.ValidateMsgFmtUtil;
-import com.atjl.validate.validator.base.ValidatorBase;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,7 +28,7 @@ public abstract class EnumBase extends ValidatorBase {
         this.refs = refs;
         chk();
         if (fmtMsg) {
-            this.msg = ValidateMsgFmtUtil.fmtAnyOfMsg(DFT_MSG, this.refs);
+            this.msg = ValidateMsgFmtUtil.fmtAnyOfMsg(msg, this.refs);
         } else {
             this.msg = msg;
         }

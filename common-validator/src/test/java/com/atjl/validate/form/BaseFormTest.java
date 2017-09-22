@@ -1,5 +1,7 @@
 package com.atjl.validate.form;
 
+import com.atjl.validate.api.ValidateFormFactory;
+import com.atjl.validate.api.ValidateForm;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 
@@ -9,9 +11,10 @@ import java.util.Map;
 
 public class BaseFormTest {
 
+
     @Test
     public void testInit() throws Exception {
-        BaseForm form = new BaseForm(FormEg.class);
+        ValidateForm form = ValidateFormFactory.build(FormEg.class);
 
         Map<String, String> values = new HashMap<>();
         values.put("f1", "aaa@aa");
@@ -26,7 +29,7 @@ public class BaseFormTest {
 
     @Test
     public void testSetValue() throws Exception {
-        BaseForm form = BaseForm.newForm(FormEg.class);
+        ValidateForm form = BaseForm.newForm(FormEg.class);
 
         ReqEg req = new ReqEg();
         req.setF1(null);//"aaasdfds");

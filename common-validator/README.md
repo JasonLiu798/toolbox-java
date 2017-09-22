@@ -7,27 +7,12 @@ v1.5
 返回值：框架内DTO ValidateResultDto
 函数内容：其他操作或逻辑校验
 ```java
-public ValidateResultDto check(RequestDto ulm) {
-	....//逻辑操作或校验
-	return new ValidateResultDto();
-}
 ```
 
 2. 配置AOP
 aop:pointcut 配置为刚写的函数
 具体规则见spring文档
 ```xml
-	<!-- 定义aspectj -->
-    <aop:aspectj-autoproxy proxy-target-class="true" />
-    <!-- validate 框架加载 -->
-    <bean id="validateParamAdvice" class="com.juanpi.validate.core.ValidateParamAdvice" />
-    <aop:config>
-        <aop:aspect id="validateaop" ref="validateParamAdvice">
-            <aop:pointcut id="validateService" expression="execution(* com.juanpi.member.helper.*Helper.check(..))"/>
-            <!-- || execution(* com.juanpi.processor.Processor.load(..)) " /> -->
-            <aop:around pointcut-ref="validateService" method="doAround" />
-        </aop:aspect>
-    </aop:config>
 ```
 
 3. 配置校验xml类
@@ -39,16 +24,6 @@ param
 	rule：校验规则，多个规则使用空格分隔，规则中有空格使用转义字符 &#xA0; 替换
 
 ```
-<actionValidators>
-    <!-- 不加null，默认校验非空-->
-    <!-- 手机认证 -->
-    <actionValidator actionUrl="com.juanpi.member.helper.MobileBindHelper">
-        <param name="uid" rule="numeric" />
-        <param name="mobile" rule="mobile" />
-        <param name="oldmobile" rule="mobile null" />
-        <param name="isvest" rule="zo null" />
-    </actionValidator>
-<actionValidators>
 ```
 
 目前支持的校验规则：

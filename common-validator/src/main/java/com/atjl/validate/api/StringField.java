@@ -2,6 +2,8 @@ package com.atjl.validate.api;
 
 
 import com.atjl.util.collection.CollectionUtil;
+import com.atjl.validate.validator.multiparam.RequireWith;
+import com.atjl.validate.validator.multiparam.RequireWithAll;
 import com.atjl.validate.validator.noparam.Optional;
 import com.atjl.validate.validator.noparam.Require;
 
@@ -33,7 +35,7 @@ public class StringField implements ValidateField {
         if (!CollectionUtil.isEmpty(validators)) {
             this.validators = new ArrayList<>(validators.length);
             for (Validator v : validators) {
-                if (v instanceof Require || v instanceof Optional) {
+                if (v instanceof Require || v instanceof Optional || v instanceof RequireWith || v instanceof RequireWithAll) {
                     this.validators.add(0, v);//require 和 optional 放到第一
                 } else {
                     this.validators.add(v);

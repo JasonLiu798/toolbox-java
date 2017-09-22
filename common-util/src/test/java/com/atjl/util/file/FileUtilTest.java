@@ -43,7 +43,7 @@ public class FileUtilTest {
      */
     @Test
     public void testFileExist() throws Exception {
-        String f = FileUtil.getFileFromClasspath("input.xls");
+        String f = FileUtil.getFilePathFromClasspath("input.xls");
         System.out.println("res:" + f);
 
     }
@@ -145,7 +145,7 @@ public class FileUtilTest {
         File dir = new File(this.getClass().getResource("/").getPath());
         String filename = dir + PathUtil.DIR_SEP + FileUtil.className2FilePath(this.getClass().getName()) + ".class";
         System.out.println(filename);
-        List<String> list = FileUtil.cat2List(filename);
+        List<String> list = FileUtil.cat2list(filename);
         CollectionUtil.printList(list);
     }
 

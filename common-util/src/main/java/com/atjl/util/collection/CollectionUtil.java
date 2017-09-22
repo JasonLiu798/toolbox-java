@@ -21,7 +21,7 @@ public final class CollectionUtil {
         throw new UnsupportedOperationException();
     }
 
-    private static final Logger LOG = LoggerFactory.getLogger(CollectionUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(CollectionUtil.class);
 
     /**
      * ############################## check functions ###################################
@@ -50,7 +50,7 @@ public final class CollectionUtil {
      * @return null or not
      */
     public static <T> boolean isEmpty(Collection<T> collection) {
-        if (collection == null || collection.size() == 0) {
+        if (collection == null || collection.isEmpty()) {
             return true;
         }
         return false;
@@ -63,10 +63,7 @@ public final class CollectionUtil {
     /**
      * check map empty
      *
-     * @param map
-     * @param <K>
-     * @param <V>
-     * @return
+     * @param map map
      */
     public static <K, V> boolean isEmpty(Map<K, V> map) {
         if (map == null || map.isEmpty()) {
@@ -80,10 +77,8 @@ public final class CollectionUtil {
     }
 
     /**
-     * @param c
-     * @param t
-     * @param <T>
-     * @return
+     * @param c collection
+     * @param t item
      */
     public static <T> boolean isIn(Collection<T> c, T t) {
         if (isEmpty(c)) {
@@ -219,100 +214,6 @@ public final class CollectionUtil {
     /**
      * ############################## filter functions ###################################
      **/
-    /**
-     * filter list 2 count,drop the node index >= count
-     *
-     * @param list
-     * @param count
-     * @return
-     */
-    public static <T> List<T> filterList2Size(List<T> list, int count) {
-        if (list == null) {
-            return null;
-        }
-        int size = list.size();
-        if (size <= count) {
-            return list;
-        } else {
-            int start = count - 1;
-            int end = list.size() - 1;
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("start " + start + " end " + end);
-            }
-            for (int i = end; i > start; i--) {
-                list.remove(i);
-            }
-        }
-        return list;
-    }
-
-    /**
-     * remove filterKeys from map,
-     * thread-safe depend on map
-     *
-     * @param map
-     * @param filterKeys void
-     */
-    public static <T> void filterMap(Map<String, T> map, String[] filterKeys) {
-        if (isEmpty(filterKeys) || isEmpty(map)) {
-            return;
-        }
-        for (String key : filterKeys) {
-            map.remove(key);
-        }
-    }
-
-
-    // 相等
-    public static final int TP_EQ = 0;
-    // 字符串，比较使用indexOf
-    public static final int TP_EXIST_STR = 1;
-
-    /**
-     * 删除tgtlist中所有存在于dellist的item
-     *
-     * @param tgtList
-     * @param delList
-     * @return
-     */
-    public static <T> List<T> filterDelList(List<T> tgtList, List<T> delList) {
-        return filterDelListInner(tgtList, delList, TP_EQ);
-    }
-
-    public static List<String> filterDelListExistStr(List<String> tgtList, List<String> delList) {
-        return filterDelListInner(tgtList, delList, TP_EXIST_STR);
-    }
-
-    /**
-     * @param tgtList
-     * @param delList
-     * @param option  1,list  must be String,use index of
-     * @return
-     */
-    public static <T> List<T> filterDelListInner(List<T> tgtList, List<T> delList, int option) {
-        if (isEmpty(delList)) {
-            return tgtList;
-        }
-        if (isEmpty(tgtList)) {
-            return tgtList;
-        }
-        List<T> res = new ArrayList<>(tgtList.size());
-        for (T tgtItem : tgtList) {
-            boolean gotEq = false;
-            if (option == TP_EQ) {
-                gotEq = isIn(delList, tgtItem);
-            } else if (option == TP_EXIST_STR) {
-                gotEq = isLikeIn((List<String>) delList, tgtItem.toString());
-            }
-
-            if (gotEq) {
-                continue;
-            } else {
-                res.add(tgtItem);
-            }
-        }
-        return res;
-    }
 
 
     /**
@@ -329,11 +230,21 @@ public final class CollectionUtil {
     }
 
     public static <T> T[] set2array(Set<T> set) {
-        if (!CollectionUtil.isEmpty(set)) {
-            return null;
+        if (CollectionUtil.isEmpty(set)) {
+            return null;//Array.newInstance();
         }
-        return (T[]) set.toArray();
+        Iterator<T> it = set.iterator();
+        T obj = it.next();
+        T[] res = (T[]) Array.newInstance(obj.getClass(), set.size());
+        int i = 0;
+        for (T item : set) {
+            res[i] = item;
+            i++;
+        }
+        return res;
     }
+
+
 
 
     /**
@@ -409,7 +320,7 @@ public final class CollectionUtil {
             T mainItem = it.next();
             for (T deleteItem : deleteList) {
                 try {
-                    //LOG.debug("main {},del {}",mainItem,deleteItem);
+                    //logger.debug("main {},del {}",mainItem,deleteItem);
                     Boolean res = (Boolean) checkMethod.invoke(mainItem, deleteItem);
                     if (res != null && res == true) {
                         it.remove();
@@ -455,8 +366,8 @@ public final class CollectionUtil {
                 }
             }
         } catch (IllegalAccessException | InvocationTargetException e) {
-            LOG.error("reflect method error,method:{}", getMethod);
-            LOG.error(e.getMessage());
+            logger.error("reflect method error,method:{}", getMethod);
+            logger.error(e.getMessage());
             return mainList;
         }
         return mainList;
@@ -505,16 +416,16 @@ public final class CollectionUtil {
                 System.out.println(sb.toString());
                 break;
             case 1:
-                LOG.debug(sb.toString());
+                logger.debug(sb.toString());
                 break;
             case 2:
-                LOG.info(sb.toString());
+                logger.info(sb.toString());
                 break;
             case 3:
-                LOG.warn(sb.toString());
+                logger.warn(sb.toString());
                 break;
             case 4:
-                LOG.error(sb.toString());
+                logger.error(sb.toString());
                 break;
             default:
                 break;
@@ -541,7 +452,7 @@ public final class CollectionUtil {
             return res;
         }
 //        Integer interval = getInterval(totalSize,singleListSize);
-        LOG.debug("interval:{}", interval);
+        logger.debug("interval:{}", interval);
         int i = 0;
         while (i < totalSize) {
             int st = i;
@@ -549,7 +460,7 @@ public final class CollectionUtil {
             if (ed > totalSize - 1) {
                 ed = totalSize - 1;
             }
-            LOG.debug("copy:{},{}", st, ed);
+            logger.debug("copy:{},{}", st, ed);
             List<T> tmp = copy(list, st, ed);
             if (tmp != null) {
                 res.add(tmp);
@@ -571,6 +482,23 @@ public final class CollectionUtil {
             return null;
         }
         return copy(list, 0, list.size());
+    }
+
+    /**
+     * copy map
+     * !!not deep copy
+     *
+     * @param map
+     */
+    public static <K, V> Map<K, V> copy(Map<K, V> map) {
+        if (isEmpty(map)) {
+            return new HashMap<>();
+        }
+        Map<K, V> res = new HashMap<K, V>();
+        for (Map.Entry<K, V> entry : map.entrySet()) {
+            res.put(entry.getKey(), entry.getValue());
+        }
+        return res;
     }
 
     /**
@@ -698,26 +626,6 @@ public final class CollectionUtil {
 
 
     /**
-     * filter duplicate element in list
-     *
-     * @param l
-     * @return
-     */
-    public static List<String> filterDuplicate(List<String> l) {
-        if (isEmpty(l)) {
-            return l;
-        }
-        Set<String> set = new HashSet<>();
-        for (String s : l) {
-            set.add(s);
-        }
-        List<String> res = new LinkedList<>();
-        res.addAll(set);
-        return res;
-    }
-
-
-    /**
      *
      */
     /**
@@ -740,6 +648,17 @@ public final class CollectionUtil {
             l.add(e);
         }
         return l;
+    }
+
+    public static <T> Set<T> newSet(T... els) {
+        Set<T> set = new HashSet<>();
+        if (els == null || els.length == 0) {
+            return set;
+        }
+        for (T e : els) {
+            set.add(e);
+        }
+        return set;
     }
 
     public static <K, V> Map<K, V> newMap(K key, V value) {
@@ -779,23 +698,27 @@ public final class CollectionUtil {
     /**
      * ########################## filters ###########################
      */
-    /**
-     * @param raw
-     * @param <T>
-     * @return
-     */
+    @Deprecated
     public static <T> T[] filterNull(T[] raw) {
-        if (CollectionUtil.isEmpty(raw)) {
-            return raw;
-        }
-        List<T> n = new ArrayList<T>(raw.length);
-        for (T t : raw) {
-            if (t != null) {
-                n.add(t);
-            }
-        }
-        return CollectionUtil.list2array(n);
+        return CollectionFilterUtil.filterNull(raw);//use this
     }
 
+
+    /**
+     * ####################### output #############################
+     */
+    public static <T> String toStringConsole(Collection<T> arr) {
+        if (arr == null || arr.size() <= 0) {
+            return "empty collection";
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("Collection size:").append(arr.size()).append("\n");
+        int i = 0;
+        for (T o : arr) {
+            sb.append(String.format("[%s] %s %n", i, o));
+            i++;
+        }
+        return sb.toString();
+    }
 
 }

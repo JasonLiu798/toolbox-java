@@ -9,6 +9,7 @@ a*.sh
 frame-db-simple
 frame-main
 common-cas
-common-kafka
+common-kafka-sf
 *.bak
 *.zip
+tpi-ocr-gen

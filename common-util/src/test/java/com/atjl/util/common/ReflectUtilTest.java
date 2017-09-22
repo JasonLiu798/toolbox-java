@@ -1,18 +1,14 @@
 package com.atjl.util.common;
 
 import com.atjl.util.character.StringCheckUtil;
-import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.dto.TestDtoChild;
 import com.atjl.util.json.JSONFastJsonUtil;
-import com.atjl.util.json.JSONFmtUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
-import java.util.*;
-
-import static org.junit.Assert.assertEquals;
+import java.util.List;
 
 public class ReflectUtilTest {
 
@@ -32,29 +28,7 @@ public class ReflectUtilTest {
 
     }
 
-    @Test
-    public void testChkAssigned() throws Exception {
-        //interface
-        Class clz = List.class;
-        Class aclz = ArrayList.class;
-        boolean a = ReflectUtil.chkAImplementB(aclz, clz);
-        assertEquals(true, a);
-        //abstract class
-        Class abclz = AbstractList.class;
-        boolean b = ReflectUtil.chkAImplementB(aclz, abclz);
-        assertEquals(true, b);
-        //class
-        Class ca = Vector.class;
-        Class cb = Stack.class;
-        boolean c = ReflectUtil.chkAImplementB(cb, ca);
-        assertEquals(true, c);
-        //error
-        ca = Vector.class;
-        cb = Stack.class;
-        c = ReflectUtil.chkAImplementB(ca, cb);
-        assertEquals(false, c);
 
-    }
 
     @Test
     public void testChkImplementIntfForObjIntf() throws Exception {
@@ -103,11 +77,6 @@ public class ReflectUtilTest {
 
     }
 
-    @Test
-    public void testGetterForce() throws Exception {
-        Object res = ReflectUtil.getterForceClz(StringCheckUtil.class, "NULL");
-        System.out.println(res);
-    }
 
     @Test
     public void testGetter() throws Exception {
@@ -206,81 +175,6 @@ public class ReflectUtilTest {
 
     }
 
-
-    @Test
-    public void testGetFields() throws Exception {
-        /**
-         * Object obj,boolean allowNullValue, GetClzOpt parentOpt, String[] blackList, String[] whiteList
-         */
-        TestDtoChild src = new TestDtoChild();
-        src.setChildField(100L);
-        src.setF1(1);
-        src.setF2(2);
-        List res = ReflectUtil.filed2string(ReflectUtil.getFieldAll(src));
-        System.out.println("res all:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(res)));
-        System.out.println("#########################");
-
-        res = ReflectUtil.getFields(src, ReflectUtil.GetClzOpt.SELF, null, null);
-        res = ReflectUtil.filed2string(res);
-        System.out.println("res self:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(res)));
-        System.out.println("#########################");
-
-        res = ReflectUtil.getFields(src, ReflectUtil.GetClzOpt.PARENT, null, null);
-        res = ReflectUtil.filed2string(res);
-        System.out.println("res parent:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(res)));
-        System.out.println("#########################");
-
-        res = ReflectUtil.getFields(src, ReflectUtil.GetClzOpt.ALLPARENT, null, null);
-        res = ReflectUtil.filed2string(res);
-        System.out.println("res all parent:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(res)));
-
-        System.out.println("#########################");
-        res = ReflectUtil.getFields(src.getClass(), ReflectUtil.GetClzOpt.ALL, null, null);
-        res = ReflectUtil.filterField(res, CollectionUtil.newArr(Long.class));
-        res = ReflectUtil.filed2string(res);
-        System.out.println("res Long:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(res)));
-
-    }
-
-    @Test
-    public void testGetFieldValueMapAll() throws Exception {
-        /**
-         * Object obj,boolean allowNullValue, GetClzOpt parentOpt, String[] blackList, String[] whiteList
-         */
-        TestDtoChild src = new TestDtoChild();
-        src.setChildField(100L);
-        src.setF1(1);
-        src.setF2(2);
-        Map res = ReflectUtil.getFieldValue(src, ReflectUtil.GetClzOpt.ALL, true, null, null);
-        System.out.println("res all:" + JSONFastJsonUtil.objectToJson(res));
-
-        res = ReflectUtil.getFieldValue(src, ReflectUtil.GetClzOpt.SELF, true, null, null);
-        System.out.println("res self:" + JSONFastJsonUtil.objectToJson(res));
-
-        res = ReflectUtil.getFieldValue(src, ReflectUtil.GetClzOpt.PARENT, true, null, null);
-        System.out.println("res parent:" + JSONFastJsonUtil.objectToJson(res));
-
-        res = ReflectUtil.getFieldValue(src, ReflectUtil.GetClzOpt.ALLPARENT, true, null, null);
-        System.out.println("res all parent:" + JSONFastJsonUtil.objectToJson(res));
-    }
-
-    @Test
-    public void testGetFieldBlackWihte() {
-        TestDtoChild src = new TestDtoChild();
-        src.setChildField(2L);
-        src.setF1(1);
-        src.setF2(2);
-
-        Map res = ReflectUtil.getFieldValue(src, ReflectUtil.GetClzOpt.ALL, true, CollectionUtil.newArr("f2"), null);
-        System.out.println("res black:" + JSONFastJsonUtil.objectToJson(res));
-//
-        res = ReflectUtil.getFieldValue(src, ReflectUtil.GetClzOpt.ALL, true, null, CollectionUtil.newArr("f1", "childField"));
-        System.out.println("res white:" + JSONFastJsonUtil.objectToJson(res));
-
-        res = ReflectUtil.getFieldValue(src, ReflectUtil.GetClzOpt.ALL, true, CollectionUtil.newArr("f1"), CollectionUtil.newArr("f1", "f2"));
-        System.out.println("res white and black:" + JSONFastJsonUtil.objectToJson(res));
-
-    }
 
 
     @Test

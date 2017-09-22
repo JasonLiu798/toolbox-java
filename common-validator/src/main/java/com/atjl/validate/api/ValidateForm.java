@@ -1,11 +1,29 @@
 package com.atjl.validate.api;
 
-
 import java.util.Map;
 
 public interface ValidateForm {
 
+    /**
+     * 校验
+     *
+     * @return
+     */
     boolean validate();
+
+    /**
+     * 设置表单值
+     *
+     * @param obj
+     */
+    void setValue(Object obj);
+
+    /**
+     * 设置表单值
+     *
+     * @param valueMap
+     */
+    void setValue(Map<String, String> valueMap);
 
     /**
      * validate = false时，有值
@@ -14,8 +32,8 @@ public interface ValidateForm {
      */
     Map<String, String> getErrors();
 
-    ValidateField getField(String fieldKey);
+    String getOneLineError();
 
-    //String getFieldRawVal(String fieldKey);
+    ValidateField getField(String fieldKey);
 
 }

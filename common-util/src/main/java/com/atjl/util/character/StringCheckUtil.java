@@ -15,6 +15,10 @@ public final class StringCheckUtil {
         return (target == null || target.length() == 0);
     }
 
+    public static boolean isEmptyEx(String target) {
+        return (target == null || target.length() == 0 || NULL.equalsIgnoreCase(target));
+    }
+
     public static boolean isNotEmpty(String target) {
         return !isEmpty(target);
     }
@@ -250,7 +254,6 @@ public final class StringCheckUtil {
     }
 
     /**
-     *
      * @param raw
      * @param arr
      * @return
@@ -266,6 +269,7 @@ public final class StringCheckUtil {
         }
         return false;
     }
+
     public static boolean batchContain(String raw, String... arr) {
         if (CollectionUtil.isEmpty(arr)) {
             return false;

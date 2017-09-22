@@ -15,6 +15,7 @@ import com.atjl.util.common.ReflectUtil;
 import com.atjl.util.file.FileUtil;
 import com.atjl.util.json.JSONFastJsonUtil;
 import com.atjl.util.net.http.HttpClientUtil;
+import com.atjl.util.reflect.ReflectFieldUtil;
 import org.apache.commons.mail.EmailException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -116,8 +117,8 @@ public class MailServiceImpl implements MailService {
 
         MailConfigDto conf = getConfig();
         try {
-            Map<String, Object> confMap = ReflectUtil.getFieldValue(conf, ReflectUtil.GetClzOpt.ALL, true, CollectionUtil.newArr("srvUrl", "connectionTimeOut", "socketTimeOut"), null);
-            Map<String, Object> contentMap = ReflectUtil.getFieldValue(contentDto, ReflectUtil.GetClzOpt.ALL, true, CollectionUtil.newArr("attachmentType","attachmentPath" ,"content"), null);
+            Map<String, Object> confMap = ReflectFieldUtil.getFieldValue(conf, ReflectUtil.GetClzOpt.ALL, true, CollectionUtil.newArr("srvUrl", "connectionTimeOut", "socketTimeOut"), null);
+            Map<String, Object> contentMap = ReflectFieldUtil.getFieldValue(contentDto, ReflectUtil.GetClzOpt.ALL, true, CollectionUtil.newArr("attachmentType","attachmentPath" ,"content"), null);
 //            Map<String, Object> contentMap = ReflectUtil.getFieldValueMapAll(contentDto, true);
             Map<String, Object> sendMap = new HashMap<>();
             sendMap.putAll(confMap);

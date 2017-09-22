@@ -14,5 +14,6 @@ public class CommonConstant {
     public static final String YES = "Y";
     public static final String NO = "N";
 
-
+    public static final Long DFT_PAGE_START = 1L;
+    public static final Long DFT_PAGE_SIZE = 10L;
 }

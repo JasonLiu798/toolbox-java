@@ -13,6 +13,7 @@ public class Validators {
     public static final String URL = "url";//url
     public static final String UUID = "uuid";//uuid
     public static final String ISBOOLEAN = "boolean";//boolean
+    public static final String ALPHANUMDASH = "alphaNumDash";
 
 
     /**

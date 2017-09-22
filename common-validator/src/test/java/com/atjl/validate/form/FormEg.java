@@ -10,6 +10,6 @@ import com.atjl.validate.validator.noparam.Require;
  * 校验表单示例
  */
 public class FormEg {
-    static StringField f1 = new StringField("字段email", new Require(), new Email());
-    static StringField f2 = new StringField("字段2", new Optional(), new Length(3));
+    StringField f1 = new StringField("字段email", new Require(), new Email());
+    StringField f2 = new StringField("字段2", new Optional(), new Length(3));
 }

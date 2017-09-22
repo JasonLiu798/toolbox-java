@@ -4,6 +4,7 @@ package com.atjl.validate.form;
 public class ReqEg {
     private String f1;
     private String f2;
+    private String f3;
 
     public String getF1() {
         return f1;
@@ -15,6 +16,14 @@ public class ReqEg {
 
     public String getF2() {
         return f2;
+    }
+
+    public String getF3() {
+        return f3;
+    }
+
+    public void setF3(String f3) {
+        this.f3 = f3;
     }
 
     public void setF2(String f2) {

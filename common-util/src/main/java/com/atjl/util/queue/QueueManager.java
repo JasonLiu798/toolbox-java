@@ -18,14 +18,6 @@ public class QueueManager {
     // queueName -> Queue
     private static Map<String, IQueue> messageQueues = new ConcurrentHashMap<>();
 
-    public static final String DFT_QUEUE_CONFIG_FILE = "sysconfig.properties";
-    public static final String CONF_QUEUE_KEY = "queue";
-    public static final int CONF_DFT_QUEUE_SIZE = 100000;
-    public static final String QUEUE_SEP_KEY = "queuesep";
-    public static final String QUEUE_SEP_DFT = ",";
-    public static final String QUEUE_SIZE_SEP_KEY = "queuesizesep";
-    public static final String QUEUE_SIZE_SEP_DFT = ":";
-
     static {
         /*
         if (ConfigUtil.checkPropertiesExist(DFT_QUEUE_CONFIG_FILE)) {
@@ -66,7 +58,6 @@ public class QueueManager {
                     LOG.info("init bus manager");
             }
         }*/
-
     }
 
 
@@ -93,7 +84,7 @@ public class QueueManager {
         if (CollectionUtil.isEmpty(messageQueues) || messageQueues.get(queueName) == null) {
             //LOG.warn("queue map null");
             //throw new NullPointerException();
-            IQueue queue = new BlockingQueueEncap(CONF_DFT_QUEUE_SIZE);
+            IQueue queue = new BlockingQueueEncap(QueueConstant.CONF_DFT_QUEUE_SIZE);
             messageQueues.put(queueName, queue);
             return queue;
         }

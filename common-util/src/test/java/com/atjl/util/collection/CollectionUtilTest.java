@@ -38,7 +38,7 @@ public class CollectionUtilTest {
         List<String> dellist = new LinkedList<>();
         dellist.add("def");
         dellist.add("klm");
-        List<String> res = CollectionUtil.filterDelListInner(tgt, dellist, CollectionUtil.TP_EXIST_STR);
+        List<String> res = CollectionFilterUtil.filterDelListInner(tgt, dellist, CollectionConstant.TP_EXIST_STR);
         System.out.println(res);
     }
 

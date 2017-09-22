@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atjl.retry.mapper.biz.RetryMapper">
+
+    <update id="updateRetryResult" statementType="STATEMENT">
+        update ${meta.tab}
+        set
+        ${meta.lastRetriedTsCol} = unix_timestamp(),
+        ${meta.resCol} = '${data.res}'
+        <choose>
+            <when test="data.retriedCnt!=null">
+                ,${meta.retryCountCol} = ${data.retriedCnt}+1
+            </when>
+            <otherwise>
+                ,${meta.retryCountCol} = ${option.retryMaxCountDecreaseOne}
+            </otherwise>
+        </choose>
+
+        <if test="data.failReason!=null">
+            ,${meta.failReasonCol} = '${data.failReason}'
+        </if>
+        where
+        ${meta.idCol} = '${data.id}'
+    </update>
+
+    <resultMap id="dataMap" type="com.atjl.retry.domain.RetryItem">
+        <id property="primayKey" column="oprimayKey"/>
+        <result property="invCode" column="oinvCode"/>
+    </resultMap>
+
+    <select id="getDataCount" resultType="java.lang.Integer">
+        select count(distinct ${meta.idCol})
+        from ${meta.tab}
+        where
+        ${meta.retryCountCol} &lt; #{option.retryMaxCount}
+        and ${meta.idCol} is not null
+        and ${meta.resCol} = #{option.needRetryMark}
+        <if test="meta.otherConds != null and meta.otherConds!=''">
+            and ${meta.otherConds}
+        </if>
+    </select>
+
+    <select id="selectDatas" resultType="java.util.Map">
+        select
+        distinct ${meta.idCol},
+        ${meta.lastRetriedTsCol},
+        ${meta.retryCountCol}
+        <if test="meta.hasUserDefine==true">
+            <foreach collection="meta.dataCols" separator="," open="," item="item">
+                ${item}
+            </foreach>
+        </if>
+        from
+        ${meta.tab}
+        where
+        ${meta.retryCountCol} &lt; #{option.retryMaxCount}
+        and ${meta.idCol} is not null
+        <if test="pageReq.startItemId!=null and pageReq.startItemId!=''">
+            and ${meta.idCol} &gt; #{pageReq.startItemId}
+        </if>
+        and ${meta.resCol} = #{option.needRetryMark}
+        <if test="meta.otherConds != null and meta.otherConds!=''">
+            and ${meta.otherConds}
+        </if>
+        <!--<if test="meta.orderByClause!=null and meta.orderByClause!=''">-->
+        order by ${meta.idCol}
+        limit #{pageReq.pageSize}
+    </select>
+
+
+    <!--<sql id="limitClause">-->
+    <!--ORDER BY tp.CRT_TM desc-->
+    <!--limit #{currentIndex},#{pageSize}-->
+    <!--</sql>-->
+</mapper>

@@ -15,6 +15,8 @@ import java.util.Set;
 /**
  * string covert to java types
  * support type: in SUPPORT_CLZ
+ *
+ * @author jasonliu
  */
 public class CovertUtil {
     private CovertUtil() {
@@ -79,6 +81,39 @@ public class CovertUtil {
         NUMBER_RAW_CLZ.put(float.class, Float.class);
     }
 
+    public static Class<?> prim2box(Class<?> c) {
+        if (c == null) {
+            return null;
+        }
+        if (NUMBER_RAW_CLZ.containsKey(c)) {
+            return NUMBER_RAW_CLZ.get(c);
+        }
+        return c;
+    }
+
+
+    /**
+     * ################ obj to str covert to target class ################
+     */
+    public static <T> T covertObj(Object rawVal, Class<T> tgtClz) {
+        return covertObj(rawVal, tgtClz, null, DFT_SEP);
+    }
+    public static <T> T covertObj(Object rawVal, Class<T> tgtClz, T dft) {
+        return covertObj(rawVal, tgtClz, dft, DFT_SEP);
+    }
+
+    public static <T> T covertObj(Object rawVal, Class<T> tgtClz, T dft, String sep) {
+        if (rawVal == null) {
+            return covert(null, tgtClz, dft, sep);
+        } else {
+            return covert(rawVal.toString(), tgtClz, dft, sep);
+        }
+    }
+
+
+    /**
+     * ################ str covert to target class ################
+     */
     public static <T> T covert(String rawVal, Class<T> tgtClz) {
         return covert(rawVal, tgtClz, null, DFT_SEP);
     }

@@ -6,9 +6,9 @@ public class TestConfig {
     private String p1;
     private Long pl;
     private Integer pi;
-    private Short ps;
+    private Short ps=11;
     private Double pd;
-    private Float pf;
+    private Float pf=3.3f;
     private int pri;
 
     private Byte pb=12;
