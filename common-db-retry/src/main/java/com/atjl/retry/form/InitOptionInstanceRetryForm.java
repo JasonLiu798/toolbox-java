@@ -1,7 +1,7 @@
 package com.atjl.retry.form;
 
-import com.atjl.validate.api.StringField;
-import com.atjl.validate.validator.multiparam.NumRange;
+import com.atjl.validate.api.field.StringField;
+import com.atjl.validate.validator.param.NumRange;
 import com.atjl.validate.validator.noparam.Require;
 
 public class InitOptionInstanceRetryForm extends InitOptionForm {

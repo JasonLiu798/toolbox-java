@@ -27,6 +27,7 @@ public interface DataContext<T> {
 
     /**
      * 设置自定义数据，设置后，重试 execute操作内可用
+     * 使用default，返回data类型为 Map<String, Object>
      */
     void setData(T data);
 

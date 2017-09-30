@@ -30,9 +30,14 @@
         </dependency>
         <dependency>
             <groupId>com.atjl</groupId>
-            <artifactId>common-config-db</artifactId>
+            <artifactId>common-config-db-plain</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.atjl</groupId>-->
+            <!--<artifactId>common-config-db-tree</artifactId>-->
+            <!--<version>1.0.0</version>-->
+        <!--</dependency>-->
         <!-- other pkg end -->
 
         <dependency>

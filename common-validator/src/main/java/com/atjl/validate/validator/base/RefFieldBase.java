@@ -1,10 +1,9 @@
 package com.atjl.validate.validator.base;
 
 import com.atjl.util.character.StringCheckUtil;
-import com.atjl.validate.api.ValidateField;
+import com.atjl.validate.api.field.ValidateField;
 import com.atjl.validate.api.ValidateForm;
-import com.atjl.validate.api.ValidateInitException;
-import com.atjl.validate.validator.base.ValidatorBase;
+import com.atjl.validate.api.exception.ValidateInitException;
 
 /**
  * 需要引用另一个field的校验器

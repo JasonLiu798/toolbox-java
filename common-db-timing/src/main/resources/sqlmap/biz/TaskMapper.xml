@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atjl.dbtiming.mapper.biz.TaskMapper">
+
+    <resultMap id="taskdomain" type="com.atjl.dbtiming.domain.biz.domain.TaskDomain">
+        <id column="TID" property="tid"/>
+        <result column="TKEY" property="tkey"/>
+        <result column="TSERVICE" property="tservice"/>
+        <result column="PARAM" property="param"/>
+        <result column="CONF_TYPE" property="confType"/>
+        <result column="CONF_CRON_EXPRESSION" property="confCronExpression"/>
+        <result column="CONF_DELAY_TM" property="confDelayTm"/>
+        <result column="CONF_INTERVAL_TM" property="confIntervalTm"/>
+        <result column="CONF_EXE_TIMES" property="confExeTimes"/>
+
+        <result column="CONF_HAS_PARAM" property="confHasParam"/>
+        <result column="PROCESSOR" property="processor"/>
+        <result column="TMUTEX" property="tmutex"/>
+        <result column="MUTEX_TM" property="mutexTm"/>
+        <result column="TSTATUS" property="tstatus"/>
+        <result column="ALIVE_TM" property="aliveTm"/>
+        <result column="VALID" property="valid"/>
+
+        <result column="runCnt" property="runCnt"/>
+        <result column="lastStartMs" property="lastStartMs"/>
+        <result column="lastStopMs" property="lastStopMs"/>
+
+        <result column="CRT_TM" property="crtTm"/>
+    </resultMap>
+
+
+    <select id="getTask" resultMap="taskdomain" parameterType="java.lang.Long">
+select t.*,
+  count(th.HTID) runCnt,
+  max(th.END_TM) lastStartMs,
+  max(th.START_TM) lastStopMs
+  from ts_task t
+left join ts_task_history th ON t.TID=th.TID
+where
+t.VALID = 'Y' AND t.TSTATUS !='D'
+AND t.TID = #{_parameter}
+GROUP BY t.TID
+    </select>
+
+    <select id="getTasks" resultMap="taskdomain">
+        select t.*,
+        count(*) runCnt,
+        max(th.END_TM) lastStartMs,
+        max(th.START_TM) lastStopMs
+        from ts_task t
+        left join ts_task_history th ON t.TID=th.TID
+        where t.VALID = #{valid}
+        <if test='showEnd!=null and showEnd=="N" '>
+            and t.TSTATUS !='D'
+        </if>
+        GROUP BY t.TID
+    </select>
+
+    <!--<resultMap id="taskDomains" type="sf.aos.timing.domain.TaskDomain">-->
+    <!--<id column="TID" jdbcType="BIGINT" property="tid"/>-->
+    <!--<result column="TKEY" jdbcType="VARCHAR" property="tkey"/>-->
+    <!--<result column="TSERVICE" jdbcType="VARCHAR" property="tservice"/>-->
+    <!--</resultMap>-->
+
+
+</mapper>

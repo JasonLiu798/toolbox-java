@@ -38,10 +38,15 @@ public class ConfigUtilTest {
 
     @Test
     public void testGets() throws Exception {
-        Map res = ConfigUtil.getBatch(ConfigConstant.CONF_SERVICE_USE_DB_PLAIN,CollectionUtil.newList("DD-RoleStatusValue1","DD-RoleStatusValue2"));
+        Map res = ConfigUtil.getBatch(ConfigConstant.CONF_SERVICE_USE_DB_PLAIN, CollectionUtil.newList("DD-RoleStatusValue1", "DD-RoleStatusValue2"));
         System.out.println("res:" + JSONFastJsonUtil.objectToJson(res));
     }
 
+    @Test
+    public void test() {
+
+        System.out.println("res:"+System.getProperty("java.io.tmpdir"));
+    }
 
     @Before
     public void before() throws Exception {

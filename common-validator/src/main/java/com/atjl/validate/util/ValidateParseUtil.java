@@ -3,7 +3,7 @@ package com.atjl.validate.util;
 import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.common.ReflectUtil;
 import com.atjl.util.reflect.ReflectFieldUtil;
-import com.atjl.validate.api.ValidateParseException;
+import com.atjl.validate.api.exception.ValidateParseException;
 import com.atjl.validate.api.Validator;
 import com.atjl.validate.api.Validators;
 

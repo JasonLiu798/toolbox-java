@@ -8,4 +8,3 @@
 ##properties文件
     实现 common-prop-config
 
-## 

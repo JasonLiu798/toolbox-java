@@ -1,6 +1,6 @@
 package com.atjl.validate.validator.noparam;
 
-import com.atjl.validate.api.ValidateField;
+import com.atjl.validate.api.field.ValidateField;
 import com.atjl.validate.api.ValidateForm;
 import com.atjl.validate.api.Validator;
 import com.atjl.validate.api.exception.ValidateException;
@@ -26,8 +26,7 @@ public class IsBoolean extends ValidatorBase {
     }
 
     public void validate(ValidateForm form, ValidateField field) {
-        String raw = field.getRawValue();
-        if (!ValidateCheckUtil.isBool(raw)) {
+        if (!ValidateCheckUtil.isBool(field.getStrValue())) {
             throw new ValidateException(this.msg);
         }
     }

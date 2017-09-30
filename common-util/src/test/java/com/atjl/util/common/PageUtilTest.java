@@ -51,6 +51,17 @@ public class PageUtilTest {
     }
 
 
+    @Test
+    public void testPage() {
+
+        long pageIdx = PageUtil.getPageIdxLong(55, 10);
+        System.out.println("res:" + pageIdx);
+        pageIdx = PageUtil.getPageIdxLong(3, 10);
+        System.out.println("res:" + pageIdx);
+        pageIdx = PageUtil.getPageIdxLong(95, 10);
+        System.out.println("res:" + pageIdx);
+    }
+
     @Before
     public void before() throws Exception {
     }

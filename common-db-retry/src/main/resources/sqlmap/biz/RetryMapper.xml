@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.atjl.retry.mapper.biz.RetryMapper">
+<mapper namespace="com.atjl.retry.mapper.RetryMapper">
 
     <update id="updateRetryResult" statementType="STATEMENT">
         update ${meta.tab}
@@ -34,7 +34,7 @@
         where
         ${meta.retryCountCol} &lt; #{option.retryMaxCount}
         and ${meta.idCol} is not null
-        and ${meta.resCol} = #{option.needRetryMark}
+        and ${meta.resCol} = #{meta.needRetryMark}
         <if test="meta.otherConds != null and meta.otherConds!=''">
             and ${meta.otherConds}
         </if>
@@ -58,7 +58,7 @@
         <if test="pageReq.startItemId!=null and pageReq.startItemId!=''">
             and ${meta.idCol} &gt; #{pageReq.startItemId}
         </if>
-        and ${meta.resCol} = #{option.needRetryMark}
+        and ${meta.resCol} = #{meta.needRetryMark}
         <if test="meta.otherConds != null and meta.otherConds!=''">
             and ${meta.otherConds}
         </if>

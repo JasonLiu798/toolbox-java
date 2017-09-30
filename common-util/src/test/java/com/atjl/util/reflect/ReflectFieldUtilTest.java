@@ -59,7 +59,8 @@ public class ReflectFieldUtilTest {
         src.setChildField(100L);
         src.setF1(1);
         src.setF2(2);
-        Map res = ReflectFieldUtil.getFieldValue(src, GetClzOpt.ALL, true, null, null);
+//        Map res = ReflectFieldUtil.getFieldValue(src, GetClzOpt.ALL, true, null, null);
+        Map res = ReflectFieldUtil.getFieldValue(src);
         System.out.println("res all:" + JSONFastJsonUtil.objectToJson(res));
 
         res = ReflectFieldUtil.getFieldValue(src, GetClzOpt.SELF, true, null, null);

@@ -77,6 +77,23 @@ public final class CollectionUtil {
     }
 
     /**
+     *
+     * @param collection
+     * @return
+     */
+    public static boolean isExistEmptyString(Collection<String> collection) {
+        if (isEmpty(collection)) {
+            return true;
+        }
+        for (String s : collection) {
+            if (StringCheckUtil.isEmpty(s)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * @param c collection
      * @param t item
      */
@@ -121,7 +138,6 @@ public final class CollectionUtil {
         }
         return false;
     }
-
 
     /**
      * ############################## getter functions ###################################
@@ -243,8 +259,6 @@ public final class CollectionUtil {
         }
         return res;
     }
-
-
 
 
     /**

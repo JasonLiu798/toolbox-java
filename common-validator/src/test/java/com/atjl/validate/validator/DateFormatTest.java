@@ -1,7 +1,7 @@
 package com.atjl.validate.validator;
 
-import com.atjl.validate.api.StringField;
-import com.atjl.validate.validator.oneparam.DateFormat;
+import com.atjl.validate.api.field.StringField;
+import com.atjl.validate.validator.param.DateFormat;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 

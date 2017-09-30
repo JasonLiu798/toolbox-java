@@ -1,7 +1,7 @@
 package com.atjl.validate.validator.noparam;
 
 import com.atjl.util.character.RegexUtil;
-import com.atjl.validate.api.ValidateField;
+import com.atjl.validate.api.field.ValidateField;
 import com.atjl.validate.api.ValidateForm;
 import com.atjl.validate.api.Validator;
 import com.atjl.validate.api.exception.ValidateException;
@@ -26,8 +26,7 @@ public class Alpha extends ValidatorBase {
     }
 
     public void validate(ValidateForm form, ValidateField field) {
-        String raw = field.getRawValue();
-        if (!RegexUtil.isAlpha(raw)) {
+        if (!RegexUtil.isAlpha( field.getStrValue())) {
             throw new ValidateException(this.msg);
         }
     }
@@ -35,4 +34,5 @@ public class Alpha extends ValidatorBase {
     public Validator parse(String raw) {
         return ValidateParseUtil.simpleParse(Alpha.class, raw);
     }
+
 }

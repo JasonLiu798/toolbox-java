@@ -5,6 +5,8 @@ import com.atjl.log.util.LogFmtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.atjl.log.api.LogLevel.DEBUG;
+
 /**
  * 日志工具类，统一日志打印
  */
@@ -31,6 +33,18 @@ public class LogUtil {
         LogContext.setEnable(false);
     }
 
+    /**
+     * 开发环境必开，否则看不到异常
+     */
+    public static void envDev() {
+        LogContext.setEnable(true);
+        LogContext.setLevel(DEBUG);
+    }
+
+    public static void envPrd() {
+        LogContext.setEnable(true);
+        LogContext.setLevel(LogLevel.INFO);
+    }
 
     public static boolean isDebugEnabled() {
         return LogContext.enable && LogContext.level == LogLevel.DEBUG;
@@ -82,5 +96,16 @@ public class LogUtil {
         }
     }
 
+
+    public static void hackWrite(LogLevel lv, String msg, int addLevel, Object... param) {
+        String stack = LogFmtUtil.getStackAndMsg(LogLevel.DEBUG, msg, addLevel + LogConstantInner.STACK_PRE_LV);
+        if (lv == LogLevel.ERROR) {
+            error(stack, param);
+        } else if (lv == LogLevel.WARN) {
+            warn(stack, param);
+        } else {
+            info(stack, param);
+        }
+    }
 
 }

@@ -175,7 +175,7 @@ public class MailServiceImpl implements MailService {
      send(mail);
      return true;
      } catch (Exception e) {
-     LogClient.writeError(MailService.class, "邮件发送异常！", e);
+     LogDbUtil.error(MailService.class, "邮件发送异常！", e);
      return false;
      }*/
 //        return false;

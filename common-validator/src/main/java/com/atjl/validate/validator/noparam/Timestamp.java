@@ -1,10 +1,10 @@
 package com.atjl.validate.validator.noparam;
 
 import com.atjl.util.character.RegexUtil;
-import com.atjl.validate.api.ValidateField;
 import com.atjl.validate.api.ValidateForm;
 import com.atjl.validate.api.Validator;
 import com.atjl.validate.api.exception.ValidateException;
+import com.atjl.validate.api.field.ValidateField;
 import com.atjl.validate.util.ValidateParseUtil;
 import com.atjl.validate.validator.base.ValidatorBase;
 
@@ -29,11 +29,10 @@ public class Timestamp extends ValidatorBase {
     }
 
     public void validate(ValidateForm form, ValidateField field) {
-        String raw = field.getRawValue();
-        if (!RegexUtil.isDigit(raw)) {
+        if (!RegexUtil.isDigit(field.getStrValue())) {
             throw new ValidateException(this.msg);
         }
-        Long l = Long.parseLong(raw);
+        Long l = Long.parseLong(field.getStrValue());
         if (l < 0) {
             throw new ValidateException(this.msg);
         }

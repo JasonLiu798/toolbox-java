@@ -5,24 +5,10 @@
 
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!--<import resource="classpath:spring/*.xml"/>-->
-
-
-    <context:component-scan base-package="com.atjl.retry"/>
-
-    <!--<import resource="classpath:spring/spring-core-common.xml"/>-->
-    <!--<import resource="classpath:spring/spring-core-common.xml"/>-->
-    <!--<import resource="classpath:spring/spring-core-file.xml"/>-->
 
 
     <import resource="classpath:spring/spring-retry.xml"/>
-    <!--<import resource="classpath:spring/spring-ocr-common.xml"/>-->
 
-
-    <!--<import resource="classpath:spring/spring-core-core.xml"/>-->
-
-    <!--<import resource="classpath:spring/spring-core-inv.xml"/>-->
-    <!--<import resource="classpath:spring/spring-core-parse.xml"/>-->
     <import resource="classpath:spring/spring-utilex-config.xml"/>
 
     <!--<import resource="classpath:spring/spring-config-use-dbplain.xml"/>-->

@@ -2,9 +2,9 @@ package com.atjl.validate.validator.base;
 
 import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.collection.CollectionUtil;
-import com.atjl.validate.api.ValidateField;
+import com.atjl.validate.api.field.ValidateField;
 import com.atjl.validate.api.ValidateForm;
-import com.atjl.validate.api.ValidateInitException;
+import com.atjl.validate.api.exception.ValidateInitException;
 import com.atjl.validate.api.exception.ValidateException;
 import com.atjl.validate.util.ValidateMsgFmtUtil;
 
@@ -19,10 +19,6 @@ import java.util.Set;
 public abstract class EnumBase extends ValidatorBase {
 
     protected Set<String> refs = new HashSet<>();
-
-//    public EnumBase(Set<String> refs, String msg) {
-//        init(refs, msg, false);
-//    }
 
     protected void init(Set<String> refs, String msg, boolean fmtMsg) {
         this.refs = refs;
@@ -46,8 +42,7 @@ public abstract class EnumBase extends ValidatorBase {
     }
 
     public void validate(ValidateForm form, ValidateField field) {
-        String raw = field.getRawValue();
-        if (!refs.contains(raw)) {
+        if (!refs.contains(field.getStrValue())) {
             throw new ValidateException(this.msg);
         }
     }

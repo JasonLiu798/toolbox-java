@@ -2,11 +2,10 @@ package com.atjl.validate.validator.base;
 
 
 import com.atjl.util.character.StringCheckUtil;
-import com.atjl.validate.api.ValidateField;
+import com.atjl.validate.api.field.ValidateField;
 import com.atjl.validate.api.ValidateForm;
 import com.atjl.validate.api.exception.ValidateException;
 import com.atjl.validate.api.exception.ValidateNotRecMsgException;
-import com.atjl.validate.validator.base.EnumBase;
 
 import java.util.Set;
 
@@ -15,10 +14,6 @@ import java.util.Set;
  * 如果为空，则会中断后续校验器
  */
 public abstract class RequireWithBase extends EnumBase {
-
-    public RequireWithBase(Set<String> refs) {
-        init(refs, DFT_MSG, true);
-    }
 
     public RequireWithBase(Set<String> refs, String msg) {
         init(refs, msg, false);
@@ -31,7 +26,7 @@ public abstract class RequireWithBase extends EnumBase {
         boolean existNotNull = false;
         for (String refField : refs) {
             ValidateField f = form.getField(refField);
-            if (!StringCheckUtil.isEmpty(f.getRawValue())) {
+            if (!StringCheckUtil.isEmpty(f.getStrValue())) {
                 existNotNull = true;
                 break;
             }
@@ -43,7 +38,7 @@ public abstract class RequireWithBase extends EnumBase {
         boolean existNull = false;
         for (String refField : refs) {
             ValidateField f = form.getField(refField);
-            if (StringCheckUtil.isEmpty(f.getRawValue())) {
+            if (StringCheckUtil.isEmpty(f.getStrValue())) {
                 existNull = true;
                 break;
             }
@@ -53,7 +48,7 @@ public abstract class RequireWithBase extends EnumBase {
 
 
     public void validateBase(ValidateForm form, ValidateField field, String chkType, boolean error) {
-        String raw = field.getRawValue();
+        String raw = field.getStrValue();
 
         boolean exist;
         if (StringCheckUtil.equal(chkType, TP_NOT_NULL)) {

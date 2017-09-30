@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atjl.dbtiming.mapper.gen.GenTaskHistoryMapper" >
+  <resultMap id="BaseResultMap" type="com.atjl.dbtiming.domain.gen.GenTaskHistory" >
+    <id column="HTID" property="htid" jdbcType="BIGINT" />
+    <result column="TID" property="tid" jdbcType="BIGINT" />
+    <result column="PROCESSOR" property="processor" jdbcType="VARCHAR" />
+    <result column="THREAD" property="thread" jdbcType="VARCHAR" />
+    <result column="START_TM" property="startTm" jdbcType="BIGINT" />
+    <result column="END_TM" property="endTm" jdbcType="BIGINT" />
+    <result column="EXE_STATUS" property="exeStatus" jdbcType="CHAR" />
+    <result column="EXE_CNT" property="exeCnt" jdbcType="BIGINT" />
+    <result column="MEMO" property="memo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    HTID, TID, PROCESSOR, THREAD, START_TM, END_TM, EXE_STATUS, EXE_CNT, MEMO
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.atjl.dbtiming.domain.gen.GenTaskHistoryExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ts_task_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ts_task_history
+    where HTID = #{htid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ts_task_history
+    where HTID = #{htid,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.atjl.dbtiming.domain.gen.GenTaskHistoryExample" >
+    delete from ts_task_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.atjl.dbtiming.domain.gen.GenTaskHistory" >
+    insert into ts_task_history (HTID, TID, PROCESSOR, 
+      THREAD, START_TM, END_TM, 
+      EXE_STATUS, EXE_CNT, MEMO
+      )
+    values (#{htid,jdbcType=BIGINT}, #{tid,jdbcType=BIGINT}, #{processor,jdbcType=VARCHAR}, 
+      #{thread,jdbcType=VARCHAR}, #{startTm,jdbcType=BIGINT}, #{endTm,jdbcType=BIGINT}, 
+      #{exeStatus,jdbcType=CHAR}, #{exeCnt,jdbcType=BIGINT}, #{memo,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.atjl.dbtiming.domain.gen.GenTaskHistory" >
+    insert into ts_task_history
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="htid != null" >
+        HTID,
+      </if>
+      <if test="tid != null" >
+        TID,
+      </if>
+      <if test="processor != null" >
+        PROCESSOR,
+      </if>
+      <if test="thread != null" >
+        THREAD,
+      </if>
+      <if test="startTm != null" >
+        START_TM,
+      </if>
+      <if test="endTm != null" >
+        END_TM,
+      </if>
+      <if test="exeStatus != null" >
+        EXE_STATUS,
+      </if>
+      <if test="exeCnt != null" >
+        EXE_CNT,
+      </if>
+      <if test="memo != null" >
+        MEMO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="htid != null" >
+        #{htid,jdbcType=BIGINT},
+      </if>
+      <if test="tid != null" >
+        #{tid,jdbcType=BIGINT},
+      </if>
+      <if test="processor != null" >
+        #{processor,jdbcType=VARCHAR},
+      </if>
+      <if test="thread != null" >
+        #{thread,jdbcType=VARCHAR},
+      </if>
+      <if test="startTm != null" >
+        #{startTm,jdbcType=BIGINT},
+      </if>
+      <if test="endTm != null" >
+        #{endTm,jdbcType=BIGINT},
+      </if>
+      <if test="exeStatus != null" >
+        #{exeStatus,jdbcType=CHAR},
+      </if>
+      <if test="exeCnt != null" >
+        #{exeCnt,jdbcType=BIGINT},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.atjl.dbtiming.domain.gen.GenTaskHistoryExample" resultType="java.lang.Integer" >
+    select count(*) from ts_task_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ts_task_history
+    <set >
+      <if test="record.htid != null" >
+        HTID = #{record.htid,jdbcType=BIGINT},
+      </if>
+      <if test="record.tid != null" >
+        TID = #{record.tid,jdbcType=BIGINT},
+      </if>
+      <if test="record.processor != null" >
+        PROCESSOR = #{record.processor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.thread != null" >
+        THREAD = #{record.thread,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startTm != null" >
+        START_TM = #{record.startTm,jdbcType=BIGINT},
+      </if>
+      <if test="record.endTm != null" >
+        END_TM = #{record.endTm,jdbcType=BIGINT},
+      </if>
+      <if test="record.exeStatus != null" >
+        EXE_STATUS = #{record.exeStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.exeCnt != null" >
+        EXE_CNT = #{record.exeCnt,jdbcType=BIGINT},
+      </if>
+      <if test="record.memo != null" >
+        MEMO = #{record.memo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ts_task_history
+    set HTID = #{record.htid,jdbcType=BIGINT},
+      TID = #{record.tid,jdbcType=BIGINT},
+      PROCESSOR = #{record.processor,jdbcType=VARCHAR},
+      THREAD = #{record.thread,jdbcType=VARCHAR},
+      START_TM = #{record.startTm,jdbcType=BIGINT},
+      END_TM = #{record.endTm,jdbcType=BIGINT},
+      EXE_STATUS = #{record.exeStatus,jdbcType=CHAR},
+      EXE_CNT = #{record.exeCnt,jdbcType=BIGINT},
+      MEMO = #{record.memo,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atjl.dbtiming.domain.gen.GenTaskHistory" >
+    update ts_task_history
+    <set >
+      <if test="tid != null" >
+        TID = #{tid,jdbcType=BIGINT},
+      </if>
+      <if test="processor != null" >
+        PROCESSOR = #{processor,jdbcType=VARCHAR},
+      </if>
+      <if test="thread != null" >
+        THREAD = #{thread,jdbcType=VARCHAR},
+      </if>
+      <if test="startTm != null" >
+        START_TM = #{startTm,jdbcType=BIGINT},
+      </if>
+      <if test="endTm != null" >
+        END_TM = #{endTm,jdbcType=BIGINT},
+      </if>
+      <if test="exeStatus != null" >
+        EXE_STATUS = #{exeStatus,jdbcType=CHAR},
+      </if>
+      <if test="exeCnt != null" >
+        EXE_CNT = #{exeCnt,jdbcType=BIGINT},
+      </if>
+      <if test="memo != null" >
+        MEMO = #{memo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where HTID = #{htid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atjl.dbtiming.domain.gen.GenTaskHistory" >
+    update ts_task_history
+    set TID = #{tid,jdbcType=BIGINT},
+      PROCESSOR = #{processor,jdbcType=VARCHAR},
+      THREAD = #{thread,jdbcType=VARCHAR},
+      START_TM = #{startTm,jdbcType=BIGINT},
+      END_TM = #{endTm,jdbcType=BIGINT},
+      EXE_STATUS = #{exeStatus,jdbcType=CHAR},
+      EXE_CNT = #{exeCnt,jdbcType=BIGINT},
+      MEMO = #{memo,jdbcType=VARCHAR}
+    where HTID = #{htid,jdbcType=BIGINT}
+  </update>
+</mapper>

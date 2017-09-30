@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atjl.dbtiming.mapper.gen.GenTaskManagerMapper" >
+  <resultMap id="BaseResultMap" type="com.atjl.dbtiming.domain.gen.GenTaskManager" >
+    <id column="MID" property="mid" jdbcType="BIGINT" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="ALIVE_TM" property="aliveTm" jdbcType="BIGINT" />
+    <result column="LAST_UPDATE_TM" property="lastUpdateTm" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    MID, NAME, ALIVE_TM, LAST_UPDATE_TM
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.atjl.dbtiming.domain.gen.GenTaskManagerExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ts_task_manager
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ts_task_manager
+    where MID = #{mid,jdbcType=BIGINT}
+  </select>
+  <insert id="insert" parameterType="com.atjl.dbtiming.domain.gen.GenTaskManager" >
+    <selectKey resultType="java.lang.Long" keyProperty="mid" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ts_task_manager (NAME, ALIVE_TM, LAST_UPDATE_TM
+      )
+    values (#{name,jdbcType=VARCHAR}, #{aliveTm,jdbcType=BIGINT}, #{lastUpdateTm,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.atjl.dbtiming.domain.gen.GenTaskManager" >
+    <selectKey resultType="java.lang.Long" keyProperty="mid" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ts_task_manager
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="aliveTm != null" >
+        ALIVE_TM,
+      </if>
+      <if test="lastUpdateTm != null" >
+        LAST_UPDATE_TM,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="aliveTm != null" >
+        #{aliveTm,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdateTm != null" >
+        #{lastUpdateTm,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.atjl.dbtiming.domain.gen.GenTaskManagerExample" resultType="java.lang.Integer" >
+    select count(*) from ts_task_manager
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ts_task_manager
+    <set >
+      <if test="record.mid != null" >
+        MID = #{record.mid,jdbcType=BIGINT},
+      </if>
+      <if test="record.name != null" >
+        NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.aliveTm != null" >
+        ALIVE_TM = #{record.aliveTm,jdbcType=BIGINT},
+      </if>
+      <if test="record.lastUpdateTm != null" >
+        LAST_UPDATE_TM = #{record.lastUpdateTm,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ts_task_manager
+    set MID = #{record.mid,jdbcType=BIGINT},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      ALIVE_TM = #{record.aliveTm,jdbcType=BIGINT},
+      LAST_UPDATE_TM = #{record.lastUpdateTm,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atjl.dbtiming.domain.gen.GenTaskManager" >
+    update ts_task_manager
+    <set >
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="aliveTm != null" >
+        ALIVE_TM = #{aliveTm,jdbcType=BIGINT},
+      </if>
+      <if test="lastUpdateTm != null" >
+        LAST_UPDATE_TM = #{lastUpdateTm,jdbcType=BIGINT},
+      </if>
+    </set>
+    where MID = #{mid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atjl.dbtiming.domain.gen.GenTaskManager" >
+    update ts_task_manager
+    set NAME = #{name,jdbcType=VARCHAR},
+      ALIVE_TM = #{aliveTm,jdbcType=BIGINT},
+      LAST_UPDATE_TM = #{lastUpdateTm,jdbcType=BIGINT}
+    where MID = #{mid,jdbcType=BIGINT}
+  </update>
+</mapper>

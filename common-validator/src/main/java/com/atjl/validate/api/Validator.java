@@ -1,6 +1,8 @@
 package com.atjl.validate.api;
 
 
+import com.atjl.validate.api.field.ValidateField;
+
 public interface Validator {
 
     void validate(ValidateForm form, ValidateField field);

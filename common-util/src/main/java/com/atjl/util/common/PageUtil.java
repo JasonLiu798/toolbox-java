@@ -32,4 +32,14 @@ public class PageUtil {
 //        double pgeCntD = Math.ceil((double) actualCount / (double) pageSize);
         return (totalCount + pageSize - 1) / pageSize;
     }
+
+    /**
+     * 根据 当前对象数量， 获取第几页
+     * @param itemNum
+     * @param pageSize
+     * @return
+     */
+    public static long getPageIdxLong(long itemNum, long pageSize) {
+        return itemNum / pageSize + 1;
+    }
 }

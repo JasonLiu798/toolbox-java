@@ -1,9 +1,9 @@
 package com.atjl.validate.validator;
 
-import com.atjl.validate.api.ValidateField;
+import com.atjl.validate.api.field.ValidateField;
 import com.atjl.validate.form.BaseForm;
 import com.atjl.validate.form.FormEg;
-import com.atjl.validate.validator.oneparam.Same;
+import com.atjl.validate.validator.param.Same;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 

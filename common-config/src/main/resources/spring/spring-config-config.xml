@@ -18,7 +18,7 @@
 		<property name="configLocation" value="classpath:ehcache/ehcache.xml"/>
 	</bean>
 
-	<bean id="commonApplicationContextHepler" class="com.sf.util.common.ApplicationContextHepler" />
+
 
     -->
 </beans>

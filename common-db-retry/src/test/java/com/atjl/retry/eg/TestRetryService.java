@@ -20,6 +20,27 @@ public class TestRetryService implements RetryService<Data>, AfterService<Data> 
 
     private static final Logger logger = LoggerFactory.getLogger(TestRetryService.class);
 
+    @Override
+    public InitOption getInitOption() {
+        InitOption opt = new InitOption();
+        opt.setServiceName("testRetryService");
+        opt.getIntervalCoefficientOption().setIntervalCoefficient(10);
+        opt.setRetryMaxCount(6L);
+//        opt.setExceptionInstanceRetry(false);
+//        opt.setWaitMs(9999999999999L);
+
+        RetryTableMetaConf meta = new RetryTableMetaConf();
+        meta.setTab("tm_send_log");
+        meta.setIdCol("SEND_LOG_ID");
+        meta.setResCol("SEND_RES");
+        meta.setFailReasonCol("SEND_FAIL_REASON");
+        meta.setLastRetriedTsCol("SEND_TM");
+        meta.setRetryCountCol("SEND_CNT");
+        opt.setRetryTabMeta(meta);
+
+        return opt;
+    }
+
     //    @Override
     public List<DataContext<Data>> getRetryDataContextList() {
         List<DataContext<Data>> l = new ArrayList<>();
@@ -49,27 +70,6 @@ public class TestRetryService implements RetryService<Data>, AfterService<Data> 
         logger.info("TestRetryService execute {}", JSONFastJsonUtil.objectToJson(context));
         throw new RuntimeException();
 //        return true;
-    }
-
-    @Override
-    public InitOption getInitOption() {
-        InitOption opt = new InitOption();
-        opt.setServiceName("testRetryService");
-        opt.getIntervalCoefficientOption().setIntervalCoefficient(10);
-        opt.setRetryMaxCount(6L);
-//        opt.setExceptionInstanceRetry(false);
-//        opt.setWaitMs(9999999999999L);
-
-        RetryTableMetaConf meta = new RetryTableMetaConf();
-        meta.setTab("tm_send_log");
-        meta.setIdCol("SEND_LOG_ID");
-        meta.setResCol("SEND_RES");
-        meta.setFailReasonCol("SEND_FAIL_REASON");
-        meta.setLastRetriedTsCol("SEND_TM");
-        meta.setRetryCountCol("SEND_CNT");
-
-        opt.setRetryTabMeta(meta);
-        return opt;
     }
 
 

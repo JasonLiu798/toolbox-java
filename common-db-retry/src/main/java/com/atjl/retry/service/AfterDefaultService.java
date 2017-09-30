@@ -6,7 +6,7 @@ import com.atjl.retry.api.DataContext;
 import com.atjl.retry.api.option.InitOption;
 import com.atjl.retry.api.domain.RetryData;
 import com.atjl.retry.domain.RetryInnerConstant;
-import com.atjl.retry.mapper.biz.RetryMapper;
+import com.atjl.retry.mapper.RetryMapper;
 import com.atjl.util.json.JSONFastJsonUtil;
 import com.atjl.util.reflect.ReflectGetUtil;
 import org.slf4j.Logger;
@@ -46,7 +46,6 @@ public class AfterDefaultService implements AfterService {
         if (logger.isDebugEnabled()) {
             logger.debug("process fail {}", JSONFastJsonUtil.objectToJson(data));
         }
-
         updateRetryRes(context, data);
     }
 

@@ -145,7 +145,7 @@ public class CovertUtil {
             }
             String func = genParseFuncName(tgtClz);
             try {
-                Method m = tgtClz.getDeclaredMethod("parse" + func, String.class);
+                Method m = tgtClz.getDeclaredMethod("str2ts" + func, String.class);
                 Object res = m.invoke(rawVal, rawVal);
                 return (T) res;
             } catch (Exception e) {
@@ -180,7 +180,7 @@ public class CovertUtil {
 
 
     /**
-     * 生成各个类的 parse
+     * 生成各个类的 str2ts
      *
      * @param clz
      * @return

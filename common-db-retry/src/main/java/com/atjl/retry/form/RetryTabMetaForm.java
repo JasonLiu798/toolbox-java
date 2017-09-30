@@ -1,7 +1,7 @@
 package com.atjl.retry.form;
 
 
-import com.atjl.validate.api.StringField;
+import com.atjl.validate.api.field.StringField;
 import com.atjl.validate.validator.noparam.AlphaNumDash;
 import com.atjl.validate.validator.noparam.Require;
 

@@ -4,6 +4,11 @@ import com.atjl.log.api.LogContext;
 import com.atjl.log.api.LogLevel;
 import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.character.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
  *
@@ -13,6 +18,7 @@ public class LogFmtUtil {
         super();
     }
 
+    private static final Logger logger = LoggerFactory.getLogger(LogFmtUtil.class);
 //    public static String format(String locate, String exception) {
 //        return format(locate, exception, null);
 //    }
@@ -26,9 +32,10 @@ public class LogFmtUtil {
 
     /**
      * 类名简化
-     * @param raw
-     * @param tgtLen
-     * @return
+     *
+     * @param raw    原始类全名
+     * @param tgtLen 目标长度
+     * @return 简化后类名
      */
     public static String simplifyStack(String raw, int tgtLen) {
         if (StringCheckUtil.isEmpty(raw) || raw.length() <= tgtLen) {
@@ -48,10 +55,10 @@ public class LogFmtUtil {
         }
         int needRemoveCnt = raw.length() - tgtLen;
         //System.out.println("needRemoveCnt " + needRemoveCnt);
-        String clzName = raw.substring(0,clzAndCallIdx);
-        int pkgTgtLen = Math.max(0,clzName.length()-needRemoveCnt);
-        String simplifiedClzName = StringUtil.simplifyFullClassName(clzName,pkgTgtLen);
-        return simplifiedClzName+"."+raw.substring(clzAndCallIdx+1);
+        String clzName = raw.substring(0, clzAndCallIdx);
+        int pkgTgtLen = Math.max(0, clzName.length() - needRemoveCnt);
+        String simplifiedClzName = StringUtil.simplifyFullClassName(clzName, pkgTgtLen);
+        return simplifiedClzName + "." + raw.substring(clzAndCallIdx + 1);
     }
 
 
@@ -90,12 +97,35 @@ public class LogFmtUtil {
             StringBuilder sb = new StringBuilder();
             //get upper caller stack trace
             String msg = stes[preLevel].toString();
-            if (msg.length() > LogContext.simplifyLen) {//如开启，则简化类名
+            if (LogContext.simplify || msg.length() > LogContext.simplifyLen) {//如开启，则简化类名
                 msg = LogFmtUtil.simplifyStack(msg, LogContext.simplifyLen);
             }
             sb.append(msg);
             return sb.toString();
         }
         return "";
+    }
+
+
+    public static String getStackTrace(Throwable t) {
+        if (t == null) {
+            return "exception null";
+        }
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        String res = "get stack trace fail,throwable " + t;
+        try {
+            t.printStackTrace(pw);
+            res = sw.toString();
+            return res;
+        } catch (Exception e) {
+            res = res + "," + e.getMessage();
+            if (logger.isDebugEnabled()) {
+                logger.debug("getStackTrace {}", e);
+            }
+        } finally {
+            pw.close();
+        }
+        return res;
     }
 }

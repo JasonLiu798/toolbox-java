@@ -1,7 +1,6 @@
 package com.atjl.config.api;
 
 import com.atjl.config.util.ConfigDftValUtil;
-import com.atjl.configdb.api.ConfigDbUtil;
 import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.config.ConfigPropUtil;

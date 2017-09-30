@@ -7,7 +7,7 @@ import com.atjl.retry.api.DataContext;
 import com.atjl.retry.api.DataContextFactory;
 import com.atjl.retry.api.option.InitOption;
 import com.atjl.retry.api.option.RetryTableMetaConf;
-import com.atjl.retry.mapper.biz.RetryMapper;
+import com.atjl.retry.mapper.RetryMapper;
 import com.atjl.retry.util.OptionUtil;
 import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.collection.CollectionFilterUtil;

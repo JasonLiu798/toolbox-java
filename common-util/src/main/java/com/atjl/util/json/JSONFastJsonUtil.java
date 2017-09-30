@@ -30,14 +30,20 @@ public class JSONFastJsonUtil {
         return outMap;
     }
 
-
-    public static String objectToJson(Object object) {
-        return JSON.toJSONString(object);
-    }
-
     public static <T> T jsonToObject(String jsonStr, Class<T> clazz) {
         JSONObject json = JSONObject.parseObject(jsonStr);
         return JSONObject.toJavaObject(json, clazz);
     }
 
+    public static String objectToJson(Object object) {
+        return JSON.toJSONString(object);
+    }
+
+    public static String objectToJsonNoException(Object object){
+        try {
+            return JSON.toJSONString(object);
+        }catch (Exception e){
+            return "null";
+        }
+    }
 }

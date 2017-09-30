@@ -1,5 +1,7 @@
 package com.atjl.validate.api;
 
+import com.atjl.validate.api.field.ValidateField;
+
 import java.util.Map;
 
 public interface ValidateForm {
@@ -23,7 +25,7 @@ public interface ValidateForm {
      *
      * @param valueMap
      */
-    void setValue(Map<String, String> valueMap);
+    void setValue(Map<String, Object> valueMap);
 
     /**
      * validate = false时，有值

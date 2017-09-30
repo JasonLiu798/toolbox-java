@@ -1,8 +1,5 @@
 package com.atjl.config.api;
 
-
-import com.atjl.configdb.api.ConfigDbConstant;
-
 /**
  * 共用常量
  */
@@ -21,8 +18,5 @@ public class ConfigConstant {
 
     //配置服务，通过 配置文件 properties 实现
     public static final String CONF_SERVICE_PROP = "configServiceProp";
-
-
-
 
 }

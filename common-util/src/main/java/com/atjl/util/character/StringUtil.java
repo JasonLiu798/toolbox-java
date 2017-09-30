@@ -1,6 +1,8 @@
 package com.atjl.util.character;
 
 import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.reflect.ReflectGetUtil;
+import com.atjl.util.reflect.ReflectSetUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -981,6 +983,7 @@ public final class StringUtil {
 
     /**
      * 获取第一个大写之前的字符串
+     *
      * @param str
      * @return
      */
@@ -1005,6 +1008,14 @@ public final class StringUtil {
     }
 
 
+    public static int strLenRaw(String str) {
+        if (StringCheckUtil.isEmpty(str)) {
+            return 0;
+        } else {
+            return str.length();
+        }
+    }
+
     /**
      * ###################### filters ###########################
      */
@@ -1020,6 +1031,20 @@ public final class StringUtil {
             return rawStr;
         }
         return rawStr.substring(0, len);
+    }
+
+    public static <T> void filter2len(String paramName, T log, int len) {
+        String paramVal = String.valueOf(ReflectGetUtil.getter(log, paramName));//log.getOpParam();
+        if (strLenRaw(paramVal) > len) {
+            if (logger.isDebugEnabled()) {
+                logger.info("param {} len raw {}", paramName, paramVal.length());
+            }
+            paramVal = paramVal.substring(0, len);
+            ReflectSetUtil.setter(log, paramName, paramVal);
+            if (logger.isDebugEnabled()) {
+                logger.info("param {} len {}", paramName, paramVal.length());
+            }
+        }
     }
 
 }

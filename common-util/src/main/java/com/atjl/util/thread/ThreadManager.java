@@ -50,7 +50,7 @@ public class ThreadManager {
             try {
                 ip = IPUtil.getLocalIPLong();
             } catch (Exception e) {
-                //LogClient.writeError(LogConstant.MODULE_LOG,"获取本地ip异常", e);
+                //LogDbUtil.error(LogConstant.MODULE_LOG,"获取本地ip异常", e);
 //                LogClient.writeErrorSync(ThreadManager.class.getSimpleName(),"get local ip exception", e);
             }
 

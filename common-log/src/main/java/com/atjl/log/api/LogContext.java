@@ -1,17 +1,12 @@
 package com.atjl.log.api;
 
-import com.atjl.util.character.StringCheckUtil;
-import com.atjl.util.collection.CollectionUtil;
-import com.atjl.util.queue.IQueue;
-import com.atjl.util.queue.QueueManager;
-
 /**
  * 日志上下文
  */
 public class LogContext {
-	private LogContext(){
-		throw new UnsupportedOperationException();
-	}
+    private LogContext() {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * 是否打开日志，初始化打开
@@ -25,26 +20,6 @@ public class LogContext {
     public static boolean simplify = true;//是否简写类名
     public static int simplifyLen = 60;//超过20则简写
     public static boolean showLv = true;
-
-    /**
-     * 异步日志队列
-     */
-    private static IQueue logQueue;
-    public static final String LOG_QUEUE = "logQ";
-    // 日志黑名单 AOP日志用
-    private static String[] BLACK = new String[]{};
-    // 日志白名单 AOP日志用，同时存在，优先级高于黑名单
-    private static String[] WHITE = new String[]{};
-
-    /**
-     * 初始化
-     */
-    static {
-        logQueue = QueueManager.getQueue(LogContext.LOG_QUEUE);
-        if (logQueue == null) {
-            throw new LogException("创建队列异常");
-        }
-    }
 
 
     public static boolean isEnable() {
@@ -63,37 +38,10 @@ public class LogContext {
         LogContext.level = level;
     }
 
-
-    /**
-     * 设置黑名单
-     */
-    public static void setBlackList(String[] blackList) {
-        if (!CollectionUtil.isEmpty(blackList)) {
-            BLACK = blackList;
-        }
-    }
-
-
-    /**
-     * 是否在白名单
-     */
-    public static boolean isClzInWhiteList(String clz) {
-        for (String s : WHITE) {
-            if (StringCheckUtil.equal(clz, s)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-//    public static Map<String,String>
-
     /**
      * 查看 日志状态
-     *
-     * @return
      */
-    public static String getStatusJson() {
+    public static String getContextStatusJson() {
         StringBuilder sb = new StringBuilder();
         return sb.append("{\"on\":").append(enable).append(",").append("\"level\":").append(level).append("}").toString();
     }

@@ -1,7 +1,7 @@
 package com.atjl.validate.validator.noparam;
 
 import com.atjl.util.character.StringCheckUtil;
-import com.atjl.validate.api.ValidateField;
+import com.atjl.validate.api.field.ValidateField;
 import com.atjl.validate.api.ValidateForm;
 import com.atjl.validate.api.Validator;
 import com.atjl.validate.api.exception.ValidateException;
@@ -21,8 +21,7 @@ public class Require extends ValidatorBase {
     }
 
     public void validate(ValidateForm form, ValidateField field) {
-        String raw = field.getRawValue();
-        if (StringCheckUtil.isEmpty(raw)) {
+        if (StringCheckUtil.isEmpty(field.getStrValue())) {
             throw new ValidateException(this.msg);
         }
     }

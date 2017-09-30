@@ -5,6 +5,9 @@ import com.atjl.util.collection.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.UnknownHostException;
@@ -171,6 +174,49 @@ public class IPUtil {
         return Long.valueOf(ip2Long(getLocalOneIP()));
     }
 
+
+
+    /**
+     * 获取mac地址
+     * @param ip
+     * @return
+     */
+    public static String getMac(String ip) {
+        String str;
+        String macAddress = "00:00:00:00:00:00";
+        InputStreamReader ir = null;
+        LineNumberReader in = null;
+        try {
+            // cmd /c C:\\Windows\\sysnative\\nbtstat.exe -a
+            Process p = Runtime.getRuntime().exec("nbtstat -A " + ip);
+            ir = new InputStreamReader(p.getInputStream());
+            in = new LineNumberReader(ir);
+            for (int i = 1; i < 100; i++) {
+                str = in.readLine();
+                if (str != null) {
+                    if (str.indexOf("MAC ") > 1) {
+                        macAddress = str.substring(
+                                str.indexOf("MAC ") + 14, str.length());
+                        break;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            logger.error("get mac IOException",e);
+        } finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+                if (ir != null) {
+                    ir.close();
+                }
+            } catch (IOException e) {
+                logger.error("get mac final IOException",e);
+            }
+        }
+        return macAddress;
+    }
 
 
 }

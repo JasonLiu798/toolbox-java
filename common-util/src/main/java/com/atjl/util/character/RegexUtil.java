@@ -39,6 +39,8 @@ public final class RegexUtil {
     public static final String REG_ALPHA_NUM = "^[a-zA-Z0-9]+$";//大小写字母，数字，
     public static final String REG_ALPHA = "^[a-zA-Z]+$";//大小写字母
 
+    public static final String REG_CHINESE = "^[\\u4e00-\\uFA29]+$";//中文
+
     public static final String REGEXP_NATURAL = "^\\d+$";
 
     public static final String REGEXP_INTEGER = "^-*\\d+$";
@@ -158,6 +160,13 @@ public final class RegexUtil {
      */
     public static boolean isNatural(String str) {
         return chk(str, REGEXP_NATURAL);
+    }
+
+    /**
+     * 是否中文
+     */
+    public static boolean isChinese(String str) {
+        return chk(str, REG_CHINESE);
     }
 
     /**

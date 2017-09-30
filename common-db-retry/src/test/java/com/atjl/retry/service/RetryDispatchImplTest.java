@@ -22,12 +22,12 @@ public class RetryDispatchImplTest {
     @Test
     public void testRegiste() throws Exception {
         retryDispatch.registe("testRetryService");
-        retryDispatch.registe("testRetryService2");
+//        retryDispatch.registe("testRetryService2");
 
         List status = retryDispatch.getOptions();
         System.out.println("res:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(status)));
 
-        retryDispatch.timeUp();
+//        retryDispatch.timeUp();
 
 
     }

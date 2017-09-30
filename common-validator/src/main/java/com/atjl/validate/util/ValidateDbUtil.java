@@ -5,7 +5,7 @@ import com.atjl.util.config.ConfigPropUtil;
 import com.atjl.util.db.DbExecutor;
 import com.atjl.util.db.DbExecutorSyntaxException;
 import com.atjl.utilex.ApplicationContextHepler;
-import com.atjl.validate.domain.constants.ValidateConstants;
+import com.atjl.validate.domain.constants.ValidateInnerConstant;
 import com.atjl.validate.domain.constants.ValidatePropConstants;
 import com.atjl.validate.api.exception.ValidateComponentException;
 
@@ -27,7 +27,7 @@ public class ValidateDbUtil {
      * @return
      */
     public static DataSource getDs() {
-        String dataSource = ConfigPropUtil.getAndInit(ValidateConstants.VALIDATE_PROP_FILE, ValidatePropConstants.DATA_SOURCE_KEY);
+        String dataSource = ConfigPropUtil.getAndInit(ValidateInnerConstant.VALIDATE_PROP_FILE, ValidatePropConstants.DATA_SOURCE_KEY);
         DataSource ds = ApplicationContextHepler.getBean(dataSource, DataSource.class);
         if (ds == null) {
             throw new ValidateComponentException("get dataSource null");

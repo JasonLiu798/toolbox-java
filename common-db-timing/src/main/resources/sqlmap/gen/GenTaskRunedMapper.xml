@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atjl.dbtiming.mapper.gen.GenTaskRunedMapper" >
+  <resultMap id="BaseResultMap" type="com.atjl.dbtiming.domain.gen.GenTaskRuned" >
+    <id column="TID" property="tid" jdbcType="BIGINT" />
+    <result column="TKEY" property="tkey" jdbcType="VARCHAR" />
+    <result column="TSERVICE" property="tservice" jdbcType="VARCHAR" />
+    <result column="PARAM" property="param" jdbcType="VARCHAR" />
+    <result column="CONF_TYPE" property="confType" jdbcType="VARCHAR" />
+    <result column="CONF_CRON_EXPRESSION" property="confCronExpression" jdbcType="VARCHAR" />
+    <result column="CONF_DELAY_TM" property="confDelayTm" jdbcType="BIGINT" />
+    <result column="CONF_INTERVAL_TM" property="confIntervalTm" jdbcType="BIGINT" />
+    <result column="CONF_EXE_TIMES" property="confExeTimes" jdbcType="BIGINT" />
+    <result column="PROCESSOR" property="processor" jdbcType="VARCHAR" />
+    <result column="TMUTEX" property="tmutex" jdbcType="CHAR" />
+    <result column="MUTEX_TM" property="mutexTm" jdbcType="BIGINT" />
+    <result column="TSTATUS" property="tstatus" jdbcType="CHAR" />
+    <result column="ALIVE_TM" property="aliveTm" jdbcType="BIGINT" />
+    <result column="VALID" property="valid" jdbcType="CHAR" />
+    <result column="CRT_TM" property="crtTm" />
+    <result column="FIRST_START_TM" property="firstStartTm" jdbcType="BIGINT" />
+    <result column="FIRST_END_TM" property="firstEndTm" jdbcType="BIGINT" />
+    <result column="LAST_START_TM" property="lastStartTm" jdbcType="BIGINT" />
+    <result column="LAST_END_TM" property="lastEndTm" jdbcType="BIGINT" />
+    <result column="RUN_CNT" property="runCnt" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    TID, TKEY, TSERVICE, PARAM, CONF_TYPE, CONF_CRON_EXPRESSION, CONF_DELAY_TM, CONF_INTERVAL_TM, 
+    CONF_EXE_TIMES, PROCESSOR, TMUTEX, MUTEX_TM, TSTATUS, ALIVE_TM, VALID, CRT_TM, FIRST_START_TM, 
+    FIRST_END_TM, LAST_START_TM, LAST_END_TM, RUN_CNT
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.atjl.dbtiming.domain.gen.GenTaskRunedExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ts_task_runned
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ts_task_runned
+    where TID = #{tid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ts_task_runned
+    where TID = #{tid,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.atjl.dbtiming.domain.gen.GenTaskRunedExample" >
+    delete from ts_task_runned
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.atjl.dbtiming.domain.gen.GenTaskRuned" >
+    <selectKey resultType="java.lang.Long" keyProperty="tid" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ts_task_runned (TKEY, TSERVICE, PARAM, 
+      CONF_TYPE, CONF_CRON_EXPRESSION, CONF_DELAY_TM, 
+      CONF_INTERVAL_TM, CONF_EXE_TIMES, PROCESSOR, 
+      TMUTEX, MUTEX_TM, TSTATUS, 
+      ALIVE_TM, VALID, CRT_TM, FIRST_START_TM, 
+      FIRST_END_TM, LAST_START_TM, LAST_END_TM, 
+      RUN_CNT)
+    values (#{tkey,jdbcType=VARCHAR}, #{tservice,jdbcType=VARCHAR}, #{param,jdbcType=VARCHAR}, 
+      #{confType,jdbcType=VARCHAR}, #{confCronExpression,jdbcType=VARCHAR}, #{confDelayTm,jdbcType=BIGINT}, 
+      #{confIntervalTm,jdbcType=BIGINT}, #{confExeTimes,jdbcType=BIGINT}, #{processor,jdbcType=VARCHAR}, 
+      #{tmutex,jdbcType=CHAR}, #{mutexTm,jdbcType=BIGINT}, #{tstatus,jdbcType=CHAR}, 
+      #{aliveTm,jdbcType=BIGINT}, #{valid,jdbcType=CHAR}, #{crtTm,jdbcType=BIGINT}, #{firstStartTm,jdbcType=BIGINT}, 
+      #{firstEndTm,jdbcType=BIGINT}, #{lastStartTm,jdbcType=BIGINT}, #{lastEndTm,jdbcType=BIGINT}, 
+      #{runCnt,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.atjl.dbtiming.domain.gen.GenTaskRuned" >
+    <selectKey resultType="java.lang.Long" keyProperty="tid" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ts_task_runned
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tkey != null" >
+        TKEY,
+      </if>
+      <if test="tservice != null" >
+        TSERVICE,
+      </if>
+      <if test="param != null" >
+        PARAM,
+      </if>
+      <if test="confType != null" >
+        CONF_TYPE,
+      </if>
+      <if test="confCronExpression != null" >
+        CONF_CRON_EXPRESSION,
+      </if>
+      <if test="confDelayTm != null" >
+        CONF_DELAY_TM,
+      </if>
+      <if test="confIntervalTm != null" >
+        CONF_INTERVAL_TM,
+      </if>
+      <if test="confExeTimes != null" >
+        CONF_EXE_TIMES,
+      </if>
+      <if test="processor != null" >
+        PROCESSOR,
+      </if>
+      <if test="tmutex != null" >
+        TMUTEX,
+      </if>
+      <if test="mutexTm != null" >
+        MUTEX_TM,
+      </if>
+      <if test="tstatus != null" >
+        TSTATUS,
+      </if>
+      <if test="aliveTm != null" >
+        ALIVE_TM,
+      </if>
+      <if test="valid != null" >
+        VALID,
+      </if>
+      <if test="crtTm != null" >
+        CRT_TM,
+      </if>
+      <if test="firstStartTm != null" >
+        FIRST_START_TM,
+      </if>
+      <if test="firstEndTm != null" >
+        FIRST_END_TM,
+      </if>
+      <if test="lastStartTm != null" >
+        LAST_START_TM,
+      </if>
+      <if test="lastEndTm != null" >
+        LAST_END_TM,
+      </if>
+      <if test="runCnt != null" >
+        RUN_CNT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tkey != null" >
+        #{tkey,jdbcType=VARCHAR},
+      </if>
+      <if test="tservice != null" >
+        #{tservice,jdbcType=VARCHAR},
+      </if>
+      <if test="param != null" >
+        #{param,jdbcType=VARCHAR},
+      </if>
+      <if test="confType != null" >
+        #{confType,jdbcType=VARCHAR},
+      </if>
+      <if test="confCronExpression != null" >
+        #{confCronExpression,jdbcType=VARCHAR},
+      </if>
+      <if test="confDelayTm != null" >
+        #{confDelayTm,jdbcType=BIGINT},
+      </if>
+      <if test="confIntervalTm != null" >
+        #{confIntervalTm,jdbcType=BIGINT},
+      </if>
+      <if test="confExeTimes != null" >
+        #{confExeTimes,jdbcType=BIGINT},
+      </if>
+      <if test="processor != null" >
+        #{processor,jdbcType=VARCHAR},
+      </if>
+      <if test="tmutex != null" >
+        #{tmutex,jdbcType=CHAR},
+      </if>
+      <if test="mutexTm != null" >
+        #{mutexTm,jdbcType=BIGINT},
+      </if>
+      <if test="tstatus != null" >
+        #{tstatus,jdbcType=CHAR},
+      </if>
+      <if test="aliveTm != null" >
+        #{aliveTm,jdbcType=BIGINT},
+      </if>
+      <if test="valid != null" >
+        #{valid,jdbcType=CHAR},
+      </if>
+      <if test="crtTm != null" >
+        #{crtTm},
+      </if>
+      <if test="firstStartTm != null" >
+        #{firstStartTm,jdbcType=BIGINT},
+      </if>
+      <if test="firstEndTm != null" >
+        #{firstEndTm,jdbcType=BIGINT},
+      </if>
+      <if test="lastStartTm != null" >
+        #{lastStartTm,jdbcType=BIGINT},
+      </if>
+      <if test="lastEndTm != null" >
+        #{lastEndTm,jdbcType=BIGINT},
+      </if>
+      <if test="runCnt != null" >
+        #{runCnt,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.atjl.dbtiming.domain.gen.GenTaskRunedExample" resultType="java.lang.Integer" >
+    select count(*) from ts_task_runned
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ts_task_runned
+    <set >
+      <if test="record.tid != null" >
+        TID = #{record.tid,jdbcType=BIGINT},
+      </if>
+      <if test="record.tkey != null" >
+        TKEY = #{record.tkey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tservice != null" >
+        TSERVICE = #{record.tservice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.param != null" >
+        PARAM = #{record.param,jdbcType=VARCHAR},
+      </if>
+      <if test="record.confType != null" >
+        CONF_TYPE = #{record.confType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.confCronExpression != null" >
+        CONF_CRON_EXPRESSION = #{record.confCronExpression,jdbcType=VARCHAR},
+      </if>
+      <if test="record.confDelayTm != null" >
+        CONF_DELAY_TM = #{record.confDelayTm,jdbcType=BIGINT},
+      </if>
+      <if test="record.confIntervalTm != null" >
+        CONF_INTERVAL_TM = #{record.confIntervalTm,jdbcType=BIGINT},
+      </if>
+      <if test="record.confExeTimes != null" >
+        CONF_EXE_TIMES = #{record.confExeTimes,jdbcType=BIGINT},
+      </if>
+      <if test="record.processor != null" >
+        PROCESSOR = #{record.processor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tmutex != null" >
+        TMUTEX = #{record.tmutex,jdbcType=CHAR},
+      </if>
+      <if test="record.mutexTm != null" >
+        MUTEX_TM = #{record.mutexTm,jdbcType=BIGINT},
+      </if>
+      <if test="record.tstatus != null" >
+        TSTATUS = #{record.tstatus,jdbcType=CHAR},
+      </if>
+      <if test="record.aliveTm != null" >
+        ALIVE_TM = #{record.aliveTm,jdbcType=BIGINT},
+      </if>
+      <if test="record.valid != null" >
+        VALID = #{record.valid,jdbcType=CHAR},
+      </if>
+      <if test="record.crtTm != null" >
+        CRT_TM = #{record.crtTm,jdbcType=BIGINT},
+      </if>
+      <if test="record.firstStartTm != null" >
+        FIRST_START_TM = #{record.firstStartTm,jdbcType=BIGINT},
+      </if>
+      <if test="record.firstEndTm != null" >
+        FIRST_END_TM = #{record.firstEndTm,jdbcType=BIGINT},
+      </if>
+      <if test="record.lastStartTm != null" >
+        LAST_START_TM = #{record.lastStartTm,jdbcType=BIGINT},
+      </if>
+      <if test="record.lastEndTm != null" >
+        LAST_END_TM = #{record.lastEndTm,jdbcType=BIGINT},
+      </if>
+      <if test="record.runCnt != null" >
+        RUN_CNT = #{record.runCnt,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ts_task_runned
+    set TID = #{record.tid,jdbcType=BIGINT},
+      TKEY = #{record.tkey,jdbcType=VARCHAR},
+      TSERVICE = #{record.tservice,jdbcType=VARCHAR},
+      PARAM = #{record.param,jdbcType=VARCHAR},
+      CONF_TYPE = #{record.confType,jdbcType=VARCHAR},
+      CONF_CRON_EXPRESSION = #{record.confCronExpression,jdbcType=VARCHAR},
+      CONF_DELAY_TM = #{record.confDelayTm,jdbcType=BIGINT},
+      CONF_INTERVAL_TM = #{record.confIntervalTm,jdbcType=BIGINT},
+      CONF_EXE_TIMES = #{record.confExeTimes,jdbcType=BIGINT},
+      PROCESSOR = #{record.processor,jdbcType=VARCHAR},
+      TMUTEX = #{record.tmutex,jdbcType=CHAR},
+      MUTEX_TM = #{record.mutexTm,jdbcType=BIGINT},
+      TSTATUS = #{record.tstatus,jdbcType=CHAR},
+      ALIVE_TM = #{record.aliveTm,jdbcType=BIGINT},
+      VALID = #{record.valid,jdbcType=CHAR},
+      CRT_TM = #{record.crtTm,jdbcType=BIGINT},
+      FIRST_START_TM = #{record.firstStartTm,jdbcType=BIGINT},
+      FIRST_END_TM = #{record.firstEndTm,jdbcType=BIGINT},
+      LAST_START_TM = #{record.lastStartTm,jdbcType=BIGINT},
+      LAST_END_TM = #{record.lastEndTm,jdbcType=BIGINT},
+      RUN_CNT = #{record.runCnt,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atjl.dbtiming.domain.gen.GenTaskRuned" >
+    update ts_task_runned
+    <set >
+      <if test="tkey != null" >
+        TKEY = #{tkey,jdbcType=VARCHAR},
+      </if>
+      <if test="tservice != null" >
+        TSERVICE = #{tservice,jdbcType=VARCHAR},
+      </if>
+      <if test="param != null" >
+        PARAM = #{param,jdbcType=VARCHAR},
+      </if>
+      <if test="confType != null" >
+        CONF_TYPE = #{confType,jdbcType=VARCHAR},
+      </if>
+      <if test="confCronExpression != null" >
+        CONF_CRON_EXPRESSION = #{confCronExpression,jdbcType=VARCHAR},
+      </if>
+      <if test="confDelayTm != null" >
+        CONF_DELAY_TM = #{confDelayTm,jdbcType=BIGINT},
+      </if>
+      <if test="confIntervalTm != null" >
+        CONF_INTERVAL_TM = #{confIntervalTm,jdbcType=BIGINT},
+      </if>
+      <if test="confExeTimes != null" >
+        CONF_EXE_TIMES = #{confExeTimes,jdbcType=BIGINT},
+      </if>
+      <if test="processor != null" >
+        PROCESSOR = #{processor,jdbcType=VARCHAR},
+      </if>
+      <if test="tmutex != null" >
+        TMUTEX = #{tmutex,jdbcType=CHAR},
+      </if>
+      <if test="mutexTm != null" >
+        MUTEX_TM = #{mutexTm,jdbcType=BIGINT},
+      </if>
+      <if test="tstatus != null" >
+        TSTATUS = #{tstatus,jdbcType=CHAR},
+      </if>
+      <if test="aliveTm != null" >
+        ALIVE_TM = #{aliveTm,jdbcType=BIGINT},
+      </if>
+      <if test="valid != null" >
+        VALID = #{valid,jdbcType=CHAR},
+      </if>
+      <if test="crtTm != null" >
+        CRT_TM = #{crtTm,jdbcType=BIGINT},
+      </if>
+      <if test="firstStartTm != null" >
+        FIRST_START_TM = #{firstStartTm,jdbcType=BIGINT},
+      </if>
+      <if test="firstEndTm != null" >
+        FIRST_END_TM = #{firstEndTm,jdbcType=BIGINT},
+      </if>
+      <if test="lastStartTm != null" >
+        LAST_START_TM = #{lastStartTm,jdbcType=BIGINT},
+      </if>
+      <if test="lastEndTm != null" >
+        LAST_END_TM = #{lastEndTm,jdbcType=BIGINT},
+      </if>
+      <if test="runCnt != null" >
+        RUN_CNT = #{runCnt,jdbcType=BIGINT},
+      </if>
+    </set>
+    where TID = #{tid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atjl.dbtiming.domain.gen.GenTaskRuned" >
+    update ts_task_runned
+    set TKEY = #{tkey,jdbcType=VARCHAR},
+      TSERVICE = #{tservice,jdbcType=VARCHAR},
+      PARAM = #{param,jdbcType=VARCHAR},
+      CONF_TYPE = #{confType,jdbcType=VARCHAR},
+      CONF_CRON_EXPRESSION = #{confCronExpression,jdbcType=VARCHAR},
+      CONF_DELAY_TM = #{confDelayTm,jdbcType=BIGINT},
+      CONF_INTERVAL_TM = #{confIntervalTm,jdbcType=BIGINT},
+      CONF_EXE_TIMES = #{confExeTimes,jdbcType=BIGINT},
+      PROCESSOR = #{processor,jdbcType=VARCHAR},
+      TMUTEX = #{tmutex,jdbcType=CHAR},
+      MUTEX_TM = #{mutexTm,jdbcType=BIGINT},
+      TSTATUS = #{tstatus,jdbcType=CHAR},
+      ALIVE_TM = #{aliveTm,jdbcType=BIGINT},
+      VALID = #{valid,jdbcType=CHAR},
+      CRT_TM = #{crtTm,jdbcType=BIGINT},
+      FIRST_START_TM = #{firstStartTm,jdbcType=BIGINT},
+      FIRST_END_TM = #{firstEndTm,jdbcType=BIGINT},
+      LAST_START_TM = #{lastStartTm,jdbcType=BIGINT},
+      LAST_END_TM = #{lastEndTm,jdbcType=BIGINT},
+      RUN_CNT = #{runCnt,jdbcType=BIGINT}
+    where TID = #{tid,jdbcType=BIGINT}
+  </update>
+</mapper>

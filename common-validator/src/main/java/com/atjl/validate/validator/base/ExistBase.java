@@ -1,9 +1,9 @@
 package com.atjl.validate.validator.base;
 
 import com.atjl.util.character.RegexUtil;
-import com.atjl.validate.api.ValidateField;
+import com.atjl.validate.api.field.ValidateField;
 import com.atjl.validate.api.ValidateForm;
-import com.atjl.validate.api.ValidateInitException;
+import com.atjl.validate.api.exception.ValidateInitException;
 import com.atjl.validate.util.ValidateDbUtil;
 
 /**

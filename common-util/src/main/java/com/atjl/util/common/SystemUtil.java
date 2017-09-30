@@ -1,6 +1,8 @@
 package com.atjl.util.common;
 
 
+import com.atjl.util.number.RandomUtil;
+
 import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.InvocationTargetException;
@@ -11,29 +13,40 @@ import java.net.URLClassLoader;
 
 /**
  * 系统相关类
- *
+ * <p>
  * sleep封装
  * 获取pid
  * 手动添加 classpath
  */
 public class SystemUtil {
-	private SystemUtil(){
-		throw new UnsupportedOperationException();
-	}
+    private SystemUtil() {
+        throw new UnsupportedOperationException();
+    }
 
-    public static void sleep(int time){
+    public static void sleep(int time) {
         try {
             Thread.sleep(time);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
-    
-    public static void sleepForever(){
-		sleep(Integer.MAX_VALUE);
-	}
 
-    public static String getPid(){
+    public static void sleepRandom(int max, int dft) {
+        int randSleepTm;
+        try {
+            randSleepTm = RandomUtil.generateInt(0, max);
+        } catch (InterruptedException e) {
+            //e.printStackTrace();
+            randSleepTm = dft;
+        }
+        sleep(randSleepTm);
+    }
+
+    public static void sleepForever() {
+        sleep(Integer.MAX_VALUE);
+    }
+
+    public static String getPid() {
         String name = ManagementFactory.getRuntimeMXBean().getName();
         System.out.println(name);
 // get pid
@@ -43,6 +56,7 @@ public class SystemUtil {
 
     /**
      * add classpath
+     *
      * @param path absolute path
      * @throws NoSuchMethodException
      * @throws MalformedURLException

@@ -6,6 +6,7 @@ import com.atjl.retry.api.constant.RetryConstant;
  * 重试选项
  */
 public class InitOption {
+    public InitOption(){}
 
     /**
      * 服务名（必填）
@@ -61,7 +62,9 @@ public class InitOption {
      */
     private InstanceRetryConf instanceRetryOption = new InstanceRetryConf();
 
-
+    /**
+     * ############## getter && setter ####################
+     */
     public RetryTableMetaConf getRetryTabMeta() {
         return retryTabMeta;
     }

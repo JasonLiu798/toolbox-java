@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atjl.logdb.mapper.OpLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.atjl.logdb.api.domain.OpLog">
+        <id column="LOG_LV" jdbcType="VARCHAR" property="lv"/>
+        <id column="OP_MODULE" jdbcType="VARCHAR" property="opModule"/>
+        <id column="OP_CHILD_MODUEL" jdbcType="VARCHAR" property="opChildModule"/>
+        <id column="EMP_NUM" jdbcType="VARCHAR" property="empNum"/>
+        <id column="USER_NAME" jdbcType="VARCHAR" property="userName"/>
+        <id column="OP_TYPE" jdbcType="VARCHAR" property="opType"/>
+        <id column="OP_PARAM" jdbcType="VARCHAR" property="opParam"/>
+        <id column="OP_RES" jdbcType="VARCHAR" property="opRes"/>
+        <id column="OP_REF" jdbcType="VARCHAR" property="opRef"/>
+        <id column="OP_CONTENT" jdbcType="VARCHAR" property="opContent"/>
+        <id column="opTm" jdbcType="BIGINT" property="opTm"/>
+
+        <id column="COST" jdbcType="BIGINT" property="cost"/>
+        <id column="SERVICE_IP" jdbcType="BIGINT" property="serviceIp"/>
+        <id column="OP_IP" jdbcType="BIGINT" property="opIp"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+          LOG_LV,
+          OP_MODULE,
+          OP_CHILD_MODUEL,
+          EMP_NUM,
+          USER_NAME,
+          OP_TYPE,
+          OP_PARAM,
+          OP_RES,
+          OP_REF,
+          OP_CONTENT,
+          COST,
+          SERVICE_IP,
+          OP_IP,
+          UNIX_TIMESTAMP(OP_TM) opTm
+    </sql>
+
+
+    <sql id="Where_Clause">
+        <where>
+            1=1
+            <if test="opModule != null and opModule!='' ">
+                and OP_MODULE=#{opModule,jdbcType=CHAR}
+            </if>
+            <if test="empNum != null and empNum!='' ">
+                and EMP_NUM=#{empNum,jdbcType=BIGINT}
+            </if>
+            <if test="name != null and name!='' ">
+                and USER_NAME=#{name,jdbcType=VARCHAR}
+            </if>
+            <if test="lv != null and lv!='' ">
+                and LOG_LV=#{lv,jdbcType=VARCHAR}
+            </if>
+
+            <if test="startTm != null">
+                and OP_TM &gt;= FROM_UNIXTIME(#{startTm,jdbcType=BIGINT})
+            </if>
+            <if test="endTm != null">
+                and OP_TM &lt;= FROM_UNIXTIME(#{endTm,jdbcType=BIGINT})
+            </if>
+        </where>
+    </sql>
+
+    <select id="select" parameterType="com.atjl.logdb.api.req.OpLogReq" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ts_op_log
+
+        <if test="_parameter != null">
+            <include refid="Where_Clause"/>
+        </if>
+
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        LIMIT #{currentIndex,jdbcType=BIGINT},#{pageSize,jdbcType=BIGINT}
+
+    </select>
+
+    <select id="count" parameterType="com.atjl.logdb.api.req.OpLogReq" resultType="java.lang.Long">
+        select count(*) from ts_op_log
+        <if test="_parameter != null">
+            <include refid="Where_Clause"/>
+        </if>
+    </select>
+
+
+    <insert id="insertSelective" parameterType="com.atjl.logdb.api.domain.OpLog">
+        insert into ts_op_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="logId != null">
+                LOG_ID,
+            </if>
+            <if test="opTm != null">
+                OP_TM,
+            </if>
+            <if test="lv != null">
+                LOG_LV,
+            </if>
+            <if test="opModule != null">
+                OP_MODULE,
+            </if>
+            <if test="opChildModule != null">
+                OP_CHILD_MODUEL,
+            </if>
+            <if test="empNum != null">
+                EMP_NUM,
+            </if>
+            <if test="opType != null">
+                OP_TYPE,
+            </if>
+            <if test="opParam != null">
+                OP_PARAM,
+            </if>
+            <if test="opRes != null">
+                OP_RES,
+            </if>
+            <if test="opRef != null">
+                OP_REF,
+            </if>
+            <if test="cost != null">
+                COST,
+            </if>
+            <if test="serviceIp != null">
+                SERVICE_IP,
+            </if>
+            <if test="opIp != null">
+                OP_IP,
+            </if>
+            <if test="userName != null">
+                USER_NAME,
+            </if>
+            <if test="source != null">
+                SOURCE,
+            </if>
+            <if test="opHostName != null">
+                OP_HOST_NAME,
+            </if>
+            <if test="userExtInfo != null">
+                USER_EXT_INFO,
+            </if>
+            <if test="threadId != null">
+                EXT1,
+            </if>
+
+            <!--<if test="ext2 != null">
+                EXT2,
+            </if>
+            <if test="ext3 != null">
+                EXT3,
+            </if>
+            -->
+
+            <if test="opContent != null">
+                OP_CONTENT,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="logId != null">
+                #{logId,jdbcType=BIGINT},
+            </if>
+            <if test="opTm != null">
+                #{opTm,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lv != null">
+                #{lv,jdbcType=CHAR},
+            </if>
+            <if test="opModule != null">
+                #{opModule,jdbcType=VARCHAR},
+            </if>
+            <if test="opChildModule != null">
+                #{opChildModule,jdbcType=VARCHAR},
+            </if>
+            <if test="empNum != null">
+                #{empNum,jdbcType=VARCHAR},
+            </if>
+            <if test="opType != null">
+                #{opType,jdbcType=CHAR},
+            </if>
+            <if test="opParam != null">
+                #{opParam,jdbcType=VARCHAR},
+            </if>
+            <if test="opRes != null">
+                #{opRes,jdbcType=VARCHAR},
+            </if>
+            <if test="opRef != null">
+                #{opRef,jdbcType=VARCHAR},
+            </if>
+            <if test="cost != null">
+                #{cost,jdbcType=BIGINT},
+            </if>
+            <if test="serviceIp != null">
+                #{serviceIp,jdbcType=BIGINT},
+            </if>
+            <if test="opIp != null">
+                #{opIp,jdbcType=BIGINT},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="source != null">
+                #{source,jdbcType=CHAR},
+            </if>
+            <if test="opHostName != null">
+                #{opHostName,jdbcType=VARCHAR},
+            </if>
+            <if test="userExtInfo != null">
+                #{userExtInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="threadId != null">
+                #{threadId,jdbcType=VARCHAR},
+            </if>
+            <!--
+            <if test="ext2 != null">
+                #{ext2,jdbcType=VARCHAR},
+            </if>
+            <if test="ext3 != null">
+                #{ext3,jdbcType=VARCHAR},
+            </if>-->
+            <if test="opContent != null">
+                #{opContent,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+
+</mapper>

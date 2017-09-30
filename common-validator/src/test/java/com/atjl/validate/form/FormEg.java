@@ -1,8 +1,8 @@
 package com.atjl.validate.form;
 
-import com.atjl.validate.api.StringField;
+import com.atjl.validate.api.field.StringField;
 import com.atjl.validate.validator.noparam.Email;
-import com.atjl.validate.validator.oneparam.Length;
+import com.atjl.validate.validator.param.Length;
 import com.atjl.validate.validator.noparam.Optional;
 import com.atjl.validate.validator.noparam.Require;
 

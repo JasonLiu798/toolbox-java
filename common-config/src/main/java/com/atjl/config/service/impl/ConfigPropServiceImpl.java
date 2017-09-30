@@ -1,8 +1,8 @@
 package com.atjl.config.service.impl;
 
 import com.atjl.config.api.ConfigConstant;
+import com.atjl.config.api.ConfigDbConstant;
 import com.atjl.config.api.ConfigService;
-import com.atjl.configdb.api.ConfigDbConstant;
 import com.atjl.util.config.ConfigPropUtil;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;

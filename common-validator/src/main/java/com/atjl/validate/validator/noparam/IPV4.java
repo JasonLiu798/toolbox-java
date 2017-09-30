@@ -1,7 +1,7 @@
 package com.atjl.validate.validator.noparam;
 
 import com.atjl.util.character.RegexUtil;
-import com.atjl.validate.api.ValidateField;
+import com.atjl.validate.api.field.ValidateField;
 import com.atjl.validate.api.ValidateForm;
 import com.atjl.validate.api.Validator;
 import com.atjl.validate.api.exception.ValidateException;
@@ -25,8 +25,7 @@ public class IPV4 extends ValidatorBase {
     }
 
     public void validate(ValidateForm form, ValidateField field) {
-        String raw = field.getRawValue();
-        if (!RegexUtil.isIPV4(raw)) {
+        if (!RegexUtil.isIPV4(field.getStrValue())) {
             throw new ValidateException(this.msg);
         }
     }

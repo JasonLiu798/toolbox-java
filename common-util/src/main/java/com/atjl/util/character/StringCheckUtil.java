@@ -102,6 +102,8 @@ public final class StringCheckUtil {
         return true;
     }
 
+
+
     public static boolean isAllEmpty(Object... targets) {
         if (targets == null || targets.length == 0) {
             return true;

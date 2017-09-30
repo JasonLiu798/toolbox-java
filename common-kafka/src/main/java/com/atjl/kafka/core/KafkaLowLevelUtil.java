@@ -202,7 +202,7 @@ public class KafkaLowLevelUtil {
 
 
     /**
-     * parse message set to event
+     * str2ts message set to event
      *
      * @param msgSet msgset
      * @return list of event(offset,key,value setted)
@@ -239,7 +239,7 @@ public class KafkaLowLevelUtil {
     }
 
     /**
-     * fetch message and parse to Event list
+     * fetch message and str2ts to Event list
      *
      * @param consumer    simple consumer
      * @param topic       topic

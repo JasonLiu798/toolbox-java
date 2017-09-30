@@ -1,6 +1,6 @@
 package com.atjl.validate.validator;
 
-import com.atjl.validate.api.StringField;
+import com.atjl.validate.api.field.StringField;
 import com.atjl.validate.validator.noparam.Url;
 import org.junit.*;
 import org.junit.rules.ExpectedException;

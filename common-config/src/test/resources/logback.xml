@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="300 seconds" debug="false">
     <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
-    <property name="LOG_HOME" value="D:\logs"/>
+    <property name="LOG_HOME" value="D:\\logs"/>
 
-    <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
-    <!--参考ch.qos.logback.classic.PatternLayout -->
-    <!-- property name="LOG_FORMAT" value="%d{MM-dd HH:mm:ss.SSS} [%thread]
-        %-5level %class.%exeMethod\\(%F:%L\\) - %msg%n" / -->
     <property name="LOG_FORMAT"
               value="%d{MM-dd HH:mm:ss.SSS} [%thread] %-5level %class.%method\\(%F:%L\\) - %msg%n"/>
 
@@ -21,17 +17,6 @@
     <!-- 按照每天生成日志文件 -->
     <appender name="DAILYFILE"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!-- 日志级别过滤：增加filter子标签，可以实现按日志输出级别进行日志文件的区分 LevelFilter 或者 ThresholdFilter -->
-        <!-- <filter class="ch.qos.logback.classic.filter.LevelFilter"> -->
-        <!-- <level>INFO</level> -->
-        <!-- <onMatch>ACCEPT</onMatch> -->
-        <!-- <onMismatch>NEUTRAL</onMismatch> -->
-        <!-- </filter> -->
-        <!-- <filter class="ch.qos.logback.classic.filter.LevelFilter"> -->
-        <!-- <level>WARN</level> -->
-        <!-- <onMatch>ACCEPT</onMatch> -->
-        <!-- <onMismatch>DENY</onMismatch> -->
-        <!-- </filter> -->
         <encoder charset="UTF-8">
             <pattern>${LOG_FORMAT}</pattern>
         </encoder>
@@ -41,10 +26,8 @@
             </fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <!--日志文件最大的大小 单位 kb mb gb -->
                 <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
-            <!-- 最多保存的历史文件个数 -->
             <maxHistory>10</maxHistory>
         </rollingPolicy>
     </appender>
@@ -55,6 +38,5 @@
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="DAILYFILE"/>
     </root>
-
 
 </configuration>

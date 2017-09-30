@@ -42,7 +42,8 @@ public class OptionManager {
         /**
          *     public static Map<String, Field> getFieldMap(Class obj, GetClzOpt parentOpt, String[] blackArr, String[] whiteArr) {
          */
-        form.setValue(ReflectFieldUtil.getFieldValueString(option, ReflectUtil.GetClzOpt.ALL, true, new String[]{"retryTabMeta"}, null));
+        form.setValue(ReflectFieldUtil.getFieldValueString(option, ReflectUtil.GetClzOpt.ALL, true, null,null));
+        //new String[]{"retryTabMeta"}, null));
         if (!form.validate()) {
             throw new RetryInitException("初始化配置校验失败，原因：" + form.getOneLineError());
         }

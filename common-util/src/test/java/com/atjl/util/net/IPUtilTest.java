@@ -53,6 +53,12 @@ public class IPUtilTest {
         assertEquals(true, res);
     }
 
+
+    @Test
+    public void getMac(){
+        String mac = IPUtil.getMac("127.0.0.1");
+        System.out.println("res:"+mac);
+    }
     /**
      * Method: main(String[] args)
      */

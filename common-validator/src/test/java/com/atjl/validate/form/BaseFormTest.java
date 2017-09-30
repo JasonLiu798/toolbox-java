@@ -17,12 +17,21 @@ public class BaseFormTest {
         ValidateForm form = ValidateFormFactory.build(FormEg.class);
 
         Map<String, String> values = new HashMap<>();
-        values.put("f1", "aaa@aa");
+        values.put("f1", "aaa@aa.djkfd");
         values.put("f2", null);
 
         form.setValue(values);
         boolean res = form.validate();
+        System.out.println("res:" + res);
+        System.out.println("msg:" + form.getErrors());
 
+
+        form = ValidateFormFactory.build(FormEg.class);
+        Map<String, String> values2 = new HashMap<>();
+        values2.put("f1", "hahahah@sdfdsf.com");
+        values2.put("f2", "sdfkkjlsdf");
+        form.setValue(values2);
+        res = form.validate();
         System.out.println("res:" + res);
         System.out.println("msg:" + form.getErrors());
     }
