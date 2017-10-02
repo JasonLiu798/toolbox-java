@@ -73,7 +73,7 @@
         </tx:attributes>
     </tx:advice>
     <aop:config>
-        <aop:pointcut id="transactionPointcut" expression="execution(* sf.aos.manager.impl.*.*(..))"/>
+        <aop:pointcut id="transactionPointcut" expression="execution(* com.atjl.manager.impl.*.*(..))"/>
         <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionService"/>
     </aop:config>
 	 -->

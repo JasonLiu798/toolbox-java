@@ -3,7 +3,6 @@ package com.atjl.dbtiming.test;
 import com.atjl.dbtiming.api.ICond;
 import com.atjl.dbtiming.api.ITimingTaskParam;
 import org.springframework.stereotype.Component;
-//import sf.aos.constant.TaskConstant;
 
 
 @Component("fixratecond")

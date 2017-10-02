@@ -37,7 +37,7 @@ public class KafkaLowLevelUtil {
     private static int FETCH_SIZE_INCR_STEP = 500 * 1000;
 
     /**
-     * sf api 获取zk实际地址 ，需要消费者组配置 token
+     * 获取zk实际地址 ，需要消费者组配置 token
      *
      * @param clusterName cluster name
      * @param ctoken      token

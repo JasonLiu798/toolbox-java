@@ -13,8 +13,6 @@
 
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
         <plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin"></plugin>
-        <!--<plugin type="sf.aos.plugin.PaginationPlugin" ></plugin>-->
-        <!--<plugin type="com.MutiModule.common.mybatis.plugin.DeleteLogicByIdsPlugin"></plugin>-->
 
 
         <commentGenerator>
@@ -23,11 +21,11 @@
 
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://10.202.125.245:3306/aos?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true"
-                        userId="aos" password="aos"/>
+                        connectionURL="jdbc:mysql://10.202.125.245:3306/test?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true"
+                        userId="test" password="test"/>
 
-        <javaModelGenerator targetPackage="sf.aos.domain.gen"
-                            targetProject="D:\project\java\esg-aos-core\code\aos-admin\aos-dto\src\main\java">
+        <javaModelGenerator targetPackage="com.atjl.logdb.domain.gen"
+                            targetProject="src\main\java">
             <property name="constructorBased" value="false"/>
             <property name="enableSubPackages" value="false"/>
             <property name="immutable" value="false"/>
@@ -36,47 +34,8 @@
 
         <sqlMapGenerator targetPackage="sqlmap.gen"
                          targetProject="src\main\resources"/>
-        <javaClientGenerator targetPackage="sf.aos.mapper.gen"
+        <javaClientGenerator targetPackage="com.atjl.logdb.mapper.gen"
                              targetProject="src\main\java" type="XMLMAPPER"/>
-
-        <!--hr -->
-        <table schema="aossit" enableDeleteByExample="false" enableDeleteByPrimaryKey="false" tableName="ts_sap_org"/>
-        <table schema="aossit" enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
-               tableName="ts_sap_person"/>
-
-        <!-- 数据字典 -->
-        <table domainObjectName="GenDict" schema="aossit" enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
-               tableName="ts_dictionary"/>
-        <!--操作日志
-        <table domainObjectName="GenLog" schema="aossit" enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
-               tableName="ts_op_log"/>-->
-
-        <!-- 菜单 -->
-        <table domainObjectName="GenModule" schema="aossit" enableDeleteByExample="false"
-               enableDeleteByPrimaryKey="false"
-               tableName="ts_module"/>
-        <!-- 角色 -->
-        <table domainObjectName="GenRole" schema="aossit" enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
-               tableName="ts_role"/>
-        <!-- 用户 -->
-        <table domainObjectName="GenUser" schema="aossit" enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
-               tableName="ts_user">
-            <generatedKey column="USER_ID" sqlStatement="Mysql" type="post" identity="true"/>
-        </table>
-
-        <!-- 用户 角色 -->
-        <table domainObjectName="GenUserRole" schema="aossit"
-               enableDeleteByPrimaryKey="false" tableName="ts_user_role"/>
-        <!-- 主键 UUID -->
-        <!-- 文件 -->
-        <table schema="aossit" enableDeleteByExample="false" enableDeleteByPrimaryKey="false" tableName="t_common_file">
-            <generatedKey column="COMMON_FILE_ID" sqlStatement="select UUID() from dual"/>
-        </table>
-
-        <!-- 序列 -->
-        <table schema="aossit" enableDeleteByExample="false" enableDeleteByPrimaryKey="false" tableName="t_sequence">
-            <generatedKey column="SEQUENCE_ID" sqlStatement="Mysql" type="post" identity="true"/>
-        </table>
 
     </context>
 </generatorConfiguration>

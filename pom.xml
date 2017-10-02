@@ -139,11 +139,11 @@
 
         <module>common-kafka</module>
 
-        <module>common-kafka-sf</module>
-        <module>frame-db-simple</module>
-        <module>frame-main</module>
+        <!--<module>common-kafka-sf</module>-->
+        <!--<module>frame-db-simple</module>-->
+        <!--<module>frame-main</module>-->
 
 
-        <module>tpi-ocr-gen</module>
+        <!--<module>tpi-ocr-gen</module>-->
     </modules>
 </project>
