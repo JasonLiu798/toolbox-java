@@ -1,154 +1,202 @@
 package com.atjl.util.thread;
 
+import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.reflect.ReflectClassUtil;
+import com.atjl.util.thread.domain.ThreadPoolStatus;
+import com.atjl.util.thread.task.BaseTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.*;
 
+/**
+ *
+ */
 public class ThreadPoolManager {
-	private static final Logger log = LoggerFactory.getLogger(ThreadPoolManager.class);
-    public static final String BUFPOOL_TYPE_MYFIX = "Fix";
-	public static final String PARAM_SEP = ",";
+    private static final Logger logger = LoggerFactory.getLogger(ThreadPoolManager.class);
 
-    ConcurrentHashMap<String,Executor> execs = new ConcurrentHashMap();
-    public ThreadPoolManager(Map ThreadPoolTypes) {
-        for (Iterator it = ThreadPoolTypes.entrySet().iterator(); it.hasNext(); ) {
-            //Server,Fix,5,10,200000,30000
-            Map.Entry entry = (Map.Entry) it.next();
-            String param = (String) entry.getValue();
-            String[] params = param.split(PARAM_SEP);
-            String threadPoolName = params[0];//name
-            ExecutorService execFixed = null;
-            ThreadPoolExecutor dp = null;
+    private static ConcurrentHashMap<String, ThreadManager> execs = new ConcurrentHashMap();
 
-            if (params[1].equals(BUFPOOL_TYPE_MYFIX)) {
-                //corePoolSize,maxPoolSize,keepAliveTime,maxTaskCount
-                //Server,Fix,12,12,30000,200000
-                //Server|messageConnect,MYFiX,10->4,10->8,200000->,30000
-                dp = new ThreadPoolExecutor(
-                        Integer.parseInt(params[2]),//corePoolSize	5
-                        Integer.parseInt(params[3]),//maximumPoolSize	10
-                        Long.parseLong(params[4]),//maxTasksCount	200000
-						TimeUnit.MILLISECONDS,
-						new LinkedBlockingQueue<Runnable>(Integer.parseInt(params[5]))
-				);
-                execFixed = dp;
-            } else {
-                execFixed = Executors.newFixedThreadPool(Integer.parseInt(params[2]));
+
+    public static synchronized void init(List<String> paramList) {
+        /**
+         * PoolName,PoolType,corePoolSize,maxPoolSize,keepAliveTime,maxTaskCount
+         * 指定参数的
+         * poolA,UD,5,10,200000,30000
+         * 固定大小
+         * poolB,Fix,20
+         */
+        if (CollectionUtil.isEmpty(paramList)) {
+            logger.info("init pool manager fail,param empty");
+            return;
+        }
+        //todo 更详细的校验
+
+        logger.info("init pool manager use param:{}", paramList);
+        for (String param : paramList) {
+            if (!createCheck(param)) {
+                logger.warn("init pool,param invalid {}", param);
+                continue;
             }
-            execs.put(threadPoolName, execFixed);
-			log.debug("thread {} has been created and add to the map",threadPoolName);
+
+            ThreadManager execFixed = initOne(param);
+            if (execFixed != null) {
+                execs.put(ThreadInnerUtil.getName(param), execFixed);
+            }
+            logger.info("pool {} has been created and add to the map", param);
+        }
+        logger.info("init pool manager finish");
+    }
+
+
+    public static void execute(String poolName, BaseTask runnable) {
+        try {
+            execThrowException(poolName, runnable);
+        } catch (Exception e) {
+            logger.error("pool {} exec fail {}", poolName, e);
         }
     }
 
-    public ExecutorService getThreadPoolImp(String ThreadPoolType) {
-        return (ExecutorService) execs.get(ThreadPoolType);
+    public static void execThrowException(String poolName, BaseTask runnable) {
+        ThreadManager tm = exist(poolName);
+        tm.execute(runnable);
     }
 
-    /**
-     * @param poolName
-     * @param TaskCount
-     */
-    public void createThreadPoolImp(String poolName, int TaskCount) {
-        ThreadPoolExecutor dp = new ThreadPoolExecutor(TaskCount, TaskCount, 20000l,TimeUnit.MILLISECONDS,new LinkedBlockingQueue<Runnable>());
-        execs.put(poolName, dp);
+    public static Future submit(String poolName, BaseTask runnable) {
+        try {
+            return submitThrowException(poolName, runnable);
+        } catch (Exception e) {
+            logger.error("pool {} submit fail {}", poolName, e);
+        }
+        return null;
     }
 
-    /**
-     * get com.jason798.thread pool
-     * @param ThreadPoolNum
-     * @return
-     */
-    public ExecutorService getThreadPoolImp(int ThreadPoolNum) {
-        int i = 0;
-        ExecutorService es = null;
-        for (Iterator it = execs.entrySet().iterator(); it.hasNext(); ) {
-            Map.Entry entry = (Map.Entry) it.next();
-            if (ThreadPoolNum == i) {
-                es = (ExecutorService) entry.getValue();
-                break;
-            }
+    public static Future submitThrowException(String poolName, BaseTask runnable) {
+        ThreadManager tm = exist(poolName);
+        return tm.submit(runnable);
+    }
 
-            i++;
+
+    private static boolean createCheck(String param) {
+        if (!ThreadInnerUtil.validParam(param)) {
+            logger.warn("init pool,param invalid {}", param);
+            return false;
+        }
+        String threadPoolName = ThreadInnerUtil.getName(param);//name
+        if (execs.contains(threadPoolName)) {
+            logger.warn("init pool,duplicate thread pool {}", threadPoolName);
+            return false;
+        }
+        return true;
+    }
+
+    private static ThreadManager exist(String poolName) {
+        ThreadManager es = execs.get(poolName);
+        if (es == null) {
+            throw new NullPointerException("pool not exit,name " + poolName);
         }
         return es;
     }
 
-    public void shutdown() {
+    public static ThreadManager getPool(String poolName) {
+        return execs.get(poolName);
+    }
+
+    private static ThreadManager initOne(String param) {
+        String[] params = param.split(ThreadConstant.PARAM_SEP);
+        ExecutorService execFixed = null;
+        switch (params[1]) {
+            case ThreadConstant.BUFPOOL_TYPE_USERDEFINE:
+                //corePoolSize,maxPoolSize,keepAliveTime,maxTaskCount
+                //PoolName,UD,12,12,30000,200000
+                execFixed = new ThreadPoolExecutor(
+                        Integer.parseInt(params[2]),//corePoolSize	5
+                        Integer.parseInt(params[3]),//maximumPoolSize	10
+                        Long.parseLong(params[4]),//maxTasksCount	200000
+                        TimeUnit.MILLISECONDS,
+                        new LinkedBlockingQueue<>(Integer.parseInt(params[5]))
+                );
+
+                break;
+            case ThreadConstant.BUFPOOL_TYPE_FIX:
+                //PoolName,Fix,123
+                execFixed = Executors.newFixedThreadPool(Integer.parseInt(params[2]));
+                break;
+            default:
+                logger.warn("unknown type {}", params[1]);
+        }
+        if (execFixed != null) {
+            return new ThreadManager(params[1], execFixed);
+        }
+        return null;
+    }
+
+
+    /**
+     * dynamic add pool
+     */
+    public static ThreadManager createPool(String name, String param) {
+        if (!createCheck(param)) {
+            return null;
+        }
+        ThreadManager tm = initOne(param);
+        if (tm != null) {
+            execs.put(name, tm);
+        }
+        return tm;
+    }
+
+
+    /**
+     * thread pool status
+     */
+    public static List<ThreadPoolStatus> getStatus() {
+        List<ThreadPoolStatus> statusList = new ArrayList<>();
+        for (Map.Entry<String, ThreadManager> entry : execs.entrySet()) {
+            ThreadPoolStatus status = new ThreadPoolStatus();
+            status.setName(entry.getKey());
+            if (entry.getValue() != null) {
+                status.setNotNull(true);
+            } else {
+                status.setNotNull(false);
+            }
+
+            ThreadManager tm = entry.getValue();
+            ExecutorService es = tm.getExecutorService();
+            if (ReflectClassUtil.chkAImplementB(es, ThreadPoolExecutor.class)) {
+                ThreadPoolExecutor t = (ThreadPoolExecutor) es;
+                status.setActiveCount(t.getActiveCount());
+                status.setCompletedTaskCount(t.getCompletedTaskCount());
+                status.setCorePoolSize(t.getCorePoolSize());
+                status.setLargestPoolSize(t.getLargestPoolSize());
+                status.setPoolSize(t.getPoolSize());
+                status.setTaskCount(t.getTaskCount());
+
+                BlockingQueue q = t.getQueue();
+                if (q != null) {
+                    status.setQueueSize(q.size());
+                }
+            }
+            status.setRunningThreadStatuses(tm.getStatus());
+            statusList.add(status);
+        }
+        return statusList;
+    }
+
+
+    /**
+     * shutdown call before exit
+     */
+    public static synchronized void shutdown() {
+        logger.info("start destryo pools");
+        if (CollectionUtil.isEmpty(execs)) {
+            return;
+        }
         for (Iterator it = execs.entrySet().iterator(); it.hasNext(); ) {
             Map.Entry entry = (Map.Entry) it.next();
             ExecutorService exec = (ExecutorService) entry.getValue();
             exec.shutdownNow();
         }
     }
-
-	/**
-	 * for test
-	 * @return
-	 */
-    public Runnable testCreaterun() {
-        return new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.currentThread();
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("ok");
-            }
-        };
-    }
-
-    public static void main(String[] args) {
-        HashMap para = new HashMap();
-		//para.put(1, "threadPoolName1,MYFiX,5,10,200000,30000");
-		para.put(1, "1,Fix,12,12,30000,200000");
-        ThreadPoolManager st = new ThreadPoolManager(para);
-
-        st.getThreadPoolImp("1").submit(st.testCreaterun());
-        st.getThreadPoolImp("1").submit(st.testCreaterun());
-        try {
-            Thread.currentThread();
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        st.getThreadPoolImp("1").submit(st.testCreaterun());
-        st.getThreadPoolImp("1").submit(st.testCreaterun());
-        st.getThreadPoolImp("1").submit(st.testCreaterun());
-        st.getThreadPoolImp("1").submit(st.testCreaterun());
-        st.getThreadPoolImp("1").submit(st.testCreaterun());
-        st.getThreadPoolImp("1").submit(st.testCreaterun());
-
-        byte[] b = new byte[]{(byte) 0xba, (byte) 0xba};
-
-        String ll = "汉";
-
-        try {
-            String s = new String(b, "GBK");
-            System.out.println(s);
-//			String strKey=new String(b,"UTF-8");
-//			byte[] b1=strKey.getBytes();
-
-//			Charset  cs=Charset.forName("UTF-8");
-//			ByteBuffer bbbb=ByteBuffer.wrap(b);
-//			bbbb=cs.encode(s);
-//			System.out.println(bbbb);
-
-            //String ss=new String(b1,"UTF-8");
-//
-            //System.out.println(bb);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-		}
-		st.shutdown();
-    }
-
-
 }

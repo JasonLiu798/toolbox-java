@@ -1,88 +1,135 @@
 package com.atjl.util.thread;
 
+import com.atjl.common.api.LifeCycle;
+import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.common.DateUtil;
-import com.atjl.util.net.IPUtil;
-import com.atjl.util.queue.IQueue;
+import com.atjl.util.thread.domain.ThreadStatus;
 import com.atjl.util.thread.task.BaseTask;
-import com.atjl.util.thread.task.ReadTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
-public class ThreadManager {
-    private static Logger LOG = LoggerFactory.getLogger(ThreadManager.class);
+public class ThreadManager implements LifeCycle {
+    private static Logger logger = LoggerFactory.getLogger(ThreadManager.class);
+
+    private String name;
+
     private ExecutorService executorService;
 
-    private int slaveCnt = 1;
-    private int maserCnt = 1;
-
-    private Map<String, BaseTask> taskMap = new HashMap<>();
-
-    private static IQueue queue;
+    /**
+     * !!! 谨防内存泄露 !!!
+     */
+    private Map<String, BaseTask> runningTaskMap = new ConcurrentHashMap<>();
 
     private boolean start = false;
-    private boolean poolInited = false;
 
-    private static int id = 0;
-
-
-
-    /**
-     * spring初始化完毕调用
-     */
-    private synchronized void init() {
-        int poolSize = slaveCnt + maserCnt;
-        //queue = QueueManager.getQueue(LogClient.LOG_QUEUE);
-        initPool(poolSize);
+    public ThreadManager(String name, ExecutorService executorService) {
+        this.name = name;
+        this.executorService = executorService;
     }
 
-    /**
-     * 开始处理
-     */
-    public synchronized void startTask() {
-        init();
-        if (!start) {
-            Long ip = null;
-            try {
-                ip = IPUtil.getLocalIPLong();
-            } catch (Exception e) {
-                //LogDbUtil.error(LogConstant.MODULE_LOG,"获取本地ip异常", e);
-//                LogClient.writeErrorSync(ThreadManager.class.getSimpleName(),"get local ip exception", e);
+
+    @Override
+    public void init() {
+    }
+
+    public void beforeAdd(BaseTask t) {
+        t.setThreadManager(this);
+        runningTaskMap.put(String.valueOf(t.getId()), t);
+    }
+
+    public void rmFromMap(long id) {
+        runningTaskMap.remove(String.valueOf(id));
+    }
+
+
+    public void execute(BaseTask t) {
+        try {
+            executeThrow(t);
+        } catch (Exception e) {
+            logger.error("pool {} exec fail {}", name, e);
+            rmFromMap(t.getId());
+        }
+    }
+
+    public void executeThrow(BaseTask t) {
+        beforeAdd(t);
+        executorService.execute(t);
+    }
+
+    public Future submit(BaseTask r) {
+        try {
+            return submitThrow(r);
+        } catch (Exception e) {
+            logger.error("pool {} submit fail {}", name, e);
+        }
+        return null;
+    }
+
+    public Future submitThrow(BaseTask t) {
+        beforeAdd(t);
+        return executorService.submit(t);
+    }
+
+    public List<ThreadStatus> getStatus() {
+        List<ThreadStatus> status = new ArrayList<>();
+        if (!CollectionUtil.isEmpty(runningTaskMap)) {
+            for (Map.Entry<String, BaseTask> entry : runningTaskMap.entrySet()) {
+                ThreadStatus s = new ThreadStatus();
+                BaseTask t = entry.getValue();
+                s.setId(String.valueOf(t.getId()));
+                s.setState(t.getState());
+                status.add(s);
             }
-
-            ReadTask readTask = new ReadTask(id, queue, ip);
-            id++;
-            executorService.submit(readTask);
-            setStart();
         }
+        return status;
     }
 
-    /**
-     * 手动停止
-     */
-    public synchronized void manualStop() {
-        //stop tasks
-        for (Map.Entry<String, BaseTask> entry : taskMap.entrySet()) {
-            BaseTask task = entry.getValue();
-            task.stop();
-            LOG.info("task {} stop send", entry.getValue());
-        }
-        setStop();
-        destroyPool();
+    public ExecutorService getExecutorService() {
+        return executorService;
     }
 
-
-    public boolean isRunning() {
-        return start;
+    public void setExecutorService(ExecutorService executorService) {
+        this.executorService = executorService;
     }
 
-    public void manualClean() {
-        destroyPool();
-    }
+//
+//    /**
+//     * spring初始化完毕调用
+//     */
+//    private void init() {
+////        int poolSize = slaveCnt + maserCnt;
+//        //queue = QueueManager.getQueue(LogClient.LOG_QUEUE);
+////        initPool(poolSize);
+//    }
+
+//    /**
+//     * 开始处理
+//     */
+//    public synchronized void startTask() {
+//        init();
+//        if (!start) {
+//            Long ip = null;
+//            try {
+//                ip = IPUtil.getLocalIPLong();
+//            } catch (Exception e) {
+//                //LogDbUtil.error(LogConstant.MODULE_LOG,"获取本地ip异常", e);
+////                LogClient.writeErrorSync(ThreadManager.class.getSimpleName(),"get local ip exception", e);
+//            }
+//
+////            ReadTask readTask = new ReadTask(id, queue, ip);
+////            id++;
+////            executorService.submit(readTask);
+////            setStart();
+//        }
+//    }
+
 
     public boolean isStart() {
         return start;
@@ -97,27 +144,37 @@ public class ThreadManager {
         this.start = false;
     }
 
-    public void initPool(int poolsize) {
-        if (poolInited == false) {
-            executorService = Executors.newFixedThreadPool(poolsize);
-        }
-        poolInited = true;
-    }
+//    public void initPool(int poolsize) {
+//        if (poolInited == false) {
+//            executorService = Executors.newFixedThreadPool(poolsize);
+//        }
+//        poolInited = true;
+//    }
 
-    public void destroyPool() {
+
+    public void rebuildThreadPool() {
         if (executorService != null) {
             executorService.shutdown();
         }
     }
 
-    public void rebuildThreadPool(int poolsize) {
-        if (executorService != null) {
-            executorService.shutdown();
-            initPool(poolsize);
-        }
-    }
 
+//    /**
+//     * 手动停止
+//     */
+//    public synchronized void manualStop() {
+//        //stop tasks
+//        for (Map.Entry<String, BaseTask> entry : taskMap.entrySet()) {
+//            BaseTask task = entry.getValue();
+//            task.stop();
+//            logger.info("task {} stop send", entry.getValue());
+//        }
+//    }
+
+    @Override
     public void destroy() {
-
+        if (executorService != null) {
+            executorService.shutdown();
+        }
     }
 }

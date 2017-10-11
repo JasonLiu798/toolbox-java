@@ -98,6 +98,7 @@ public class CovertUtil {
     public static <T> T covertObj(Object rawVal, Class<T> tgtClz) {
         return covertObj(rawVal, tgtClz, null, DFT_SEP);
     }
+
     public static <T> T covertObj(Object rawVal, Class<T> tgtClz, T dft) {
         return covertObj(rawVal, tgtClz, dft, DFT_SEP);
     }
@@ -145,7 +146,7 @@ public class CovertUtil {
             }
             String func = genParseFuncName(tgtClz);
             try {
-                Method m = tgtClz.getDeclaredMethod("str2ts" + func, String.class);
+                Method m = tgtClz.getDeclaredMethod(CommonUtilConstant.FUNC_PARSE_PREFIX + func, String.class);
                 Object res = m.invoke(rawVal, rawVal);
                 return (T) res;
             } catch (Exception e) {
@@ -180,10 +181,10 @@ public class CovertUtil {
 
 
     /**
-     * 生成各个类的 str2ts
+     * 生成各个类的 parse
      *
-     * @param clz
-     * @return
+     * @param clz 类名
+     * @return parse方法后半部分
      */
     private static String genParseFuncName(Class clz) {
         String func = StringUtil.toUpperCaseFirstOne(clz.getSimpleName());

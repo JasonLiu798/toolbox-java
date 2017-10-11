@@ -1,6 +1,5 @@
 package com.atjl.dbtiming.util;
 
-
 import java.util.Date;
 
 public class DbTimingUtil {

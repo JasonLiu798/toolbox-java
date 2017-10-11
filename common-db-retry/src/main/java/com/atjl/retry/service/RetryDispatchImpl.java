@@ -4,6 +4,7 @@ import com.atjl.retry.api.RetryDispatch;
 import com.atjl.retry.api.RetryService;
 import com.atjl.retry.api.domain.RetryStatusDto;
 import com.atjl.retry.api.exception.RetryInitException;
+import com.atjl.retry.api.exception.RetryRegisteException;
 import com.atjl.retry.api.option.InitOption;
 import com.atjl.retry.domain.RetryServiceItem;
 import com.atjl.retry.manager.DispatchManager;
@@ -66,8 +67,9 @@ public class RetryDispatchImpl implements RetryDispatch {
         }
 
         if (retryServices.containsKey(serviceName)) {
-            throw new RetryInitException("已经注册了服务，" + serviceName);
+            throw new RetryRegisteException("已经注册了服务，" + serviceName);
         }
+
         RetryServiceItem retryServiceItem = new RetryServiceItem();
 
         RetryService service = (RetryService) serviceObj;
