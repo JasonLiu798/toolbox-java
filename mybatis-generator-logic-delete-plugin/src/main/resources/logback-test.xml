@@ -43,7 +43,6 @@
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="DAILYFILE"/>
     </root>
-    <!--<logger name="com.sf.novatar" level="DEBUG"/>-->
     <logger name="com.atjl.log" level="DEBUG"/>
 
 

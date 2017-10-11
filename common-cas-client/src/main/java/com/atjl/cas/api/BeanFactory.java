@@ -60,10 +60,10 @@ public class BeanFactory implements ServletContextListener {
             if (logger.isDebugEnabled()) {
                 logger.debug("please config web.xml, add listener:");
                 logger.debug("<listener>");
-                logger.debug("    <listener-class>com.sf.integration.BeanFactory</listener-class>");
+                logger.debug("    <listener-class>com.atjl.integration.BeanFactory</listener-class>");
                 logger.debug("</listener>");
             }
-            throw new CASBaseException("can't find com.sf.integration.BeanFactory, please config BeanFactory!");
+            throw new CASBaseException("can't find com.atjl.integration.BeanFactory, please config BeanFactory!");
         }
 	}
 

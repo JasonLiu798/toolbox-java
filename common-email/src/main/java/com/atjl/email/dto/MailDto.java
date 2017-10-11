@@ -106,7 +106,7 @@ public class MailDto {//implements Serializable {
     /**
      * 邮件相关信息 - 邮件發送方顯示名
      */
-    private String mailShowName = "SF Express";
+    private String mailShowName = "";
 
 
     public boolean isDebug() {

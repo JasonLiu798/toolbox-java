@@ -192,7 +192,6 @@
 				<artifactId>sgs-locale</artifactId>
 				<version>${sgs-locale.version}</version>
 			</dependency>
-			<!-- dubbo-sf -->
 			<dependency>
 				<groupId>com.alibaba</groupId>
 				<artifactId>dubbo</artifactId>
@@ -1549,13 +1548,13 @@
 	</dependencyManagement>
 	<repositories>
 		<repository>
-			<id>sf-private-reponsitory</id>
-			<name>SF private repository</name>
-			<url>http://nexus.sf-express.com/nexus/content/groups/public/</url>
+			<id>reponsitory</id>
+			<name>repository</name>
+			<url>http://nexus.test.com/nexus/content/groups/public/</url>
 		</repository>
 		<repository>
 			<id>cobg-private-repos</id>
-			<name>SF COBG repository</name>
+			<name>repository2</name>
 			<url>http://10.102.36.185:8081/nexus/content/groups/public/</url>
 		</repository>
 	</repositories>
@@ -1565,16 +1564,16 @@
 		<repository>
 			<id>releases</id>
 			<name>Nexus Release Repository</name>
-			<url>http://nexus.sf-express.com/nexus/content/repositories/releases/</url>
+			<url>http://nexus.test.com/nexus/content/repositories/releases/</url>
 		</repository>
 		<snapshotRepository>
 			<id>snapshots</id>
 			<name>Nexus Snapshot Repository</name>
-			<url>http://nexus.sf-express.com/nexus/content/repositories/snapshots/</url>
+			<url>http://nexus.test.com/nexus/content/repositories/snapshots/</url>
 		</snapshotRepository>
 		<!-- javadoc site -->
 		<site>
-			<id>sf-javadoc-site</id>
+			<id>javadoc-site</id>
 			<url>${site.deploy.url}</url>
 		</site>
 		<!-- mvn site:deploy -->
@@ -1597,7 +1596,7 @@
 				<sendOnSuccess>true</sendOnSuccess>
 				<sendOnWarning>false</sendOnWarning>
 				<configuration>
-					<address>tangjimo@sf-express.com</address>
+					<address></address>
 				</configuration>
 			</notifier>
 		</notifiers>
@@ -1609,10 +1608,10 @@
 	</scm>
 	<mailingLists>
 		<mailingList>
-			<name>sf-nirvana-template User Mailling List</name>
-			<subscribe>tangjimo@sf-express.com</subscribe>
-			<unsubscribe>tangjimo@sf-express.com</unsubscribe>
-			<post>tangjimo@sf-express.com</post>
+			<name>User Mailling List</name>
+			<subscribe></subscribe>
+			<unsubscribe></unsubscribe>
+			<post></post>
 			<archive>${scm.source.url}</archive>
 		</mailingList>
 	</mailingLists>
@@ -1777,7 +1776,7 @@
 					<version>2.12.1</version>
 					<configuration>
 						<linkXRef>true</linkXRef>
-						<configLocation>sf-checkstyle.xml</configLocation>
+						<configLocation>checkstyle.xml</configLocation>
 					</configuration>
 				</plugin>
 				<!-- FindBugs -->

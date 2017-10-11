@@ -54,12 +54,9 @@
         </rollingPolicy>
     </appender>
 
-    <logger name="sf.aos" level="DEBUG">
+    <logger name="com.atjl" level="DEBUG">
     </logger>
 
-
-    <logger name="sf.erui" level="DEBUG">
-    </logger>
 
     <!-- 日志输出级别 -->
     <!-- OFF, ERROR, WARN, INFO, DEBUG, TRACE, ALL. -->

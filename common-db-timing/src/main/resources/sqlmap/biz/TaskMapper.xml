@@ -56,7 +56,7 @@ GROUP BY t.TID
         GROUP BY t.TID
     </select>
 
-    <!--<resultMap id="taskDomains" type="sf.aos.timing.domain.TaskDomain">-->
+    <!--<resultMap id="taskDomains" type="com.atjl.dbtiming.domain.TaskDomain">-->
     <!--<id column="TID" jdbcType="BIGINT" property="tid"/>-->
     <!--<result column="TKEY" jdbcType="VARCHAR" property="tkey"/>-->
     <!--<result column="TSERVICE" jdbcType="VARCHAR" property="tservice"/>-->
