@@ -1,8 +1,7 @@
 package com.atjl.dbtiming.service;
 
 import com.atjl.common.context.DevContext;
-import com.atjl.dbtiming.api.req.AddTaskParam;
-import com.atjl.dbtiming.api.RetCode;
+import com.atjl.dbtiming.api.domain.RetCode;
 import com.atjl.util.common.SystemUtil;
 import com.atjl.util.json.JSONFastJsonUtil;
 import org.junit.*;
@@ -11,8 +10,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -20,9 +17,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TransactionConfiguration(defaultRollback = false, transactionManager = "transactionManager")
-@ContextConfiguration(locations = {"classpath:test-tk-service.xml"})
-@Transactional
+//@TransactionConfiguration(defaultRollback = false, transactionManager = "transactionManager")
+@ContextConfiguration(locations = {"classpath:test-service.xml"})
+//@Transactional
 public class TimingManagerTest {
 
     @Autowired
@@ -44,6 +41,7 @@ public class TimingManagerTest {
         DevContext.test = true;
         timingManager.init();
 
+        /*
         AddTaskParam p = AddTaskParam.buildNewFixRateCntConditionParam(
                 "test",
                 String.valueOf(1L),
@@ -62,10 +60,12 @@ public class TimingManagerTest {
                 5 * 1000L,
                 5 * 1000L
         );
+
         res = timingManager.addDynamicTask(p);
         System.out.println("res:" + res);
 
         SystemUtil.sleepForever();
+        */
     }
 
 
@@ -157,14 +157,14 @@ public class TimingManagerTest {
 
 
     @Test
-    public void manualRun(){
+    public void manualRun() {
 
-        RetCode res = timingManager.manualRun(1L,"");
+        RetCode res = timingManager.manualRun(1L, "");
 
 //        res = timingManager.manualRun(2L,null);
 //        res = timingManager.manualRun(3L,null);
-        res = timingManager.manualRun(4L,null);
-        System.out.println("res:"+res);
+        res = timingManager.manualRun(4L, null);
+        System.out.println("res:" + res);
 
     }
 

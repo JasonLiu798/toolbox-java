@@ -1,6 +1,7 @@
 package com.atjl.dbtiming.domain.biz;
 
-import com.atjl.dbtiming.task.BaseTimingTask;
+import com.atjl.dbtiming.domain.constant.TimingConstant;
+import com.atjl.dbtiming.task.TimingTaskBase;
 import com.atjl.dbtiming.task.CronTask;
 import com.atjl.dbtiming.task.DelayTask;
 import com.atjl.dbtiming.task.FixRateCondTask;
@@ -88,7 +89,7 @@ public class TimingManagerStatusDto implements Serializable {
      *
      * @param task
      */
-    public void addTaskStatus(BaseTimingTask task) {
+    public void addTaskStatus(TimingTaskBase task) {
         TaskStatusDto statusDto = new TaskStatusDto();
         Long taskId = task.getTid();
         //basis info

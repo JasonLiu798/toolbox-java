@@ -1,7 +1,5 @@
 package com.atjl.dbtiming.api;
 
-import com.atjl.dbtiming.api.req.AddTaskParam;
-import com.atjl.util.json.JSONFastJsonUtil;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 
@@ -11,13 +9,14 @@ public class AddTaskParamTest {
     @Test
     public void testIsSucc() throws Exception {
         //String service, String paramStr, Long maxTime, Long delay, Long interval)
+        /*
         AddTaskParam p = AddTaskParam.buildNewFixRateCntConditionParam("aa", "p", 10L, 1000L, 2000L);
         System.out.println("res:" + JSONFastJsonUtil.objectToJson(p));
 
         p = AddTaskParam.buildNewFixRateCntParam("aa", "p", 10L, 1000L, 2000L);
 
         System.out.println("res:" + JSONFastJsonUtil.objectToJson(p));
-
+        */
 
     }
 

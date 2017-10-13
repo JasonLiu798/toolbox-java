@@ -1,7 +1,7 @@
 package com.atjl.dbtiming.task;
 
 import com.atjl.dbtiming.domain.biz.TaskEnum;
-import com.atjl.dbtiming.domain.biz.TimingConstant;
+import com.atjl.dbtiming.domain.constant.TimingConstant;
 import com.atjl.dbtiming.helper.TimingInnerManager;
 import com.atjl.dbtiming.util.DbTimingUtil;
 import com.atjl.logdb.api.LogDbUtil;

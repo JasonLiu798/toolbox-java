@@ -1,10 +1,9 @@
 package com.atjl.dbtiming.mapper.gen;
 
-import java.util.List;
-
-import com.atjl.dbtiming.domain.gen.GenTaskExample;
-import org.apache.ibatis.annotations.Param;
 import com.atjl.dbtiming.domain.gen.GenTask;
+import com.atjl.dbtiming.domain.gen.GenTaskExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface GenTaskMapper {
     int countByExample(GenTaskExample example);

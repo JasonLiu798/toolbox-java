@@ -9,22 +9,27 @@ import com.atjl.validate.validator.base.ExistBase;
 
 /**
  * 存在则报错
+ *
+ * !!! 需要spring和 dataSource
  */
 public class Exist extends ExistBase {
     private static final String DFT_MSG = "已经存在";
 
     public Exist(String table, String column) {
-        super();
-        init(table, column, DFT_MSG);
+        super(table, column, DFT_MSG);
     }
 
-    public Exist(String table,String column,String msg) {
-        super(table,column,msg);
+    public Exist(String table, String column, String otherConds) {
+        super(table, column, otherConds, DFT_MSG);
+    }
+
+    public Exist(String table, String column, String otherConds, String msg) {
+        super(table, column, otherConds, msg);
     }
 
     public void validate(ValidateForm form, ValidateField field) {
         String raw = field.getStrValue();
-        if (ValidateDbUtil.exist(table, column, raw)) {
+        if (ValidateDbUtil.exist(table, column, otherConds, raw)) {
             throw new ValidateException(this.msg);
         }
     }

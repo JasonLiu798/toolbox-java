@@ -13,6 +13,7 @@
 	<import resource="classpath*:spring/spring-config-*.xml" />
 
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
+
 	<!--<cache:annotation-driven cache-manager="cacheManager"/>-->
 
 	<!--<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">-->
@@ -25,14 +26,14 @@
 	<!--</bean>-->
 
 
-	<!--<bean-->
-		<!--class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
-		<!--<property name="locations">-->
-			<!--<list>-->
-				<!--<value>classpath:jdbc.properties</value>-->
-			<!--</list>-->
-		<!--</property>-->
-	<!--</bean>-->
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
 	
 
 </beans>

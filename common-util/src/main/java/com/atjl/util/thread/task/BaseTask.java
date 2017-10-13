@@ -10,21 +10,21 @@ import org.slf4j.LoggerFactory;
 public abstract class BaseTask implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(BaseTask.class);
 
-    private long id;
+    private String id;
     private ThreadManager threadManager;
 
     private State state;
 
-    public static enum State {
+    public enum State {
         NEW, RUNNING, STOP, EXCEP_STOP
     }
 
     public BaseTask() {
-        this.id = System.nanoTime();
+        this.id = String.valueOf(System.nanoTime());
         state = State.NEW;
     }
 
-    public BaseTask(long id) {
+    public BaseTask(String id) {
         this.id = id;
         state = State.NEW;
     }
@@ -60,11 +60,11 @@ public abstract class BaseTask implements Runnable {
         return state.toString();
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

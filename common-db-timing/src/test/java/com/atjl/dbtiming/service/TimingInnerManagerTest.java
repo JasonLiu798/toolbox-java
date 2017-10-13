@@ -2,10 +2,9 @@ package com.atjl.dbtiming.service;
 
 import com.atjl.common.constant.CommonConstant;
 import com.atjl.common.context.DevContext;
-import com.atjl.dbtiming.domain.TimingContext;
-import com.atjl.dbtiming.domain.gen.GenTask;
-import com.atjl.dbtiming.api.req.AddTaskParam;
 import com.atjl.dbtiming.api.TimingService;
+import com.atjl.dbtiming.core.TimingContext;
+import com.atjl.dbtiming.domain.gen.GenTask;
 import com.atjl.dbtiming.helper.TimingDbHelper;
 import com.atjl.dbtiming.helper.TimingInnerManager;
 import com.atjl.dbtiming.task.FixRateCntTask;
@@ -112,12 +111,12 @@ Long tid,
     @Test
     public void testReSubmitCronTask() throws Exception {
         //String service, String paramStr, Long maxTime, Long delay, Long interval
-        AddTaskParam p = AddTaskParam.buildNewFixRateCntConditionParam(
-                "aaa",
-                "123", 10L, 3000L, 5000L
-        );
-
-        timingManager.addDynamicTask(p);
+//        AddTaskParam p = AddTaskParam.buildNewFixRateCntConditionParam(
+//                "aaa",
+//                "123", 10L, 3000L, 5000L
+//        );
+//
+//        timingManager.addDynamicTask(p);
 
         SystemUtil.sleepForever();
     }

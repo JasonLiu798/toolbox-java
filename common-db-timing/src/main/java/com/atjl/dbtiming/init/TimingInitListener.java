@@ -25,9 +25,9 @@ public class TimingInitListener implements ApplicationListener<ContextRefreshedE
         /**
          * 初始化 定时任务
          */
-        timingManager.init();
-        if (logger.isDebugEnabled()) {
-            logger.debug("initted timing manager");
-        }
+//        timingManager.init();
+//        if (logger.isDebugEnabled()) {
+//            logger.debug("initted timing manager");
+//        }
     }
 }

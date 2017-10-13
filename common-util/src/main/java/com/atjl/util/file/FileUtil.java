@@ -5,7 +5,7 @@ import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.character.StringUtil;
 import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.common.DateUtil;
-import com.atjl.util.config.ParameterConfigParser;
+import com.atjl.util.config.ConfigIntParser;
 import com.atjl.util.constant.SystemConstant;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -416,7 +416,7 @@ public final class FileUtil {
         List<String> res = new ArrayList<>();
         String line;
         BufferedReader in = null;
-        List<Boolean> options = ParameterConfigParser.int2bits(option, 1);
+        List<Boolean> options = ConfigIntParser.int2bits(option, 1);
         boolean filterSpace = options.get(0);
         FileReader fileReader = null;
         try {

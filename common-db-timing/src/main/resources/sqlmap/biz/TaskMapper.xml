@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.atjl.dbtiming.mapper.biz.TaskMapper">
 
-    <resultMap id="taskdomain" type="com.atjl.dbtiming.domain.biz.domain.TaskDomain">
+    <resultMap id="taskdomain" type="com.atjl.dbtiming.domain.biz.TaskDomain">
         <id column="TID" property="tid"/>
         <result column="TKEY" property="tkey"/>
         <result column="TSERVICE" property="tservice"/>

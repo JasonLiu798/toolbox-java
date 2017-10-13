@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
  *
  * @author JasonLiu
  */
-public class DelayTask extends BaseTimingTask {
+public class DelayTask extends TimingTaskBase {
 
     protected boolean runned = false;
 
@@ -26,7 +26,7 @@ public class DelayTask extends BaseTimingTask {
     }
 
 
-//    public DelayTask(Long tid, TimingInnerManager helper, ITimingTask service) {
+//    public DelayTask(Long tid, TimingInnerManager helper, ITaskExecute service) {
 //        super(tid,helper);
 //        this.type = TaskEnum.DELAY;
 //    }

@@ -123,6 +123,13 @@ public class CovertUtil {
         return covert(rawVal, tgtClz, dft, DFT_SEP);
     }
 
+    /**
+     * @param rawVal 原始对象
+     * @param tgtClz 目标值类
+     * @param dft    默认值，转换失败或为空时使用
+     * @param sep    转为 String[] 时，的自定义分隔符
+     * @return
+     */
     public static <T> T covert(String rawVal, Class<T> tgtClz, T dft, String sep) {
         if (tgtClz == String.class) {
             return (T) rawVal;

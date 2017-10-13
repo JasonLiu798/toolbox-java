@@ -1,16 +1,16 @@
 package com.atjl.dbtiming.task;
 
+import com.atjl.dbtiming.api.ITaskExecute;
 import com.atjl.util.common.SystemUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.atjl.dbtiming.helper.TimingInnerManager;
-import com.atjl.dbtiming.api.ITimingTask;
-import com.atjl.dbtiming.domain.biz.TimingConstant;
+import com.atjl.dbtiming.domain.constant.TimingConstant;
 
 /**
  * update alive time
  */
-public class HealthTask implements ITimingTask {
+public class HealthTask implements ITaskExecute {
     private static Logger LOG = LoggerFactory.getLogger(HealthTask.class);
 
     /**

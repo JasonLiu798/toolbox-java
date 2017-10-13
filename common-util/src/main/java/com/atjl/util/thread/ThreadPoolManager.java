@@ -193,10 +193,14 @@ public class ThreadPoolManager {
         if (CollectionUtil.isEmpty(execs)) {
             return;
         }
-        for (Iterator it = execs.entrySet().iterator(); it.hasNext(); ) {
-            Map.Entry entry = (Map.Entry) it.next();
-            ExecutorService exec = (ExecutorService) entry.getValue();
-            exec.shutdownNow();
+        for (Map.Entry<String, ThreadManager> entry : execs.entrySet()) {
+            entry.getValue().destroy();
+            try {
+                ExecutorService exec = (ExecutorService) entry.getValue();
+                exec.shutdown();
+            } catch (Exception e) {
+                logger.error("shutdown fail {}", e);
+            }
         }
     }
 }

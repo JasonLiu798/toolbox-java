@@ -15,6 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+/**
+ *
+ */
 public class ThreadManager implements LifeCycle {
     private static Logger logger = LoggerFactory.getLogger(ThreadManager.class);
 
@@ -24,9 +27,13 @@ public class ThreadManager implements LifeCycle {
 
     /**
      * !!! 谨防内存泄露 !!!
+     * 潜在问题：future 提前停止的线程，未被移除
      */
     private Map<String, BaseTask> runningTaskMap = new ConcurrentHashMap<>();
 
+    /**
+     * 是否执行
+     */
     private boolean start = false;
 
     public ThreadManager(String name, ExecutorService executorService) {
@@ -44,8 +51,8 @@ public class ThreadManager implements LifeCycle {
         runningTaskMap.put(String.valueOf(t.getId()), t);
     }
 
-    public void rmFromMap(long id) {
-        runningTaskMap.remove(String.valueOf(id));
+    public void rmFromMap(String id) {
+        runningTaskMap.remove(id);
     }
 
 

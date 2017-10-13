@@ -7,31 +7,19 @@ public class GenTask implements Serializable {
 
     private String tkey;
 
-    private String tservice;
+    private String taskType;
 
-    private String param;
-
-    private String confType;
-
-    private String confHasParam;
-
-    private String confCronExpression;
-
-    private Long confDelayTm;
-
-    private Long confIntervalTm;
-
-    private Long confExeTimes;
-
-    private String processor;
+    private String datas;
 
     private String tmutex;
 
     private Long mutexTm;
 
-    private String tstatus;
+    private String lastExecutor;
 
-    private Long aliveTm;
+    private Long lastExecuteTm;
+
+    private String tstatus;
 
     private String valid;
 
@@ -55,76 +43,20 @@ public class GenTask implements Serializable {
         this.tkey = tkey == null ? null : tkey.trim();
     }
 
-    public String getTservice() {
-        return tservice;
+    public String getTaskType() {
+        return taskType;
     }
 
-    public void setTservice(String tservice) {
-        this.tservice = tservice == null ? null : tservice.trim();
+    public void setTaskType(String taskType) {
+        this.taskType = taskType == null ? null : taskType.trim();
     }
 
-    public String getParam() {
-        return param;
+    public String getDatas() {
+        return datas;
     }
 
-    public void setParam(String param) {
-        this.param = param == null ? null : param.trim();
-    }
-
-    public String getConfType() {
-        return confType;
-    }
-
-    public void setConfType(String confType) {
-        this.confType = confType == null ? null : confType.trim();
-    }
-
-    public String getConfHasParam() {
-        return confHasParam;
-    }
-
-    public void setConfHasParam(String confHasParam) {
-        this.confHasParam = confHasParam == null ? null : confHasParam.trim();
-    }
-
-    public String getConfCronExpression() {
-        return confCronExpression;
-    }
-
-    public void setConfCronExpression(String confCronExpression) {
-        this.confCronExpression = confCronExpression == null ? null : confCronExpression.trim();
-    }
-
-    public Long getConfDelayTm() {
-        return confDelayTm;
-    }
-
-    public void setConfDelayTm(Long confDelayTm) {
-        this.confDelayTm = confDelayTm;
-    }
-
-    public Long getConfIntervalTm() {
-        return confIntervalTm;
-    }
-
-    public void setConfIntervalTm(Long confIntervalTm) {
-        this.confIntervalTm = confIntervalTm;
-    }
-
-    public Long getConfExeTimes() {
-        return confExeTimes;
-    }
-
-    public void setConfExeTimes(Long confExeTimes) {
-        this.confExeTimes = confExeTimes;
-    }
-
-    public String getProcessor() {
-        return processor;
-    }
-
-    public void setProcessor(String processor) {
-        this.processor = processor == null ? null : processor.trim();
+    public void setDatas(String datas) {
+        this.datas = datas == null ? null : datas.trim();
     }
 
     public String getTmutex() {
@@ -143,20 +75,28 @@ public class GenTask implements Serializable {
         this.mutexTm = mutexTm;
     }
 
+    public String getLastExecutor() {
+        return lastExecutor;
+    }
+
+    public void setLastExecutor(String lastExecutor) {
+        this.lastExecutor = lastExecutor == null ? null : lastExecutor.trim();
+    }
+
+    public Long getLastExecuteTm() {
+        return lastExecuteTm;
+    }
+
+    public void setLastExecuteTm(Long lastExecuteTm) {
+        this.lastExecuteTm = lastExecuteTm;
+    }
+
     public String getTstatus() {
         return tstatus;
     }
 
     public void setTstatus(String tstatus) {
         this.tstatus = tstatus == null ? null : tstatus.trim();
-    }
-
-    public Long getAliveTm() {
-        return aliveTm;
-    }
-
-    public void setAliveTm(Long aliveTm) {
-        this.aliveTm = aliveTm;
     }
 
     public String getValid() {

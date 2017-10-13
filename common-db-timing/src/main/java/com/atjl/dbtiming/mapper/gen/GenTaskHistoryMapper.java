@@ -1,9 +1,8 @@
 package com.atjl.dbtiming.mapper.gen;
 
-import java.util.List;
-
 import com.atjl.dbtiming.domain.gen.GenTaskHistory;
 import com.atjl.dbtiming.domain.gen.GenTaskHistoryExample;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface GenTaskHistoryMapper {

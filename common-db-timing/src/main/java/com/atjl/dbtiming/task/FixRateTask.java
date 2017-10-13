@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
  *
  * @author JasonLiu
  */
-public class FixRateTask extends BaseTimingTask {
+public class FixRateTask extends TimingTaskBase {
     /**
      * constructor
      *

@@ -1,6 +1,6 @@
 package com.atjl.dbtiming.api.exception;
 
-import com.atjl.dbtiming.api.RetCode;
+import com.atjl.dbtiming.api.domain.RetCode;
 
 import java.io.Serializable;
 

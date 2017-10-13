@@ -9,5 +9,5 @@ public interface ICond {
     /**
      * return true,task stop
      */
-    boolean cond(String param);
+    boolean cond();
 }

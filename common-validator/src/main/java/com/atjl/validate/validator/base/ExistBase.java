@@ -9,20 +9,33 @@ import com.atjl.validate.util.ValidateDbUtil;
 /**
  * 存在基类
  *
+ * !!! 需要spring和 dataSource
+ *
  * @author jasonliu
  */
 public abstract class ExistBase extends ValidatorBase {
-    protected String table;
-    protected String column;
-    public ExistBase(){}
+    protected String table;//所在表
+    protected String column;//所在列
+    /**
+     * 附加条件
+     */
+    protected String otherConds;
 
-    public ExistBase(String table, String column, String msg) {
-        init(table, column, msg);
+    public ExistBase() {
     }
 
-    protected void init(String table, String column, String msg) {
+    public ExistBase(String table, String column, String msg) {
+        init(table, column, null, msg);
+    }
+
+    public ExistBase(String table, String column, String otherConds, String msg) {
+        init(table, column, otherConds, msg);
+    }
+
+    protected void init(String table, String column, String otherConds, String msg) {
         this.table = table;
         this.column = column;
+        this.otherConds = otherConds;
         this.msg = msg;
         chk();
         dbChk();
@@ -35,8 +48,8 @@ public abstract class ExistBase extends ValidatorBase {
     }
 
     private void dbChk() {
-        if (!ValidateDbUtil.tableColumnExist(table, column)) {
-            throw new ValidateInitException("表名或列名数据库不存在异常");
+        if (!ValidateDbUtil.tableColumnExist(table, column, otherConds)) {
+            throw new ValidateInitException("表名、列名或附加条件数据库执行异常");
         }
     }
 

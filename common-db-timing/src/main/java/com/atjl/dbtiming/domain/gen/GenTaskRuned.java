@@ -1,7 +1,6 @@
 package com.atjl.dbtiming.domain.gen;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class GenTaskRuned implements Serializable {
     private Long tid;
@@ -34,7 +33,7 @@ public class GenTaskRuned implements Serializable {
 
     private String valid;
 
-    private Date crtTm;
+    private Long crtTm;
 
     private Long firstStartTm;
 
@@ -168,11 +167,11 @@ public class GenTaskRuned implements Serializable {
         this.valid = valid == null ? null : valid.trim();
     }
 
-    public Date getCrtTm() {
+    public Long getCrtTm() {
         return crtTm;
     }
 
-    public void setCrtTm(Date crtTm) {
+    public void setCrtTm(Long crtTm) {
         this.crtTm = crtTm;
     }
 

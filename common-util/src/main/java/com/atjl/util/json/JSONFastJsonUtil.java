@@ -36,13 +36,16 @@ public class JSONFastJsonUtil {
     }
 
     public static String objectToJson(Object object) {
+        if (object == null) {
+            return "";
+        }
         return JSON.toJSONString(object);
     }
 
-    public static String objectToJsonNoException(Object object){
+    public static String objectToJsonNoException(Object object) {
         try {
             return JSON.toJSONString(object);
-        }catch (Exception e){
+        } catch (Exception e) {
             return "null";
         }
     }

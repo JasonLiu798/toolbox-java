@@ -1,9 +1,9 @@
 package com.atjl.dbtiming.mapper.gen;
 
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 import com.atjl.dbtiming.domain.gen.GenTaskRuned;
 import com.atjl.dbtiming.domain.gen.GenTaskRunedExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface GenTaskRunedMapper {
     int countByExample(GenTaskRunedExample example);

@@ -1,11 +1,11 @@
 package com.atjl.dbtiming.task;
 
-import com.atjl.dbtiming.api.ITimingTask;
+import com.atjl.dbtiming.api.ITaskExecute;
 
 /**
  * counter reset task
  */
-public class CounterResetTask implements ITimingTask {
+public class CounterResetTask implements ITaskExecute {
     //private static Logger LOG = LoggerFactory.getLogger(CounterResetTask.class);
 
     @Override

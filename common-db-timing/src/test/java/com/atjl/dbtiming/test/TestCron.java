@@ -1,10 +1,10 @@
 package com.atjl.dbtiming.test;
 
-import com.atjl.dbtiming.api.ITimingTask;
+import com.atjl.dbtiming.api.ITaskExecute;
 import org.springframework.stereotype.Component;
 
 @Component("testCron")
-public class TestCron implements ITimingTask {
+public class TestCron implements ITaskExecute {
 
     private int i=0;
 

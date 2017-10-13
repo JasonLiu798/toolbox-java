@@ -17,7 +17,7 @@
     <result column="TSTATUS" property="tstatus" jdbcType="CHAR" />
     <result column="ALIVE_TM" property="aliveTm" jdbcType="BIGINT" />
     <result column="VALID" property="valid" jdbcType="CHAR" />
-    <result column="CRT_TM" property="crtTm" />
+    <result column="CRT_TM" property="crtTm" jdbcType="BIGINT" />
     <result column="FIRST_START_TM" property="firstStartTm" jdbcType="BIGINT" />
     <result column="FIRST_END_TM" property="firstEndTm" jdbcType="BIGINT" />
     <result column="LAST_START_TM" property="lastStartTm" jdbcType="BIGINT" />
@@ -247,7 +247,7 @@
         #{valid,jdbcType=CHAR},
       </if>
       <if test="crtTm != null" >
-        #{crtTm},
+        #{crtTm,jdbcType=BIGINT},
       </if>
       <if test="firstStartTm != null" >
         #{firstStartTm,jdbcType=BIGINT},

@@ -1,6 +1,7 @@
 package com.atjl.validate.form;
 
 import com.atjl.common.api.annotation.ThreadSafe;
+import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.common.ReflectUtil;
 import com.atjl.util.reflect.ReflectFieldUtil;
@@ -235,7 +236,9 @@ public class BaseForm implements ValidateForm, Serializable {
     public Map<String, String> getErrors() {
         Map<String, String> res = new HashMap<>();
         for (Map.Entry<String, ValidateField> entry : fieldMap.entrySet()) {
-            res.put(entry.getKey(), entry.getValue().getErrorMsg());
+            if (!StringCheckUtil.isEmpty(entry.getValue().getErrorMsg())) {
+                res.put(entry.getKey(), entry.getValue().getErrorMsg());
+            }
         }
 //        ValidateField vf = fieldMap.get(fieldKey);
         return res;//this.errorMap;

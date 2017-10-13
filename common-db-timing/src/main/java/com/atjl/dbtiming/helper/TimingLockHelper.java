@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-import com.atjl.dbtiming.domain.biz.TimingConstant;
+import com.atjl.dbtiming.domain.constant.TimingConstant;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;

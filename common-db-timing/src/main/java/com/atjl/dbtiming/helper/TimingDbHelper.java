@@ -1,20 +1,21 @@
 package com.atjl.dbtiming.helper;
 
+import com.atjl.dbtiming.api.TimingService;
+import com.atjl.dbtiming.api.req.DynamicTaskParam;
+import com.atjl.dbtiming.domain.biz.TaskDomain;
+import com.atjl.dbtiming.domain.constant.TimingConstant;
 import com.atjl.dbtiming.domain.gen.*;
+import com.atjl.dbtiming.mapper.biz.TaskMapper;
 import com.atjl.dbtiming.mapper.gen.GenTaskHistoryMapper;
 import com.atjl.dbtiming.mapper.gen.GenTaskManagerMapper;
 import com.atjl.dbtiming.mapper.gen.GenTaskMapper;
 import com.atjl.dbtiming.mapper.gen.GenTaskRunedMapper;
-import com.atjl.dbtiming.mapper.biz.TaskMapper;
-import com.atjl.dbtiming.api.req.AddTaskParam;
-import com.atjl.dbtiming.api.RetCode;
-import com.atjl.dbtiming.api.TimingService;
-import com.atjl.dbtiming.domain.biz.TaskDomain;
-import com.atjl.dbtiming.task.BaseTimingTask;
+import com.atjl.dbtiming.task.TimingTaskBase;
 import com.atjl.logdb.api.LogDbUtil;
 import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.common.DateUtil;
 import com.atjl.util.common.SystemUtil;
+import com.atjl.util.json.JSONFastJsonUtil;
 import com.atjl.util.net.IPUtil;
 import com.atjl.utilex.ApplicationContextHepler;
 import org.slf4j.Logger;
@@ -24,7 +25,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-import com.atjl.dbtiming.domain.biz.TimingConstant;
 
 import javax.annotation.Resource;
 import java.util.LinkedList;
@@ -163,8 +163,8 @@ public class TimingDbHelper {
 
     public List<GenTask> getValidCronTasks() {
         GenTaskExample param = new GenTaskExample();
-        param.createCriteria().andConfTypeEqualTo(TimingConstant.TP_CRON)
-                .andValidEqualTo(TimingConstant.Y);
+//        param.createCriteria().andConfTypeEqualTo(TimingConstant.TP_CRON)
+//                .andValidEqualTo(TimingConstant.Y);
         return genTaskMapper.selectByExample(param);
     }
 
@@ -177,6 +177,10 @@ public class TimingDbHelper {
      */
     public TaskDomain getTaskById(Long tid) {
         return taskMapper.getTask(tid);
+    }
+
+    public GenTask getTask(Long tid) {
+        return genTaskMapper.selectByPrimaryKey(tid);
     }
 
 
@@ -207,22 +211,14 @@ public class TimingDbHelper {
         GenTaskExample param = new GenTaskExample();
         //thread live tm less than now - interval
         long aliveTmFloor = DateUtil.getNowTS() - TimingConstant.NOT_ALIVE_REF;
-        param.createCriteria().andTstatusNotEqualTo(TimingConstant.STATUS_END).andValidEqualTo(TimingConstant.Y).andAliveTmLessThan(aliveTmFloor);
+//        param.createCriteria().andTstatusNotEqualTo(TimingConstant.STATUS_END).andValidEqualTo(TimingConstant.Y).andAliveTmLessThan(aliveTmFloor);
         return getTasks(param);
     }
 
     /**
      * ###################### db insert/update methods ########################
      */
-    /**
-     * add cron task to db
-     *
-     * @param key
-     * @param service
-     * @param cronExpression
-     * @return
-     */
-    public Long addCronTask(String key, String service, String cronExpression) {
+    public Long addTask(DynamicTaskParam task) {
         DataSourceTransactionManager tm = getTransManager();
         TransactionStatus status = getDefaultTrans(tm);
         if (status == null) {
@@ -230,13 +226,15 @@ public class TimingDbHelper {
         }
         GenTask r = new GenTask();
         try {
-            r.setTservice(service);
-            r.setTkey(key);
+            r.setTkey(task.getTkey());
+            r.setTaskType(task.getTaskConf().getTaskType().toString());
+            r.setDatas(JSONFastJsonUtil.objectToJson(task.getTaskConf()));
+
             r.setTstatus(TimingConstant.STATUS_FREE);
             r.setTmutex(TimingConstant.N);
             r.setValid(TimingConstant.Y);
-            r.setConfCronExpression(cronExpression);
-            r.setConfType(TimingConstant.TP_CRON);
+            r.setCrtTm(DateUtil.getNowTS());
+
             genTaskMapper.insertSelective(r);
             tm.commit(status);
         } catch (Exception e) {
@@ -250,6 +248,41 @@ public class TimingDbHelper {
     }
 
     /**
+     * add cron task to db
+     *
+     * @param key
+     * @param service
+     * @param cronExpression
+     * @return
+     *
+    public Long addCronTask(String key, String service, String cronExpression, int maxCnt, int runCnt) {
+    DataSourceTransactionManager tm = getTransManager();
+    TransactionStatus status = getDefaultTrans(tm);
+    if (status == null) {
+    return null;
+    }
+    GenTask r = new GenTask();
+    try {
+    r.setTservice(service);
+    r.setTkey(key);
+    r.setTstatus(TimingConstant.STATUS_FREE);
+    r.setTmutex(TimingConstant.N);
+    r.setValid(TimingConstant.Y);
+    r.setConfCronExpression(cronExpression);
+    r.setConfType(TaskType.CRON.toString());
+    genTaskMapper.insertSelective(r);
+    tm.commit(status);
+    } catch (Exception e) {
+    tm.rollback(status);
+    if (LOG.isDebugEnabled()) {
+    LOG.debug("add cron exception {}", e);
+    }
+    return null;
+    }
+    return r.getTid();
+    }*/
+
+    /**
      * add fix rate cond task to db
      * PS:must use manual transaction
      *
@@ -257,45 +290,45 @@ public class TimingDbHelper {
      * @param interval
      * @param maxTime
      * @return
-     */
+     *
     public Long addTask(String type, String service, String param, Long delay, Long interval, Long maxTime) {
-        if (!TimingConstant.validDynTp(type)) {
-            LOG.error("add task,type {} unspport", type);
-            return null;
-        }
-        DataSourceTransactionManager tm = getTransManager();
-        TransactionStatus status = getDefaultTrans(tm);
-        if (status == null) {
-            return null;
-        }
-
-        GenTask r = new GenTask();
-        try {
-            r.setTservice(service);
-            r.setTstatus(TimingConstant.STATUS_FREE);
-            r.setTmutex(TimingConstant.N);
-            r.setValid(TimingConstant.Y);
-            r.setConfDelayTm(delay);
-            r.setConfIntervalTm(interval);
-            r.setParam(param);
-            r.setConfExeTimes(maxTime);
-            r.setConfType(type);
-            r.setCrtTm(DateUtil.getNowTS());
-            genTaskMapper.insertSelective(r);
-
-            GenTask nr = new GenTask();
-            nr.setTid(r.getTid());
-            nr.setTkey(String.valueOf(r.getTid()));
-            genTaskMapper.updateByPrimaryKeySelective(nr);
-            tm.commit(status);
-        } catch (Exception e) {
-            tm.rollback(status);
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("add task exception {}", e);
-            }
-        }
-        return r.getTid();
+    if (!TimingConstant.validDynTp(type)) {
+    LOG.error("add task,type {} unspport", type);
+    return null;
     }
+    DataSourceTransactionManager tm = getTransManager();
+    TransactionStatus status = getDefaultTrans(tm);
+    if (status == null) {
+    return null;
+    }
+
+    GenTask r = new GenTask();
+    try {
+    r.setTservice(service);
+    r.setTstatus(TimingConstant.STATUS_FREE);
+    r.setTmutex(TimingConstant.N);
+    r.setValid(TimingConstant.Y);
+    r.setConfDelayTm(delay);
+    r.setConfIntervalTm(interval);
+    r.setParam(param);
+    r.setConfExeTimes(maxTime);
+    r.setConfType(type);
+    r.setCrtTm(DateUtil.getNowTS());
+    genTaskMapper.insertSelective(r);
+
+    GenTask nr = new GenTask();
+    nr.setTid(r.getTid());
+    nr.setTkey(String.valueOf(r.getTid()));
+    genTaskMapper.updateByPrimaryKeySelective(nr);
+    tm.commit(status);
+    } catch (Exception e) {
+    tm.rollback(status);
+    if (LOG.isDebugEnabled()) {
+    LOG.debug("add task exception {}", e);
+    }
+    }
+    return r.getTid();
+    }*/
 
     /**
      * set task invalid
@@ -321,7 +354,7 @@ public class TimingDbHelper {
         GenTask t = new GenTask();
         t.setTid(tid);
         t.setTstatus(status);
-        t.setAliveTm(DateUtil.getNowTS());
+        //t.setAliveTm(DateUtil.getNowTS());
         return updateTaskByPk(t);
     }
 
@@ -335,8 +368,8 @@ public class TimingDbHelper {
     public boolean updateTaskLiveTm(String manager, Long taskid) {
         GenTask t = new GenTask();
         t.setTid(taskid);
-        t.setProcessor(manager);
-        t.setAliveTm(DateUtil.getNowTS());
+//        t.setProcessor(manager);
+//        t.setAliveTm(DateUtil.getNowTS());
         return updateTaskByPk(t);
     }
 
@@ -357,8 +390,8 @@ public class TimingDbHelper {
         param.createCriteria().andTidIn(taskIds).andValidEqualTo(TimingConstant.Y);
         //construct object
         GenTask t = new GenTask();
-        t.setAliveTm(DateUtil.getNowTS());
-        t.setProcessor(manager);
+//        t.setAliveTm(DateUtil.getNowTS());
+//        t.setProcessor(manager);
         try {
             genTaskMapper.updateByExampleSelective(t, param);
             res = true;
@@ -407,7 +440,7 @@ public class TimingDbHelper {
      *
      * @param t
      */
-    public boolean saveHistory(BaseTimingTask t) {
+    public boolean saveHistory(TimingTaskBase t) {
         DataSourceTransactionManager tm = getTransManager();
         TransactionStatus status = getDefaultTrans(tm);
         boolean res = false;
@@ -582,41 +615,41 @@ public class TimingDbHelper {
      * @param param
      * @param tid
      * @return
-     */
+     *
     public RetCode checkConcurrentTask(AddTaskParam param, Long tid) {
-        RetCode res = RetCode.SUCCESS;
-        if (param.isCheckUnique()) {
-            GenTaskExample listParam = new GenTaskExample();
-            Long now = DateUtil.getNowTS();
-            listParam.createCriteria()
-                    .andConfTypeEqualTo(param.getType())
-                    .andTserviceEqualTo(param.getService())
-                    .andParamEqualTo(param.getParam())
-                    .andConfDelayTmEqualTo(param.getDelay())
-                    .andConfIntervalTmEqualTo(param.getInterval())
-                    .andConfExeTimesEqualTo(param.getMaxTime())
-                    .andCrtTmBetween(now - param.getUniqueChkInterval(), now + param.getUniqueChkInterval());
-            List<GenTask> sameTaskList = getTasks(listParam);
-            if (CollectionUtil.isEmpty(sameTaskList)) {
-                res = RetCode.RE_CHECK_ADD_DYN_TASK_DB_FAIL;
-            } else {
-                if (sameTaskList.size() > 1) {
-                    //concurent insert
-                    //get min tid
-                    Long minTid = tid;
-                    for (GenTask st : sameTaskList) {
-                        if (st.getTid() < minTid) {
-                            minTid = st.getTid();
-                        }
-                    }
-                    if (minTid != tid) {
-                        res = RetCode.CONCURRENT_DB_INSERT_NOT_MIN;
-                    }
-                }
-            }
-        }
-        return res;
+    RetCode res = RetCode.SUCCESS;
+    if (param.isCheckUnique()) {
+    GenTaskExample listParam = new GenTaskExample();
+    Long now = DateUtil.getNowTS();
+    listParam.createCriteria()
+    //.andConfTypeEqualTo(param.getType())
+    //                    .andTserviceEqualTo(param.getService())
+    //                    .andParamEqualTo(param.getParam())
+    //                    .andConfDelayTmEqualTo(param.getDelay())
+    //                    .andConfIntervalTmEqualTo(param.getInterval())
+    //                    .andConfExeTimesEqualTo(param.getMaxTime())
+    .andCrtTmBetween(now - param.getUniqueChkInterval(), now + param.getUniqueChkInterval());
+    List<GenTask> sameTaskList = getTasks(listParam);
+    if (CollectionUtil.isEmpty(sameTaskList)) {
+    res = RetCode.RE_CHECK_ADD_DYN_TASK_DB_FAIL;
+    } else {
+    if (sameTaskList.size() > 1) {
+    //concurent insert
+    //get min tid
+    Long minTid = tid;
+    for (GenTask st : sameTaskList) {
+    if (st.getTid() < minTid) {
+    minTid = st.getTid();
     }
+    }
+    if (minTid != tid) {
+    res = RetCode.CONCURRENT_DB_INSERT_NOT_MIN;
+    }
+    }
+    }
+    }
+    return res;
+    }*/
 
     /**
      * get task histories

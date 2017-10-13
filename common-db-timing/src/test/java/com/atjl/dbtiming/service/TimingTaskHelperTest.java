@@ -26,8 +26,8 @@ public class TimingTaskHelperTest {
 
     @Test
     public void testAddFixRateCondTask() throws Exception {
-        //    public FixRateTask(Long tid,TimingCoreHelper helper,ITimingTask service) {
-//        BaseTimingTask t = new FixRateTask(1L, innerManager);
+        //    public FixRateTask(Long tid,TimingCoreHelper helper,ITaskExecute service) {
+//        TimingTaskBase t = new FixRateTask(1L, innerManager);
 //        innerManager.saveHistory(t);
     }
 

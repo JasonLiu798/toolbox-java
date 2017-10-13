@@ -4,7 +4,7 @@ import com.atjl.kafka.consumer.TopicHandler;
 import com.atjl.util.character.StringSplitUtil;
 import com.atjl.util.common.CheckUtil;
 import com.atjl.util.common.ReflectUtil;
-import com.atjl.util.config.ParameterConfigParser;
+import com.atjl.util.config.ConfigIntParser;
 import com.atjl.util.reflect.ReflectClassUtil;
 import com.atjl.utilex.ApplicationContextHepler;
 import com.atjl.kafka.api.KafkaConstant;
@@ -60,7 +60,7 @@ public class TopicMeta implements Serializable {
             LOG.debug("raw arr {}", Arrays.toString(arr));
         }
         TopicMeta tm = new TopicMeta();
-        List<Boolean> settConfig = ParameterConfigParser.int2bits(type, 4);
+        List<Boolean> settConfig = ConfigIntParser.int2bits(type, 4);
         tm.setTopic(arr[0]);
         tm.setCluster(arr[1]);
 

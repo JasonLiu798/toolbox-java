@@ -63,6 +63,14 @@ public class ResponseDataDto extends ResponseDto {
         return resp;
     }
 
+    public static ResponseDataDto buildFail(int code, String msg, Exception e) {
+        ResponseDataDto resp = new ResponseDataDto();
+        resp.setCode(code);
+        resp.setMsg(msg);
+        resp.setResult(e.getStackTrace());
+        return resp;
+    }
+
     public static ResponseDataDto buildFail(int code, String msg, Object data) {
         ResponseDataDto resp = new ResponseDataDto();
         resp.setResult(data);

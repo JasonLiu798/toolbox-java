@@ -1,6 +1,6 @@
 package com.atjl.dbtiming.api;
 
-import com.atjl.dbtiming.api.req.AddTaskParam;
+import com.atjl.dbtiming.api.domain.RetCode;
 import com.atjl.dbtiming.domain.biz.TaskDomain;
 import com.atjl.dbtiming.domain.biz.TimingManagerStatusDto;
 import com.atjl.dbtiming.domain.gen.GenTask;
@@ -22,15 +22,15 @@ public interface TimingService {
      * task with specified stop condition,and max run time,with param
      *
      * @return
-     */
+     *
     RetCode addDynamicTask(AddTaskParam param);
 
     /**
      * dynamic add cron task
      *
      * @return
-     */
-    RetCode addCronTask(AddTaskParam param);
+     *
+    RetCode addCronTask(AddTaskParam param);*/
 
     /**
      * @param tid

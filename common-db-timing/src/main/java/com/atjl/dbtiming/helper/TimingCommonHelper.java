@@ -1,24 +1,15 @@
 package com.atjl.dbtiming.helper;
 
-import com.atjl.dbtiming.api.*;
-import com.atjl.dbtiming.api.req.AddTaskParam;
-import com.atjl.dbtiming.api.req.RexeTaskParam;
 import com.atjl.dbtiming.domain.biz.TaskDomain;
-import com.atjl.logdb.api.LogDbUtil;
+import com.atjl.dbtiming.domain.constant.TimingConstant;
 import com.atjl.util.character.StringCheckUtil;
-import com.atjl.util.common.DateUtil;
-import com.atjl.util.cron.CronExpression;
-import com.atjl.util.reflect.ReflectClassUtil;
 import com.atjl.util.reflect.ReflectMethodUtil;
-import com.atjl.utilex.ApplicationContextHepler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import com.atjl.dbtiming.domain.biz.TimingConstant;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
-import java.text.ParseException;
 
 /**
  * common functions
@@ -28,21 +19,6 @@ public class TimingCommonHelper {
     private static Logger LOG = LoggerFactory.getLogger(TimingCommonHelper.class);
     @Resource
     private TimingLockHelper timingLockHelper;
-
-    /**
-     * valid cron expression
-     *
-     * @param cronExpression
-     * @return
-     */
-    public boolean validCronExpression(String cronExpression) {
-        try {
-            new CronExpression(cronExpression);
-        } catch (ParseException e) {
-            return false;
-        }
-        return true;
-    }
 
     /**
      * stop or invalid
@@ -66,9 +42,8 @@ public class TimingCommonHelper {
     /**
      * db task transform to param
      *
-     * @param t
      * @return
-     */
+     *
     public RexeTaskParam db2param(TaskDomain t) {
         if (t == null) {
             return RexeTaskParam.buildFailNull();
@@ -114,9 +89,8 @@ public class TimingCommonHelper {
     /**
      * check task can process
      *
-     * @param t
      * @return
-     */
+     *
     public RetCode checkTaskCanProcess(TaskDomain t) {
         if (t == null) {
             LogDbUtil.error(TimingConstant.MODULE_TIMING, "gen task null");
@@ -137,7 +111,7 @@ public class TimingCommonHelper {
      *
      * @param param
      * @return
-     */
+     *
     public RetCode checkTaskCanProcess(AddTaskParam param) {
         if (param == null) {
             return RetCode.TASK_PARAM_NULL;
@@ -165,9 +139,9 @@ public class TimingCommonHelper {
 
         if (param.isCron()) {
             //check cron
-            if (!validCronExpression(param.getCronExpression())) {
-                return RetCode.CRON_EXPESSION_INVALID;
-            }
+//            if (!validCronExpression(param.getCronExpression())) {
+//                return RetCode.CRON_EXPESSION_INVALID;
+//            }
         } else {
             //check delay
             if (param.getDelay() == null) {
@@ -231,12 +205,12 @@ public class TimingCommonHelper {
         //check implement interface
         if (param.isHasParam()) {
             //check target implement execute(String )
-            if (!ReflectClassUtil.chkAImplementB(target, ITimingTaskParam.class)) {
+            if (!ReflectClassUtil.chkAImplementB(target, ITaskParam.class)) {
                 return RetCode.HAS_PARAM_NOT_IMPLEMENT_INF;
             }
         } else {
             //check target implement execute()
-            if (!ReflectClassUtil.chkAImplementB(target, ITimingTask.class)) {
+            if (!ReflectClassUtil.chkAImplementB(target, ITaskExecute.class)) {
                 return RetCode.NO_PARAM_NOT_IMPLEMENT_INF;
             }
         }

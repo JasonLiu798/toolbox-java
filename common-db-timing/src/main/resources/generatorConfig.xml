@@ -19,7 +19,7 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://10.202.125.245:3306/test?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true"
+                        connectionURL="jdbc:mysql://10.202.125.245:3306/tk?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true"
                         userId="test" password="test"/>
 
 
@@ -37,25 +37,25 @@
                              targetProject="src\main\java" type="XMLMAPPER"/>
 
         <!-- timing -->
-        <table domainObjectName="GenTaskManager" schema="aossit" enableDeleteByExample="false"
+        <table domainObjectName="GenTaskManager" enableDeleteByExample="false"
                enableDeleteByPrimaryKey="false"
                tableName="ts_task_manager">
             <generatedKey column="MID" sqlStatement="Mysql" type="post" identity="true"/>
         </table>
 
-        <table domainObjectName="GenTask" schema="aossit" enableDeleteByExample="true"
+        <table domainObjectName="GenTask" enableDeleteByExample="true"
                enableDeleteByPrimaryKey="true"
-               tableName="ts_task">
+               tableName="ts_task_v1">
             <generatedKey column="TID" sqlStatement="Mysql" type="post" identity="true"/>
         </table>
 
-        <table domainObjectName="GenTaskRuned" schema="aossit" enableDeleteByExample="true"
+        <table domainObjectName="GenTaskRuned" enableDeleteByExample="true"
                enableDeleteByPrimaryKey="true"
                tableName="ts_task_runned">
             <generatedKey column="TID" sqlStatement="Mysql" type="post" identity="true"/>
         </table>
 
-        <table domainObjectName="GenTaskHistory" schema="aossit" enableDeleteByExample="true"
+        <table domainObjectName="GenTaskHistory" enableDeleteByExample="true"
                enableDeleteByPrimaryKey="true"
                tableName="ts_task_history"/>
 

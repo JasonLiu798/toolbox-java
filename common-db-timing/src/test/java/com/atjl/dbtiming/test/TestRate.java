@@ -1,30 +1,20 @@
 package com.atjl.dbtiming.test;
 
 import com.atjl.dbtiming.api.ICond;
-import com.atjl.dbtiming.api.ITimingTaskParam;
+import com.atjl.dbtiming.api.ITaskExecute;
 import org.springframework.stereotype.Component;
 
 
 @Component("fixratecond")
-public class TestRate implements ITimingTaskParam,ICond {
+public class TestRate implements ITaskExecute, ICond {
 
-    private int i=0;
+    private int i = 0;
     private boolean cond = false;
 
-    @Override
-    public void execute(String param) {
-        System.out.println("fixrate test task running "+i+",param "+param);
+    public void execute() {
+        System.out.println("fixrate test task running " + i + ",param ");//+ param);
         i++;
     }
-
-    @Override
-    public boolean cond(String param) {
-        if(i>10){
-            return false;
-        }
-        return cond;
-    }
-
 
     public int getI() {
         return i;
@@ -42,6 +32,11 @@ public class TestRate implements ITimingTaskParam,ICond {
         this.cond = cond;
     }
 
-
-
+    @Override
+    public boolean cond() {
+        if (i > 10) {
+            return false;
+        }
+        return cond;
+    }
 }

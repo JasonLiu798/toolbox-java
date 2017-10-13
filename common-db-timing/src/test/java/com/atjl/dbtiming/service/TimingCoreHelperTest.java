@@ -1,6 +1,6 @@
 package com.atjl.dbtiming.service;
 
-import com.atjl.dbtiming.api.ITimingTask;
+import com.atjl.dbtiming.api.ITaskExecute;
 import com.atjl.dbtiming.helper.TimingInnerManager;
 import com.atjl.util.common.SystemUtil;
 import org.junit.*;
@@ -38,15 +38,15 @@ public class TimingCoreHelperTest {
 //        helper.submitCronTask(t,cron);
 
         SystemUtil.sleep(200*1000);
-        //    public ScheduledFuture fixRate(ITimingTask task, long delayMs, long intervalMs)
-        //ITimingTask t = new
+        //    public ScheduledFuture fixRate(ITaskExecute task, long delayMs, long intervalMs)
+        //ITaskExecute t = new
         //helper.fixRate();
     }
 
     static String t1 = "t1";
     static String tc = "tc";
 
-    public static class TestTask implements ITimingTask {
+    public static class TestTask implements ITaskExecute {
         int i=0;
         public String getTid() {
             return t1;
@@ -58,7 +58,7 @@ public class TimingCoreHelperTest {
         }
     }
 
-    public static class CancelTask implements ITimingTask {
+    public static class CancelTask implements ITaskExecute {
 
         public String getTid() {
             return tc;

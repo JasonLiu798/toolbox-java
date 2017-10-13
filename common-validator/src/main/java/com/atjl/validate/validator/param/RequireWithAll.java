@@ -3,14 +3,14 @@ package com.atjl.validate.validator.param;
 import com.atjl.validate.api.field.ValidateField;
 import com.atjl.validate.api.ValidateForm;
 import com.atjl.validate.api.Validator;
-import com.atjl.validate.validator.base.RequireWithBase;
+import com.atjl.validate.validator.base.FieldWithBase;
 
 import java.util.Set;
 
 /**
  * 指定的 *所有* 字段不为空时，此字段必填
  */
-public class RequireWithAll extends RequireWithBase {
+public class RequireWithAll extends FieldWithBase {
     public static final String DFT_MSG = "%s都不为空，该字段必填";
 
     public RequireWithAll(Set<String> refs) {
@@ -22,7 +22,7 @@ public class RequireWithAll extends RequireWithBase {
     }
 
     public void validate(ValidateForm form, ValidateField field) {
-        validateBase(form, field, RequireWithBase.TP_NULL, false);
+        validateBase(form, field, FieldWithBase.TP_NULL, false);
     }
 
     @Override

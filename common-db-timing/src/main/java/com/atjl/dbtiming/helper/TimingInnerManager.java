@@ -3,10 +3,10 @@ package com.atjl.dbtiming.helper;
 import com.atjl.common.context.DevContext;
 import com.atjl.config.api.ConfigConstant;
 import com.atjl.config.api.ConfigUtil;
-import com.atjl.dbtiming.domain.TimingContext;
+import com.atjl.dbtiming.core.TimingContext;
 import com.atjl.dbtiming.domain.gen.GenTaskRuned;
-import com.atjl.dbtiming.api.RespDto;
-import com.atjl.dbtiming.api.RetCode;
+import com.atjl.dbtiming.api.domain.RespDto;
+import com.atjl.dbtiming.api.domain.RetCode;
 import com.atjl.dbtiming.api.TimingService;
 import com.atjl.dbtiming.task.*;
 import com.atjl.logdb.api.LogDbUtil;
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import com.atjl.dbtiming.domain.gen.GenTask;
 import com.atjl.dbtiming.domain.gen.GenTaskHistory;
-import com.atjl.dbtiming.domain.biz.TimingConstant;
+import com.atjl.dbtiming.domain.constant.TimingConstant;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
@@ -138,7 +138,7 @@ public class TimingInnerManager {
             }
 
             //not in pool,re execute
-            String type = t.getConfType();
+            String type = null;//t.getConfType();
             switch (type) {
                 case TimingConstant.TP_CRON:
                     timingManager.execCronTask(tid);
@@ -293,7 +293,7 @@ public class TimingInnerManager {
      *
      * @param t
      */
-    public void saveHistory(BaseTimingTask t) {
+    public void saveHistory(TimingTaskBase t) {
         timingDbHelper.saveHistory(t);
     }
 
@@ -317,7 +317,7 @@ public class TimingInnerManager {
     /**
      * submit delay task to pool
      *
-     * @return public boolean submitDelayTask(ITimingTask task, long delayMs) {
+     * @return public boolean submitDelayTask(ITaskExecute task, long delayMs) {
      * //        if (!validTask(task)) {
      * //            return false;
      * //        }
@@ -468,7 +468,7 @@ public class TimingInnerManager {
      * @param innerTask
      * @param delayMs
      */
-    private void submitDelay(BaseTimingTask innerTask, long delayMs, boolean isNew) {
+    private void submitDelay(TimingTaskBase innerTask, long delayMs, boolean isNew) {
         innerTask.setDelayTime(delayMs);
         ScheduledFuture future = TimingContext.executorService.schedule(innerTask, delayMs, TimeUnit.MILLISECONDS);
         innerTask.setFuture(future);
@@ -579,7 +579,7 @@ public class TimingInnerManager {
         ReflectUtil.copyField(t, taskRuned, ReflectUtil.GetClzOpt.ALL, true, new String[]{"crtTm"}, null);
         Long crtTm = t.getCrtTm();
         if (crtTm != null) {
-            taskRuned.setCrtTm(DateUtil.ts2Date(crtTm));
+            taskRuned.setCrtTm(null);//DateUtil.ts2Date(crtTm));
         }
         List<Long> tids = CollectionUtil.array2List(new Long[]{tid});
         timingDbHelper.addTaskRuned(taskRuned);
@@ -652,7 +652,7 @@ public class TimingInnerManager {
                 taskRuned.setRunCnt(runed);
                 Long crtTm = t.getCrtTm();
                 if (crtTm != null) {
-                    taskRuned.setCrtTm(DateUtil.ts2Date(crtTm));
+                    taskRuned.setCrtTm(null);//DateUtil.ts2Date(crtTm));
                 }
                 if (logger.isDebugEnabled()) {
                     logger.debug("insert taskRunned {}", JSONFastJsonUtil.objectToJson(taskRuned));
