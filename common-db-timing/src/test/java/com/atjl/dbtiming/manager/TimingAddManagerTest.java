@@ -26,8 +26,6 @@ public class TimingAddManagerTest {
     @Test
     public void addDynCron() throws Exception {
         DynamicTaskParam p = TaskParamUtil.genNewCronTask("1", "*/10 * * * * ?", "fixratecond");
-//        p.getTaskConf().setHasCond(true);
-//        p.getTaskConf().setHasParam(true);
         System.out.println("param:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(p)));
         /**
          {
@@ -61,10 +59,10 @@ public class TimingAddManagerTest {
 
     @Test
     public void addDbCron() throws Exception {
-//        DynamicTaskParam p = TaskParamUtil.genFixRateLimitCntTask("2", "testCron", 10 * 1000, 20 * 1000, TimeUnit.MILLISECONDS, 10);
-//        System.out.println("param:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(p)));
         ResponseDataDto resp = timingAddManager.add(74L);
+
         System.out.println("res:" + JSONFastJsonUtil.objectToJson(resp));
+
     }
 
 
