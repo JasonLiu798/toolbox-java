@@ -1,64 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>com.atjl</groupId>
-        <artifactId>common-tools-parent</artifactId>
-        <version>1.0.0</version>
-        <relativePath>../</relativePath>
+        <artifactId>common-parent</artifactId>
+        <version>2.0.0</version>
     </parent>
 
-    <artifactId>common-config</artifactId>
-    <version>1.0.0</version>
+    <groupId>com.atjl</groupId>
+    <artifactId>common-config-parent</artifactId>
+    <version>5.0.0</version>
 
-    <packaging>jar</packaging>
-    <name>common-config</name>
+    <packaging>pom</packaging>
+    <name>common-config-parent</name>
+
+    <properties>
+        <config.api.version>5.0.0</config.api.version>
+        <util.version>5.0.0</util.version>
+    </properties>
 
     <dependencies>
         <!-- other pkg -->
         <dependency>
             <groupId>com.atjl</groupId>
-            <artifactId>common-util</artifactId>
-            <version>${prj.version}</version>
+            <artifactId>common-util-ex</artifactId>
+            <version>${util.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.atjl</groupId>
-            <artifactId>common-config-api</artifactId>
-            <version>${prj.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.atjl</groupId>
-            <artifactId>common-config-db-plain</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.atjl</groupId>-->
-            <!--<artifactId>common-config-db-tree</artifactId>-->
-            <!--<version>1.0.0</version>-->
-        <!--</dependency>-->
-        <!-- other pkg end -->
+
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context-support</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-spring</artifactId>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
         </dependency>
 
         <!-- log start -->
@@ -82,27 +57,91 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.7.16</version>
         </dependency>
+        <!-- 代码直接调用log4j会被桥接到slf4j -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>log4j-over-slf4j</artifactId>
             <version>1.7.12</version>
         </dependency>
+        <!--<dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.12</version>
+        </dependency>-->
+        <!-- 代码直接调用commons-logging会被桥接到slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.7.12</version>
+        </dependency>
+        <!-- 代码直接调用java.util.logging会被桥接到slf4j -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+            <version>1.7.12</version>
+        </dependency>
         <!--log end -->
-
-
-        <!-- for test -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
+    <build>
+        <finalName>${project.artifactId}-${project.version}</finalName>
+        <plugins>
+            <!-- skip test -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
+                    <compilerArguments>
+                        <!--<extdirs></extdirs>-->
+                    </compilerArguments>
+                </configuration>
+            </plugin>
 
 
+            <!--fix maven install,Mark invalid-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.7</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.shared</groupId>
+                        <artifactId>maven-filtering</artifactId>
+                        <version>1.3</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skipTests>${maven.test.skip}</skipTests>
+                </configuration>
+            </plugin>
+        </plugins>
+
+    </build>
+
+    <modules>
+        <module>common-config-api</module><!-- 配置对外接口 -->
+        <module>common-config-main</module><!-- 配置 封装 读取 统一封装 -->
+        <module>common-config-db-plain</module><!-- db读配置实现类 -->
+        <module>common-config-db-tree</module><!-- db读配置实现类 -->
+        <!--<module>common-config-prop</module>&lt;!&ndash; properties 读取实现类 &ndash;&gt;-->
+    </modules>
 </project>

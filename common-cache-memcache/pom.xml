@@ -5,14 +5,14 @@
     <parent>
         <groupId>com.atjl</groupId>
         <artifactId>common-tools-parent</artifactId>
-        <version>1.0.0</version>
+        <version>3.1.0</version>
         <relativePath>../</relativePath>
     </parent>
 
     <groupId>com.atjl</groupId>
     <artifactId>common-cache-memcache</artifactId>
 
-    <version>1.5.0</version>
+    <!--<version>1.5.0</version>-->
     <packaging>jar</packaging>
 
     <name>common-cache-memcache</name>

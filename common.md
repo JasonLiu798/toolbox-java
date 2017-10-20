@@ -30,3 +30,9 @@
         </dependency>
         <!--log end -->
 ```
+
+
+mvn deploy:deploy-file -Dfile=pom.xml -DgroupId=com.atjl -DartifactId=common-tools-parent -Dversion=1.2.0 -Dpackaging=pom -DrepositoryId=releases -Durl=http://nexus..com/nexus/content/repositories/releases/  
+
+
+mvn deploy:deploy-file -Dfile=common-parent/pom.xml -DgroupId=com.atjl -DartifactId=common-parent -Dversion=1.1.0 -Dpackaging=pom -DrepositoryId=releases -Durl=http://nexus..com/nexus/content/repositories/releases/

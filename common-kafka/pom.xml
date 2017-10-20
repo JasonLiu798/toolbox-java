@@ -3,21 +3,28 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.atjl</groupId>
-        <artifactId>common-tools-parent</artifactId>
-        <version>1.0.0</version>
-        <relativePath>../</relativePath>
-    </parent>
+    <!--<parent>-->
+        <!--<groupId>com.atjl</groupId>-->
+        <!--<artifactId>common-tools-parent</artifactId>-->
+        <!--<version>3.1.0</version>-->
+        <!--<relativePath>../</relativePath>-->
+    <!--</parent>-->
 
+    <groupId>com.atjl</groupId>
     <artifactId>common-kafka</artifactId>
-    <version>1.0.0</version>
+    <version>5.0.0</version>
 
     <packaging>jar</packaging>
     <name>common-kafka</name>
 
     <properties>
         <powermock.version>1.6.5</powermock.version>
+        <utils.version>5.0.0</utils.version>
+        <config.version>1.0.0</config.version>
+
+        <!--<api.version>${utils.version}</api.version>-->
+        <!--<util.version>${utils.version}</util.version>-->
+        <!--<util.ex.version>${utils.version}</util.ex.version>-->
     </properties>
 
     <dependencies>
@@ -25,22 +32,28 @@
         <dependency>
             <groupId>com.atjl</groupId>
             <artifactId>common-api</artifactId>
-            <version>${prj.version}</version>
+            <version>${utils.version}</version>
         </dependency>
         <dependency>
             <groupId>com.atjl</groupId>
             <artifactId>common-util</artifactId>
-            <version>${prj.version}</version>
+            <version>${utils.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.atjl</groupId>
+            <artifactId>common-util-ex</artifactId>
+            <version>${utils.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.atjl</groupId>
             <artifactId>common-config-api</artifactId>
-            <version>${prj.version}</version>
+            <version>${config.version}</version>
         </dependency>
         <dependency>
             <groupId>com.atjl</groupId>
-            <artifactId>common-config-db</artifactId>
-            <version>1.0.0</version>
+            <artifactId>common-config-main</artifactId>
+            <version>${config.version}</version>
         </dependency>
         <!-- other pkg end -->
 

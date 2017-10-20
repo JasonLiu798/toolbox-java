@@ -9,7 +9,7 @@ public abstract class BaseTimingTask {
     private Object serviceBean;
     private String serviceName;
 
-    private State
+//    private State
     private TaskConf taskConf;
 
     public abstract long getNextExecuteTime();

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.atjl</groupId>
+        <artifactId>common-parent</artifactId>
+        <version>1.1.0</version>
+        <!--<relativePath>../common-parent</relativePath>-->
+    </parent>
+
+    <groupId>com.atjl</groupId>
+    <artifactId>common-config-parent</artifactId>
+    <version>1.1.0</version>
+
+    <packaging>pom</packaging>
+    <name>common-config-parent</name>
+
+    <properties>
+        <api.version>1.0.0</api.version>
+
+        <!-- config -->
+        <parent.version>1.1.0</parent.version>
+        <config.api.version>1.3.0</config.api.version>
+
+        <!-- util -->
+        <util.version>1.0.0</util.version>
+        <util.ex.version>1.0.0</util.ex.version>
+
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+        </dependency>
+
+        <!--<dependency>-->
+        <!--<groupId>net.sf.ehcache</groupId>-->
+        <!--<artifactId>ehcache</artifactId>-->
+        <!--<version>2.7.6</version>-->
+        <!--</dependency>-->
+    </dependencies>
+
+    <build>
+
+    </build>
+
+    <modules>
+        <module>common-config-api</module><!-- 配置对外接口 -->
+        <module>common-config-main</module><!-- 配置 封装 读取 统一封装 -->
+        <module>common-config-db-plain</module><!-- db读配置实现类 -->
+        <module>common-config-db-tree</module><!-- db读配置实现类 -->
+        <!--<module>common-config-prop</module>&lt;!&ndash; properties 读取实现类 &ndash;&gt;-->
+    </modules>
+</project>
