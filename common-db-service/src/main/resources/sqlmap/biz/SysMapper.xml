@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="sf.aos.mapper.biz.SysDao">
+	<insert id="insert">
+		insert into tm_syslogs(classname,methodname,content_key,content_value)
+		values(#{p_classname},#{p_methodname},#{p_key},#{p_content})
+	</insert>
+	
+	<select id="search" resultType="java.util.LinkedHashMap">
+		${sqltext}
+	</select>
+	
+	<insert id="insertUpdate" >
+		${sqltext}
+	</insert>
+	
+	<!-- <update id="updateSequence">
+		update apply_sequences set id = id+1 where code=#{p_code}
+	</update>
+	
+	<select id="getSequence" resultType="java.lang.Integer">
+		SELECT id FROM apply_sequences where code=#{p_code} 
+	</select> -->
+	
+</mapper>

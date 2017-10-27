@@ -90,98 +90,115 @@ public class ReflectFieldUtilTest {
         System.out.println("res white and black:" + JSONFastJsonUtil.objectToJson(res));
     }
 
-    
+
     @Test
-    public void testGetFieldListForObjParentOptBlackArrWhiteArr() throws Exception { 
-        
+    public void getFieldFilterNull() {
+
+        TestDtoChild src = new TestDtoChild();
+        src.setChildField(100L);
+        src.setF1(1);
+        src.setF2(2);
+//        List res = ReflectFieldUtil.filed2string(ReflectFieldUtil.getFieldListAll(src));
+
+        List res = ReflectFieldUtil.getFieldList(src, GetClzOpt.ALL, null, null, true);
+//        res = ReflectFieldUtil.filterField(res, CollectionUtil.newArr(Long.class));
+        res = ReflectFieldUtil.filed2string(res);
+        System.out.println("res Long:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(res)));
+
+
     }
-    
+
     @Test
-    public void testGetFieldListAll() throws Exception { 
-        
+    public void testGetFieldListForObjParentOptBlackArrWhiteArr() throws Exception {
+
     }
-    
+
     @Test
-    public void testGetFieldMapForObjParentOptBlackArrWhiteArr() throws Exception { 
-        
+    public void testGetFieldListAll() throws Exception {
+
     }
-    
+
     @Test
-    public void testFilterField() throws Exception { 
-        
+    public void testGetFieldMapForObjParentOptBlackArrWhiteArr() throws Exception {
+
     }
-    
+
     @Test
-    public void testGetAllFieldsHaveSetter() throws Exception { 
-        
+    public void testFilterField() throws Exception {
+
     }
-    
+
     @Test
-    public void testGetFieldsHaveSetter() throws Exception { 
-        
+    public void testGetAllFieldsHaveSetter() throws Exception {
+
     }
-    
+
     @Test
-    public void testGetFieldType() throws Exception { 
-        
+    public void testGetFieldsHaveSetter() throws Exception {
+
     }
-    
+
     @Test
-    public void testGetFieldTypeAll() throws Exception { 
-        
+    public void testGetFieldType() throws Exception {
+
     }
-    
+
     @Test
-    public void testGetFieldValueForObjParentOptAllowNullValueBlackArrWhiteArr() throws Exception { 
-        
+    public void testGetFieldTypeAll() throws Exception {
+
     }
-    
+
     @Test
-    public void testGetFieldValueForClzParentOptAllowNullValueBlackArrWhiteArr() throws Exception { 
-        
+    public void testGetFieldValueForObjParentOptAllowNullValueBlackArrWhiteArr() throws Exception {
+
     }
-    
+
     @Test
-    public void testGetFieldValueForObjBlackList() throws Exception { 
-        
+    public void testGetFieldValueForClzParentOptAllowNullValueBlackArrWhiteArr() throws Exception {
+
     }
-    
+
     @Test
-    public void testGetFieldValueObj() throws Exception { 
-        
+    public void testGetFieldValueForObjBlackList() throws Exception {
+
     }
-    
+
     @Test
-    public void testGetFieldMapForBeanOptAllowNullValueBlackWhite() throws Exception { 
-        
+    public void testGetFieldValueObj() throws Exception {
+
     }
-    
+
     @Test
-    public void testGetFieldMapAll() throws Exception { 
-        
+    public void testGetFieldMapForBeanOptAllowNullValueBlackWhite() throws Exception {
+
     }
-    
+
     @Test
-    public void testGetDeclaredFieldForClzFieldName() throws Exception { 
-        
+    public void testGetFieldMapAll() throws Exception {
+
     }
-    
+
     @Test
-    public void testGetDeclaredFieldForObjectFieldName() throws Exception { 
-        
+    public void testGetDeclaredFieldForClzFieldName() throws Exception {
+
     }
-    
+
     @Test
-    public void testGetDeclaredFieldValue() throws Exception { 
-        
+    public void testGetDeclaredFieldForObjectFieldName() throws Exception {
+
     }
-    
+
     @Test
-    public void testFiled2string() throws Exception { 
-        
+    public void testGetDeclaredFieldValue() throws Exception {
+
     }
-    
-      
+
+    @Test
+    public void testFiled2string() throws Exception {
+
+    }
+
+
     @Test
     public void testIsBoolean() throws Exception { 
                 /* 
@@ -193,22 +210,22 @@ public class ReflectFieldUtilTest {
                 } catch(IllegalAccessException e) { 
                 } catch(InvocationTargetException e) { 
                 } 
-                */ 
-            }
-        
+                */
+    }
+
     @Before
-    public void before() throws Exception { 
-    } 
+    public void before() throws Exception {
+    }
 
     @After
-    public void after() throws Exception { 
+    public void after() throws Exception {
     }
-    
+
     @BeforeClass
-    public static void beforeClass() throws Exception{
-        
+    public static void beforeClass() throws Exception {
+
     }
-    
+
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
 } 

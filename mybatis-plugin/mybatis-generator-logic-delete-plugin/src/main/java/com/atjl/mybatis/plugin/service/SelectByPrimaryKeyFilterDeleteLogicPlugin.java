@@ -1,8 +1,9 @@
-package com.atjl.mybatis.plugin.delete;
+package com.atjl.mybatis.plugin.service;
 
 import com.atjl.mybatis.plugin.constant.LogicDeleteConstant;
 import com.atjl.mybatis.plugin.domain.PrimaryKey;
 import com.atjl.mybatis.plugin.util.PrimaryKeyUtil;
+import com.atjl.mybatis.plugin.constant.SelectConstant;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
@@ -15,8 +16,8 @@ import org.mybatis.generator.api.dom.xml.XmlElement;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class LogicDeleteByPrimayKeyPlugin extends PluginAdapter {
-    private static final Logger logger = Logger.getLogger(LogicDeleteByPrimayKeyPlugin.class.getName());
+public class SelectByPrimaryKeyFilterDeleteLogicPlugin extends PluginAdapter {
+    private static final Logger logger = Logger.getLogger(SelectByPrimaryKeyFilterDeleteLogicPlugin.class.getName());
 
     /**
      * {@inheritDoc}
@@ -31,10 +32,17 @@ public class LogicDeleteByPrimayKeyPlugin extends PluginAdapter {
     @Override
     public boolean clientSelectByExampleWithBLOBsMethodGenerated(Method method,
                                                                  Interface interfaze, IntrospectedTable introspectedTable) {
+//        interfaze.addMethod(generateDeleteLogicById(method, introspectedTable));
+        return true;
+    }
 
-        interfaze.addMethod(
-                generateDeleteLogicById(method,
-                        introspectedTable));
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean clientSelectByExampleWithoutBLOBsMethodGenerated(Method method, Interface interfaze, IntrospectedTable introspectedTable) {
+
+        interfaze.addMethod(generateDeleteLogicById(method, introspectedTable));
 
         return true;
     }
@@ -43,25 +51,8 @@ public class LogicDeleteByPrimayKeyPlugin extends PluginAdapter {
      * {@inheritDoc}
      */
     @Override
-    public boolean clientSelectByExampleWithoutBLOBsMethodGenerated(
-            Method method, Interface interfaze,
-            IntrospectedTable introspectedTable) {
-
-        interfaze.addMethod(generateDeleteLogicById(method,
-                introspectedTable));
-
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean clientSelectByExampleWithBLOBsMethodGenerated(Method method,
-                                                                 TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
-
-        topLevelClass.addMethod(generateDeleteLogicById(method,
-                introspectedTable));
+    public boolean clientSelectByExampleWithBLOBsMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+//        topLevelClass.addMethod(generateDeleteLogicById(method, introspectedTable));
         return true;
     }
 
@@ -107,13 +98,26 @@ public class LogicDeleteByPrimayKeyPlugin extends PluginAdapter {
         logger.info("pk " + columns.toString());
 
         XmlElement parentElement = document.getRootElement();
-
+        /**
+         <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+         select
+         <include refid="Base_Column_List" />
+         from tm_check_meta
+         where CHECK_REQ_ID = #{checkReqId,jdbcType=CHAR}
+         </select>
+         */
         // 产生分页语句前半部分
-        XmlElement deleteLogicByIdsElement = new XmlElement("update");
-        deleteLogicByIdsElement.addAttribute(new Attribute("id", LogicDeleteConstant.FUNC_NAME));
+        XmlElement deleteLogicByIdsElement = new XmlElement("select");
+        deleteLogicByIdsElement.addAttribute(new Attribute("id", SelectConstant.FUNC_NAME));
+        /**
+         * resultMap="BaseResultMap" parameterType="java.lang.String"
+         */
+        deleteLogicByIdsElement.addAttribute(new Attribute("resultMap", SelectConstant.BASE_RESULT_MAP));
+        deleteLogicByIdsElement.addAttribute(new Attribute("parameterType", FullyQualifiedJavaType.getStringInstance().getFullyQualifiedName()));
 
 //        String sql = "update %s set DELETED = #{deleted,jdbcType=CHAR} where %s ";
-        String sql = "update %s set DELETED = '1' where %s ";
+        String sql = "select <include refid=\"Base_Column_List\" /> from %s where DELETED = '0' and %s limit 1";
+
         String fmtSql = String.format(sql, tableName, columns.toString());//columns.toString());
 
         deleteLogicByIdsElement.addElement(new TextElement(fmtSql));
@@ -130,10 +134,10 @@ public class LogicDeleteByPrimayKeyPlugin extends PluginAdapter {
 
 
     private Method generateDeleteLogicById(Method method, IntrospectedTable introspectedTable) {
-        Method m = new Method(LogicDeleteConstant.FUNC_NAME);
+        Method m = new Method(SelectConstant.FUNC_NAME);
         m.setVisibility(method.getVisibility());
-        m.setReturnType(FullyQualifiedJavaType.getIntInstance());
 
+        m.setReturnType(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
         List<PrimaryKey> keys = PrimaryKeyUtil.getPrimayKeys(introspectedTable.getPrimaryKeyColumns());
 
         if (keys == null || keys.isEmpty()) {
@@ -141,11 +145,8 @@ public class LogicDeleteByPrimayKeyPlugin extends PluginAdapter {
             throw new IllegalArgumentException(LogicDeleteConstant.ERR_NO_PK);
         }
 
-//        m.addParameter(new Parameter(FullyQualifiedJavaType.getStringInstance(), "deleteFlag", "@Param(\"deleteFlag\")"));
-
-        for (int i = 0; i < keys.size(); i++) {
-            PrimaryKey k = keys.get(i);
-            m.addParameter(new Parameter(k.getFullyQualifiedJavaType(), k.getPropName(), "@Param(\"" + k.getPropName() + "\")"));
+        for (PrimaryKey pk : keys) {
+            m.addParameter(new Parameter(FullyQualifiedJavaType.getStringInstance(), pk.getPropName(), "@Param(\"" + pk.getPropName() + "\")"));
         }
 
         context.getCommentGenerator().addGeneralMethodComment(m,

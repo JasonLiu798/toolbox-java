@@ -3,6 +3,7 @@ package com.atjl.config.api;
 import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.common.ReflectUtil;
+import com.atjl.util.reflect.ReflectMethodUtil;
 import com.atjl.utilex.ApplicationContextHepler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -172,26 +173,24 @@ public class ConfigDbUtil {
 
 
     /**
-     * 获取子节点下多个
+     * 通过父配置项，获取子节点下多个选项
      *
-     * @param path
-     * @return
-     *
-    public static Map<String, String> gets(String type,String path) {
-    Map<String, String> res = new HashMap<>();
-    if (!preChk(path)) {
-    return res;
-    }
-    if(!init(type)){
-    return res;
-    }
+     */
+    public static Map<String, String> gets(String type, String path) {
+        Map<String, String> res = new HashMap<>();
+        if (!preChk(path)) {
+            return res;
+        }
+        if (!init(type)) {
+            return res;
+        }
 
-    Object raw = ReflectUtil.invokeMethod(configDbService, ConfigDbConstant.METHOD_GETS, new Class[]{String.class}, new Object[]{path});
-    if (raw != null) {
-    return (Map<String, String>) raw;
+        Object raw = ReflectMethodUtil.invokeMethod(configDbService, ConfigDbConstant.METHOD_GETS, new Class[]{String.class}, new Object[]{path});
+        if (raw != null) {
+            return (Map<String, String>) raw;
+        }
+        return res;
     }
-    return res;
-    }*/
 
 
 }

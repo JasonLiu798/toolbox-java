@@ -6,13 +6,12 @@
     <parent>
         <groupId>com.atjl</groupId>
         <artifactId>common-config-parent</artifactId>
-        <version>5.0.0</version>
+        <version>5.1.0</version>
         <relativePath>../</relativePath>
     </parent>
 
     <groupId>com.atjl</groupId>
     <artifactId>common-config-main</artifactId>
-    <!--<version>1.3.0</version>-->
 
     <packaging>jar</packaging>
     <name>common-config-main</name>
