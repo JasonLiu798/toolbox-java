@@ -8,19 +8,18 @@
         <groupId>com.atjl</groupId>
         <artifactId>common-parent</artifactId>
         <version>2.0.0</version>
-        <!--<relativePath>./common-parent</relativePath>-->
     </parent>
 
     <groupId>com.atjl</groupId>
     <artifactId>common-util-parent</artifactId>
-    <version>5.1.0</version>
+    <version>5.2.0</version>
 
     <packaging>pom</packaging>
     <name>common-util-parent</name>
     <description>prj management</description>
 
     <properties>
-        <prj.version>5.1.0</prj.version>
+        <prj.version>5.2.0</prj.version>
 
         <!--common -->
         <api.version>${prj.version}</api.version>

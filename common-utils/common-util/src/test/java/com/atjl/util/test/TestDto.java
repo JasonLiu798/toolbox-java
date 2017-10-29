@@ -12,23 +12,24 @@ import java.util.UUID;
  */
 public class TestDto implements Serializable{
 
-    private int f1;
+    private Integer f1;
 
-    private int f2;
+    private Integer f2;
 
     @Version(1)
-    private int f3;
+    private Integer f3;
 
     @Version(2)
-    private int f4;
+    private Integer f4;
 
     @Version(127)
-    private int f5;
+    private Integer f5;
 
     private String s1;
     //private static final long serialVersionUID = 3741410167347221748L;
 
     public TestDto(){}
+
     public TestDto(int f1, int f2) {
         this.f1 = f1;
         this.f2 = f2;
@@ -45,44 +46,43 @@ public class TestDto implements Serializable{
         this.s1 = s1;
     }
 
-
-    public int getF1() {
+    public Integer getF1() {
         return f1;
     }
 
-    public void setF1(int f1) {
+    public void setF1(Integer f1) {
         this.f1 = f1;
     }
 
-    public int getF2() {
+    public Integer getF2() {
         return f2;
     }
 
-    public void setF2(int f2) {
+    public void setF2(Integer f2) {
         this.f2 = f2;
     }
 
-    public int getF3() {
+    public Integer getF3() {
         return f3;
     }
 
-    public void setF3(int f3) {
+    public void setF3(Integer f3) {
         this.f3 = f3;
     }
 
-    public int getF4() {
+    public Integer getF4() {
         return f4;
     }
 
-    public void setF4(int f4) {
+    public void setF4(Integer f4) {
         this.f4 = f4;
     }
 
-    public int getF5() {
+    public Integer getF5() {
         return f5;
     }
 
-    public void setF5(int f5) {
+    public void setF5(Integer f5) {
         this.f5 = f5;
     }
 
@@ -93,16 +93,6 @@ public class TestDto implements Serializable{
     public void setS1(String s1) {
         this.s1 = s1;
     }
-
-//    @Override
-//    public String toString() {
-//        return "TestDto{" +
-//                "f1=" + f1 +
-//                ", f2=" + f2 +
-//                ", f3=" + f3 +
-//                ", f4=" + f4 +
-//                '}';
-//    }
 
     @Override
     public String toString() {

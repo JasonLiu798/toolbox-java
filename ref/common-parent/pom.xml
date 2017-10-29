@@ -63,7 +63,6 @@
 		<mybatis.version>3.2.7</mybatis.version>
 		<mybatis-spring.version>1.2.2</mybatis-spring.version>
 		<!-- disconf -->
-		<disconf.version>sf.1.0.0</disconf.version>
 		<!-- oval -->
 		<oval.version>1.85</oval.version>
 		<druid.version>1.0.6</druid.version>
@@ -221,11 +220,12 @@
 				<artifactId>zkclient</artifactId>
 				<version>${zkclient.version}</version>
 			</dependency>
+			<!--
 			<dependency>
 				<groupId>com.baidu.disconf</groupId>
 				<artifactId>disconf-client</artifactId>
 				<version>${disconf.version}</version>
-			</dependency>
+			</dependency>-->
 			<!-- kafka -->
 			<dependency>
 				<groupId>org.apache.kafka</groupId>

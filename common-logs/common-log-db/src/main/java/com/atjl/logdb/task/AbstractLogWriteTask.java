@@ -1,6 +1,5 @@
 package com.atjl.logdb.task;
 
-import com.atjl.common.api.task.PoolBaseTask;
 import com.atjl.logdb.api.LogDbUtil;
 import com.atjl.logdb.api.LogService;
 import com.atjl.logdb.api.domain.LogDbConstant;
@@ -8,6 +7,7 @@ import com.atjl.logdb.api.domain.LogDbContext;
 import com.atjl.logdb.api.domain.OpLog;
 import com.atjl.util.character.StringUtil;
 import com.atjl.util.queue.IQueue;
+import com.atjl.util.thread.task.BaseTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,11 +15,12 @@ import org.slf4j.LoggerFactory;
 /**
  * read data task and write
  */
-public abstract class AbstractLogWriteTask extends PoolBaseTask implements Runnable {
+public abstract class AbstractLogWriteTask extends BaseTask implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(AbstractLogWriteTask.class);
     private static IQueue queue;
     private static Long srvIp;
     private LogService logService;
+    private boolean start;
 
     public AbstractLogWriteTask() {
         super();
@@ -27,13 +28,14 @@ public abstract class AbstractLogWriteTask extends PoolBaseTask implements Runna
 
     public AbstractLogWriteTask(String id, LogService logService, IQueue queue, Long srvIp) {
         super(id);
+		this.start = true;
         this.logService = logService;
         AbstractLogWriteTask.srvIp = srvIp;
         AbstractLogWriteTask.queue = queue;
     }
 
     @Override
-    public void run() {
+    public void bizRun() {
         if (logService == null) {
             LogDbUtil.errorSync(AbstractLogWriteTask.class.getSimpleName(), "init log reader,logService null", null);
             return;

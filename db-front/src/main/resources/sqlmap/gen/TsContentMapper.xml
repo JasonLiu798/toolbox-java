@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atjl.dbfront.mapper.gen.TsContentMapper" >
+  <resultMap id="BaseResultMap" type="com.atjl.dbfront.domain.gen.TsContent" >
+    <result column="CNAME" property="cname" jdbcType="CHAR" />
+    <result column="CTYPE" property="ctype" jdbcType="CHAR" />
+    <result column="CVERSION" property="cversion" jdbcType="CHAR" />
+    <result column="PRE_VERSION" property="preVersion" jdbcType="CHAR" />
+    <result column="CRT_TM" property="crtTm" jdbcType="TIMESTAMP" />
+    <result column="UPD_TM" property="updTm" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.atjl.dbfront.domain.gen.TsContent" extends="BaseResultMap" >
+    <result column="CONTENT" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    CNAME, CTYPE, CVERSION, PRE_VERSION, CRT_TM, UPD_TM
+  </sql>
+  <sql id="Blob_Column_List" >
+    CONTENT
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.atjl.dbfront.domain.gen.TsContentExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ts_content
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.atjl.dbfront.domain.gen.TsContentExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ts_content
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <insert id="insert" parameterType="com.atjl.dbfront.domain.gen.TsContent" >
+    insert into ts_content (CNAME, CTYPE, CVERSION, 
+      PRE_VERSION, CRT_TM, UPD_TM, 
+      CONTENT)
+    values (#{cname,jdbcType=CHAR}, #{ctype,jdbcType=CHAR}, #{cversion,jdbcType=CHAR}, 
+      #{preVersion,jdbcType=CHAR}, #{crtTm,jdbcType=TIMESTAMP}, #{updTm,jdbcType=TIMESTAMP}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.atjl.dbfront.domain.gen.TsContent" >
+    insert into ts_content
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cname != null" >
+        CNAME,
+      </if>
+      <if test="ctype != null" >
+        CTYPE,
+      </if>
+      <if test="cversion != null" >
+        CVERSION,
+      </if>
+      <if test="preVersion != null" >
+        PRE_VERSION,
+      </if>
+      <if test="crtTm != null" >
+        CRT_TM,
+      </if>
+      <if test="updTm != null" >
+        UPD_TM,
+      </if>
+      <if test="content != null" >
+        CONTENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cname != null" >
+        #{cname,jdbcType=CHAR},
+      </if>
+      <if test="ctype != null" >
+        #{ctype,jdbcType=CHAR},
+      </if>
+      <if test="cversion != null" >
+        #{cversion,jdbcType=CHAR},
+      </if>
+      <if test="preVersion != null" >
+        #{preVersion,jdbcType=CHAR},
+      </if>
+      <if test="crtTm != null" >
+        #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updTm != null" >
+        #{updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.atjl.dbfront.domain.gen.TsContentExample" resultType="java.lang.Integer" >
+    select count(*) from ts_content
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ts_content
+    <set >
+      <if test="record.cname != null" >
+        CNAME = #{record.cname,jdbcType=CHAR},
+      </if>
+      <if test="record.ctype != null" >
+        CTYPE = #{record.ctype,jdbcType=CHAR},
+      </if>
+      <if test="record.cversion != null" >
+        CVERSION = #{record.cversion,jdbcType=CHAR},
+      </if>
+      <if test="record.preVersion != null" >
+        PRE_VERSION = #{record.preVersion,jdbcType=CHAR},
+      </if>
+      <if test="record.crtTm != null" >
+        CRT_TM = #{record.crtTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updTm != null" >
+        UPD_TM = #{record.updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.content != null" >
+        CONTENT = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update ts_content
+    set CNAME = #{record.cname,jdbcType=CHAR},
+      CTYPE = #{record.ctype,jdbcType=CHAR},
+      CVERSION = #{record.cversion,jdbcType=CHAR},
+      PRE_VERSION = #{record.preVersion,jdbcType=CHAR},
+      CRT_TM = #{record.crtTm,jdbcType=TIMESTAMP},
+      UPD_TM = #{record.updTm,jdbcType=TIMESTAMP},
+      CONTENT = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ts_content
+    set CNAME = #{record.cname,jdbcType=CHAR},
+      CTYPE = #{record.ctype,jdbcType=CHAR},
+      CVERSION = #{record.cversion,jdbcType=CHAR},
+      PRE_VERSION = #{record.preVersion,jdbcType=CHAR},
+      CRT_TM = #{record.crtTm,jdbcType=TIMESTAMP},
+      UPD_TM = #{record.updTm,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

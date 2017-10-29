@@ -52,15 +52,16 @@ public class ReflectUtil {
     public static Object getInstance(String classStr) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         return ReflectClassUtil.newInstance(classStr);
     }
+
     @Deprecated
     public static Object getInstance(Class clz) {
         return ReflectClassUtil.newInstance(clz);
     }
+
     @Deprecated
     public static Object getInstance(Class clz, Class[] paramClz, Object[] params) {
-        return ReflectClassUtil.newInstance(clz,paramClz,params);
+        return ReflectClassUtil.newInstance(clz, paramClz, params);
     }
-
 
 
     /**
@@ -68,6 +69,7 @@ public class ReflectUtil {
      */
     /**
      * 建议使用 ReflectField类
+     *
      * @param obj
      * @param parentOpt
      * @param blackArr
@@ -78,10 +80,12 @@ public class ReflectUtil {
     public static List<Field> getFields(Object obj, GetClzOpt parentOpt, String[] blackArr, String[] whiteArr) {
         return ReflectFieldUtil.getFieldList(obj.getClass(), parentOpt, blackArr, whiteArr);
     }
+
     @Deprecated
     public static List<Field> getFields(Class obj, GetClzOpt parentOpt, String[] blackArr, String[] whiteArr) {
         return ReflectFieldUtil.getFieldList(obj.getClass(), parentOpt, blackArr, whiteArr);
     }
+
     @Deprecated
     public static List<Field> getFieldAll(Object obj) {
         return getFields(obj, GetClzOpt.ALL, null, null);
@@ -98,31 +102,15 @@ public class ReflectUtil {
      * @param blackList
      * @param whiteList
      */
+    @Deprecated
     public static void copyField(Object source, Object target, GetClzOpt opt, boolean allowNull, String[] blackList, String[] whiteList) {
-        List<Field> fields = getFields(source, opt, blackList, whiteList);
-        if (CollectionUtil.isEmpty(fields)) {
-            if (logger.isWarnEnabled()) {
-                logger.warn("copy fields,source filed empty {}", source);
-            }
-            return;
-        }
-        for (Field field : fields) {
-            if ("serialVersionUID".equals(field.getName())) {
-                continue;
-            }
-            String fieldName = field.getName();
-            Object sourceFieldValue = ReflectGetUtil.getterForce(source, fieldName);
-            if (!allowNull && sourceFieldValue == null || ReflectCommonUtil.isEmpty(sourceFieldValue)) {
-                continue;
-            }
-            ReflectSetUtil.setterForce(target, fieldName, sourceFieldValue);
-        }
+        ReflectFieldUtil.copyField(source, target, opt, allowNull, blackList, whiteList);
     }
 
+    @Deprecated
     public static void copyField(Object source, Object target) {
-        copyField(source, target, GetClzOpt.ALL, true, null, null);
+        ReflectFieldUtil.copyField(source, target, GetClzOpt.ALL, true, null, null);
     }
-
 
 
     /**
@@ -139,7 +127,7 @@ public class ReflectUtil {
      */
     @Deprecated
     public static Object invokeMethod(Object object, String methodName, Class<?>[] parameterTypes, Object[] parameters) {
-        return ReflectMethodUtil.invokeMethod(object,methodName,parameterTypes,parameters);
+        return ReflectMethodUtil.invokeMethod(object, methodName, parameterTypes, parameters);
     }
 
 
@@ -162,10 +150,6 @@ public class ReflectUtil {
         }
         return false;
     }
-
-
-
-
 
 
     /**

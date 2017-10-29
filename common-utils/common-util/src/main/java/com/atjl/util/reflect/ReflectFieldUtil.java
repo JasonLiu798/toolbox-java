@@ -23,6 +23,85 @@ public class ReflectFieldUtil {
 
     private static Logger logger = LoggerFactory.getLogger(ReflectFieldUtil.class);
 
+
+    /**
+     * 字段拷贝
+     *
+     * @param source
+     * @param target
+     * @param opt
+     * @param allowNull
+     * @param blackList
+     * @param whiteList
+     */
+    public static void copyField(Object source, Object target, GetClzOpt opt, boolean allowNull, String[] blackList, String[] whiteList) {
+        List<Field> fields = getFieldList(source, opt, blackList, whiteList);
+        if (CollectionUtil.isEmpty(fields)) {
+            if (logger.isWarnEnabled()) {
+                logger.warn("copy fields,source filed empty {}", source);
+            }
+            return;
+        }
+        for (Field field : fields) {
+            if ("serialVersionUID".equals(field.getName())) {
+                continue;
+            }
+            String fieldName = field.getName();
+            Object sourceFieldValue = ReflectGetUtil.getterForce(source, fieldName);
+            if (!allowNull && sourceFieldValue == null || ReflectCommonUtil.isEmpty(sourceFieldValue)) {
+                continue;
+            }
+            ReflectSetUtil.setterForce(target, fieldName, sourceFieldValue);
+        }
+    }
+
+    public static void copyField(Object source, Object target) {
+        copyField(source, target, GetClzOpt.ALL, true, null, null);
+    }
+
+    /**
+     * 递归拷贝
+     *
+     * @Param allowNull 是否拷贝空值
+     *
+    public static void copyField(Object source, Object target, GetClzOpt opt, boolean allowNull) {
+    List<Field> fields = getFieldList(source, opt, null, null, true);
+    if (CollectionUtil.isEmpty(fields)) {
+    if (logger.isWarnEnabled()) {
+    logger.warn("copy fields,source filed empty {}", source);
+    }
+    return;
+    }
+    for (Field field : fields) {
+    if ("serialVersionUID".equals(field.getName())) {
+    continue;
+    }
+    String fieldName = field.getName();
+    Object sourceFieldValue = ReflectGetUtil.getterForce(source, fieldName);
+    if (!allowNull && sourceFieldValue == null || ReflectCommonUtil.isEmpty(sourceFieldValue)) {
+    continue;
+    }
+    if (sourceFieldValue == null) {
+    ReflectSetUtil.setterForce(target, fieldName, null);
+    return;
+    } else {
+    ClassType classType = CovertUtil.getClassType(sourceFieldValue.getClass());
+    switch (classType) {
+    case PRIMITIVE:
+    ReflectSetUtil.setterForce(target, fieldName, sourceFieldValue);
+    break;
+    case OBJECT:
+    //targetValue
+    Object tgtVal = ReflectGetUtil.getterForce(target, fieldName);
+    copyField(sourceFieldValue, tgtVal, opt, allowNull);
+    break;
+    case LIST:
+    break;
+    }
+    }
+    }
+    }*/
+
     /**
      * 获取所有field
      *
@@ -45,12 +124,15 @@ public class ReflectFieldUtil {
     }
 
 
+//    public static List<Field> getFieldList(Class obj, GetClzOpt parentOpt, String[] blackArr, String[] whiteArr) {
+//        return getFieldList(obj, parentOpt, blackArr, whiteArr);
+//    }
+
     /**
-     *
-     * @param obj 对象
+     * @param obj       对象
      * @param parentOpt 选项
-     * @param blackArr 黑名单
-     * @param whiteArr 白名单（优先级高于黑名单）
+     * @param blackArr  黑名单
+     * @param whiteArr  白名单（优先级高于黑名单）
      * @return
      */
     public static List<Field> getFieldList(Class obj, GetClzOpt parentOpt, String[] blackArr, String[] whiteArr) {
@@ -81,13 +163,6 @@ public class ReflectFieldUtil {
             }
         }
 
-//        boolean filterClzWhite = false;
-//        List<Class> whiteClzList = null;
-//        if (whiteClzArr != null && whiteClzArr.length > 0) {
-//            filterClzWhite = true;
-//            whiteClzList = Arrays.asList(whiteClzArr);
-//        }
-
         for (Class<?> cls : clazzList) {
             Field[] fields = cls.getDeclaredFields();//get all field
             for (Field field : fields) {
@@ -106,9 +181,76 @@ public class ReflectFieldUtil {
 //                    if (filterClzWhite && whiteClzList.indexOf(field.getType()) < 0) {
 //                        continue;
 //                    }
+
                     res.add(field);
                 } catch (Exception e) {
                     logger.error("getFieldValue {}", e.getMessage());
+                    continue;
+                }
+            }
+        }
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("get fields res {}", res);
+        }
+        return res;
+    }
+
+
+    /**
+     * 获取 字段列表，不包含 值为空的字段
+     */
+    public static List<Field> getFieldList(Object obj, GetClzOpt parentOpt, String[] blackArr, String[] whiteArr, boolean filterNull) {
+        List<Class<?>> clazzList = ReflectClassUtil.getClassList(obj, parentOpt);
+        if (logger.isDebugEnabled()) {
+            logger.debug("getField clz list:{}", clazzList);
+        }
+        if (CollectionUtil.isEmpty(clazzList)) {
+            return new ArrayList<>();
+        }
+        List<Field> res = new ArrayList<>();
+
+        //init white list
+        boolean filterWhite = false;
+        List<String> whiteList = null;
+        if (whiteArr != null && whiteArr.length != 0) {
+            filterWhite = true;
+            whiteList = Arrays.asList(whiteArr);
+        }
+
+        //init black list
+        boolean filterBlack = false;
+        List<String> blackList = null;
+        if (blackArr != null && blackArr.length != 0) {
+            filterBlack = true;
+            blackList = Arrays.asList(blackArr);
+            if (filterWhite) {
+                blackList = CollectionFilterUtil.filterDelList(blackList, whiteList);
+            }
+        }
+
+        for (Class<?> cls : clazzList) {
+            Field[] fields = cls.getDeclaredFields();//get all field
+            for (Field field : fields) {
+                try {
+                    //process black list
+                    if (filterBlack && blackList.indexOf(field.getName()) >= 0) {
+                        continue;
+                    }
+                    //process white list
+                    if (filterWhite && whiteList.indexOf(field.getName()) < 0) {
+                        continue;
+                    }
+
+                    field.setAccessible(true);
+                    Object val = field.get(obj);
+
+                    if (val == null && filterNull) {
+                        continue;
+                    }
+                    res.add(field);
+                } catch (Exception e) {
+                    logger.error("getFieldList {}", e.getMessage());
                     continue;
                 }
             }

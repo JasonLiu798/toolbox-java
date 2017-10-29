@@ -59,7 +59,12 @@ public class LogDbConstant {
     }
 
     public static String getMethodType(String methodName) {
-        return METHOD_TO_LOG_TYPE.get(methodName).toString();
+		LogOpType t = METHOD_TO_LOG_TYPE.get(methodName);
+		if(t!=null){
+			return t.toString();
+		}else{
+			return LogOpType.OTHER.toString();
+		}
     }
 
 }

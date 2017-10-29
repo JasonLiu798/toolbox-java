@@ -13,8 +13,8 @@
 
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
         <!--<plugin type="com.tgwoo.core.dao.plugin.OraclePaginationPlugin"></plugin>-->
-        <plugin type="com.atjl.mybatis.plugin.delete.LogicDeleteByPrimayKeyPlugin"></plugin>
-        <plugin type="com.atjl.mybatis.plugin.select.SelectByPrimaryKeyFilterDeleteLogicPlugin"></plugin>
+        <plugin type="com.atjl.mybatis.plugin.service.LogicDeleteByPrimayKeyPlugin"></plugin>
+        <plugin type="com.atjl.mybatis.plugin.service.SelectByPrimaryKeyFilterDeleteLogicPlugin"></plugin>
 
 
         <commentGenerator>

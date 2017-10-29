@@ -29,7 +29,7 @@ public class NotExist extends ExistBase {
 
     public void validate(ValidateForm form, ValidateField field) {
         String raw = field.getStrValue();
-        if (ValidateDbUtil.exist(table, column, otherConds, raw)) {
+        if (!ValidateDbUtil.exist(table, column, otherConds, raw)) {
             throw new ValidateException(this.msg);
         }
     }

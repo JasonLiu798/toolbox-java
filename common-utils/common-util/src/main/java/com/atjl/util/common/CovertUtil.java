@@ -3,14 +3,12 @@ package com.atjl.util.common;
 import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.character.StringUtil;
 import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.common.domain.ClassType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * string covert to java types
@@ -29,6 +27,11 @@ public class CovertUtil {
      * 支持的类型
      */
     private static final Set<Class> SUPPORT_CLZ = new HashSet<>();
+    //原始类
+    private static final Set<Class> PRIMITIVE_CLZ = new HashSet<>();
+    //集合类
+    private static final Set<Class> COLLECTION_CLZ = new HashSet<>();
+
     /**
      * 数字类型
      */
@@ -59,6 +62,26 @@ public class CovertUtil {
         SUPPORT_CLZ.add(String[].class);
         SUPPORT_CLZ.add(Boolean.class);
         SUPPORT_CLZ.add(boolean.class);
+
+        PRIMITIVE_CLZ.add(String.class);
+        PRIMITIVE_CLZ.add(Long.class);
+        PRIMITIVE_CLZ.add(long.class);
+        PRIMITIVE_CLZ.add(Integer.class);
+        PRIMITIVE_CLZ.add(int.class);
+        PRIMITIVE_CLZ.add(Short.class);
+        PRIMITIVE_CLZ.add(short.class);
+        PRIMITIVE_CLZ.add(Byte.class);
+        PRIMITIVE_CLZ.add(byte.class);
+        PRIMITIVE_CLZ.add(Double.class);
+        PRIMITIVE_CLZ.add(double.class);
+        PRIMITIVE_CLZ.add(Float.class);
+        PRIMITIVE_CLZ.add(float.class);
+        PRIMITIVE_CLZ.add(Boolean.class);
+        PRIMITIVE_CLZ.add(boolean.class);
+
+        COLLECTION_CLZ.add(List.class);
+        COLLECTION_CLZ.add(ArrayList.class);
+        COLLECTION_CLZ.add(LinkedList.class);
 
         NUMBER_CLZ.add(Long.class);
         NUMBER_CLZ.add(long.class);
@@ -91,6 +114,17 @@ public class CovertUtil {
         return c;
     }
 
+    /**
+     */
+    public static ClassType getClassType(Class clz) {
+        if (PRIMITIVE_CLZ.contains(clz)) {
+            return ClassType.PRIMITIVE;
+        }
+        if (COLLECTION_CLZ.contains(clz)) {
+            return ClassType.LIST;
+        }
+        return ClassType.OBJECT;
+    }
 
     /**
      * ################ obj to str covert to target class ################
