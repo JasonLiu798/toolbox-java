@@ -8,7 +8,7 @@ import com.atjl.validate.util.ValidateDbUtil;
 
 /**
  * 存在基类
- *
+ * <p>
  * !!! 需要spring和 dataSource
  *
  * @author jasonliu

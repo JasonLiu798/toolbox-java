@@ -9,7 +9,7 @@ import com.atjl.common.constant.RespConstant;
  * @since 1.0
  */
 public class ResponseDataDtoV1 extends ResponseDtoV1 {
-//    private static final long serialVersionUID = 1L;
+    //    private static final long serialVersionUID = 1L;
     private Object result = null;
     public static final int UNKNOWN_ERROR = 1004;
 
@@ -48,6 +48,7 @@ public class ResponseDataDtoV1 extends ResponseDtoV1 {
 
     public static ResponseDataDtoV1 buildFail(String msg) {
         ResponseDataDtoV1 resp = new ResponseDataDtoV1();
+        resp.setSucc(RespConstant.FAIL_MSG);
         resp.setCode(RespConstant.UNKNOWN_ERROR_CODE);
         resp.setMsg(msg);
         return resp;
@@ -55,6 +56,7 @@ public class ResponseDataDtoV1 extends ResponseDtoV1 {
 
     public static ResponseDataDtoV1 buildFail(int code, String msg) {
         ResponseDataDtoV1 resp = new ResponseDataDtoV1();
+        resp.setSucc(RespConstant.FAIL_MSG);
         resp.setCode(code);
         resp.setMsg(msg);
         return resp;

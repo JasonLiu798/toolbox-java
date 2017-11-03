@@ -16,4 +16,7 @@ public class CommonConstant {
 
     public static final Long DFT_PAGE_START = 1L;
     public static final Long DFT_PAGE_SIZE = 10L;
+
+    public static final Integer DFT_PAGE_START_INT = 1;
+    public static final Integer DFT_PAGE_SIZE_INT = 10;
 }

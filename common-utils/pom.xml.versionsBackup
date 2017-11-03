@@ -1,6 +1,7 @@
-<?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-         xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -10,32 +11,35 @@
     </parent>
 
     <groupId>com.atjl</groupId>
-    <artifactId>common-validator</artifactId>
-    <version>5.3.0</version>
+    <artifactId>common-util-parent</artifactId>
+    <version>5.2.0</version>
+
+    <packaging>pom</packaging>
+    <name>common-util-parent</name>
+    <description>prj management</description>
 
     <properties>
-        <utils.version>5.1.0</utils.version>
+        <prj.version>5.2.0</prj.version>
+
+        <!--common -->
+        <api.version>${prj.version}</api.version>
+        <util.version>${prj.version}</util.version>
+        <util.ex.version>${prj.version}</util.ex.version>
+
+        <!-- Build args -->
+        <java.version>1.8</java.version>
+        <swagger.version>2.2.2</swagger.version>
+        <swagger.version>2.2.2</swagger.version>
+        <jsckson.version>2.8.7</jsckson.version>
+
+        <maven.test.skip>true</maven.test.skip>
     </properties>
 
     <dependencies>
-        <!--other pkg start -->
         <dependency>
-            <groupId>com.atjl</groupId>
-            <artifactId>common-util</artifactId>
-            <version>${utils.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.atjl</groupId>
-            <artifactId>common-util-ex</artifactId>
-            <version>${utils.version}</version>
-        </dependency>
-        <!--other pkg end -->
-
-        <!--ehcache -->
-        <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>2.7.6</version>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger.version}</version>
         </dependency>
 
         <!-- log start -->
@@ -84,17 +88,6 @@
         </dependency>
         <!--log end -->
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
@@ -151,4 +144,18 @@
         </plugins>
 
     </build>
+
+    <modules>
+        <module>common-api</module><!-- 接口 -->
+
+        <module>common-fmt</module><!-- 模板引擎封装 -->
+
+        <module>common-observer</module>
+        <module>common-office</module><!-- word/excel -->
+
+        <module>common-util</module><!-- 工具类 -->
+        <module>common-util-ex</module><!-- spring相关工具类 -->
+
+
+    </modules>
 </project>

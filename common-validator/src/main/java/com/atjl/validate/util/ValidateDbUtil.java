@@ -9,6 +9,8 @@ import com.atjl.utilex.ApplicationContextHepler;
 import com.atjl.validate.domain.constants.ValidateInnerConstant;
 import com.atjl.validate.domain.constants.ValidatePropConstants;
 import com.atjl.validate.api.exception.ValidateComponentException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -20,6 +22,8 @@ import java.util.Map;
  * @author jasonliu
  */
 public class ValidateDbUtil {
+    private static final Logger logger = LoggerFactory.getLogger(ValidateDbUtil.class);
+
     private ValidateDbUtil() {
         super();
     }
@@ -41,6 +45,7 @@ public class ValidateDbUtil {
         try {
             DbExecutor.getTableData(getDs(), sql);
         } catch (DbExecutorSyntaxException e) {
+            logger.debug("{}", e);
             return false;
         }
         return true;

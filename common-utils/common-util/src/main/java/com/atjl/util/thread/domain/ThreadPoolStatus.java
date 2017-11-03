@@ -20,6 +20,27 @@ public class ThreadPoolStatus {
     private int poolSize;
     private long taskCount;
 
+    //最大处理时间
+    private long maxCostTm;
+    //平均处理时间
+    private long avgCostTm;
+
+    public long getMaxCostTm() {
+        return maxCostTm;
+    }
+
+    public void setMaxCostTm(long maxCostTm) {
+        this.maxCostTm = maxCostTm;
+    }
+
+    public long getAvgCostTm() {
+        return avgCostTm;
+    }
+
+    public void setAvgCostTm(long avgCostTm) {
+        this.avgCostTm = avgCostTm;
+    }
+
     private List<ThreadStatus> runningThreadStatuses;
 
     public List<ThreadStatus> getRunningThreadStatuses() {

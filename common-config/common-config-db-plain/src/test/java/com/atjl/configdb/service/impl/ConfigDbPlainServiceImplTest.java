@@ -1,22 +1,20 @@
-package com.atjl.configdb.service.impl;
+package com.atjl.configdb.service.impl; 
 
-import com.atjl.util.collection.CollectionUtil;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
+import com.atjl.util.common.SystemUtil;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
-import java.util.Map;
-
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:test-service.xml"})
 public class ConfigDbPlainServiceImplTest {
 
     @Resource
-    private ConfigDbPlainServiceImpl configDbPlainServiceImpl;
+    ConfigDbPlainServiceImpl configDbPlainService;
 
     
     @Test
@@ -26,25 +24,27 @@ public class ConfigDbPlainServiceImplTest {
     
     @Test
     public void testGet() throws Exception {
-        String res = configDbPlainServiceImpl.get("DD-RoleTypeValue2");
-        System.out.println("res:"+res);
+//        configDbPlainService.get
+
     }
     
     @Test
-    public void testGetNoCache() throws Exception {
-
-        Map res = configDbPlainServiceImpl.getBatch(CollectionUtil.newList("DD-RoleTypeValue2","DD-RoleTypeValue1"));
-
-        System.out.println("res:"+res);
-    }
-    
-    @Test
-    public void testGets() throws Exception { 
+    public void testGetNoCache() throws Exception { 
         
     }
     
     @Test
     public void testGetBatch() throws Exception { 
+        
+    }
+    
+    @Test
+    public void testGetBatchNoCache() throws Exception { 
+        
+    }
+    
+    @Test
+    public void testGets() throws Exception { 
         
     }
     
@@ -74,6 +74,11 @@ public class ConfigDbPlainServiceImplTest {
     @BeforeClass
     public static void beforeClass() throws Exception{
         
+        String dir = System.getProperty("user.dir");
+        System.out.println("now " + dir);
+        String config = dir.substring(0, dir.lastIndexOf("\\")) + "\\config";
+        System.out.println("config " + config);
+        SystemUtil.addClasspath(config);
     }
     
     @Rule

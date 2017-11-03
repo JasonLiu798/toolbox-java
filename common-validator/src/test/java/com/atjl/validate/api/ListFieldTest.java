@@ -19,11 +19,11 @@ public class ListFieldTest {
 
         Map<String, Object> inner1 = new HashMap<>();
         inner1.put("f3", "sdf@sd.com");
-        inner1.put("f4", "dkdd");
+        inner1.put("f4", "dd");
 
         Map<String, Object> inner = new HashMap<>();
         inner.put("f3", "sdf@sdfjk");
-        inner.put("f4", "aaaaa");
+        inner.put("f4", "aaaa");
 
         List l = new ArrayList();
         l.add(inner);
