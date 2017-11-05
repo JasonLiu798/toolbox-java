@@ -12,14 +12,14 @@
 
     <groupId>com.atjl</groupId>
     <artifactId>common-log-parent</artifactId>
-    <version>6.2.0</version>
+	<version>6.3.0</version>
 
     <packaging>pom</packaging>
     <name>common-log-parent</name>
     <description>prj management</description>
 
     <properties>
-		<log.version>6.2.0</log.version>
+		<log.version>6.3.0</log.version>
         <!--common -->
         <util.version>5.2.0</util.version>
 

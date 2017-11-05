@@ -11,10 +11,10 @@
 
     <groupId>com.atjl</groupId>
     <artifactId>common-validator</artifactId>
-    <version>5.3.0</version>
+    <version>5.5.0</version>
 
     <properties>
-        <utils.version>5.1.0</utils.version>
+        <utils.version>5.7.0</utils.version>
     </properties>
 
     <dependencies>

@@ -1,6 +1,8 @@
 package com.atjl.common.api.req;
 
 import com.atjl.common.constant.CommonConstant;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 
@@ -9,14 +11,12 @@ import java.io.Serializable;
  *
  * @author jasondliu
  */
+@ApiModel(value = "分页基础请求对象")
 public class PageReq implements Serializable {
-
-    // 页码
+	@ApiModelProperty(value = "当前页码",example = "默认1")
     private Long currentPage = CommonConstant.DFT_PAGE_START;
-
-    //页大小
+	@ApiModelProperty(value = "页大小",example = "默认10")
     private Long pageSize = CommonConstant.DFT_PAGE_SIZE;
-
 
     public PageReq() {
         super();

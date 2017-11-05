@@ -2,17 +2,20 @@ package com.atjl.common.api.req;
 
 
 import com.atjl.common.constant.CommonConstant;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 分页请求 类型2
  * @author jasondliu
  */
+@ApiModel(value = "分页基础请求对象类型2")
 public class PageReqV1 {
-
-    // 起始对象唯一标识
+	
+	@ApiModelProperty(value = "起始对象主键",required = true)
     private String startItemId;
-
-    //页大小
+	
+	@ApiModelProperty(value = "页大小",example = "默认10")
     private Long pageSize = CommonConstant.DFT_PAGE_SIZE;
 
 
