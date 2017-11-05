@@ -291,6 +291,15 @@ public final class CollectionUtil {
         T[] arr = (T[]) Array.newInstance(clz, size);
         return list.toArray(arr);
     }
+	
+	public static <T> Set<T> list2set(List<T> list) {
+		if (isEmpty(list)) {
+			return null;
+		}
+		Set<T> res = new HashSet<T>();
+		res.addAll(list);
+		return res;
+	}
 
     /**
      * array to hashset
