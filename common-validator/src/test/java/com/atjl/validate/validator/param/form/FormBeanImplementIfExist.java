@@ -1,8 +1,10 @@
-package com.atjl.validate.validator.param;
+package com.atjl.validate.validator.param.form;
 
 import com.alibaba.druid.pool.ManagedDataSource;
 import com.atjl.validate.api.field.StringField;
 import com.atjl.validate.validator.noparam.Require;
+import com.atjl.validate.validator.param.BeanExist;
+import com.atjl.validate.validator.param.BeanImplementIf;
 
 import java.io.Closeable;
 

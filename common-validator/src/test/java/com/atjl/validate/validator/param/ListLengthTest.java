@@ -3,45 +3,59 @@ package com.atjl.validate.validator.param;
 import com.atjl.util.common.SystemUtil;
 import com.atjl.validate.api.ValidateForm;
 import com.atjl.validate.api.ValidateFormFactory;
-import com.atjl.validate.form.ReqEg;
-import com.atjl.validate.validator.param.form.FormRequireIfExist;
+import com.atjl.validate.validator.param.form.FormListLength;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:test-service.xml"})
-public class RequireIfExistTest { 
+public class ListLengthTest { 
 
+	/** 
+	 * 
+	 * Method: chk() 
+	 * 
+	 */ 
 	@Test
-	public void testValidate() throws Exception {
+	public void testChk() throws Exception {
 		
-		ValidateForm f = ValidateFormFactory.build(FormRequireIfExist.class);
-//        RequireWith requiredWith = new RequireWith(CollectionUtil.newSet("f1", "f2"));
+		ValidateForm f = ValidateFormFactory.build(FormListLength.class);
+		Map<String, Object> param = new HashMap<>();
 		
-		ReqEg r = new ReqEg();
-//		r.setF1("vv@v.v");
-		// vvv bbb
-		r.setF1("vvv");
-		r.setF1("bbb");
-//		r.setF3("vvv");
-		f.setValue(r);
+		List<Map<String, Object>> l = new ArrayList<>();
+		Map<String, Object> inner = new HashMap<>();
+		l.add(inner);
+//		inner = new HashMap<>();
+//		l.add(inner);
+		inner = new HashMap<>();
+		l.add(inner);
 		
-		boolean res = f.validate();
-		if (res) {
-			System.out.println("res:" + res);
+		param.put("f1", l);
+		
+		
+		f.setValue(param);
+		if (!f.validate()) {
+			System.out.println("check fail:" + f.getErrors());
 		} else {
-			String msg = f.getOneLineError();
-			System.out.println("res:" + res + ",msg:" + msg);
+			System.out.println("check pass");
 		}
+	} 
+	/** 
+	 * 
+	 * Method: validate(ValidateForm form, ValidateField field) 
+	 * 
+	 */ 
+	@Test
+	public void testValidate() throws Exception { 
 		 
-	}
-	
-	
-	
-	
-	
+	} 
 	/** 
 	 * 
 	 * Method: parse(String str) 

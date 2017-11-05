@@ -3,6 +3,7 @@ package com.atjl.validate.validator.param;
 import com.atjl.validate.api.ValidateForm;
 import com.atjl.validate.api.ValidateFormFactory;
 import com.atjl.validate.form.ReqEg;
+import com.atjl.validate.validator.param.form.FormReqIf;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 

@@ -1,6 +1,7 @@
-package com.atjl.validate.validator.param;
+package com.atjl.validate.validator.param.form;
 
 import com.atjl.validate.api.field.StringField;
+import com.atjl.validate.validator.param.Exist;
 
 /**
  * 校验表单示例

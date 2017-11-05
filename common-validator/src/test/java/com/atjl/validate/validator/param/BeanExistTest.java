@@ -2,6 +2,7 @@ package com.atjl.validate.validator.param;
 
 import com.atjl.validate.api.ValidateForm;
 import com.atjl.validate.api.ValidateFormFactory;
+import com.atjl.validate.validator.param.form.FormBeanExist;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;

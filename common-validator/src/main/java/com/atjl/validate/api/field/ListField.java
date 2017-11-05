@@ -12,6 +12,9 @@ import java.io.Serializable;
  * List
  * Set
  *
+ * 支持的校验器：
+ * Require Optional ListLength
+ *
  * @author jasonliu
  */
 public class ListField extends AbstractField implements Serializable {
