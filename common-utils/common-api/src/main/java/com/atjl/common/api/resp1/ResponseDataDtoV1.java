@@ -1,6 +1,8 @@
 package com.atjl.common.api.resp1;
 
 import com.atjl.common.constant.RespConstant;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 对外response dto,包含附加数据
@@ -8,10 +10,13 @@ import com.atjl.common.constant.RespConstant;
  * @author atjl
  * @since 1.0
  */
+@ApiModel("结果集对象V1")
 public class ResponseDataDtoV1 extends ResponseDtoV1 {
     //    private static final long serialVersionUID = 1L;
+    @ApiModelProperty(value = "结果集数据")
     private Object result = null;
-    public static final int UNKNOWN_ERROR = 1004;
+
+//    public static final int UNKNOWN_ERROR = 1004;
 
     public ResponseDataDtoV1() {
         super();

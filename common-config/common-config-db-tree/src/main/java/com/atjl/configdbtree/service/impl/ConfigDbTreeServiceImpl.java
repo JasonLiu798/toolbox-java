@@ -24,7 +24,7 @@ import java.util.Map;
 public class ConfigDbTreeServiceImpl implements ConfigService {
     private static final Logger logger = LoggerFactory.getLogger(ConfigDbTreeServiceImpl.class);
     @Resource
-    private ConfigTreeMapper configDbDao;
+    private ConfigTreeMapper configTreeMapper;
     @Resource
     EhCacheCacheManager ehCacheCacheManager;
 
@@ -44,7 +44,7 @@ public class ConfigDbTreeServiceImpl implements ConfigService {
         } catch (Exception e) {
             logger.error("clear cache CONFIG_M,CONFIG_MK error {}", e.getMessage());
         }
-        return configDbDao.set(pathKey, v) == 1;
+        return configTreeMapper.set(pathKey, v) == 1;
     }
 
     /**
@@ -56,7 +56,7 @@ public class ConfigDbTreeServiceImpl implements ConfigService {
     @Override
     @Cacheable(value = ConfigDbConstant.CONFIG_CACHE, key = "#pathKey")
     public String get(String pathKey) {
-        return configDbDao.get(pathKey);
+        return configTreeMapper.get(pathKey);
     }
 
     /**
@@ -66,7 +66,7 @@ public class ConfigDbTreeServiceImpl implements ConfigService {
      */
     @Override
     public String getNoCache(String key) {
-        return configDbDao.get(key);
+        return configTreeMapper.get(key);
     }
 
 
@@ -81,12 +81,12 @@ public class ConfigDbTreeServiceImpl implements ConfigService {
     @Override
     @Cacheable(value = ConfigDbConstant.CONFIG_CACHE_MK, key = "#keys.toString()")
     public Map<String, String> getBatch(List<String> keys) {
-        return list2map(configDbDao.getBatch(keys));
+        return list2map(configTreeMapper.getBatch(keys));
     }
 
     @Override
     public Map<String, String> getBatchNoCache(List<String> keys) {
-        return list2map(configDbDao.getBatch(keys));
+        return list2map(configTreeMapper.getBatch(keys));
     }
 
 
@@ -110,6 +110,6 @@ public class ConfigDbTreeServiceImpl implements ConfigService {
      */
     @Cacheable(value = ConfigDbConstant.CONFIG_CACHE_M, key = "#path.hashCode()")
     public Map<String, String> gets(String path) {
-        return list2map(configDbDao.gets(path));
+        return list2map(configTreeMapper.gets(path));
     }
 }

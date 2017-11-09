@@ -14,7 +14,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class ResponseDataGenericDto<T> extends ResponseDto {
     public static final int UNKNOWN_ERROR = 1004;
 
-    @ApiModelProperty(value = "结果对象")
+    @ApiModelProperty(value = "结果数据")
     private T result = null;
 
     public ResponseDataGenericDto() {

@@ -4,6 +4,7 @@ import com.atjl.common.api.annotation.ThreadSafe;
 import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.common.ReflectUtil;
+import com.atjl.util.reflect.ReflectClassUtil;
 import com.atjl.util.reflect.ReflectFieldUtil;
 import com.atjl.validate.api.ValidateForm;
 import com.atjl.validate.api.Validator;
@@ -66,7 +67,7 @@ public class BaseForm implements ValidateForm, Serializable {
         if (this.formClz == null) {
             throw new ValidateInitException("自定义表单类为空");
         }
-        Object formObj = ReflectUtil.getInstance(this.formClz);
+        Object formObj = ReflectClassUtil.newInstance(this.formClz);
         if (formObj == null) {
             throw new ValidateInitException("自定义表单对象无法创建");
         }
@@ -192,7 +193,18 @@ public class BaseForm implements ValidateForm, Serializable {
                         }
                     } else if (field instanceof ListField) {
                         ValidateForm refForm = ((ListField) field).getRefForm();
-                        List valList = (List) field.getRawValue();
+                        Object raw = field.getRawValue();
+//                        v.validate(this, field);
+                        if (raw == null) {
+                            logger.warn("list field value null");
+                            continue;
+                        }
+                        List valList = (List) raw;
+                        if (CollectionUtil.isEmpty(valList)) {
+                            logger.warn("list field value empty");
+                            continue;
+                        }
+
                         List<String> errMsg = new ArrayList<>();
                         for (Object v : valList) {
                             refForm.setValue(v);

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <classPathEntry
+            location="D:\d\project\repo\mysql\mysql-connector-java\5.1.34\mysql-connector-java-5.1.34.jar"/>
+
+    <context id="mysqlgenerator" targetRuntime="MyBatis3">
+
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
+        <plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin"></plugin>
+        <!--<plugin type="sf.aos.plugin.PaginationPlugin" ></plugin>-->
+        <!--<plugin type="com.MutiModule.common.mybatis.plugin.DeleteLogicByIdsPlugin"></plugin>-->
+
+
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!--
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://10.202.45.25:3306/aossit?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true"
+                        userId="aossit" password="passwd123"/>-->
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://10.202.125.245:3306/aos?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true"
+                        userId="aos" password="aos"/>
+
+
+        <javaModelGenerator targetPackage="com.sf.aos.comm.domain.gen"
+                            targetProject="src\main\java">
+            <!-- <javaModelGenerator targetPackage="sf.aos.domain.gen"
+                             targetProject="C:\Users\01223803\git\esg-aos-core-01223803\code\aos-admin\aos-dto\src\main\java"> -->
+            <property name="constructorBased" value="false"/>
+            <property name="enableSubPackages" value="false"/>
+            <property name="immutable" value="false"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="sqlmap.gen"
+                         targetProject="src\main\resources"/>
+        <javaClientGenerator targetPackage="com.sf.aos.comm.mapper.gen" targetProject="src\main\java" type="XMLMAPPER"/>
+
+        <!-- module 自动为每一个生成的类创建一个构造方法，构造方法包含了所有的field;而不是使用setter;
+        <javaModelGenerator targetPackage="sf.aos.domain.gen"
+        targetProject="D:\project\java\esg-aos-core\code\aos-admin\aos-dto\src\main\java">
+            <property name="constructorBased" value="false"/>
+            <property name="enableSubPackages" value="false"/>
+            <property name="immutable" value="false"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>-->
+        <!-- mapper
+        <sqlMapGenerator targetPackage="sqlmapgen"
+                         targetProject="src/main/resources"/> -->
+        <!-- inf
+        <javaClientGenerator targetPackage="sf.aos.mapper.gen"
+                             targetProject="src/main/java" type="XMLMAPPER"/> -->
+        <!--<table schema="aossit" enableDeleteByExample="false" enableDeleteByPrimaryKey="false"-->
+               <!--tableName="t_audit_project_stage_info">-->
+            <!--<generatedKey column="AUDIT_PROJECT_STAGE_INFO_ID" sqlStatement="Mysql" type="post" identity="true"/>-->
+        <!--</table>-->
+        <!--<table schema="aossit" enableDeleteByExample="false" enableDeleteByPrimaryKey="false"-->
+        <!--tableName="t_data_permission">-->
+        <!--<generatedKey column="DATA_PERMISSION_ID" sqlStatement="Mysql" type="post" identity="true"/>-->
+        <!--</table>-->
+        <!-- 报表
+        <table schema="aossit" enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+               tableName="t_found_report_form">
+            <generatedKey column="FOUND_REPORT_FORM_ID" sqlStatement="Mysql" type="post" identity="true"/>
+        </table>-->
+
+
+        <!-- 主键 UUID -->
+
+
+        <!-- 沟通 -->
+        <table schema="aossit" enableDeleteByExample="false" enableDeleteByPrimaryKey="false" tableName="t_communicate">
+            <generatedKey column="COMMUNICATE_ID" sqlStatement="select UUID() from dual" />
+        </table>
+        <!-- 沟通内容 -->
+        <table schema="aossit" enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+               tableName="t_communicate_content">
+            <generatedKey column="COMMUNICATE_CONTENT_ID" sqlStatement="select UUID() from dual" />
+        </table>
+        <!--沟通人员 -->
+        <table schema="aossit" enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+               tableName="t_communicate_person">
+            <generatedKey column="COMMUNICATE_PERSON_ID" sqlStatement="select UUID() from dual" />
+        </table>
+
+
+
+
+    </context>
+</generatorConfiguration>

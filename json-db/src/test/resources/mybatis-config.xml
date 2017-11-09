@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <settings>
+        <setting name="logPrefix" value="dao."/>
+    </settings>
+
+    <typeAliases>
+        <package name="com.sf.open.domain.biz"/>
+
+        <package name="com.sf.aos.todo.domain.biz"/>
+        <package name="com.sf.aos.todo.api.req.todo"/>
+        <package name="com.sf.aos.todo.api.req.todosetting"/>
+
+        <!--<package name="com.sf.aos.common.domain.biz"/>-->
+        <package name="com.sf.aos.comm.domain.biz"/>
+        <package name="com.sf.aos.domain.biz"/>
+
+    </typeAliases>
+
+</configuration>

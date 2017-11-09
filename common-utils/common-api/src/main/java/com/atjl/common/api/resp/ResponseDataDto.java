@@ -10,10 +10,10 @@ import io.swagger.annotations.ApiModelProperty;
  * @author atjl
  * @since 1.0
  */
-@ApiModel
+@ApiModel(value = "结果对象")
 public class ResponseDataDto extends ResponseDto {
 
-    @ApiModelProperty(value = "结果对象")
+    @ApiModelProperty(value = "结果数据")
     private Object result = null;
 
     public ResponseDataDto() {
