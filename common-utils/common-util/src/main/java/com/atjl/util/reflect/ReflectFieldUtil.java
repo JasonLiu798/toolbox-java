@@ -30,7 +30,7 @@ public class ReflectFieldUtil {
      * @param source
      * @param target
      * @param opt
-     * @param allowNull
+     * @param allowNull source对象中的空值 是否设置 到 target对象
      * @param blackList
      * @param whiteList
      */

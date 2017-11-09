@@ -16,7 +16,12 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * 三种类型
+ * TT-table索引字段
+ * TB-basic json 中字段
+ * TO-其他对应对象字段
+ */
 public class JFieldUtil {
     private static final Logger logger = LoggerFactory.getLogger(JFieldUtil.class);
 
@@ -42,6 +47,50 @@ public class JFieldUtil {
         logger.debug("upd obj primitive field,{}", JSONFastJsonUtil.objectToJson(dbObj));
 //        return dbObj;
     }
+	
+
+	/**
+	 * 更新指定字段
+	 * TT- copyfield
+	 * TB-dbObj中取出 json,反序列化 jsonObj，biz->jsonObj拷贝，反序列化，放回到dbObj
+	 * TO-bizObj取出对应对象，序列化json，放入dbObj对应字段
+	 *
+	 * @param bizObj 需要更新的业务对象，无需填充所有字段
+	 * @param dbObj db中查出原始对象
+	 * @param meta 表-对象 元信息
+	 * @param field 要更新的字段列表
+	 * @return 生成的db对象，可直接调用 updateSelective
+	 */
+	public static <T> T updateSpecified(Object bizObj, T dbObj, JTabMeta meta,List<String> field) {
+		
+		//table索引字段  无需指定，copy biz->dbObj
+		ReflectFieldUtil.copyField(bizObj, dbObj, ReflectUtil.GetClzOpt.ALL, false, null, null);
+		//basic json 中字段
+		Object basicJsonObj = ReflectGetUtil.getterForce(dbObj, meta.getBasic().getColumnName());
+		if(basicJsonObj!=null){
+			String basicJson = String.valueOf( basicJsonObj);
+			Object basicObj = JSONFastJsonUtil.jsonToObject(basicJson,meta.getBasic().getFieldType());
+			ReflectFieldUtil.copyField(bizObj,basicObj);
+			String basicJsonUpdated = JSONFastJsonUtil.objectToJson(basicObj);
+			ReflectSetUtil.setterForce(dbObj, meta.getBasic().getColumnName(), basicJsonUpdated);
+		}
+		//其他 字段
+		if (CollectionUtil.isEmpty(meta.getFieldList())) {
+			meta.getFieldList();
+			for (JFieldMeta f : meta.getFieldList()) {
+				ReflectSetUtil.setterForce(bizObj, f.getFieldName(), null);
+			}
+		}
+		
+		String basisJson = JSONFastJsonUtil.objectToJson(bizObj);
+		ReflectSetUtil.setterForce(dbObj, meta.getBasic().getColumnName(), basisJson);
+		
+		ReflectSetUtil.setterForce(dbObj, "updTm", null);
+		ReflectSetUtil.setterForce(dbObj, "crtTm", null);
+		ReflectSetUtil.setterForce(dbObj, "deleted", null);
+		logger.debug("upd obj primitive field,{}", JSONFastJsonUtil.objectToJson(dbObj));
+//        return dbObj;
+	}
 
 
     /**
