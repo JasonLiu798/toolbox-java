@@ -5,6 +5,7 @@ import com.atjl.util.character.StringCheckUtil;
 import com.atjl.validate.api.ValidateForm;
 import com.atjl.validate.api.Validator;
 import com.atjl.validate.api.exception.ValidateException;
+import com.atjl.validate.api.exception.ValidateNotRecMsgException;
 import com.atjl.validate.api.field.ValidateField;
 import com.atjl.validate.validator.base.FieldIfEqualExistBase;
 
@@ -30,6 +31,9 @@ public class RequireIfExist extends FieldIfEqualExistBase {
             if (StringCheckUtil.isEmpty(field.getStrValue())) {
                 throw new ValidateException(this.msg);
             }
+        }else{
+            //非必填字段，不做后续校验
+            throw new ValidateNotRecMsgException();
         }
     }
 

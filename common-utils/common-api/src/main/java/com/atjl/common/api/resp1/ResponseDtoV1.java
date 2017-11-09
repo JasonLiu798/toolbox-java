@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author atjl
  * @since 1.0
  */
-@ApiModel
+@ApiModel("结果集对象V1")
 public class ResponseDtoV1 extends ResponseDto {
     @ApiModelProperty(value = "是否成功")
     protected String succ = RespConstant.V1_OK_CODE;
