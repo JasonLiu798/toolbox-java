@@ -1,6 +1,5 @@
 package com.atjl.jfeild.util;
 
-
 import com.atjl.jfeild.domain.JFieldMeta;
 import com.atjl.jfeild.domain.JTabMeta;
 import com.atjl.util.collection.CollectionUtil;
@@ -27,74 +26,82 @@ public class JFieldUtil {
 
     /**
      * 只更新 基础字段
-     *
      * @param bizObj 更新了 primitive 值的对象
      */
-    public static <T> void updatePrimitive(Object bizObj, T dbObj, JTabMeta meta) {
-        ReflectFieldUtil.copyField(bizObj, dbObj, ReflectUtil.GetClzOpt.ALL, false, null, null);
-        if (CollectionUtil.isEmpty(meta.getFieldList())) {
-            for (JFieldMeta f : meta.getFieldList()) {
-                ReflectSetUtil.setterForce(bizObj, f.getFieldName(), null);
+    public static <T> T updatePrimitive(Object bizObj, T dbObj, JTabMeta meta) {
+        return updateSpecified(bizObj, dbObj, meta, true, false, null);
+    }
+
+
+    /**
+     * 更新指定字段
+     * biz -> db
+     * TT- copyfield
+     * TB-dbObj中取出 json,反序列化 jsonObj，biz->jsonObj拷贝，反序列化，放回到dbObj
+     * TO-bizObj取出对应对象，序列化json，放入dbObj对应字段
+     *
+     * @param bizObj     需要更新的业务对象，无需填充所有字段，主键字段必填
+     * @param dbObj      db中查出原始对象
+     * @param meta       表-对象 元信息
+     * @param tb         是否拷贝 basic字段
+     * @param to         是否拷贝 object字段
+     * @param fieldNames 要更新的字段列表
+     * @return 生成的db对象，可直接调用 updateSelective
+     */
+    public static <T> T updateSpecified(Object bizObj, T dbObj, JTabMeta meta, boolean tb, boolean to, List<String> fieldNames) {
+
+        //basic json 中字段
+        if (tb) {
+            Object basicJsonObj = ReflectGetUtil.getterForce(dbObj, meta.getBasic().getColumnName());
+            if (basicJsonObj != null) {
+                String basicJson = String.valueOf(basicJsonObj);
+                Object basicObj = JSONFastJsonUtil.jsonToObject(basicJson, meta.getBasic().getFieldType());
+                List<String> blackList = null;
+                if (to) {
+                    blackList = fieldNames;
+                }
+                ReflectFieldUtil.copyField(bizObj, basicObj, ReflectUtil.GetClzOpt.ALL, false, CollectionUtil.list2array(blackList), null);
+                ReflectSetUtil.setterForce(basicObj, meta.getBasic().getFieldName(), null);
+
+                String basicJsonUpdated = JSONFastJsonUtil.objectToJson(basicObj);
+                ReflectSetUtil.setterForce(dbObj, meta.getBasic().getColumnName(), basicJsonUpdated);
+                ReflectSetUtil.setterForce(bizObj, meta.getBasic().getFieldName(), null);
+
             }
         }
 
-        String basisJson = JSONFastJsonUtil.objectToJson(bizObj);
-        ReflectSetUtil.setterForce(dbObj, meta.getBasic().getColumnName(), basisJson);
+        //table索引字段  无需指定，copy biz->dbObj
+        ReflectFieldUtil.copyField(bizObj, dbObj, ReflectUtil.GetClzOpt.ALL, false, null, null);
+
+        //其他 字段
+        if (to && !CollectionUtil.isEmpty(fieldNames) && !CollectionUtil.isEmpty(meta.getFieldList())) {
+            for (String fieldName : fieldNames) {
+                JFieldMeta fieldMeta = meta.getField(fieldName);
+                if (fieldMeta == null) {
+                    continue;
+                }
+                Object obj = ReflectGetUtil.getterForce(bizObj, fieldMeta.getFieldName());
+                if (obj != null) {
+                    String objJson = JSONFastJsonUtil.objectToJson(obj);
+                    ReflectSetUtil.setterForce(dbObj, fieldMeta.getColumnName(), objJson);
+                    ReflectSetUtil.setterForce(bizObj, fieldMeta.getFieldName(), null);
+                }
+            }
+        }
+
+//        String basisJson = JSONFastJsonUtil.objectToJson(bizObj);
+//        ReflectSetUtil.setterForce(dbObj, meta.getBasic().getColumnName(), basisJson);
 
         ReflectSetUtil.setterForce(dbObj, "updTm", null);
         ReflectSetUtil.setterForce(dbObj, "crtTm", null);
         ReflectSetUtil.setterForce(dbObj, "deleted", null);
-        logger.debug("upd obj primitive field,{}", JSONFastJsonUtil.objectToJson(dbObj));
-//        return dbObj;
+        logger.debug("upd obj specified field,{}", JSONFastJsonUtil.objectToJson(dbObj));
+        return dbObj;
     }
-	
-
-	/**
-	 * 更新指定字段
-	 * TT- copyfield
-	 * TB-dbObj中取出 json,反序列化 jsonObj，biz->jsonObj拷贝，反序列化，放回到dbObj
-	 * TO-bizObj取出对应对象，序列化json，放入dbObj对应字段
-	 *
-	 * @param bizObj 需要更新的业务对象，无需填充所有字段
-	 * @param dbObj db中查出原始对象
-	 * @param meta 表-对象 元信息
-	 * @param field 要更新的字段列表
-	 * @return 生成的db对象，可直接调用 updateSelective
-	 */
-	public static <T> T updateSpecified(Object bizObj, T dbObj, JTabMeta meta,List<String> field) {
-		
-		//table索引字段  无需指定，copy biz->dbObj
-		ReflectFieldUtil.copyField(bizObj, dbObj, ReflectUtil.GetClzOpt.ALL, false, null, null);
-		//basic json 中字段
-		Object basicJsonObj = ReflectGetUtil.getterForce(dbObj, meta.getBasic().getColumnName());
-		if(basicJsonObj!=null){
-			String basicJson = String.valueOf( basicJsonObj);
-			Object basicObj = JSONFastJsonUtil.jsonToObject(basicJson,meta.getBasic().getFieldType());
-			ReflectFieldUtil.copyField(bizObj,basicObj);
-			String basicJsonUpdated = JSONFastJsonUtil.objectToJson(basicObj);
-			ReflectSetUtil.setterForce(dbObj, meta.getBasic().getColumnName(), basicJsonUpdated);
-		}
-		//其他 字段
-		if (CollectionUtil.isEmpty(meta.getFieldList())) {
-			meta.getFieldList();
-			for (JFieldMeta f : meta.getFieldList()) {
-				ReflectSetUtil.setterForce(bizObj, f.getFieldName(), null);
-			}
-		}
-		
-		String basisJson = JSONFastJsonUtil.objectToJson(bizObj);
-		ReflectSetUtil.setterForce(dbObj, meta.getBasic().getColumnName(), basisJson);
-		
-		ReflectSetUtil.setterForce(dbObj, "updTm", null);
-		ReflectSetUtil.setterForce(dbObj, "crtTm", null);
-		ReflectSetUtil.setterForce(dbObj, "deleted", null);
-		logger.debug("upd obj primitive field,{}", JSONFastJsonUtil.objectToJson(dbObj));
-//        return dbObj;
-	}
 
 
     /**
-     *
+     * biz -> db
      */
     public static <T> T update(Object bizObj, JTabMeta meta, Class<T> dbClass) {
         Object dbObj = ReflectClassUtil.newInstance(dbClass);
@@ -128,6 +135,9 @@ public class JFieldUtil {
 //    public static <T> T trans(Object db){
 //	}
 
+    /**
+     * db -> biz
+     */
     public static <T> List<T> selectBatch(List dbObjs, JTabMeta jbiz, Class<T> bizClz) {
         if (CollectionUtil.isEmpty(dbObjs)) {
             return new ArrayList<>();
@@ -141,7 +151,7 @@ public class JFieldUtil {
 
 
     /**
-     * @param dbObj 数据库读取的对象
+     * db -> biz
      */
     public static <T> T select(Object dbObj, JTabMeta jbiz, Class<T> bizClz) {
         Object mainObjStrRaw = ReflectGetUtil.getterForce(dbObj, jbiz.getBasic().getColumnName());
@@ -173,6 +183,7 @@ public class JFieldUtil {
         }
         return (T) mainObj;
     }
+
 
     public static Object json2obj(Object o, Class clz) {
         if (o != null) {
