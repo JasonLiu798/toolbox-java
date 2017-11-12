@@ -9,5 +9,5 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.TYPE})
 @Retention(RetentionPolicy.SOURCE)
 public @interface ValidateObj {
-    public Class[] form();
+    public Class obj() default Object.class;
 }
