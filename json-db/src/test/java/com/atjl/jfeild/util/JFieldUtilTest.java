@@ -112,7 +112,10 @@ public class JFieldUtilTest {
     public void testUpdate() throws Exception {
         long t = System.currentTimeMillis();
         try {
-            Object res = null;
+//            Object res = null;
+
+
+
             JTabMeta meta = BizObjMetaUtil.getTabMeta();
             System.out.println("res: succ " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(meta)));
         } catch (Exception e) {

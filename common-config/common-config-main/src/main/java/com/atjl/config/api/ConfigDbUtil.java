@@ -116,7 +116,7 @@ public class ConfigDbUtil {
         if (nocache) {
             method = ConfigDbConstant.METHOD_GET_NOCACHE;
         }
-        Object raw = ReflectUtil.invokeMethod(configDbService, method, new Class[]{String.class}, new Object[]{pk});
+        Object raw = ReflectMethodUtil.invokeMethod(configDbService, method, new Class[]{String.class}, new Object[]{pk});
         if (raw != null) {
             return String.valueOf(raw);
         }
