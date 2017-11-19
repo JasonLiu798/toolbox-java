@@ -3,7 +3,7 @@ package com.atjl.common.constant;
 
 public class CommonConstant {
     private CommonConstant() {
-        super();
+    	throw new UnsupportedOperationException();
     }
 
     public static final String UTF_8 = "UTF-8";
@@ -19,4 +19,8 @@ public class CommonConstant {
 
     public static final Integer DFT_PAGE_START_INT = 1;
     public static final Integer DFT_PAGE_SIZE_INT = 10;
+    
+    //BaseReqDto
+    public static final String FIELD_CURRENT_USER = "currentUser";
+    
 }
