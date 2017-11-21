@@ -8,7 +8,7 @@ public class FileTypeUtilTest {
 
     @Test
     public void testGetFileType() throws Exception {
-        String ft = FileTypeUtil.getFileType("D:\\a.pdf");
+        String ft = FileTypeUtil.getFileType("E:\\f.pdf");
         System.out.println("res:" + ft);
     }
 
