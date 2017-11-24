@@ -18,12 +18,12 @@ import java.util.List;
 
 /**
  * 重试调度辅助
- * 分页
+ * 分页调度
  */
 @Component
-public class DispatchManager {
+public class PageProcessorManager {
 
-    private static final Logger logger = LoggerFactory.getLogger(DispatchManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(PageProcessorManager.class);
 
     @Resource
     AfterDefaultService retryAfterServiceBase;
@@ -44,10 +44,8 @@ public class DispatchManager {
             return;
         }
 
-
         int pageCnt = PageUtil.getPageCount(totalCount, opt.getPageSize());
         String startId = null;
-
 
         for (int i = 1; i <= pageCnt; i++) {
             //按页获取数据

@@ -22,7 +22,7 @@ public class RetryDispatchManagerTest {
 
 
     @Resource
-    private DispatchManager retryDispatchManager;
+    private PageProcessorManager retryDispatchManager;
     @Resource
     TestRetryService testRetryService;
 

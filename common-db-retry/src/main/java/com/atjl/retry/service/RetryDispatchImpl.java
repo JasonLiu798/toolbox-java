@@ -7,7 +7,7 @@ import com.atjl.retry.api.exception.RetryInitException;
 import com.atjl.retry.api.exception.RetryRegisteException;
 import com.atjl.retry.api.option.InitOption;
 import com.atjl.retry.domain.RetryServiceItem;
-import com.atjl.retry.manager.DispatchManager;
+import com.atjl.retry.manager.PageProcessorManager;
 import com.atjl.retry.manager.GetDataManager;
 import com.atjl.retry.manager.OptionManager;
 import com.atjl.retry.manager.ProcessManager;
@@ -44,7 +44,7 @@ public class RetryDispatchImpl implements RetryDispatch {
     @Resource
     AfterDefaultService retryAfterServiceBase;
     @Resource
-    DispatchManager retryDispatchManager;
+    PageProcessorManager retryDispatchManager;
     @Resource
     GetDataManager retryGetManager;
     @Resource
