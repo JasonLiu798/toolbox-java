@@ -4,10 +4,13 @@ import com.atjl.util.character.StringUtil;
 import com.atjl.util.collection.CollectionFilterUtil;
 import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.common.ReflectUtil.GetClzOpt;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -58,6 +61,44 @@ public class ReflectFieldUtil {
     public static void copyField(Object source, Object target) {
         copyField(source, target, GetClzOpt.ALL, true, null, null);
     }
+	
+	
+	/**
+	 * src多出的字段：不会报错
+	 * 字段类型匹配： Long和Integer互转
+	 * src或dest为空：抛异常
+	 * @param src
+	 * @param tgt
+	 */
+	public static void copyFieldUsePU(Object src, Object tgt){
+		try {
+			PropertyUtils.copyProperties(tgt,src);
+		} catch (InvocationTargetException|IllegalAccessException|NoSuchMethodException e) {
+			logger.error("copyfield use proputil error {}",e);
+		}
+	}
+	
+	/**
+	 *
+	 * @param src
+	 * @param tgt
+	 */
+	public static void copyFieldUseBU(Object src,Object tgt){
+		try {
+			BeanUtils.copyProperties(tgt,src);
+		} catch (InvocationTargetException|IllegalAccessException e) {
+			logger.error("copyfield use beanutil error {}",e);
+		}
+	}
+	
+	public static void copyFieldUseDz(Object src,Object tgt){
+		try {
+			BeanUtils.copyProperties(tgt,src);
+		} catch (InvocationTargetException|IllegalAccessException e) {
+			logger.error("copyfield use beanutil error {}",e);
+		}
+	}
+	
 
     /**
      * 递归拷贝

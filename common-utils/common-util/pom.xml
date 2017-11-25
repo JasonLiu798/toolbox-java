@@ -223,7 +223,15 @@
         </dependency>
         <!-- jackson end -->
 
-        <!--mail-->
+		<!-- deep copy -->
+		<dependency>
+			<groupId>net.sf.dozer</groupId>
+			<artifactId>dozer</artifactId>
+			<version>5.5.1</version>
+		</dependency>
+
+
+		<!--mail-->
         <!--<dependency>-->
             <!--<groupId>javax.mail</groupId>-->
             <!--<artifactId>mail</artifactId>-->
