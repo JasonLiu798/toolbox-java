@@ -13,9 +13,11 @@
 
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
         <!--<plugin type="com.tgwoo.core.dao.plugin.OraclePaginationPlugin"></plugin>-->
-        <plugin type="com.atjl.mybatis.plugin.service.LogicDeleteByPrimayKeyPlugin"></plugin>
-        <plugin type="com.atjl.mybatis.plugin.service.SelectByPrimaryKeyFilterDeleteLogicPlugin"></plugin>
+        <!--<plugin type="com.atjl.mybatis.plugin.service.LogicDeleteByPrimayKeyPlugin"></plugin>-->
+        <!--<plugin type="com.atjl.mybatis.plugin.service.SelectByPrimaryKeyFilterDeleteLogicPlugin"></plugin>-->
 
+        <plugin type="com.atjl.mybatis.plugin.service.BatchInsertPlugin"></plugin>
+        <plugin type="com.atjl.mybatis.plugin.service.BatchUpdatePlugin"></plugin>
 
         <commentGenerator>
             <property name="suppressAllComments" value="true"/>
@@ -46,7 +48,7 @@
                              targetProject="src/main/java" type="XMLMAPPER"/>
 
         <!-- sys -->
-        <table enableDeleteByExample="false" tableName="tm_ocr"/>
+        <table enableDeleteByExample="false" tableName="tm_config"/>
 
 
     </context>

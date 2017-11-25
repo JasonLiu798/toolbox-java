@@ -26,6 +26,7 @@ public class JFieldUtil {
 
     /**
      * 只更新 基础字段
+     *
      * @param bizObj 更新了 primitive 值的对象
      */
     public static <T> T updatePrimitive(Object bizObj, T dbObj, JTabMeta meta) {
@@ -99,6 +100,17 @@ public class JFieldUtil {
         return dbObj;
     }
 
+
+    public static <T> List<T> updateBatch(List dbObjs, JTabMeta jbiz, Class<T> bizClz) {
+        if (CollectionUtil.isEmpty(dbObjs)) {
+            return new ArrayList<>();
+        }
+        List<T> res = new ArrayList<>();
+        for (Object dbObj : dbObjs) {
+            res.add(update(dbObj, jbiz, bizClz));
+        }
+        return res;
+    }
 
     /**
      * biz -> db
