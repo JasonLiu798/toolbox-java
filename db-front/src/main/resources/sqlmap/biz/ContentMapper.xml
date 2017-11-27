@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.aos.srv.mapper.biz.ContentMapper">
+<mapper namespace="com.atjl.dbfront.mapper.biz.ContentMapper">
 
     <select id="getContent"
-            resultType="com.aos.srv.domain.biz.ContentDomain" >
+            resultType="com.atjl.dbfront.domain.biz.ContentDomain" >
         SELECT CNAME cname,
         CTYPE ctype,
         CONTENT content,
