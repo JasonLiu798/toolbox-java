@@ -32,7 +32,7 @@ public class PageProcessorManager {
     @Resource
     private ProcessManager retryProcessManager;
 
-
+    
     public void pageProcess(RetryServiceItem retryServiceItem) {
         InitOption opt = retryServiceItem.getInitOption();
         CustomGetDatas getDatas = retryServiceItem.getRetryServiceCustomGetDatas();
