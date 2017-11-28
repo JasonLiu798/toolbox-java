@@ -7,9 +7,9 @@ import com.atjl.retry.api.exception.RetryInitException;
 import com.atjl.retry.api.exception.RetryRegisteException;
 import com.atjl.retry.api.option.InitOption;
 import com.atjl.retry.domain.RetryServiceItem;
-import com.atjl.retry.manager.PageProcessorManager;
 import com.atjl.retry.manager.GetDataManager;
 import com.atjl.retry.manager.OptionManager;
+import com.atjl.retry.manager.PageProcessorManager;
 import com.atjl.retry.manager.ProcessManager;
 import com.atjl.retry.util.RetryCheckUtil;
 import com.atjl.util.collection.CollectionUtil;
@@ -38,6 +38,8 @@ public class RetryDispatchImpl implements RetryDispatch {
     private static final Logger logger = LoggerFactory.getLogger(RetryDispatch.class);
 
     private Map<String, RetryServiceItem> retryServices = new ConcurrentHashMap<>();
+    
+	private Map<String, RetryServiceItem> pagingServices = new ConcurrentHashMap<>();
 
     @Resource
     private OptionManager retryOptionManager;
@@ -99,6 +101,18 @@ public class RetryDispatchImpl implements RetryDispatch {
             retryDispatchManager.pageProcess(entry.getValue());
         }
     }
+	
+	/**
+	 * 只做分页
+	 */
+	public void pageProcess() {
+		for (Map.Entry<String, RetryServiceItem> entry : retryServices.entrySet()) {
+			logger.info("process service {}", entry.getKey());
+			retryDispatchManager.pageProcess(entry.getValue());
+		}
+	}
+    
+    
 
 
     @Override

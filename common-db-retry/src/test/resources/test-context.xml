@@ -5,13 +5,7 @@
 
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-
-
-    <import resource="classpath:spring/spring-retry.xml"/>
-
-    <import resource="classpath:spring/spring-utilex-config.xml"/>
-
-    <!--<import resource="classpath:spring/spring-config-use-dbplain.xml"/>-->
+    <import resource="classpath:spring/spring-config-*.xml"/>
 
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
@@ -49,7 +43,7 @@
         <property name="mapperLocations">
             <list>
                 <value>classpath*:sqlmap/biz/*.xml</value>
-                <!--<value>classpath*:sqlmap/gen/*.xml</value>-->
+                <value>classpath*:sqlmap/gen/*.xml</value>
             </list>
         </property>
     </bean>
