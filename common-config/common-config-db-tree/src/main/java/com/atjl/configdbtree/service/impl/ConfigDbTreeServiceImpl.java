@@ -49,9 +49,6 @@ public class ConfigDbTreeServiceImpl implements ConfigService {
 
     /**
      * 获取单个值
-     *
-     * @param pathKey
-     * @return
      */
     @Override
     @Cacheable(value = ConfigDbConstant.CONFIG_CACHE, key = "#pathKey")

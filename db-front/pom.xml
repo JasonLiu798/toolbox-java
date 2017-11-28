@@ -10,17 +10,16 @@
 
     <groupId>com.atjl</groupId>
     <artifactId>db-front</artifactId>
-    <version>1.0.0</version>
+    <version>1.3.0</version>
 
     <name>db-front</name>
     <packaging>jar</packaging>
 
     <properties>
-        <util.version>5.1.0</util.version>
-        <config.version>5.0.0</config.version>
-        <validator.version>5.0.0</validator.version>
-
-        <log.version>6.0.0</log.version>
+        <util.version>5.10.0</util.version>
+        <config.version>5.1.0</config.version>
+        <!--<validator.version>5.0.0</validator.version>-->
+        <log.version>6.2.0</log.version>
     </properties>
 
     <dependencies>
@@ -35,16 +34,16 @@
             <artifactId>common-util-ex</artifactId>
             <version>${util.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.atjl</groupId>
-            <artifactId>common-config-api</artifactId>
-            <version>${config.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.atjl</groupId>
-            <artifactId>common-validator</artifactId>
-            <version>${validator.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.atjl</groupId>-->
+            <!--<artifactId>common-config-api</artifactId>-->
+            <!--<version>${config.version}</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>com.atjl</groupId>-->
+            <!--<artifactId>common-validator</artifactId>-->
+            <!--<version>${validator.version}</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>com.atjl</groupId>
