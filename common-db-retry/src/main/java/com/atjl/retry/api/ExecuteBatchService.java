@@ -1,6 +1,8 @@
 package com.atjl.retry.api;
 
-import com.atjl.retry.api.option.InitOption;
+import com.atjl.retry.api.domain.ExecuteStatusResp;
+
+import java.util.List;
 
 /**
  * 重试服务
@@ -8,7 +10,7 @@ import com.atjl.retry.api.option.InitOption;
  *
  * @param <D> 重试上下文数据，execute ,
  */
-public interface RetryService<D> {
+public interface ExecuteBatchService<D> extends GetOptionService {
 
     /**
      * 执行 重试操作
@@ -16,14 +18,8 @@ public interface RetryService<D> {
      * 每条数据调用 execute 并传入 context
      * 自定义获取数据的则，使用List<DataContext<D>> 中的数据
      *
-     * @param context context
      * @return 执行成功/失败
      */
-    boolean execute(DataContext<D> context);
-
-    /**
-     * 获取重试配置，获取的为配置拷贝，注册后不可修改
-     */
-    InitOption getInitOption();
+    ExecuteStatusResp execute(List<D> datas);//, C cond);
 
 }

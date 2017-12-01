@@ -905,7 +905,6 @@ public final class StringFormatUtil {
     }
 
 
-
     /**
      * rm <xxxx> of string
      * @param raw

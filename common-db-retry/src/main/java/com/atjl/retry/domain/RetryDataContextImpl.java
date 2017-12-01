@@ -4,7 +4,8 @@ package com.atjl.retry.domain;
 import com.atjl.common.constant.CommonConstant;
 import com.atjl.retry.api.DataContext;
 import com.atjl.retry.api.domain.RetryData;
-import com.atjl.retry.api.option.InitOption;
+import com.atjl.retry.api.option.PageOption;
+import com.atjl.retry.api.option.RetryOption;
 
 /**
  * 重试基础上下文，每条数据一个
@@ -23,7 +24,7 @@ public class RetryDataContextImpl<T> implements DataContext<T> {
     /**
      * 提供用户方使用，
      */
-    private InitOption initOption;
+    private PageOption initOption;
 
     public RetryDataContextImpl(T data) {
         this.data = data;
@@ -35,12 +36,12 @@ public class RetryDataContextImpl<T> implements DataContext<T> {
      *
      * @return 拷贝的选项数据
      */
-    public InitOption getInitOption() {
+    public PageOption getInitOption() {
         return initOption;
 //        if(initOption==null){
 //            return null;
 //        }
-//        InitOption opt = new InitOption();
+//        RetryOption opt = new RetryOption();
 //        ReflectUtil.copyField(initOption, opt, ReflectUtil.GetClzOpt.ALL, true, new String[]{"retryTabMeta"}, null);
 //        RetryTableMetaConf meta = new RetryTableMetaConf();
 //        ReflectUtil.copyField(initOption.getRetryTabMeta(), meta, ReflectUtil.GetClzOpt.ALL, true, null, null);
@@ -48,7 +49,7 @@ public class RetryDataContextImpl<T> implements DataContext<T> {
 //        return opt;
     }
 
-    public void setInitOption(InitOption initOption) {
+    public void setInitOption(RetryOption initOption) {
         this.initOption = initOption;
     }
 

@@ -1,6 +1,6 @@
 package com.atjl.retry.api;
 
-import com.atjl.retry.api.option.InitOption;
+import com.atjl.retry.api.option.PageOption;
 
 public interface DataContext<T> {
     /**
@@ -11,6 +11,7 @@ public interface DataContext<T> {
      * 必填项，不填则直接调用 通知管理员接口
      */
     void setId(String id);
+
     String getId();
 
     /**
@@ -63,7 +64,7 @@ public interface DataContext<T> {
     /**
      * 获取初始化配置
      */
-    InitOption getInitOption();
+    PageOption getInitOption();
 
 
 }

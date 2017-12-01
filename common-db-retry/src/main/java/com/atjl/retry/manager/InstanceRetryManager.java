@@ -1,8 +1,8 @@
 package com.atjl.retry.manager;
 
 import com.atjl.retry.api.DataContext;
-import com.atjl.retry.api.RetryService;
-import com.atjl.retry.api.option.InitOption;
+import com.atjl.retry.api.ExecuteService;
+import com.atjl.retry.api.option.RetryInstanceOption;
 import com.atjl.util.common.InstanceRetryUtil;
 import com.atjl.util.common.domain.ExcepResDto;
 import org.slf4j.Logger;
@@ -15,12 +15,8 @@ public class InstanceRetryManager {
 
     /**
      * 无需立即重试
-     *
-     * @param retryService
-     * @param data
-     * @return
      */
-    public ExcepResDto noRetry(RetryService retryService, DataContext data) {
+    public ExcepResDto noRetry(ExecuteService retryService, DataContext data) {
         logger.debug("no instance retry");
         ExcepResDto res = new ExcepResDto();
         try {
@@ -34,13 +30,8 @@ public class InstanceRetryManager {
 
     /**
      * 需要立即重试
-     *
-     * @param opt
-     * @param retryService
-     * @param data
-     * @return
      */
-    public ExcepResDto instanceRetry(InitOption opt, RetryService retryService, DataContext data) {
+    public ExcepResDto instanceRetry(RetryInstanceOption opt, ExecuteService retryService, DataContext data) {
         if (logger.isInfoEnabled()) {
             logger.info("instance retry,retry cnt {},wait {}", opt.getInstanceRetryOption().getRetryCount(), opt.getInstanceRetryOption().getWaitMs());
         }

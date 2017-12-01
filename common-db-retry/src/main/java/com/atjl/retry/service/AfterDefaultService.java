@@ -3,8 +3,8 @@ package com.atjl.retry.service;
 import com.atjl.common.constant.CommonConstant;
 import com.atjl.retry.api.AfterService;
 import com.atjl.retry.api.DataContext;
-import com.atjl.retry.api.option.InitOption;
 import com.atjl.retry.api.domain.RetryData;
+import com.atjl.retry.api.option.RetryOption;
 import com.atjl.retry.domain.RetryInnerConstant;
 import com.atjl.retry.mapper.RetryMapper;
 import com.atjl.util.json.JSONFastJsonUtil;
@@ -50,7 +50,7 @@ public class AfterDefaultService implements AfterService {
     }
 
     private void updateRetryRes(DataContext context, RetryData data) {
-        InitOption opt = context.getInitOption();
+        RetryOption opt = (RetryOption) context.getInitOption();
         retryMapper.updateRetryResult(opt, opt.getRetryTabMeta(), data);
     }
 

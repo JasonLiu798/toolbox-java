@@ -19,7 +19,12 @@ public interface RetryDispatch {
     /**
      *
      */
-    void timeUp();
+    void executeAll();
+
+    /**
+     * 只处理指定 服务
+     */
+    void executeService(String service, Object cond);
 
     List<RetryStatusDto> getOptions();
 

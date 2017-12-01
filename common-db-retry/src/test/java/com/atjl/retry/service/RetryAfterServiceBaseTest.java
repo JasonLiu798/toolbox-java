@@ -2,7 +2,7 @@ package com.atjl.retry.service;
 
 import com.atjl.retry.api.DataContext;
 import com.atjl.retry.api.DataContextFactory;
-import com.atjl.retry.api.option.InitOption;
+import com.atjl.retry.api.option.RetryOption;
 import com.atjl.retry.api.option.RetryTableMetaConf;
 import com.atjl.retry.domain.RetryInnerConstant;
 import com.atjl.util.reflect.ReflectSetUtil;
@@ -33,7 +33,7 @@ public class RetryAfterServiceBaseTest {
         retryTabMeta.setLastRetriedTsCol("SEND_TM");
         retryTabMeta.setRetryCountCol("SEND_CNT");
 
-        InitOption opt = new InitOption();
+        RetryOption opt = new RetryOption();
         opt.setRetryTabMeta(retryTabMeta);
         opt.setRetryMaxCount(3L);
         ReflectSetUtil.setterForce(c, RetryInnerConstant.FIELD_OPTION, opt);
@@ -57,7 +57,7 @@ public class RetryAfterServiceBaseTest {
         retryTabMeta.setLastRetriedTsCol("SEND_TM");
         retryTabMeta.setRetryCountCol("SEND_CNT");
 
-        InitOption opt = new InitOption();
+        RetryOption opt = new RetryOption();
         opt.setRetryTabMeta(retryTabMeta);
         opt.setRetryMaxCount(3L);
         ReflectSetUtil.setterForce(c, RetryInnerConstant.FIELD_OPTION, opt);

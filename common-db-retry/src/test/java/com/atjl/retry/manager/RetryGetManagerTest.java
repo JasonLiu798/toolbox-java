@@ -1,6 +1,6 @@
 package com.atjl.retry.manager;
 
-import com.atjl.retry.api.option.InitOption;
+import com.atjl.retry.api.option.RetryOption;
 import com.atjl.retry.api.option.RetryTableMetaConf;
 import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.json.JSONFastJsonUtil;
@@ -25,7 +25,7 @@ public class RetryGetManagerTest {
 
     @Test
     public void testGetData() throws Exception {
-        InitOption opt = new InitOption();
+        RetryOption opt = new RetryOption();
 //        opt.setIntervalCoefficient(10);
         opt.getIntervalCoefficientOption().setIntervalCoefficient(3);
         opt.setRetryMaxCount(3L);
@@ -40,13 +40,13 @@ public class RetryGetManagerTest {
         meta.setLastRetriedTsCol("SEND_TM");
         meta.setRetryCountCol("SEND_CNT");
         meta.setOtherConds("SEND_TM < unix_timestamp(now())-3600*24*2 ");
-        meta.setDataCols(CollectionUtil.newSet("SEND_TOPIC","SEND_CONTENT"));
+        meta.setDataCols(CollectionUtil.newSet("SEND_TOPIC", "SEND_CONTENT"));
 //        meta.setOrderByClause("SEND_TM desc");
         opt.setRetryTabMeta(meta);
 
         String startId = null;
 //        String startId = "12";
-        List l = retryGetManager.getDataContextDefault(opt, startId, 2);
+        List l = retryGetManager.getRetryDatas(opt, startId);
 
         System.out.println("res:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
     }
@@ -54,7 +54,7 @@ public class RetryGetManagerTest {
 
     @Test
     public void testCount() {
-        InitOption opt = new InitOption();
+        RetryOption opt = new RetryOption();
         //opt.setIntervalCoefficient(10);
         opt.setRetryMaxCount(3L);
         opt.setExceptionInstanceRetry(false);
@@ -70,7 +70,7 @@ public class RetryGetManagerTest {
 //        meta.setOrderByClause("SEND_TM desc");
         opt.setRetryTabMeta(meta);
 
-        int l = retryGetManager.getCount(opt);
+        int l = retryGetManager.getRetryTotalCount(opt);
 
         System.out.println("res:" + l);
     }

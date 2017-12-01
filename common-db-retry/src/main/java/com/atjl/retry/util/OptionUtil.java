@@ -20,7 +20,7 @@ public class OptionUtil {
     /**
      * 判断后置服务，是否内置外置都执行
      */
-    public static boolean hasSequential(InitOption opt) {
+    public static boolean hasSequential(PageOption opt) {
         return opt.getAfterType() == RetryAfterType.ALLREV || opt.getAfterType() == RetryAfterType.ALLSEQ;
     }
 
@@ -30,36 +30,36 @@ public class OptionUtil {
      *
      * @return
      */
-    public static boolean isForward(InitOption opt) {
+    public static boolean isForward(PageOption opt) {
         return RetryAfterType.ALLSEQ == opt.getAfterType();
     }
 
     /**
      * 是否有自定义 后置
      */
-    public static boolean isCustomAfter(InitOption opt) {
+    public static boolean isCustomAfter(PageOption opt) {
         return opt.getAfterType() == RetryAfterType.ALLREV || opt.getAfterType() == RetryAfterType.ALLSEQ || opt.getAfterType() == RetryAfterType.CUSTOM;
     }
 
-//    public static boolean isDefaultAfter(InitOption opt) {
+//    public static boolean isDefaultAfter(RetryOption opt) {
 //        return opt.getAfterType() == RetryAfterType.ALLREV || opt.getAfterType() == RetryAfterType.ALLSEQ || opt.getAfterType() == RetryAfterType.CUSTOM;
 //    }
 
     /**
      * 是否自定义获取数据 使用页号
      */
-    public static boolean isCustomGetDatas(InitOption opt) {
-        return opt.getGetDataType() == GetDataType.CUSTOM_USEPAGE;
+    public static boolean isCustomGetDatas(PageOption opt) {
+        return opt.getGetDataType() == GetDataType.CUSTOM_USEPAGE || opt.getGetDataType() == GetDataType.CUSTOM_BATCH_USEPAGE;
     }
 
     /**
      * 是否自定义取数，使用主键
      */
-    public static boolean isCustomGetDatasUseId(InitOption opt) {
+    public static boolean isCustomGetDatasUseId(PageOption opt) {
         return opt.getGetDataType() == GetDataType.CUSTOM_USEID;
     }
 
-//    public static boolean isInstanceRetry(InitOption opt) {
+//    public static boolean isInstanceRetry(RetryOption opt) {
 //        return opt.isExceptionInstanceRetry();
 //    }
 
@@ -72,7 +72,7 @@ public class OptionUtil {
      * @param retryData 主要获取 上次重试时间，重试次数
      * @return 是否到达重试时间
      */
-    public static boolean isTimeUp(InitOption opt, RetryData retryData) {
+    public static boolean isTimeUp(RetryOption opt, RetryData retryData) {
         long nowTs = DateUtil.getNowTS();
         Long lastRetryTs = retryData.getLastRetriedTs();
         if (lastRetryTs == null) {

@@ -13,11 +13,10 @@ public interface CustomGetDatas<D> extends CustomGetCount {
      * !!!!! 注 !!!!!
      * 必填字段：已经发送的次数，上次执行时间
      *
-     * @param page     页数
-     * @param pageSize 页大小，传递initOption中的pagesize
-     * @return
+     * @param page 页数
+     *             pageSize 页大小，自行从initOption中取pagesize
      */
-    List<DataContext<D>> getRetryDataContextListPaged(int page, int pageSize);
+    List<DataContext<D>> getRetryDataContextListPaged(int page);
 
 
 }

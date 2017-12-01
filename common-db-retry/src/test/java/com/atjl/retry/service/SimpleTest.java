@@ -21,12 +21,14 @@ public class SimpleTest {
 
     @Test
     public void testRegiste() throws Exception {
-        retryDispatch.registe("simpleService");
+        retryDispatch.registe("simplePageService");
 
         List status = retryDispatch.getOptions();
         System.out.println("res:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(status)));
 
-//        retryDispatch.timeUp();
+        retryDispatch.executeAll();
+
+//        retryDispatch.executeAll();
 
 
     }
@@ -39,7 +41,7 @@ public class SimpleTest {
         List status = retryDispatch.getOptions();
         System.out.println("res:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(status)));
 
-        retryDispatch.timeUp();
+        retryDispatch.executeAll();
     }
 
 

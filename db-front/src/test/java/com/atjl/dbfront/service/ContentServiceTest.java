@@ -1,5 +1,6 @@
 package com.atjl.dbfront.service;
 
+import com.atjl.dbfront.domain.biz.ContentDomain;
 import com.atjl.util.common.SystemUtil;
 import com.atjl.util.json.JSONFastJsonUtil;
 import com.atjl.util.json.JSONFmtUtil;
@@ -23,9 +24,18 @@ public class ContentServiceTest {
 	public void testPrintHtml() throws Exception { 
 		long t = System.currentTimeMillis();
 		try {
-			String res = contentService.getCurIndexContent();
+//			String res = contentService.getCurIndexContent();
+			//tring type, String name, String ver
+			ContentDomain res = contentService.getContent("H","index","CUR");
+
+			System.out.println("res:1"+res);
+			res = contentService.getContent("H","index","CUR");
+			System.out.println("res:2"+res);
 //			System.out.println("res: succ" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(res)));
 			System.out.println("res: succ" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(res)));
+
+
+
 		} catch (Exception e) {
 			System.out.println("res: error " + e);
 			e.printStackTrace();

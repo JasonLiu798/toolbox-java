@@ -3,7 +3,7 @@ package com.atjl.retry.manager;
 import com.atjl.retry.api.DataContext;
 import com.atjl.retry.api.DataContextFactory;
 import com.atjl.retry.api.option.GetDataType;
-import com.atjl.retry.api.option.InitOption;
+import com.atjl.retry.api.option.RetryOption;
 import com.atjl.retry.api.option.RetryAfterType;
 import com.atjl.retry.api.option.RetryTableMetaConf;
 import com.atjl.retry.domain.RetryServiceItem;
@@ -37,7 +37,7 @@ public class ProcessManagerTest {
     public void testProcessItem() throws Exception {
 
         RetryServiceItem item = new RetryServiceItem();
-        InitOption opt = new InitOption();
+        RetryOption opt = new RetryOption();
         opt.setAfterType(RetryAfterType.NONE);
         opt.setExceptionInstanceRetry(false);
 //        opt.getInstanceRetryOption().setRetryCount(3);
@@ -59,7 +59,7 @@ public class ProcessManagerTest {
         meta.setRetryCountCol("SEND_CNT");
         meta.setOtherConds("SEND_TM > unix_timestamp(now())-3600*24*2 ");
         meta.setDataCols(CollectionUtil.newSet("SEND_TOPIC", "SEND_CONTENT"));
-        item.setInitOption(opt);
+        item.setPageOption(opt);
 
         DataContext d = DataContextFactory.build(new Data());
         d.setRetriedCnt(2L);
@@ -78,7 +78,7 @@ public class ProcessManagerTest {
     public void testInstanceRetry() throws Exception {
 
         RetryServiceItem item = new RetryServiceItem();
-        InitOption opt = new InitOption();
+        RetryOption opt = new RetryOption();
         opt.setAfterType(RetryAfterType.NONE);
         opt.setExceptionInstanceRetry(true);
         opt.getInstanceRetryOption().setRetryCount(3);
@@ -102,7 +102,7 @@ public class ProcessManagerTest {
         meta.setRetryCountCol("SEND_CNT");
         meta.setOtherConds("SEND_TM > unix_timestamp(now())-3600*24*2 ");
         meta.setDataCols(CollectionUtil.newSet("SEND_TOPIC", "SEND_CONTENT"));
-        item.setInitOption(opt);
+        item.setPageOption(opt);
 
         DataContext d = DataContextFactory.build(new Data());
         d.setRetriedCnt(2L);

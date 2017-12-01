@@ -4,7 +4,7 @@ import com.atjl.validate.api.field.StringField;
 import com.atjl.validate.validator.param.NumRange;
 import com.atjl.validate.validator.noparam.Require;
 
-public class InitOptionInstanceRetryForm extends InitOptionForm {
+public class InitOptionInstanceRetryForm extends RetryOptionForm {
     /**
      * 重试调度默认 x分钟被调用一次
      * 如果需要重试时间大于x分钟，需要设定此函数返回y，

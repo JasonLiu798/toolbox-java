@@ -1,9 +1,7 @@
 package com.atjl.retry.manager;
 
-import com.atjl.retry.api.CustomGetDatas;
-import com.atjl.retry.api.CustomGetDatasUseIdPage;
-import com.atjl.retry.api.DataContext;
-import com.atjl.retry.api.option.InitOption;
+import com.atjl.retry.api.*;
+import com.atjl.retry.api.option.PageOption;
 import com.atjl.retry.domain.RetryServiceItem;
 import com.atjl.retry.service.AfterDefaultService;
 import com.atjl.util.collection.CollectionUtil;
@@ -32,13 +30,11 @@ public class PageProcessorManager {
     @Resource
     private ProcessManager retryProcessManager;
 
-    
-    public void pageProcess(RetryServiceItem retryServiceItem) {
-        InitOption opt = retryServiceItem.getInitOption();
-        CustomGetDatas getDatas = retryServiceItem.getRetryServiceCustomGetDatas();
-        CustomGetDatasUseIdPage getDatasUseIdPage = retryServiceItem.getRetryServiceGetDatasUseIdPage();
+    public void pageProcess(RetryServiceItem retryServiceItem, Object cond) {
+        PageOption opt = retryServiceItem.getPageOption();
 
-        int totalCount = retryGetManager.getTotalCount(opt, getDatas, getDatasUseIdPage);
+        //获取总数
+        int totalCount = retryGetManager.getTotalCount(retryServiceItem, cond);
         if (totalCount == 0) {
             logger.info("process service {},get retry data count 0", opt.getServiceName());
             return;
@@ -50,21 +46,43 @@ public class PageProcessorManager {
         for (int i = 1; i <= pageCnt; i++) {
             //按页获取数据
             logger.debug("process page {},pagesize {},pagecnt {},total {}", i, opt.getPageSize(), pageCnt, totalCount);
-            List<DataContext> datas = retryGetManager.getDatas(opt, getDatas, getDatasUseIdPage, i, startId);
+
+            List datas = null;
+            if (retryServiceItem.getRetryOption() != null) {
+                datas = retryGetManager.getRetryDatas(retryServiceItem.getRetryOption(), startId);
+            } else {
+                if (opt.isBatchProcess()) {
+                    CustomGetSimpleDatas service = retryServiceItem.getCustomGetSimpleDatas();
+                    datas = service.getRetryDataContextListPaged(i, cond);
+                } else {
+                    datas = retryGetManager.getDatas(opt, retryServiceItem.getCustomGetDatas(), retryServiceItem.getCustomGetDatasUseIdPage(), i, startId);
+                }
+
+            }
 
             if (CollectionUtil.isEmpty(datas)) {
-                logger.warn("get process data empty,service {},page {},pageCnt {}", retryServiceItem.getInitOption().getServiceName(), i, pageCnt);
+                logger.warn("get process data empty,service {},page {},pageCnt {}", retryServiceItem.getPageOption().getServiceName(), i, pageCnt);
                 continue;
             }
 
-            //处理当页数据
-            int lastIdx = datas.size() - 1;
-            for (int j = 0; j < datas.size(); j++) {
-                DataContext data = datas.get(j);
-                logger.info("process item {}", JSONFastJsonUtil.objectToJson(data));
-                retryProcessManager.processItem(retryServiceItem, data);
-                if (j == lastIdx) {
-                    startId = data.getId();
+            if (opt.isBatchProcess()) {
+                //批量处理
+                ExecuteBatchService executeBatchService = retryServiceItem.getExecuteBatchService();
+                try {
+                    executeBatchService.execute(datas);
+                } catch (Exception e) {
+                    logger.error("process batch error ", e);
+                }
+            } else {
+                //单条处理
+                int lastIdx = datas.size() - 1;
+                for (int j = 0; j < datas.size(); j++) {
+                    DataContext data = (DataContext) datas.get(j);
+                    logger.info("process item {}", JSONFastJsonUtil.objectToJson(data));
+                    retryProcessManager.processItem(retryServiceItem, data);
+                    if (j == lastIdx) {
+                        startId = data.getId();
+                    }
                 }
             }
         }

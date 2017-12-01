@@ -1,9 +1,10 @@
 package com.atjl.retry.manager;
 
 import com.atjl.retry.api.option.GetDataType;
-import com.atjl.retry.api.option.InitOption;
+import com.atjl.retry.api.option.RetryOption;
 import com.atjl.retry.api.option.RetryTableMetaConf;
 import com.atjl.retry.domain.RetryServiceItem;
+import com.atjl.retry.eg.Cond;
 import com.atjl.retry.eg.TestRetryService;
 import com.atjl.util.collection.CollectionUtil;
 import org.junit.*;
@@ -37,7 +38,7 @@ public class RetryDispatchManagerTest {
         RetryServiceItem retryServiceItem = new RetryServiceItem();
         retryServiceItem.setRetryService(testRetryService);
 
-        InitOption opt = new InitOption();
+        RetryOption opt = new RetryOption();
         opt.setGetDataType(GetDataType.DEFAULT);
         opt.getIntervalCoefficientOption().setIntervalCoefficient(10);
         opt.setRetryMaxCount(3L);
@@ -53,15 +54,15 @@ public class RetryDispatchManagerTest {
         meta.setLastRetriedTsCol("SEND_TM");
         meta.setRetryCountCol("SEND_CNT");
         meta.setOtherConds("SEND_TM > unix_timestamp(now())-3600*24*2 ");
-        meta.setDataCols(CollectionUtil.newSet("SEND_TOPIC","SEND_CONTENT"));
+        meta.setDataCols(CollectionUtil.newSet("SEND_TOPIC", "SEND_CONTENT"));
 
 //        meta.setOtherConds("SEND_TM < unix_timestamp(now())-3600*24*2 ");
         opt.setRetryTabMeta(meta);
 
 
-        retryServiceItem.setInitOption(opt);
+        retryServiceItem.setPageOption(opt);
 
-        retryDispatchManager.pageProcess(retryServiceItem);
+        retryDispatchManager.pageProcess(retryServiceItem, new Cond("123"));
     }
 
     @Test

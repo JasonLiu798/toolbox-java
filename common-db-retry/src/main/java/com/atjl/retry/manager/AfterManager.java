@@ -2,7 +2,7 @@ package com.atjl.retry.manager;
 
 import com.atjl.retry.api.AfterService;
 import com.atjl.retry.api.DataContext;
-import com.atjl.retry.api.option.InitOption;
+import com.atjl.retry.api.option.PageOption;
 import com.atjl.retry.api.option.RetryAfterType;
 import com.atjl.retry.domain.RetryServiceItem;
 import com.atjl.retry.service.AfterDefaultService;
@@ -28,7 +28,7 @@ public class AfterManager {
      * @param dataContext 上下文
      */
     public void after(boolean exeRes, RetryServiceItem retryServiceItem, DataContext dataContext) {
-        if (retryServiceItem.getInitOption().getAfterType() == RetryAfterType.NONE) {
+        if (retryServiceItem.getPageOption().getAfterType() == RetryAfterType.NONE) {
             logger.debug("no after service");
             return;
         }
@@ -42,17 +42,17 @@ public class AfterManager {
                  * cust -> defualt
                  * default -> cust
                  */
-                succ(retryServiceItem.getInitOption(), dataContext, retryServiceItem.getAfterService());
+                succ(retryServiceItem.getPageOption(), dataContext, retryServiceItem.getAfterService());
             } else {
                 //失败
-                fail(retryServiceItem.getInitOption(), dataContext, retryServiceItem.getAfterService());
+                fail(retryServiceItem.getPageOption(), dataContext, retryServiceItem.getAfterService());
             }
         } catch (Exception e) {
             logger.error("{}", e);
         }
     }
 
-    private void fail(InitOption opt, DataContext dataContext, AfterService retryAfterService) {
+    private void fail(PageOption opt, DataContext dataContext, AfterService retryAfterService) {
         if (OptionUtil.hasSequential(opt)) {
             /**
              * cust -> defualt
@@ -77,7 +77,7 @@ public class AfterManager {
         }
     }
 
-    private void succ(InitOption opt, DataContext dataContext, AfterService retryAfterService) {
+    private void succ(PageOption opt, DataContext dataContext, AfterService retryAfterService) {
         if (OptionUtil.hasSequential(opt)) {
             /**
              * cust -> defualt

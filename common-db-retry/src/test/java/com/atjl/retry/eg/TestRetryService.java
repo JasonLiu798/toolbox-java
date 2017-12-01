@@ -4,8 +4,8 @@ package com.atjl.retry.eg;
 import com.atjl.retry.api.AfterService;
 import com.atjl.retry.api.DataContext;
 import com.atjl.retry.api.DataContextFactory;
-import com.atjl.retry.api.RetryService;
-import com.atjl.retry.api.option.InitOption;
+import com.atjl.retry.api.ExecuteService;
+import com.atjl.retry.api.option.RetryOption;
 import com.atjl.retry.api.option.RetryTableMetaConf;
 import com.atjl.util.json.JSONFastJsonUtil;
 import org.slf4j.Logger;
@@ -16,13 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component("testRetryService")
-public class TestRetryService implements RetryService<Data>, AfterService<Data> {
+public class TestRetryService implements ExecuteService<Data>, AfterService<Data> {
 
     private static final Logger logger = LoggerFactory.getLogger(TestRetryService.class);
 
     @Override
-    public InitOption getInitOption() {
-        InitOption opt = new InitOption();
+    public RetryOption getInitOption() {
+        RetryOption opt = new RetryOption();
         opt.setServiceName("testRetryService");
         opt.getIntervalCoefficientOption().setIntervalCoefficient(10);
         opt.setRetryMaxCount(6L);

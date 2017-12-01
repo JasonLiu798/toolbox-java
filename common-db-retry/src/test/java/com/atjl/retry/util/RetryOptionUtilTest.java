@@ -1,7 +1,7 @@
 package com.atjl.retry.util;
 
 import com.atjl.retry.api.domain.RetryData;
-import com.atjl.retry.api.option.InitOption;
+import com.atjl.retry.api.option.RetryOption;
 import com.atjl.retry.api.option.IntervalCoefficientOption;
 import com.atjl.retry.api.option.IntervalCoeffientType;
 import com.atjl.util.common.DateUtil;
@@ -29,7 +29,7 @@ public class RetryOptionUtilTest {
         PowerMockito.mockStatic(DateUtil.class);
         when(DateUtil.getNowTS()).thenReturn(5000L);
 
-        InitOption opt = new InitOption();
+        RetryOption opt = new RetryOption();
         RetryData d = new RetryData();
         opt.getIntervalCoefficientOption().setIntervalCoefficient(10);
         d.setLastRetriedTs(1000L);
@@ -43,7 +43,7 @@ public class RetryOptionUtilTest {
         when(DateUtil.getNowTS()).thenReturn(3000L);
 
 //        retryDispatchManager = new RetryDispatchManager();
-        opt = new InitOption();
+        opt = new RetryOption();
         d = new RetryData();
         opt.getIntervalCoefficientOption().setIntervalCoefficient(10);
         d.setLastRetriedTs(1000L);
@@ -70,7 +70,7 @@ public class RetryOptionUtilTest {
         for (long t = 1550; t < 1650; t++) {
             when(DateUtil.getNowTS()).thenReturn(t);
 
-            InitOption opt = new InitOption();
+            RetryOption opt = new RetryOption();
             RetryData d = new RetryData();
             IntervalCoefficientOption copt = opt.getIntervalCoefficientOption();
             copt.setIntervalCoeffientType(IntervalCoeffientType.VARIABLE);
@@ -100,7 +100,7 @@ public class RetryOptionUtilTest {
         for (long cnt = 1; cnt <= 3; cnt++) {
             when(DateUtil.getNowTS()).thenReturn(1700L);
 
-            InitOption opt = new InitOption();
+            RetryOption opt = new RetryOption();
             RetryData d = new RetryData();
             IntervalCoefficientOption copt = opt.getIntervalCoefficientOption();
             copt.setIntervalCoeffientType(IntervalCoeffientType.VARIABLE);
@@ -127,7 +127,7 @@ public class RetryOptionUtilTest {
 
 //        when(DateUtil.getNowTS()).thenReturn(1500L);
 ////        retryDispatchManager = new RetryDispatchManager();
-//        opt = new InitOption();
+//        opt = new RetryOption();
 //        copt = opt.getIntervalCoefficientOption();
 //        copt.setIntervalCoeffientType(IntervalCoeffientType.VARIABLE);
 //        copt.setExponentialBackoffArray(new int[]{1, 2, 3, 5, 10, 20, 40, 100, 100, 100, 100, 200, 200});
@@ -148,7 +148,7 @@ public class RetryOptionUtilTest {
         PowerMockito.mockStatic(DateUtil.class);
         when(DateUtil.getNowTS()).thenReturn(1700L);
 
-        InitOption opt = new InitOption();
+        RetryOption opt = new RetryOption();
         RetryData d = new RetryData();
         IntervalCoefficientOption copt = opt.getIntervalCoefficientOption();
         copt.setIntervalCoeffientType(IntervalCoeffientType.VARIABLE);
@@ -175,7 +175,7 @@ public class RetryOptionUtilTest {
         PowerMockito.mockStatic(DateUtil.class);
         when(DateUtil.getNowTS()).thenReturn(2801L);
 
-        InitOption opt = new InitOption();
+        RetryOption opt = new RetryOption();
         RetryData d = new RetryData();
         IntervalCoefficientOption copt = opt.getIntervalCoefficientOption();
         copt.setIntervalCoeffientType(IntervalCoeffientType.VARIABLE_MULTIPLE_FIX);
@@ -193,7 +193,7 @@ public class RetryOptionUtilTest {
 
         when(DateUtil.getNowTS()).thenReturn(1500L);
 //        retryDispatchManager = new RetryDispatchManager();
-        opt = new InitOption();
+        opt = new RetryOption();
         copt = opt.getIntervalCoefficientOption();
         copt.setIntervalCoeffientType(IntervalCoeffientType.VARIABLE_MULTIPLE_FIX);
         copt.setIntervalCoefficient(2);

@@ -1,9 +1,8 @@
 package com.atjl.retry.manager;
 
 import com.atjl.retry.api.DataContext;
-import com.atjl.retry.api.RetryService;
 import com.atjl.retry.api.domain.RetryData;
-import com.atjl.retry.api.option.InitOption;
+import com.atjl.retry.api.option.PageOption;
 import com.atjl.retry.domain.RetryInnerConstant;
 import com.atjl.retry.domain.RetryServiceItem;
 import com.atjl.retry.service.AfterDefaultService;
@@ -40,28 +39,29 @@ public class ProcessManager {
         String failReason = null;
 
         //dataContext 内放入 option，后续的 框架自带的AfterService使用
-        InitOption opt = retryServiceItem.getInitOption();
-        ReflectSetUtil.setterForce(dataContext, RetryInnerConstant.FIELD_OPTION, opt);
+        PageOption pageOpt = retryServiceItem.getPageOption();
+        ReflectSetUtil.setterForce(dataContext, RetryInnerConstant.FIELD_OPTION, pageOpt);
 
         //从dataContext取出 retryData
         RetryData retryData = (RetryData) ReflectGetUtil.getterForce(dataContext, RetryInnerConstant.FIELD_RETRY_DATA);
 
-        RetryService retryService = retryServiceItem.getRetryService();
-
         /**
          * 是否到达时间
          */
-        if (!OptionUtil.isTimeUp(opt, retryData)) {
-            return;
+        if (retryServiceItem.getRetryOption() != null) {
+            if (!OptionUtil.isTimeUp(retryServiceItem.getRetryOption(), retryData)) {
+                return;
+            }
+
         }
 
         ExcepResDto retryResp;
-        if (opt.isExceptionInstanceRetry()) {
+        if (retryServiceItem.getRetryInstanceOption() != null) {
             //需要立即重试的
-            retryResp = instanceRetryManager.instanceRetry(opt, retryService, dataContext);
+            retryResp = instanceRetryManager.instanceRetry(retryServiceItem.getRetryInstanceOption(), retryServiceItem.getRetryService(), dataContext);
         } else {
             //无需立即重试的
-            retryResp = instanceRetryManager.noRetry(retryService, dataContext);
+            retryResp = instanceRetryManager.noRetry(retryServiceItem.getRetryService(), dataContext);
         }
 
         if (!retryResp.isRes()) {

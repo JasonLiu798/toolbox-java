@@ -7,6 +7,10 @@ public class ContentConstant {
         throw new UnsupportedOperationException();
     }
 
+
+    public static final String CONTENT_CACHE =  "CONTENT";
+
+
     public static final String MODULE_STATIC = "static";
     /**
      * URLs

@@ -1,12 +1,11 @@
 package com.atjl.retry.manager;
 
-import com.atjl.common.api.req.PageReqV1;
-import com.atjl.retry.api.CustomGetDatas;
-import com.atjl.retry.api.CustomGetDatasUseIdPage;
-import com.atjl.retry.api.DataContext;
-import com.atjl.retry.api.DataContextFactory;
-import com.atjl.retry.api.option.InitOption;
+import com.atjl.common.api.req.PageIntReqV1;
+import com.atjl.retry.api.*;
+import com.atjl.retry.api.option.PageOption;
+import com.atjl.retry.api.option.RetryOption;
 import com.atjl.retry.api.option.RetryTableMetaConf;
+import com.atjl.retry.domain.RetryServiceItem;
 import com.atjl.retry.mapper.RetryMapper;
 import com.atjl.retry.util.OptionUtil;
 import com.atjl.util.character.StringCheckUtil;
@@ -29,40 +28,51 @@ public class GetDataManager {
     private RetryMapper retryMapper;
 
 
-    public int getTotalCount(InitOption opt, CustomGetDatas getDatas, CustomGetDatasUseIdPage getDatasUseIdPage) {
-        int totalCount;
-        if (OptionUtil.isCustomGetDatas(opt)) {
-            totalCount = getDatas.getRetryDataCount();
-        } else if (OptionUtil.isCustomGetDatasUseId(opt)) {
-            totalCount = getDatasUseIdPage.getRetryDataCount();
+    public int getTotalCount(RetryServiceItem retryServiceItem, Object cond) {
+        CustomGetCount customGetCount = retryServiceItem.getCustomGetCount();
+        //int totalCount = 0;
+        if (retryServiceItem.getRetryOption() != null) {
+            return getRetryTotalCount(retryServiceItem.getRetryOption());
         } else {
-            totalCount = getCount(opt);
+            return getTotalCount(retryServiceItem.getPageOption(), customGetCount, cond);
+        }
+    }
+
+
+    public int getTotalCount(PageOption opt, CustomGetCount getCount, Object cond) {
+        int totalCount = 0;
+        if (OptionUtil.isCustomGetDatas(opt)) {
+            totalCount = getCount.getRetryDataCount(cond);
+        } else if (OptionUtil.isCustomGetDatasUseId(opt)) {
+            totalCount = getCount.getRetryDataCount(cond);
         }
         return totalCount;
     }
 
-
-    public List<DataContext> getDatas(InitOption opt, CustomGetDatas getDatas, CustomGetDatasUseIdPage getDatasUseIdPage, int i, String startId) {
-        List<DataContext> datas;
-        if (OptionUtil.isCustomGetDatas(opt)) {
-            datas = getDatas.getRetryDataContextListPaged(i, opt.getPageSize());
-        } else if (OptionUtil.isCustomGetDatasUseId(opt)) {
-            datas = getDatasUseIdPage.getRetryDataContextListPaged(startId, opt.getPageSize());
-        } else {
-            datas = getDataContextDefault(opt, startId, opt.getPageSize());
-        }
-        return datas;
-    }
-
-
     /**
      * 默认获取需要重试的数量
      *
-     * @param initOption 选项
+     * @param retryOption 选项
      * @return 总数
      */
-    public int getCount(InitOption initOption) {
-        return retryMapper.getDataCount(initOption, initOption.getRetryTabMeta());
+    public int getRetryTotalCount(RetryOption retryOption) {
+        return retryMapper.getDataCount(retryOption, retryOption.getRetryTabMeta());
+    }
+
+    /**
+     * 自定义取数
+     */
+    public List<DataContext> getDatas(PageOption opt, CustomGetDatas getDatas, CustomGetDatasUseIdPage getDatasUseIdPage, int i, String startId) {
+        List<DataContext> datas = new ArrayList<>();
+        if (OptionUtil.isCustomGetDatas(opt)) {
+            datas = getDatas.getRetryDataContextListPaged(i);
+        } else if (OptionUtil.isCustomGetDatasUseId(opt)) {
+            datas = getDatasUseIdPage.getRetryDataContextListPaged(startId, opt.getPageSize());
+//        } else {
+//            RetryOption ropt = (RetryOption) opt;
+//            datas = getRetryDatas(ropt, startId, opt.getPageSize());
+        }
+        return datas;
     }
 
 
@@ -70,11 +80,10 @@ public class GetDataManager {
      * 获取数据
      *
      * @param initOption 选项
-     * @param pageSize   页大小
      * @return 结果集
      */
-    public List<DataContext> getDataContextDefault(InitOption initOption, String startId, int pageSize) {
-        PageReqV1 pageReq = new PageReqV1(startId, new Long((long) pageSize));
+    public List<DataContext> getRetryDatas(RetryOption initOption, String startId) {
+        PageIntReqV1 pageReq = new PageIntReqV1(startId, initOption.getPageSize());
         List<Map<String, Object>> datas = retryMapper.selectDatas(initOption, initOption.getRetryTabMeta(), pageReq);
 
         List<DataContext> contexts = new ArrayList<>();

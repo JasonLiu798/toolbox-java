@@ -27,7 +27,7 @@ public class RetryDispatchImplTest {
         List status = retryDispatch.getOptions();
         System.out.println("res:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(status)));
 
-//        retryDispatch.timeUp();
+//        retryDispatch.executeAll();
 
 
     }
@@ -40,7 +40,7 @@ public class RetryDispatchImplTest {
         List status = retryDispatch.getOptions();
         System.out.println("res:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(status)));
 
-        retryDispatch.timeUp();
+        retryDispatch.executeAll();
     }
 
 
