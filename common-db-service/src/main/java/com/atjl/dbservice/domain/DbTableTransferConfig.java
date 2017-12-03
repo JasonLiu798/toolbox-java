@@ -2,10 +2,12 @@ package com.atjl.dbservice.domain;
 
 import com.atjl.common.api.req.PageIntReq;
 import com.atjl.dbservice.api.RawDataValidator;
+import com.atjl.util.collection.CollectionSortUtil;
 import com.atjl.util.collection.CollectionUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,12 +29,19 @@ public class DbTableTransferConfig extends PageIntReq {
 
     @ApiModelProperty(value = "取原表数据 附加条件")
     private String otherCond;
-
+	
+	@ApiModelProperty(value = "取原表数据 附加排序条件")
+	private String orderClause;
+	
+	
     @ApiModelProperty(value = "原始表名")
     private String rawTable;
 
     @ApiModelProperty(value = "目标表名")
     private String tgtTable;
+	
+	@ApiModelProperty(value = "目标表json字段名")
+    private String jsonField;
 
     @ApiModelProperty(value = "主键域 字符串")
     public String getTgtPkFields() {
@@ -49,9 +58,30 @@ public class DbTableTransferConfig extends PageIntReq {
         }
         return null;
     }
+	
+	@ApiModelProperty(value = "原始数据 fields")
+	public List<String> getAllTgtSortFields() {
+		List<String> res = CollectionUtil.map2list(pkFieldMapping, false);
+		if (!CollectionUtil.isEmpty(fieldMapping)) {
+			List<String> field = CollectionUtil.map2list(fieldMapping, false);
+			res.addAll(field);
+		}
+		res.add(jsonField);
+		res=  CollectionSortUtil.sort(res);
+		return res;
+	}
+	
+	public List<KeyValue> getAllTgtSortKV(){
+    	List<String> keys  = getAllTgtSortFields();
+    	List<KeyValue> res = new ArrayList<>();
+    	for(String k:keys){
+    		res.add(new KeyValue(k));
+		}
+		return res;
+	}
 
     @ApiModelProperty(value = "原始数据 fields")
-    public String getAllFields() {
+    public String getAllRawFieldsStr() {
         String res = "";
         List<String> pkField = CollectionUtil.map2list(pkFieldMapping, true);
         res = field2string(pkField);
@@ -140,8 +170,24 @@ public class DbTableTransferConfig extends PageIntReq {
     public void setRawTable(String rawTable) {
         this.rawTable = rawTable;
     }
-
-    public String getTgtTable() {
+	
+	public String getJsonField() {
+		return jsonField;
+	}
+	
+	public void setJsonField(String jsonField) {
+		this.jsonField = jsonField;
+	}
+	
+	public String getOrderClause() {
+		return orderClause;
+	}
+	
+	public void setOrderClause(String orderClause) {
+		this.orderClause = orderClause;
+	}
+	
+	public String getTgtTable() {
         return tgtTable;
     }
 

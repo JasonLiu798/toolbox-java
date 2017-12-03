@@ -12,8 +12,11 @@ import java.util.Map;
 public class RawTableDataGetManager {
     @Resource
     private DataTransferMapper dataTransferMapper;
-
-    public List<Map> getData(DbTableTransferConfig config) {
+	
+	/**
+	 * 如果所属字段 值为null，对应的key也为空
+	 */
+	public List<Map> getData(DbTableTransferConfig config) {
         return dataTransferMapper.getRawTableData(config);
     }
 

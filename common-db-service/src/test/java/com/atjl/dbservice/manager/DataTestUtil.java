@@ -22,6 +22,7 @@ public class DataTestUtil
         Map<String, String> fmap = new HashMap<>();
         fmap.put("area_name", "ORG_NAME_RAW");
 
+        config.setTgtTablePk("AREA_MONITOR_ID");
         config.setFieldMapping(fmap);
 
         Map<String, String> jmap = new HashMap<>();
@@ -31,6 +32,9 @@ public class DataTestUtil
         config.setTgtTable("tm_area_monitor");
 
         config.setRawTable("bie_fact_audit_idx_sum");
+//        config.setOtherCond("order by area_code");
+		config.setOrderClause(" area_code ");
+        config.setJsonField("BASIC");
         return config;
     }
 }

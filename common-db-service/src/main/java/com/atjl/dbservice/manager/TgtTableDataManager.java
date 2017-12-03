@@ -1,17 +1,14 @@
 package com.atjl.dbservice.manager;
 
-import com.atjl.dbservice.domain.CondValue;
-import com.atjl.dbservice.domain.DbTableTransferConfig;
+import com.atjl.dbservice.domain.*;
 import com.atjl.dbservice.mapper.biz.DataTransferMapper;
 import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.json.JSONFastJsonUtil;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class TgtTableDataManager {
@@ -37,33 +34,36 @@ public class TgtTableDataManager {
     /**
      * 分离 已经存在的 和 不存在的
      */
-    public List<Map> filterExist(List<Map> rawDatas, DbTableTransferConfig config) {
-        List<Map> existDatas = getTgtData(rawDatas, config);
-
+    public SeparatedDatas separate(List<Map> rawDatas, DbTableTransferConfig config) {
+        List<Map> existDatas = getTgtData(rawDatas, config);//已经存在的数据
+        SeparatedDatas res = new SeparatedDatas();
         if (CollectionUtil.isEmpty(existDatas)) {
-            return rawDatas;
+        	res.setNotExistDatas(rawDatas);
+        	return res;
         }
-
         Map.Entry<String, String> entry = config.getPkFieldRandomOne();
         String rawPk = entry.getKey();
         String tgtPk = entry.getValue();
 
         Iterator<Map> it = rawDatas.iterator();
+        List<Map> exist = new ArrayList<>();
         while (it.hasNext()) {
             Map data = it.next();
             for (Map existData : existDatas) {
                 if (StringCheckUtil.equal(String.valueOf(data.get(rawPk)), String.valueOf(existData.get(tgtPk)))) {
+					data.put( config.getTgtTablePk(), existData.get(config.getTgtTablePk()) );
+                	exist.add(data);
                     it.remove();
                     break;
                 }
             }
         }
-        return rawDatas;
+        res.setNotExistDatas(rawDatas);
+        res.setExistDatas(exist);
+        return res;
     }
+	
 
-    public void jsonGenerate() {
-
-    }
 
     public void insert() {
 

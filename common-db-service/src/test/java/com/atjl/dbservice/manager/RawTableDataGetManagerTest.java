@@ -42,6 +42,8 @@ public class RawTableDataGetManagerTest {
 
             Map<String, String> jmap = new HashMap<>();
             jmap.put("shou_mont", "shouMont");
+			jmap.put("dept_count", "deptCount");
+			jmap.put("emp_count","empCount");
             config.setJsonFieldMapping(jmap);
 
 

@@ -28,7 +28,18 @@ public class DataTransferService {
     private TgtTableDataManager tgtTableDataManager;
 
     public void process(){
-
+    	//取数
+		
+		//查询 目标表 已经存在的
+		
+		//分离 已经存在 和 不存在 数据
+		
+		//已经存在的 更新
+		
+		
+		//不存在的  插入
+		
+		//
 
 
 

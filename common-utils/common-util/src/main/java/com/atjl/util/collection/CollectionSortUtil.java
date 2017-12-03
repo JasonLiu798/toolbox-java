@@ -3,6 +3,7 @@ package com.atjl.util.collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -10,12 +11,22 @@ import java.util.List;
  * 排序相关
  * Created by JasonLiu798 on 16/5/18.
  */
-public class SortUtil {
-	private SortUtil(){
+public class CollectionSortUtil {
+	private CollectionSortUtil(){
 		throw new UnsupportedOperationException();
 	}
-    private static final Logger log = LoggerFactory.getLogger(SortUtil.class);
-
+    private static final Logger log = LoggerFactory.getLogger(CollectionSortUtil.class);
+	
+	public static <T extends Comparable<? super T>> List<T> sort(List<T> list) {
+		Collections.sort(list);
+		return list;
+	}
+	
+	public static <T> List<T> sort(List<T> list, Comparator<? super T> c) {
+		Collections.sort(list,c);
+		return list;
+	}
+	
 
     /**
      * for insert sort,get first

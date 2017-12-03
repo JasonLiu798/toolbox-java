@@ -5,11 +5,14 @@
 
     <select id="getRawTableData"
             resultType="java.util.Map">
-        select ${config.allFields}
+        select ${config.allRawFieldsStr}
         from ${config.rawTable}
         <if test="config.otherCond!=null and config.otherCond!=''">
             where ${config.otherCond}
         </if>
+		<if test="config.orderClause!=null and config.orderClause!=''">
+			order by ${config.orderClause}
+		</if>
         limit #{config.currentIndex},#{config.pageSize}
     </select>
 
@@ -23,6 +26,72 @@
             </foreach>
         </foreach>
     </select>
+
+
+	<!--
+    list
+        key:property
+        value:
+        	key:id
+        	value:property's value
+	-->
+	<update id="updateBatch">
+		UPDATE ${config.tgtTable}
+		<foreach collection="items" item="item" separator=",">
+			<if test="item.value!=null and item.value!='' ">
+				SET ORG_CODE_RAW = CASE AREA_MONITOR_ID
+				<foreach collection=""
+					WHEN #{item.} THEN '44'
+					WHEN 5 THEN '55'
+				END,
+			</if>
+
+		</foreach>
+		where ${config.tgtTablePk} in (
+
+		)
+
+        SET ORG_CODE_RAW = CASE AREA_MONITOR_ID
+            WHEN 4 THEN '44'
+            WHEN 5 THEN '55'
+        END,
+        ORG_NAME_RAW = CASE AREA_MONITOR_ID
+            WHEN 4 THEN '44-'
+            WHEN 5 THEN '55-'
+        END
+    WHERE AREA_MONITOR_ID IN (4,5)
+
+
+	</update>
+	-->
+
+	<!--
+
+
+		<foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+	-->
+
+	<insert id="insertBatchSelective">
+		insert into ${config.tgtTable}
+		<foreach collection="dataPkg.fields" item="item" separator="," open="(" close=")">
+			<!--<trim prefix=" (" suffix=")" suffixOverrides="," >-->
+				<!--<if test="item=null" >-->
+					${item}
+				<!--</if>-->
+			<!--</trim>-->
+		</foreach>
+		values
+		<foreach collection="dataPkg.datas" item="item" separator="," >
+			<foreach collection="item.items" item="kv" separator="," open="(" close=")">
+			<!--<trim prefix=" (" suffix=")" suffixOverrides="," >-->
+				<!--<if test="items[k]!=null" >-->
+					#{kv.value}
+				<!--</if>-->
+			<!--</trim>-->
+			</foreach>
+		</foreach>
+	</insert>
+
 
 
 </mapper>

@@ -1,5 +1,6 @@
 package com.atjl.dbservice.manager;
 
+import com.atjl.dbservice.domain.SeparatedDatas;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import com.atjl.util.common.SystemUtil;
@@ -29,11 +30,10 @@ public class TgtTableDataManagerTest {
             Object res = null;
 
             List<Map> l = rawTableDataGetManager.getData(DataTestUtil.getConfig());
-            System.out.println("raw:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
-
+            System.out.println("raw:" +l.size()+","+ JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
 //            List<Map> l2 = tgtTableDataManager.getTgtData(l, DataTestUtil.getConfig());
-            List<Map> l2 = tgtTableDataManager.filterExist(l, DataTestUtil.getConfig());
-            System.out.println("res: succ " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l2)));
+			SeparatedDatas l2 = tgtTableDataManager.separate(l, DataTestUtil.getConfig());
+            System.out.println("res: succ "+ JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l2)));
         } catch (Exception e) {
             System.out.println("res: error " + e);
             e.printStackTrace();
@@ -50,8 +50,8 @@ public class TgtTableDataManagerTest {
 
             List<Map> l = rawTableDataGetManager.getData(DataTestUtil.getConfig());
             System.out.println("res:bf" + l.size() + "," + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
-            List<Map> l2 = tgtTableDataManager.filterExist(l, DataTestUtil.getConfig());
-            System.out.println("res:af" + l2.size() + "," + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l2)));
+//            List<Map> l2 = tgtTableDataManager.separate(l, DataTestUtil.getConfig());
+//            System.out.println("res:af" + l2.size() + "," + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l2)));
         } catch (Exception e) {
             System.out.println("res: error " + e);
             e.printStackTrace();
@@ -61,12 +61,19 @@ public class TgtTableDataManagerTest {
     }
 
     @Test
-    public void testJsonGenerate() throws Exception {
+    public void testGen() throws Exception {
         long t = System.currentTimeMillis();
         try {
-            Object res = null;
-
-            System.out.println("res: succ " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(res)));
+			List<Map> l = rawTableDataGetManager.getData(DataTestUtil.getConfig());
+			System.out.println("res: bf" +l.size()+","+ JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
+//            List<Map> l2 = tgtTableDataManager.getTgtData(l, DataTestUtil.getConfig());
+			SeparatedDatas l2 = tgtTableDataManager.separate(l, DataTestUtil.getConfig());
+			System.out.println("res: sep " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l2)));
+			
+//			List res1 = tgtTableDataManager.tgtDataGenInsert(l2.getExistDatas(), DataTestUtil.getConfig());
+//			List res2 = tgtTableDataManager.tgtDataGenInsert(l2.getNotExistDatas(), DataTestUtil.getConfig());
+//            System.out.println("res: succ e " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(res1)));
+//			System.out.println("res: succ ne " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(res2)));
         } catch (Exception e) {
             System.out.println("res: error " + e);
             e.printStackTrace();
