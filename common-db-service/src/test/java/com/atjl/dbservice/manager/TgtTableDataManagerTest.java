@@ -31,7 +31,8 @@ public class TgtTableDataManagerTest {
             List<Map> l = rawTableDataGetManager.getData(DataTestUtil.getConfig());
             System.out.println("raw:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
 
-            List<Map> l2 = tgtTableDataManager.getTgtData(l, DataTestUtil.getConfig());
+//            List<Map> l2 = tgtTableDataManager.getTgtData(l, DataTestUtil.getConfig());
+            List<Map> l2 = tgtTableDataManager.filterExist(l, DataTestUtil.getConfig());
             System.out.println("res: succ " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l2)));
         } catch (Exception e) {
             System.out.println("res: error " + e);
