@@ -63,6 +63,10 @@ public class DateUtil {
         return new Date().getTime() / 1000;
     }
 
+    public static String getNowFmtDate(){
+        return format(new Date(),yyyy_MM_dd_HH_mm_ss_EN);
+    }
+
     public static Date ts2Date(long ts) {
         return new Date(ts * 1000);
     }

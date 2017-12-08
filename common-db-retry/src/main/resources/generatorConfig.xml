@@ -22,21 +22,12 @@
         <!--<plugin type="com.atjl.mybatis.plugin.service.LogicDeleteByPrimayKeyPlugin"></plugin>-->
         <!--<plugin type="com.atjl.mybatis.plugin.service.SelectByPrimaryKeyFilterDeleteLogicPlugin"></plugin>-->
 
-
         <commentGenerator>
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
 
-        <!--
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://10.202.45.25:3306/aossit?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true"
-                        userId="aossit" password="passwd123"/>-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://10.202.125.245:3306/test?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true" userId="test" password="test"/>
 
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://aos-m.dbsit.sfdc.com.cn:3306/aossit?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true"
-                        userId="aossit" password="passwd123"/>
-
-        <!--<jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/aos?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true" userId="root" password="root"/>-->
 
         <javaModelGenerator targetPackage="com.atjl.retry.domain.gen" targetProject="src\main\java">
             <property name="constructorBased" value="false"/>
@@ -49,11 +40,14 @@
                          targetProject="src\main\resources"/>
         <javaClientGenerator targetPackage="com.atjl.retry.mapper.gen" targetProject="src\main\java" type="XMLMAPPER"/>
 
-        <table schema="aossit"
-               tableName="ts_process_log">
-            <generatedKey column="DATA_PROCESS_ID" sqlStatement="select UUID() from dual"/>
-            <!--<generatedKey enableDeleteByExample="false" enableDeleteByPrimaryKey="true"
-            column="CLUE_ID" sqlStatement="select UUID() from dual"/>-->
+        <table tableName="ts_process_log">
+            <generatedKey column="DATA_PROCESS_ID" sqlStatement="Mysql" type="post" identity="true"/>
+            <!--<generatedKey column="DATA_PROCESS_ID" sqlStatement="select UUID() from dual"/>-->
+        </table>
+
+        <table tableName="ts_process_log_detail">
+            <generatedKey column="PROCESS_LOG_DETAIL_ID" sqlStatement="Mysql" type="post" identity="true"/>
+            <!--<generatedKey column="DATA_PROCESS_ID" sqlStatement="select UUID() from dual"/>-->
         </table>
 
     </context>

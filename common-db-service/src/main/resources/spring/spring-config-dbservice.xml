@@ -11,5 +11,4 @@
     <context:component-scan base-package="com.atjl.dbservice.service"/>
 	<context:component-scan base-package="com.atjl.dbservice.manager"/>
 
-
 </beans>

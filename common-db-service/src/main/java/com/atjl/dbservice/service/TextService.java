@@ -44,10 +44,6 @@ public class TextService {
 
     /**
      * 处理数据
-     *
-     * @param text
-     * @param type
-     * @return
      */
     @Transactional
     public ResponseDataDtoV1 process(String text, String type) {
@@ -84,10 +80,6 @@ public class TextService {
 
     /**
      * 拼接 table
-     *
-     * @param text
-     * @param type
-     * @return
      */
     private ResponseDataDtoV1 processSelect(String text, String type) {
         List<LinkedHashMap<String, Object>> data = sysDao.search("select * from ( " + text + " ) x limit 500");

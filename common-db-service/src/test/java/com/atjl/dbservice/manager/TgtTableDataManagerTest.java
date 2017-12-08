@@ -1,6 +1,9 @@
 package com.atjl.dbservice.manager;
 
+import com.atjl.dbservice.api.domain.SearchCondBase;
 import com.atjl.dbservice.domain.SeparatedDatas;
+import com.atjl.eg.DataTestUtil;
+import com.atjl.util.common.DateUtil;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import com.atjl.util.common.SystemUtil;
@@ -27,13 +30,16 @@ public class TgtTableDataManagerTest {
     public void testGetTgtData() throws Exception {
         long t = System.currentTimeMillis();
         try {
-            Object res = null;
-
-            List<Map> l = rawTableDataGetManager.getData(DataTestUtil.getConfig());
-            System.out.println("raw:" +l.size()+","+ JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
+            SearchCondBase cond = new SearchCondBase();
+            String st = DateUtil.format(DateUtil.getDate(-20), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
+            String et = DateUtil.format(DateUtil.getDate(0), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
+            cond.setStartLoadTm(st);
+            cond.setEndLoadTm(et);
+            List<Map> l = rawTableDataGetManager.getData(DataTestUtil.getConfig(), cond);
+            System.out.println("res: raw" + l.size() + "," + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
 //            List<Map> l2 = tgtTableDataManager.getTgtData(l, DataTestUtil.getConfig());
-			SeparatedDatas l2 = tgtTableDataManager.separate(l, DataTestUtil.getConfig());
-            System.out.println("res: succ "+ JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l2)));
+//            SeparatedDatas l2 = tgtTableDataManager.separate(l, DataTestUtil.getConfig());
+//            System.out.println("res: succ " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l2)));
         } catch (Exception e) {
             System.out.println("res: error " + e);
             e.printStackTrace();
@@ -48,7 +54,7 @@ public class TgtTableDataManagerTest {
         try {
             Object res = null;
 
-            List<Map> l = rawTableDataGetManager.getData(DataTestUtil.getConfig());
+            List<Map> l = rawTableDataGetManager.getData(DataTestUtil.getConfig(), new SearchCondBase());
             System.out.println("res:bf" + l.size() + "," + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
 //            List<Map> l2 = tgtTableDataManager.separate(l, DataTestUtil.getConfig());
 //            System.out.println("res:af" + l2.size() + "," + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l2)));
@@ -64,12 +70,12 @@ public class TgtTableDataManagerTest {
     public void testGen() throws Exception {
         long t = System.currentTimeMillis();
         try {
-			List<Map> l = rawTableDataGetManager.getData(DataTestUtil.getConfig());
-			System.out.println("res: bf" +l.size()+","+ JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
+            List<Map> l = rawTableDataGetManager.getData(DataTestUtil.getConfig(), new SearchCondBase());
+            System.out.println("res: bf" + l.size() + "," + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
 //            List<Map> l2 = tgtTableDataManager.getTgtData(l, DataTestUtil.getConfig());
-			SeparatedDatas l2 = tgtTableDataManager.separate(l, DataTestUtil.getConfig());
-			System.out.println("res: sep " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l2)));
-			
+            SeparatedDatas l2 = tgtTableDataManager.separate(l, DataTestUtil.getConfig());
+            System.out.println("res: sep " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l2)));
+
 //			List res1 = tgtTableDataManager.tgtDataGenInsert(l2.getExistDatas(), DataTestUtil.getConfig());
 //			List res2 = tgtTableDataManager.tgtDataGenInsert(l2.getNotExistDatas(), DataTestUtil.getConfig());
 //            System.out.println("res: succ e " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(res1)));

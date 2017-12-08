@@ -18,11 +18,18 @@ public interface RetryDispatch {
 
     /**
      *
+     * @param bean 传递 spring bean，bean id 必须为默认名
+     */
+    void registeBean(Object bean);
+
+    /**
+     *
      */
     void executeAll();
 
     /**
      * 只处理指定 服务
+     * cond为自定义条件，如果 cond继承了 PageIntReq，且传递了值，则会用 cond内的pageSize值 覆盖 option内的pageSize
      */
     void executeService(String service, Object cond);
 

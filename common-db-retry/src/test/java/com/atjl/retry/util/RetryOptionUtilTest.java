@@ -19,10 +19,23 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @PrepareForTest({DateUtil.class})
 public class RetryOptionUtilTest {
 
+
+    @Test
+    public void getPage() {
+        SearchCondBase searchCondBase = new SearchCondBase();
+        searchCondBase.setPageSize(9999);
+        RetryOption opt = new RetryOption();
+        opt.setPageSize(1000);
+//        int res = OptionUtil.getPageCount(searchCondBase, opt);
+        int res = OptionUtil.getPageCount(null, opt);
+        System.out.printf("res:" + res);
+    }
+
+
+
+
     /**
      * 固定间隔
-     *
-     * @throws Exception
      */
     @Test
     public void testIsTimeUpFix() throws Exception {
@@ -144,7 +157,7 @@ public class RetryOptionUtilTest {
 
 
     @Test
-    public void testV(){
+    public void testV() {
         PowerMockito.mockStatic(DateUtil.class);
         when(DateUtil.getNowTS()).thenReturn(1700L);
 
@@ -168,6 +181,7 @@ public class RetryOptionUtilTest {
 
     /**
      * 可变+固定系数
+     *
      * @throws Exception
      */
     @Test

@@ -10,14 +10,16 @@
 
     <groupId>com.atjl</groupId>
     <artifactId>common-db-service</artifactId>
-    <version>1.0.0</version>
+    <version>3.3.0</version>
 
     <name>common-db-service</name>
     <packaging>jar</packaging>
 
     <properties>
-        <util.version>6.0.0</util.version>
+        <util.version>6.3.0</util.version>
         <config.version>5.1.0</config.version>
+        <retry.version>7.2.0</retry.version>
+        <validator.version>5.14.0</validator.version>
         <!--<validator.version>5.0.0</validator.version>-->
     </properties>
 
@@ -33,7 +35,16 @@
             <artifactId>common-util-ex</artifactId>
             <version>${util.version}</version>
         </dependency>
-        <!--         <dependency>
+
+        <dependency>
+            <groupId>com.atjl</groupId>
+            <artifactId>common-db-retry</artifactId>
+            <version>${retry.version}</version>
+        </dependency>
+
+
+
+        <!-- <dependency>
                     <groupId>com.atjl</groupId>
                     <artifactId>common-config-api</artifactId>
                     <version>${config.version}</version>

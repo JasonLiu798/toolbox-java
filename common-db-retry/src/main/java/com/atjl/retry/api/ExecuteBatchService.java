@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @param <D> 重试上下文数据，execute ,
  */
-public interface ExecuteBatchService<D> extends GetOptionService {
+public interface ExecuteBatchService<D> {
 
     /**
      * 执行 重试操作

@@ -1,6 +1,7 @@
 package com.atjl.dbservice.manager;
 
-import com.atjl.dbservice.domain.DbTableTransferConfig;
+import com.atjl.dbservice.api.domain.DbTableTransferConfig;
+import com.atjl.dbservice.api.domain.SearchCondBase;
 import com.atjl.dbservice.mapper.biz.DataTransferMapper;
 import org.springframework.stereotype.Component;
 
@@ -12,16 +13,16 @@ import java.util.Map;
 public class RawTableDataGetManager {
     @Resource
     private DataTransferMapper dataTransferMapper;
-	
-	/**
-	 * 如果所属字段 值为null，对应的key也为空
-	 */
-	public List<Map> getData(DbTableTransferConfig config) {
-        return dataTransferMapper.getRawTableData(config);
+
+    /**
+     * 如果所属字段 值为null，对应的key也为空
+     */
+    public List<Map> getData(DbTableTransferConfig config, SearchCondBase cond) {
+        return dataTransferMapper.getRawTableData(config, cond);
     }
 
-
-    public List<Map> filterInvalid() {
-        return null;
+    public int getCount(DbTableTransferConfig config, SearchCondBase searchCondBase) {
+        return dataTransferMapper.getRawTableDataCount(config, searchCondBase);
     }
+
 }

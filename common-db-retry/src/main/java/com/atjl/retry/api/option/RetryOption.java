@@ -1,10 +1,13 @@
 package com.atjl.retry.api.option;
 
 import com.atjl.retry.api.constant.RetryConstant;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 重试相关选项
  */
+@ApiModel(value = "重试相关选项")
 public class RetryOption extends RetryInstanceOption {
     public RetryOption() {
         super();
@@ -15,7 +18,7 @@ public class RetryOption extends RetryInstanceOption {
      * 为false，则此类内所有字段均不会使用
      * 为true，则会使用以下字段
      *
-    private boolean retrySwitch = false;*/
+     private boolean retrySwitch = false;*/
 
     /**
      * 重试表相关元数据
@@ -23,6 +26,7 @@ public class RetryOption extends RetryInstanceOption {
      * 取数 GetDataType.DEFAULT
      * 后置使用 RetryAfterType.DEFAULT 或 ALLSEQ ALLREV
      */
+    @ApiModelProperty(value = "服务名（必填），如果使用registeBean方式注册，服务名必须为简写且首字母小写的类名，即bean的默认id")
     private RetryTableMetaConf retryTabMeta;
 
     /**

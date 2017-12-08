@@ -1,8 +1,8 @@
 package com.atjl.retry.api.option;
 
-/**
- * 立即重试 相关参数
- */
+import io.swagger.annotations.ApiModel;
+
+@ApiModel(value = "立即重试 相关参数")
 public class RetryInstanceOption extends PageOption {
     public RetryInstanceOption() {
     }

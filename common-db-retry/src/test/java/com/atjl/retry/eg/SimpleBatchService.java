@@ -3,6 +3,7 @@ package com.atjl.retry.eg;
 
 import com.atjl.retry.api.CustomGetSimpleDatas;
 import com.atjl.retry.api.ExecuteBatchService;
+import com.atjl.retry.api.GetOptionService;
 import com.atjl.retry.api.domain.ExecuteStatusResp;
 import com.atjl.retry.api.option.GetDataType;
 import com.atjl.retry.api.option.PageOption;
@@ -15,8 +16,8 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component(TestConstant.SIMPLE_BATCH_SERVICE)
-public class SimpleBatchService implements ExecuteBatchService<Data>, CustomGetSimpleDatas<Data, Cond> {
+@Component
+public class SimpleBatchService implements ExecuteBatchService<Data>, CustomGetSimpleDatas, GetOptionService {
 
     private static final Logger logger = LoggerFactory.getLogger(SimpleBatchService.class);
 
@@ -58,13 +59,6 @@ public class SimpleBatchService implements ExecuteBatchService<Data>, CustomGetS
 //    }
 
 
-    @Override
-    public int getRetryDataCount(Cond cond) {
-        System.out.println("cond:" + cond);
-        return 8;
-    }
-
-    @Override
     public List<Data> getRetryDataContextListPaged(int page, Cond cond) {
         if (page == 1) {
             List<Data> l = new ArrayList<>();
@@ -90,6 +84,37 @@ public class SimpleBatchService implements ExecuteBatchService<Data>, CustomGetS
         return null;
     }
 
+    @Override
+    public int getRetryDataCount(Object cond) {
+        System.out.println("cond:" + cond);
+        return 8;
+    }
+
+    @Override
+    public List getRetryDataContextListPaged(int page, int pagesize, Object cond) {
+        if (page == 1) {
+            List<Data> l = new ArrayList<>();
+            Data d = new Data();
+            d.setS("ssss");
+//            DataContext<Data> c = DataContextFactory.build(d);
+//            c.setId("3");
+//            c.setRetriedCnt(2L);
+//            c.setLastRetriedTs(0L);
+            l.add(d);
+            System.out.println("cond:" + cond);
+            return l;
+        } else if (page == 2) {
+            List<Data> l = new ArrayList<>();
+            Data d = new Data();
+            d.setS("ssssllll");
+//            DataContext<Data> c = DataContextFactory.build(d);
+//            c.setId("234");
+            l.add(d);
+            System.out.println("cond:" + cond);
+            return l;
+        }
+        return null;
+    }
 
 
 //    @Override

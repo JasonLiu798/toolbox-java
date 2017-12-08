@@ -32,14 +32,47 @@ public class ThreadPoolManagerTest {
     }
 
     @Test
+    public void testAll() {
+        List<String> params = new ArrayList<>();
+
+        params.add("1,UD,12,12,30000,200000");
+        params.add("2,UD,12,12,30000,200000");
+
+        ThreadPoolManager.addPool("1,UD,12,12,30000,200000");
+        ThreadPoolManager.addPool("2,UD,12,12,30000,200000");
+
+//        ThreadPoolManager.init(params);
+//        ThreadPoolManager.getPool("1");
+
+        ThreadPoolManager.submit("1", this.testCreaterun());
+        ThreadPoolManager.submit("1", this.testCreaterun());
+        ThreadPoolManager.submit("1", this.testCreaterun());
+
+        ThreadPoolManager.submit("2", this.testCreaterun());
+        ThreadPoolManager.submit("2", this.testCreaterun());
+        ThreadPoolManager.submit("2", this.testCreaterun());
+
+        List<ThreadPoolStatus> status = ThreadPoolManager.getStatus();
+        System.out.println("status:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(status)));
+
+        SystemUtil.sleep(6000);
+        status = ThreadPoolManager.getStatus();
+        System.out.println("10s after status:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(status)));
+
+    }
+
+    @Test
     public void testInit() throws Exception {
         List<String> params = new ArrayList<>();
 
         params.add("1,UD,12,12,30000,200000");
         params.add("2,UD,12,12,30000,200000");
 
-        ThreadPoolManager.init(params);
-        //ThreadPoolManager.getPool("1");
+        ThreadPoolManager.addPool("1,UD,12,12,30000,200000");
+        ThreadPoolManager.addPool("2,UD,12,12,30000,200000");
+
+//        ThreadPoolManager.init(params);
+//        ThreadPoolManager.getPool("1");
 
         ThreadPoolManager.submit("1", this.testCreaterun());
         ThreadPoolManager.submit("1", this.testCreaterun());

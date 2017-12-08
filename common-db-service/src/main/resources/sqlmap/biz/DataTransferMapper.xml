@@ -2,55 +2,91 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.atjl.dbservice.mapper.biz.DataTransferMapper">
 
+    <select id="getRawTableDataCount" resultType="java.lang.Integer">
+        select count(1)
+        from ${config.rawTable}
+        where 1=1
+        <if test="config.otherCond!=null and config.otherCond!=''">
+            and ${config.otherCond}
+        </if>
+        <if test="otherCond.otherCond!=null and otherCond.otherCond!=''">
+            and ${otherCond.otherCond}
+        </if>
+
+        <if test="otherCond.startLoadTm!=null and otherCond.endLoadTm!=null">
+            and ${config.rawTable}.${config.rawTableLoadTmColumnName} BETWEEN #{otherCond.startLoadTm} and
+            #{otherCond.endLoadTm}
+        </if>
+
+    </select>
 
     <select id="getRawTableData"
             resultType="java.util.Map">
         select ${config.allRawFieldsStr}
         from ${config.rawTable}
+        where 1=1
         <if test="config.otherCond!=null and config.otherCond!=''">
-            where ${config.otherCond}
+            and ${config.otherCond}
         </if>
-		<if test="config.orderClause!=null and config.orderClause!=''">
-			order by ${config.orderClause}
-		</if>
+        <if test="otherCond.otherCond!=null and otherCond.otherCond!=''">
+            and ${otherCond.otherCond}
+        </if>
+        <if test="otherCond.startLoadTm!=null and otherCond.endLoadTm!=null">
+            and ${config.rawTable}.${config.rawTableLoadTmColumnName} BETWEEN #{otherCond.startLoadTm} and
+            #{otherCond.endLoadTm}
+        </if>
+
+        <if test="config.orderClause!=null and config.orderClause!=''">
+            order by ${config.orderClause}
+        </if>
         limit #{config.currentIndex},#{config.pageSize}
     </select>
 
     <select id="getTgtTableData"
             resultType="java.util.Map">
-        select ${config.tgtPkFields} from ${config.tgtTable}
+        select ${config.tgtPksAndUpdCheckColsFields} from ${config.tgtTable}
         where
-        <foreach collection="conds" item="item" separator="or" >
+        <foreach collection="conds" item="item" separator="or">
             <foreach collection="item" item="innerItem" separator="and" open="(" close=")">
-                ${innerItem.field} = #{innerItem.value}
+                ${innerItem.key} = #{innerItem.value}
             </foreach>
         </foreach>
     </select>
 
-
-	<!--
-    list
+    <!--
+    Map
         key:property
         value:
-        	key:id
-        	value:property's value
-	-->
-	<update id="updateBatch">
-		UPDATE ${config.tgtTable}
-		<foreach collection="items" item="item" separator=",">
-			<if test="item.value!=null and item.value!='' ">
-				SET ORG_CODE_RAW = CASE AREA_MONITOR_ID
-				<foreach collection=""
-					WHEN #{item.} THEN '44'
-					WHEN 5 THEN '55'
-				END,
-			</if>
+            List
+                key:id
+                value:property's value
+    -->
 
-		</foreach>
-		where ${config.tgtTablePk} in (
+    <update id="updateBatch">
+        UPDATE ${config.tgtTable}
+        SET
+        <foreach collection="dataPkg.items.keys" item="key" separator=","><!--遍历 map -->
+            ${key} = CASE ${config.tgtTablePk}
+            <foreach collection="dataPkg.items[key]" item="kv"> <!--遍历 list -->
+                WHEN #{kv.key} THEN
+                <if test="kv.value!=null">
+                    #{kv.value,jdbcType=VARCHAR}
+                </if>
+                <if test="kv.value==null">
+                    ''
+                </if>
+            </foreach>
+            END
+        </foreach>
+        where ${config.tgtTablePk} in (
+        <foreach collection="dataPkg.pkValues" item="pk" separator=","><!--遍历 pk list -->
+            #{pk}
+        </foreach>
+        )
+    </update>
 
-		)
-
+    <!--
+            UPDATE
         SET ORG_CODE_RAW = CASE AREA_MONITOR_ID
             WHEN 4 THEN '44'
             WHEN 5 THEN '55'
@@ -60,38 +96,21 @@
             WHEN 5 THEN '55-'
         END
     WHERE AREA_MONITOR_ID IN (4,5)
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+    -->
 
-
-	</update>
-	-->
-
-	<!--
-
-
-		<foreach collection="list" index="index" item="item" separator="," open="(" close=")">
-	-->
-
-	<insert id="insertBatchSelective">
-		insert into ${config.tgtTable}
-		<foreach collection="dataPkg.fields" item="item" separator="," open="(" close=")">
-			<!--<trim prefix=" (" suffix=")" suffixOverrides="," >-->
-				<!--<if test="item=null" >-->
-					${item}
-				<!--</if>-->
-			<!--</trim>-->
-		</foreach>
-		values
-		<foreach collection="dataPkg.datas" item="item" separator="," >
-			<foreach collection="item.items" item="kv" separator="," open="(" close=")">
-			<!--<trim prefix=" (" suffix=")" suffixOverrides="," >-->
-				<!--<if test="items[k]!=null" >-->
-					#{kv.value}
-				<!--</if>-->
-			<!--</trim>-->
-			</foreach>
-		</foreach>
-	</insert>
-
+    <insert id="insertBatch">
+        insert into ${config.tgtTable}
+        <foreach collection="config.allTgtSortFields" item="item" separator="," open="(" close=")">
+            ${item}
+        </foreach>
+        values
+        <foreach collection="dataPkg.datas" item="item" separator=",">
+            <foreach collection="item.items" item="kv" separator="," open="(" close=")">
+                #{kv.value}
+            </foreach>
+        </foreach>
+    </insert>
 
 
 </mapper>

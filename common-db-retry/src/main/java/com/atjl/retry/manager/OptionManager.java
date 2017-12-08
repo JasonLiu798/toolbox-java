@@ -1,21 +1,19 @@
 package com.atjl.retry.manager;
 
+import com.atjl.retry.api.exception.RetryRegisteException;
 import com.atjl.retry.api.option.PageOption;
 import com.atjl.retry.api.option.RetryInstanceOption;
 import com.atjl.retry.api.option.RetryOption;
 import com.atjl.retry.api.option.RetryTableMetaConf;
-import com.atjl.retry.form.InitOptionInstanceRetryForm;
 import com.atjl.retry.form.PageOptionForm;
 import com.atjl.retry.form.RetryInstanceOptionForm;
+import com.atjl.retry.form.RetryOptionForm;
 import com.atjl.util.common.ReflectUtil;
 import com.atjl.util.db.DbExecutor;
 import com.atjl.util.db.DbExecutorSyntaxException;
-import com.atjl.util.json.JSONFastJsonUtil;
 import com.atjl.util.reflect.ReflectFieldUtil;
-import com.atjl.validate.api.ValidateFormFactory;
 import com.atjl.validate.api.ValidateForm;
-import com.atjl.retry.api.exception.RetryInitException;
-import com.atjl.retry.form.RetryOptionForm;
+import com.atjl.validate.api.ValidateFormFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -37,7 +35,7 @@ public class OptionManager {
         form.setValue(ReflectFieldUtil.getFieldValueString(option, ReflectUtil.GetClzOpt.ALL, true, null, null));
         //new String[]{"retryTabMeta"}, null));
         if (!form.validate()) {
-            throw new RetryInitException("初始化基础配置校验失败，原因：" + form.getOneLineError());
+            throw new RetryRegisteException("初始化基础配置校验失败，原因：" + form.getOneLineError());
         }
     }
 
@@ -48,7 +46,7 @@ public class OptionManager {
 //        form.setValue(option);
         //new String[]{"retryTabMeta"}, null));
         if (!form.validate()) {
-            throw new RetryInitException("初始化立即重试相关配置校验失败，原因：" + form.getOneLineError());
+            throw new RetryRegisteException("初始化立即重试相关配置校验失败，原因：" + form.getOneLineError());
         }
 
 
@@ -59,7 +57,7 @@ public class OptionManager {
 
         form.setValue(option);
         if (!form.validate()) {
-            throw new RetryInitException("初始化重试相关配置校验失败，原因：" + form.getOneLineError());
+            throw new RetryRegisteException("初始化重试相关配置校验失败，原因：" + form.getOneLineError());
         }
         checkRetryTab(option.getRetryTabMeta());
     }
@@ -72,12 +70,12 @@ public class OptionManager {
      */
     public void checkRetryTab(RetryTableMetaConf meta) {
         if (meta == null) {
-            throw new RetryInitException("重试表元信息校验失败，原因：数据为空");
+            throw new RetryRegisteException("重试表元信息校验失败，原因：数据为空");
         }
         ValidateForm form = ValidateFormFactory.build(RetryTableMetaConf.class);
         form.setValue(meta);
         if (!form.validate()) {
-            throw new RetryInitException("重试表元信息校验失败，原因：" + form.getOneLineError());
+            throw new RetryRegisteException("重试表元信息校验失败，原因：" + form.getOneLineError());
         }
 
         String sqlraw = "select %s,%s,%s,%s from %s limit 1";
@@ -90,7 +88,7 @@ public class OptionManager {
             DbExecutor.getTableData(dataSource, sql);
         } catch (DbExecutorSyntaxException e) {
             logger.info("checkRetryTab {}", e);
-            throw new RetryInitException("重试表元信息校验失败，原因：" + e);
+            throw new RetryRegisteException("重试表元信息校验失败，原因：" + e);
         }
     }
 
@@ -113,7 +111,7 @@ public class OptionManager {
 //        form.setValue(ReflectFieldUtil.getFieldValueString(option, ReflectUtil.GetClzOpt.ALL, true, null, null));
 //        //new String[]{"retryTabMeta"}, null));
 //        if (!form.validate()) {
-//            throw new RetryInitException("初始化配置校验失败，原因：" + form.getOneLineError());
+//            throw new RetryExecuteException("初始化配置校验失败，原因：" + form.getOneLineError());
 //        }
 //        checkRetryTab(option.getRetryTabMeta());
 //        logger.info("check retryservice {} pass,content {}", option.getServiceName(), JSONFastJsonUtil.objectToJson(option));

@@ -835,6 +835,15 @@ public final class StringUtil {
         return message.toString();
     }
 
+    public final static String getEmptyString(Object str) {
+        if (str == null) {
+            return "";
+        }
+        if (StringCheckUtil.isEmpty(str)) {
+            return "";
+        }
+        return String.valueOf(str);
+    }
 
     public final static String getNullString(String str) {
         if (StringCheckUtil.isEmpty(str)) {
