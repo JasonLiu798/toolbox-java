@@ -4,6 +4,7 @@ import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.reflect.ReflectGetUtil;
 import com.atjl.util.reflect.ReflectSetUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -1030,10 +1031,6 @@ public final class StringUtil {
      */
     /**
      * cut string length to len
-     *
-     * @param rawStr
-     * @param len
-     * @return
      */
     public static String filter2len(String rawStr, int len) {
         if (StringCheckUtil.isEmpty(rawStr) || rawStr.length() <= len) {
@@ -1055,5 +1052,15 @@ public final class StringUtil {
             }
         }
     }
+
+
+    public static String escapeHtml4(String val) {
+        return StringEscapeUtils.escapeHtml4(val);
+    }
+
+    public static String unescapeHtml4(String val) {
+        return StringEscapeUtils.unescapeHtml4(val);
+    }
+
 
 }

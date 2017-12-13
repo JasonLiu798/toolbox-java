@@ -9,6 +9,7 @@
 
     <!--<context:component-scan base-package="com.atjl.retry.serviceBean"/>-->
     <context:component-scan base-package="com.atjl.dbservice.service"/>
-	<context:component-scan base-package="com.atjl.dbservice.manager"/>
+    <context:component-scan base-package="com.atjl.dbservice.manager"/>
+    <context:component-scan base-package="com.atjl.dbservice.helper"/>
 
 </beans>

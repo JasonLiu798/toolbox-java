@@ -66,11 +66,17 @@ public class DataUpdateManagerTest {
     }
     
     @Test
-    public void testTgtDataGenUpdate() throws Exception { 
+    public void testGenUpdate() throws Exception {
         long t = System.currentTimeMillis();
         try {
-            Object res=null;
-        
+            SearchCondBase cond = new SearchCondBase();
+//            String st = DateUtil.format(DateUtil.getDate(-20), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
+//            String et = DateUtil.format(DateUtil.getDate(0), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
+//            cond.setStartLoadTm(st);
+//            cond.setEndLoadTm(et);
+            List<Map> l = rawTableDataGetManager.getData(DataTestUtil.getCovConfig(), cond);
+
+            TgtTableDataUpdatePkg res = dataUpdateManager.covGenUpdate(l,DataTestUtil.getCovConfig());
             System.out.println("res: succ " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(res)));
         } catch (Exception e) {
             System.out.println("res: error " + e);
@@ -79,8 +85,30 @@ public class DataUpdateManagerTest {
         long cost = System.currentTimeMillis() - t;
         System.out.println("cost:" + cost);
     }
-    
-      
+
+
+    /**
+     *
+     */
+    @Test
+    public void testGenCov() throws Exception {
+        long t = System.currentTimeMillis();
+        try {
+            Object res=null;
+
+
+            System.out.println("res: succ " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(res)));
+        } catch (Exception e) {
+            System.out.println("res: error " + e);
+            e.printStackTrace();
+        }
+        long cost = System.currentTimeMillis() - t;
+        System.out.println("cost:" + cost);
+    }
+
+
+
+
     @Test
     public void testRaw2tgt() throws Exception { 
                 /* 
@@ -116,17 +144,17 @@ public class DataUpdateManagerTest {
     @After
     public void after() throws Exception { 
     }
-    
+
     @BeforeClass
-    public static void beforeClass() throws Exception{
-        
+    public static void beforeClass() throws Exception {
+    /*
         String dir = System.getProperty("user.dir");
         System.out.println("now " + dir);
         String config = dir.substring(0, dir.lastIndexOf("\\")) + "\\config";
         System.out.println("config " + config);
-        SystemUtil.addClasspath(config);
+        */
+        SystemUtil.addClasspath("D:\\project\\java\\aos\\config");
     }
-    
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
 } 

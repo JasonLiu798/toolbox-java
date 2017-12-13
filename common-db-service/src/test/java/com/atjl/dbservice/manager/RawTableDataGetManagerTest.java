@@ -64,6 +64,48 @@ public class RawTableDataGetManagerTest {
     }
 
 
+    @Test
+    public void testCovCount() {
+        long t = System.currentTimeMillis();
+        try {
+            // 213条 ， succ 209
+            SearchCondBase cond = new SearchCondBase();
+            String st = DateUtil.format(DateUtil.getDate(-20), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
+            String et = DateUtil.format(DateUtil.getDate(0), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
+            cond.setStartLoadTm(st);
+            cond.setEndLoadTm(et);
+            int l = rawTableDataGetManager.getCount(DataTestUtil.getConfig(), cond);
+            System.out.println("res: succ " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
+        } catch (Exception e) {
+            System.out.println("res: error " + e);
+            e.printStackTrace();
+        }
+        long cost = System.currentTimeMillis() - t;
+        System.out.println("cost:" + cost);
+    }
+
+    @Test
+    public void testCovGetData() throws Exception {
+        long t = System.currentTimeMillis();
+        try {
+            SearchCondBase cond = new SearchCondBase();
+            String st = DateUtil.format(DateUtil.getDate(-20), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
+            String et = DateUtil.format(DateUtil.getDate(0), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
+            cond.setStartLoadTm(st);
+            cond.setEndLoadTm(et);
+            cond.setPageSize(8);
+            List<Map> l = rawTableDataGetManager.getData(DataTestUtil.getCovConfig(), cond);
+
+            System.out.println("res: succ " + l.size() + "," + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
+        } catch (Exception e) {
+            System.out.println("res: error " + e);
+            e.printStackTrace();
+        }
+        long cost = System.currentTimeMillis() - t;
+        System.out.println("cost:" + cost);
+    }
+
+
     @Before
     public void before() throws Exception {
     }

@@ -35,7 +35,7 @@ public class ResponseDataGenericDto<T> extends ResponseDto {
         return new ResponseDataGenericDto(RespConstant.SUCCESS_CODE, RespConstant.SUCC_MSG);
     }
 
-    public ResponseDataGenericDto<T> buildOk(T obj) {
+    public static <T> ResponseDataGenericDto<T> buildOk(T obj) {
         ResponseDataGenericDto<T> resp = new ResponseDataGenericDto<>();
         resp.setResult(obj);
         return resp;
@@ -63,7 +63,7 @@ public class ResponseDataGenericDto<T> extends ResponseDto {
         return resp;
     }
 
-    public Object getResult() {
+    public T getResult() {
         return result;
     }
 

@@ -10,6 +10,7 @@ import com.atjl.dbservice.manager.RawTableDataGetManager;
 import com.atjl.dbservice.manager.TgtTableDataManager;
 import com.atjl.retry.api.CustomGetSimpleDatas;
 import com.atjl.retry.api.ExecuteBatchService;
+import com.atjl.retry.api.GetOptionService;
 import com.atjl.retry.api.domain.ExecuteStatusResp;
 import com.atjl.util.collection.CollectionUtil;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public abstract class DataTransferService implements CustomGetSimpleDatas<Map, SearchCondBase>, ExecuteBatchService<Map> {
+public abstract class DataTransferService implements CustomGetSimpleDatas<Map, SearchCondBase>, ExecuteBatchService<Map>,GetOptionService {
 
     @Resource
     private DataImportManager dataImportManager;

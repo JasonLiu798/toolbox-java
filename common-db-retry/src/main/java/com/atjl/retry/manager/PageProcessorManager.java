@@ -61,6 +61,10 @@ public class PageProcessorManager {
             return;
         }
 
+        if (cond != null) {
+            log.setCond(cond);
+        }
+
         logger.info("process service {},get data count {}", opt.getServiceName(), totalCount);
 
         int pageSize = OptionUtil.getPageCount(cond, opt);
@@ -70,6 +74,8 @@ public class PageProcessorManager {
 
         log.setTotalPage(new Long(pageCnt));
 
+        processStatusManager.updateByPk(log);
+
         long sumFail = 0;
         long sumAdd = 0;
         long sumUpd = 0;
@@ -78,6 +84,8 @@ public class PageProcessorManager {
         for (int i = 1; i <= pageCnt; i++) {
             //按页获取数据
             logger.debug("process page {},pagesize {},pagecnt {},total {}", i, pageSize, pageCnt, totalCount);
+            log.setCurStartPage(i);
+            processStatusManager.updateByPk(log);
 
             List datas = null;
             if (retryServiceItem.getRetryOption() != null) {
@@ -131,6 +139,7 @@ public class PageProcessorManager {
                 executeResp.setProcessLogId(log.getDataProcessId());
                 processStatusManager.addLogDetail(executeResp);
                 //log.addLog(executeResp);
+                log.setCurEndPage(i);
                 processStatusManager.updateByPk(log);
             } else {
                 //单条处理

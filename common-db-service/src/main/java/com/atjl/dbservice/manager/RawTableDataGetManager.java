@@ -1,5 +1,6 @@
 package com.atjl.dbservice.manager;
 
+import com.atjl.dbservice.api.domain.DataCoverteConfig;
 import com.atjl.dbservice.api.domain.DbTableTransferConfig;
 import com.atjl.dbservice.api.domain.SearchCondBase;
 import com.atjl.dbservice.mapper.biz.DataTransferMapper;
@@ -25,4 +26,11 @@ public class RawTableDataGetManager {
         return dataTransferMapper.getRawTableDataCount(config, searchCondBase);
     }
 
+    public List<Map> getData(DataCoverteConfig config, SearchCondBase cond) {
+        return dataTransferMapper.getCoverteTableData(config, cond);
+    }
+
+    public int getCount(DataCoverteConfig config, SearchCondBase searchCondBase) {
+        return dataTransferMapper.getCoverteTableCount(config, searchCondBase);
+    }
 }

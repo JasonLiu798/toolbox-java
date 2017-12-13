@@ -1,26 +1,59 @@
 package com.atjl.dbservice.api.domain;
 
-import com.atjl.dbservice.api.RawDataValidator;
-import com.atjl.dbservice.api.TgtDataNeedUpdateChecker;
-import com.atjl.dbservice.domain.KeyValue;
 import com.atjl.dbservice.util.DataFieldUtil;
-import com.atjl.util.collection.CollectionSortUtil;
 import com.atjl.util.collection.CollectionUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-@ApiModel("数据清洗配置")
-public class DbTableTransferConfig extends DataBaseConfig {
+@ApiModel("数据转换配置")
+public class DataCoverteConfig extends DataBaseConfig {
 
+    @ApiModelProperty(value = "转换列表")
+    private List<PropertyCovertor> covertors;
+
+
+    public List<String> getSearchFieldList() {
+        if (CollectionUtil.isEmpty(covertors)) {
+            return new ArrayList<>();
+        }
+        List<String> res = new ArrayList<>();
+        for (PropertyCovertor pc : covertors) {
+            res.add(pc.getSrcCol());
+        }
+        res.add(getTgtTablePk());
+        return res;
+    }
+
+    public String getSearchFieldListStr() {
+        List<String> l = getSearchFieldList();
+        if (CollectionUtil.isEmpty(l)) {
+            return "";
+        }
+        return DataFieldUtil.field2string(l);
+    }
+
+
+    public List<PropertyCovertor> getCovertors() {
+        return covertors;
+    }
+
+    public void setCovertors(List<PropertyCovertor> covertors) {
+        this.covertors = covertors;
+    }
+
+
+
+/*
     @ApiModelProperty(value = "原始数据 初步校验 校验器，不可有spring依赖，只校验 是否为空，格式，长度等简单数据")
     private RawDataValidator rawDataValidator;
 
     @ApiModelProperty(value = "原始数据+目标数据 校验，不满足的不更新,原表数据注入 所有字段，目标表 数据注入 主键+普通字段+指定的附加字段")
     private TgtDataNeedUpdateChecker tgtDataUpdateCheck;
+
+
 
     @ApiModelProperty(value = "原表-目标表 主键字段映射关系")
     private Map<String, String> pkFieldMapping;
@@ -33,8 +66,23 @@ public class DbTableTransferConfig extends DataBaseConfig {
     private Map<String, String> defaultValues;
 
 
+
+//    @ApiModelProperty(value = "更新列表，目前只有 load_tm,小于则不处理")
+//    private Map<String, String> noUpdateCheckMapping;
+
+
+    @ApiModelProperty(value = "取原表数据 附加条件")
+    private String otherCond;
+
+    @ApiModelProperty(value = "取原表数据 附加排序条件")
+    private String orderClause;
+
+    @ApiModelProperty(value = "原表loadTm列名,查询数据时用")
+    private String rawTableLoadTmColumnName;
+
     @ApiModelProperty(value = "原始表名")
     private String rawTable;
+
 
 
     @ApiModelProperty(value = "目标表，需要取的附加字段")
@@ -43,16 +91,12 @@ public class DbTableTransferConfig extends DataBaseConfig {
     @ApiModelProperty(value = "目标表json字段名")
     private String jsonField;
 
-
-//    @ApiModelProperty(value = "需要转换的字段")
-//    private Map<String, PropertyCovertor> covertors;
-
     @ApiModelProperty(value = "主键域 字符串")
     public String getTgtPkFields() {
         String res;
         List<String> pkField = CollectionUtil.map2list(pkFieldMapping, false);
         res = DataFieldUtil.field2string(pkField);
-        res = this.getTgtTablePk() + "," + res;
+        res = tgtTablePk + "," + res;
         return res;
     }
 
@@ -70,7 +114,7 @@ public class DbTableTransferConfig extends DataBaseConfig {
             pkField.addAll(tgtTableGetExtFields);
         }
 
-        pkField.add(getTgtTablePk());
+        pkField.add(tgtTablePk);
         return DataFieldUtil.field2string(pkField);
     }
 
@@ -153,6 +197,13 @@ public class DbTableTransferConfig extends DataBaseConfig {
 //        this.noUpdateCheckMapping = noUpdateCheckMapping;
 //    }
 
+    public String getTgtTablePk() {
+        return tgtTablePk;
+    }
+
+    public void setTgtTablePk(String tgtTablePk) {
+        this.tgtTablePk = tgtTablePk;
+    }
 
     public Map<String, String> getJsonFieldMapping() {
         return jsonFieldMapping;
@@ -170,6 +221,13 @@ public class DbTableTransferConfig extends DataBaseConfig {
         this.rawDataValidator = rawDataValidator;
     }
 
+    public String getOtherCond() {
+        return otherCond;
+    }
+
+    public void setOtherCond(String otherCond) {
+        this.otherCond = otherCond;
+    }
 
     public Map<String, String> getFieldMapping() {
         return fieldMapping;
@@ -203,6 +261,30 @@ public class DbTableTransferConfig extends DataBaseConfig {
         this.jsonField = jsonField;
     }
 
+    public String getRawTableLoadTmColumnName() {
+        return rawTableLoadTmColumnName;
+    }
+
+    public void setRawTableLoadTmColumnName(String rawTableLoadTmColumnName) {
+        this.rawTableLoadTmColumnName = rawTableLoadTmColumnName;
+    }
+
+    public String getOrderClause() {
+        return orderClause;
+    }
+
+    public void setOrderClause(String orderClause) {
+        this.orderClause = orderClause;
+    }
+
+    public String getTgtTable() {
+        return tgtTable;
+    }
+
+    public void setTgtTable(String tgtTable) {
+        this.tgtTable = tgtTable;
+    }
+
     public TgtDataNeedUpdateChecker getTgtDataUpdateCheck() {
         return tgtDataUpdateCheck;
     }
@@ -218,4 +300,5 @@ public class DbTableTransferConfig extends DataBaseConfig {
     public void setTgtTableGetExtFields(List<String> tgtTableGetExtFields) {
         this.tgtTableGetExtFields = tgtTableGetExtFields;
     }
+    */
 }

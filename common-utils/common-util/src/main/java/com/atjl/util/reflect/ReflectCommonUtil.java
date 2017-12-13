@@ -46,9 +46,6 @@ public class ReflectCommonUtil {
 
     /**
      * generate Get method
-     *
-     * @param field
-     * @return String
      */
     public static String generateGetName(String field, boolean isBoolean) {
         if (StringCheckUtil.isEmpty(field)) {

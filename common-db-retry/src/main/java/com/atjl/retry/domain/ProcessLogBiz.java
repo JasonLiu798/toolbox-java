@@ -6,6 +6,13 @@ public class ProcessLogBiz extends TsProcessLog {
     //查询 数量 耗时
     private Long getCountCost;
 
+    //当前页码
+    private int curStartPage;
+
+    private int curEndPage;
+
+    private Object cond;
+
 //    private List<ExecuteStatusResp> processLog;
 
 
@@ -16,6 +23,31 @@ public class ProcessLogBiz extends TsProcessLog {
 //        if()
 //        processLog.add(log);
 //    }
+
+
+    public Object getCond() {
+        return cond;
+    }
+
+    public void setCond(Object cond) {
+        this.cond = cond;
+    }
+
+    public int getCurEndPage() {
+        return curEndPage;
+    }
+
+    public void setCurEndPage(int curEndPage) {
+        this.curEndPage = curEndPage;
+    }
+
+    public int getCurStartPage() {
+        return curStartPage;
+    }
+
+    public void setCurStartPage(int curStartPage) {
+        this.curStartPage = curStartPage;
+    }
 
     public Long getGetCountCost() {
         return getCountCost;

@@ -1,10 +1,14 @@
 package com.atjl.dbservice.manager;
 
+import com.atjl.dbservice.api.domain.DataBaseConfig;
+import com.atjl.dbservice.api.domain.DataCoverteConfig;
 import com.atjl.dbservice.api.domain.DbTableTransferConfig;
+import com.atjl.dbservice.api.domain.PropertyCovertor;
 import com.atjl.dbservice.domain.KeyValue;
 import com.atjl.dbservice.domain.TgtTableDataUpdatePkg;
+import com.atjl.dbservice.helper.DataUpdateGenHelper;
 import com.atjl.dbservice.mapper.biz.DataTransferMapper;
-import com.atjl.util.character.StringCheckUtil;
+import com.atjl.dbservice.util.DataFieldUtil;
 import com.atjl.util.character.StringUtil;
 import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.json.JSONFastJsonUtil;
@@ -23,11 +27,13 @@ import java.util.Map;
 public class DataUpdateManager {
     @Resource
     DataTransferMapper dataTransferMapper;
+    @Resource
+    private DataUpdateGenHelper dataUpdateGenHelper;
 
     /**
      * 实际的更新操作
      */
-    public int update(TgtTableDataUpdatePkg dataPkg, DbTableTransferConfig config) {
+    public int update(TgtTableDataUpdatePkg dataPkg, DataBaseConfig config) {
         if (!CollectionUtil.isEmpty(dataPkg.getItems())) {
             return dataTransferMapper.updateBatch(config, dataPkg);
         }
@@ -49,23 +55,16 @@ public class DataUpdateManager {
         }
         Map<String, List<KeyValue>> prop2listMap = new HashMap<>();
 
-        List<String> pks = new ArrayList<>();
-        for (Map data : datas) {
-            String pk = StringUtil.getEmptyString(data.get(config.getTgtTablePk()));
-            if (!StringCheckUtil.isEmpty(pk)) {
-                pks.add(pk);
-            }
-        }
-        res.setPkValues(pks);
+        dataUpdateGenHelper.genPkValues(datas, config, res);
 
 
         //主键部分
         if (!CollectionUtil.isEmpty(config.getPkFieldMapping())) {
-            genUpdateInner(datas, config, config.getPkFieldMapping(), prop2listMap);
+            dataUpdateGenHelper.genUpdateInner(datas, config, config.getPkFieldMapping(), prop2listMap);
         }
         //普通 部分
         if (!CollectionUtil.isEmpty(config.getFieldMapping())) {
-            genUpdateInner(datas, config, config.getFieldMapping(), prop2listMap);
+            dataUpdateGenHelper.genUpdateInner(datas, config, config.getFieldMapping(), prop2listMap);
         }
         //比较 部分
 //        if (!CollectionUtil.isEmpty(config.getNoUpdateCheckMapping())) {
@@ -75,7 +74,7 @@ public class DataUpdateManager {
         //json 部分
         if (!CollectionUtil.isEmpty(config.getJsonFieldMapping())) {
             for (Map data : datas) {
-                Map<String, String> jsonMap = raw2tgt(data, config.getJsonFieldMapping());
+                Map<String, String> jsonMap = DataFieldUtil.raw2tgt(data, config.getJsonFieldMapping());
                 String json = JSONFastJsonUtil.objectToJson(jsonMap);
 
                 List<KeyValue> pk2propvalueList = prop2listMap.get(config.getJsonField());
@@ -114,46 +113,34 @@ public class DataUpdateManager {
     }
 
 
-    private Map<String, String> raw2tgt(Map rawKV, Map<String, String> mapping) {
-        Map<String, String> res = new HashMap<>();
-        for (Map.Entry<String, String> pk : mapping.entrySet()) {
-            String raw = pk.getKey();
-            String tgt = pk.getValue();
-            Object v = rawKV.get(raw);
-            if (v == null) {
-                res.put(tgt, "");
-            } else {
-                res.put(tgt, String.valueOf(v));
-            }
+    /**
+     * 生成 需要更新的数据结构
+     */
+    public TgtTableDataUpdatePkg covGenUpdate(List<Map> datas, DataCoverteConfig config) {
+        /**
+         Map<String, List<KeyValue>> items;
+         List<KeyValue> pkValues;
+         */
+        TgtTableDataUpdatePkg res = new TgtTableDataUpdatePkg();
+        //List<TgtTableData> res = new ArrayList<>();
+        if (CollectionUtil.isEmpty(datas)) {
+            return res;
         }
+        Map<String, List<KeyValue>> prop2listMap = new HashMap<>();
+
+        dataUpdateGenHelper.genPkValues(datas, config, res);//主键 列表
+
+        //转换列表
+        if (!CollectionUtil.isEmpty(config.getCovertors())) {
+            int failCnt = dataUpdateGenHelper.genUpdateInner(datas, config, config.getCovertors(), prop2listMap);
+            res.setFailCount(failCnt);
+//            for (PropertyCovertor pc : config.getCovertors()) {
+//            }
+        }
+        res.setItems(prop2listMap);
         return res;
     }
 
-    private void genUpdateInner(List<Map> datas, DbTableTransferConfig config, Map<String, String> mapping, Map<String, List<KeyValue>> prop2listMap) {
-        for (Map.Entry<String, String> pkentry : mapping.entrySet()) {
-            String raw = pkentry.getKey();
-            String tgt = pkentry.getValue();
-
-            List<KeyValue> pk2propvalueList = prop2listMap.get(tgt);
-            if (CollectionUtil.isEmpty(pk2propvalueList)) {
-                pk2propvalueList = new ArrayList<>();
-            }
-            for (Map data : datas) {
-                Object tgtPk = data.get(config.getTgtTablePk());
-                if (StringCheckUtil.isEmpty(tgtPk)) {
-                    continue;
-                }
-                String pk = String.valueOf(tgtPk);
-                String v = StringUtil.getEmptyString(data.get(raw));
-                KeyValue kv = new KeyValue();
-                kv.setKey(pk);
-                kv.setValue(v);
-                pk2propvalueList.add(kv);
-            }
-            prop2listMap.put(tgt, pk2propvalueList);
-
-        }
-    }
 
 //    private String getStr(Object pkObj) {
 //        String v = "";

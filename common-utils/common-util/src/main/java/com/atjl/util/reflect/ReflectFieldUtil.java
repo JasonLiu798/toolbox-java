@@ -30,12 +30,7 @@ public class ReflectFieldUtil {
     /**
      * 字段拷贝
      *
-     * @param source
-     * @param target
-     * @param opt
      * @param allowNull source对象中的空值 是否设置 到 target对象
-     * @param blackList
-     * @param whiteList
      */
     public static void copyField(Object source, Object target, GetClzOpt opt, boolean allowNull, String[] blackList, String[] whiteList) {
         List<Field> fields = getFieldList(source, opt, blackList, whiteList);
@@ -58,47 +53,43 @@ public class ReflectFieldUtil {
         }
     }
 
+
     public static void copyField(Object source, Object target) {
         copyField(source, target, GetClzOpt.ALL, true, null, null);
     }
-	
-	
-	/**
-	 * src多出的字段：不会报错
-	 * 字段类型匹配： Long和Integer互转
-	 * src或dest为空：抛异常
-	 * @param src
-	 * @param tgt
-	 */
-	public static void copyFieldUsePU(Object src, Object tgt){
-		try {
-			PropertyUtils.copyProperties(tgt,src);
-		} catch (InvocationTargetException|IllegalAccessException|NoSuchMethodException e) {
-			logger.error("copyfield use proputil error {}",e);
-		}
-	}
-	
-	/**
-	 *
-	 * @param src
-	 * @param tgt
-	 */
-	public static void copyFieldUseBU(Object src,Object tgt){
-		try {
-			BeanUtils.copyProperties(tgt,src);
-		} catch (InvocationTargetException|IllegalAccessException e) {
-			logger.error("copyfield use beanutil error {}",e);
-		}
-	}
-	
-	public static void copyFieldUseDz(Object src,Object tgt){
-		try {
-			BeanUtils.copyProperties(tgt,src);
-		} catch (InvocationTargetException|IllegalAccessException e) {
-			logger.error("copyfield use beanutil error {}",e);
-		}
-	}
-	
+
+
+    /**
+     * src多出的字段：不会报错
+     * 字段类型匹配： Long和Integer互转
+     * src或dest为空：抛异常
+     */
+    public static void copyFieldUsePU(Object src, Object tgt) {
+        try {
+            PropertyUtils.copyProperties(tgt, src);
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+            logger.error("copyfield use proputil error {}", e);
+        }
+    }
+
+    /**
+     */
+    public static void copyFieldUseBU(Object src, Object tgt) {
+        try {
+            BeanUtils.copyProperties(tgt, src);
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            logger.error("copyfield use beanutil error {}", e);
+        }
+    }
+
+//    public static void copyFieldUseDz(Object src, Object tgt) {
+//        try {
+//            BeanUtils.copyProperties(tgt, src);
+//        } catch (InvocationTargetException | IllegalAccessException e) {
+//            logger.error("copyfield use beanutil error {}", e);
+//        }
+//    }
+
 
     /**
      * 递归拷贝
@@ -178,9 +169,9 @@ public class ReflectFieldUtil {
      */
     public static List<Field> getFieldList(Class obj, GetClzOpt parentOpt, String[] blackArr, String[] whiteArr) {
         List<Class<?>> clazzList = ReflectClassUtil.getClassList(obj, parentOpt);
-        if (logger.isDebugEnabled()) {
-            logger.debug("getField clz list:{}", clazzList);
-        }
+//        if (logger.isDebugEnabled()) {
+//            logger.debug("getField clz list:{}", clazzList);
+//        }
         if (CollectionUtil.isEmpty(clazzList)) {
             return new ArrayList<>();
         }
@@ -231,9 +222,9 @@ public class ReflectFieldUtil {
             }
         }
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("get fields res {}", res);
-        }
+//        if (logger.isDebugEnabled()) {
+//            logger.debug("get fields res {}", res);
+//        }
         return res;
     }
 
@@ -243,9 +234,9 @@ public class ReflectFieldUtil {
      */
     public static List<Field> getFieldList(Object obj, GetClzOpt parentOpt, String[] blackArr, String[] whiteArr, boolean filterNull) {
         List<Class<?>> clazzList = ReflectClassUtil.getClassList(obj, parentOpt);
-        if (logger.isDebugEnabled()) {
-            logger.debug("getField clz list:{}", clazzList);
-        }
+//        if (logger.isDebugEnabled()) {
+//            logger.debug("getField clz list:{}", clazzList);
+//        }
         if (CollectionUtil.isEmpty(clazzList)) {
             return new ArrayList<>();
         }
@@ -297,9 +288,9 @@ public class ReflectFieldUtil {
             }
         }
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("get fields res {}", res);
-        }
+//        if (logger.isDebugEnabled()) {
+//            logger.debug("get fields res {}", res);
+//        }
         return res;
     }
 

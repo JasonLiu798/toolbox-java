@@ -2,8 +2,6 @@ package com.atjl.util.reflect;
 
 
 import com.atjl.util.character.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
