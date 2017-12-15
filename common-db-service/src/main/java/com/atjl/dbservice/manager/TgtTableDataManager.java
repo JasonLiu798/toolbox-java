@@ -1,7 +1,7 @@
 package com.atjl.dbservice.manager;
 
 import com.atjl.dbservice.api.TgtDataNeedUpdateChecker;
-import com.atjl.dbservice.api.domain.DbTableTransferConfig;
+import com.atjl.dbservice.api.domain.DataCpConfig;
 import com.atjl.dbservice.domain.KeyValue;
 import com.atjl.dbservice.domain.SeparatedDatas;
 import com.atjl.dbservice.mapper.biz.DataTransferMapper;
@@ -20,7 +20,7 @@ public class TgtTableDataManager {
     @Resource
     private DataTransferMapper dataTransferMapper;
 
-    public List<Map> getTgtData(List<Map> rawDatas, DbTableTransferConfig config) {
+    public List<Map> getTgtData(List<Map> rawDatas, DataCpConfig config) {
         List<List<KeyValue>> res = new ArrayList<>();
         for (Map rawData : rawDatas) {
             List<KeyValue> l = new ArrayList<>();
@@ -41,7 +41,7 @@ public class TgtTableDataManager {
      * 分离 已经存在的 和 不存在的
      * 同时 按配置的过滤列，过滤
      */
-    public SeparatedDatas separate(List<Map> rawDatas, DbTableTransferConfig config) {
+    public SeparatedDatas separate(List<Map> rawDatas, DataCpConfig config) {
         List<Map> tgtExistDatas = getTgtData(rawDatas, config);//已经存在的数据
 
         SeparatedDatas res = new SeparatedDatas();

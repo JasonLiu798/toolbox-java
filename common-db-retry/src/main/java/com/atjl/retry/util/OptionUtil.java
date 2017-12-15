@@ -20,7 +20,7 @@ public class OptionUtil {
     }
 
 
-    public static int getPageCount(Object cond, PageOption opt) {
+    public static int getPageSize(Object cond, PageOption opt) {
         if (cond != null) {
             if (ReflectClassUtil.chkAImplementB(cond, PageIntReq.class)) {
                 PageIntReq req = (PageIntReq) cond;

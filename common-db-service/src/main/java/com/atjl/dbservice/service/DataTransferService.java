@@ -1,7 +1,7 @@
 package com.atjl.dbservice.service;
 
 import com.atjl.dbservice.api.RawDataValidator;
-import com.atjl.dbservice.api.domain.DbTableTransferConfig;
+import com.atjl.dbservice.api.domain.DataCpConfig;
 import com.atjl.dbservice.api.domain.SearchCondBase;
 import com.atjl.dbservice.domain.*;
 import com.atjl.dbservice.manager.DataImportManager;
@@ -33,14 +33,14 @@ public abstract class DataTransferService implements CustomGetSimpleDatas<Map, S
     @Resource
     private TgtTableDataManager tgtTableDataManager;
 
-    public abstract DbTableTransferConfig getTransConfig();
+    public abstract DataCpConfig getTransConfig();
 
     @Override
     public int getRetryDataCount(SearchCondBase cond) {
         if (cond == null) {
             cond = new SearchCondBase();
         }
-        DbTableTransferConfig config = getTransConfig();
+        DataCpConfig config = getTransConfig();
         return rawTableDataGetManager.getCount(config, cond);
     }
 
@@ -49,12 +49,14 @@ public abstract class DataTransferService implements CustomGetSimpleDatas<Map, S
         if (cond == null) {
             cond = new SearchCondBase();
         }
-        DbTableTransferConfig config = getTransConfig();
+        DataCpConfig config = getTransConfig();
         config.setCurrentPage(page);
         config.setPageSize(pageSize);
         //config.getRawDataValidator();
         return rawTableDataGetManager.getData(config, cond);
     }
+
+
 
     @Override
     public ExecuteStatusResp execute(List<Map> datas) {

@@ -1,6 +1,6 @@
 package com.atjl.dbservice.manager;
 
-import com.atjl.dbservice.api.domain.DbTableTransferConfig;
+import com.atjl.dbservice.api.domain.DataCpConfig;
 import com.atjl.dbservice.domain.KeyValue;
 import com.atjl.dbservice.domain.TgtTableData;
 import com.atjl.dbservice.domain.TgtTableDataPkg;
@@ -21,7 +21,7 @@ public class DataImportManager {
     /**
      * 生成 需要插入的数据
      */
-    public TgtTableDataPkg tgtDataGenInsert(List<Map> datas, DbTableTransferConfig config) {
+    public TgtTableDataPkg tgtDataGenInsert(List<Map> datas, DataCpConfig config) {
         TgtTableDataPkg res = new TgtTableDataPkg();
         //List<TgtTableData> res = new ArrayList<>();
         if (CollectionUtil.isEmpty(datas)) {
@@ -96,7 +96,7 @@ public class DataImportManager {
     @Resource
     DataTransferMapper dataTransferMapper;
 
-    public int insert(TgtTableDataPkg dataPkg, DbTableTransferConfig config) {
+    public int insert(TgtTableDataPkg dataPkg, DataCpConfig config) {
         if (!CollectionUtil.isEmpty(dataPkg.getDatas())) {
             return dataTransferMapper.insertBatch(config, dataPkg);
         }

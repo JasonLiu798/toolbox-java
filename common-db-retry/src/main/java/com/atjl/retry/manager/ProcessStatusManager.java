@@ -1,5 +1,6 @@
 package com.atjl.retry.manager;
 
+import com.atjl.common.constant.CommonConstant;
 import com.atjl.jfeild.util.JFieldUtil;
 import com.atjl.retry.api.domain.ExecuteStatusResp;
 import com.atjl.retry.api.exception.RetryExecuteException;
@@ -47,10 +48,17 @@ public class ProcessStatusManager {
     }
 
 
-    public Long addStatus(String serviceName) {
-        TsProcessLog log = new TsProcessLog();
-        log.setServiceKey(serviceName);
-        tsProcessLogMapper.insertSelective(log);
+    public Long addStatus(PageOption opt, boolean generalPreServiceResult) {
+        ProcessLogBiz log = new ProcessLogBiz();
+        log.setServiceKey(opt.getServiceName());
+        log.setPreServiceResult(generalPreServiceResult);
+        if (!generalPreServiceResult) {
+            if (!opt.isGeneralPreServiceFailContinue()) {
+                log.setProcessEnd(CommonConstant.YES);
+            }
+        }
+        TsProcessLog dlog = JFieldUtil.update(log, ProcessLogMetaUtil.getBizTabMeta(), TsProcessLog.class);
+        tsProcessLogMapper.insertSelective(dlog);
         return log.getDataProcessId();
     }
 

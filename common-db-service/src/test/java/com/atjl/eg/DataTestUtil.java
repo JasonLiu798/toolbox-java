@@ -3,7 +3,7 @@ package com.atjl.eg;
 
 import com.atjl.dbservice.api.CoverteDataService;
 import com.atjl.dbservice.api.domain.DataCoverteConfig;
-import com.atjl.dbservice.api.domain.DbTableTransferConfig;
+import com.atjl.dbservice.api.domain.DataCpConfig;
 import com.atjl.dbservice.api.domain.PropertyCovertor;
 import com.atjl.dbservice.api.exception.DataCovException;
 import com.atjl.util.character.StringCheckUtil;
@@ -30,7 +30,7 @@ public class DataTestUtil {
 
         List<PropertyCovertor> propertyCovertors = new ArrayList<>();
         PropertyCovertor pc = new PropertyCovertor();
-        pc.setSrcCol("ORG_CODE_RAW");
+        pc.setSrcCols(CollectionUtil.newList("ORG_CODE_RAW"));
         pc.setTgtCol("ORG_ID");
         pc.setCovertor(new CoverteDataService() {
             @Override
@@ -46,7 +46,7 @@ public class DataTestUtil {
 
 
         pc = new PropertyCovertor();
-        pc.setSrcCol("ORG_TM_RAW");
+        pc.setSrcCols(CollectionUtil.newList("ORG_TM_RAW"));
         pc.setTgtCol("ORG_TM");
         pc.setCovertor(new CoverteDataService() {
             @Override
@@ -66,9 +66,9 @@ public class DataTestUtil {
     }
 
 
-    public static DbTableTransferConfig getConfig() {
+    public static DataCpConfig getConfig() {
 
-        DbTableTransferConfig config = new DbTableTransferConfig();
+        DataCpConfig config = new DataCpConfig();
 
         config.setDefaultValues(CollectionUtil.newMap("ORG_REGION_RAW", "AA"));
 

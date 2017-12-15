@@ -26,8 +26,8 @@ public class RetryOptionUtilTest {
         searchCondBase.setPageSize(9999);
         RetryOption opt = new RetryOption();
         opt.setPageSize(1000);
-//        int res = OptionUtil.getPageCount(searchCondBase, opt);
-        int res = OptionUtil.getPageCount(null, opt);
+//        int res = OptionUtil.getPageSize(searchCondBase, opt);
+        int res = OptionUtil.getPageSize(null, opt);
         System.out.printf("res:" + res);
     }
 

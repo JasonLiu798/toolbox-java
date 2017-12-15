@@ -1,5 +1,10 @@
 
 
+v7.8.0
+add general pre service
+
+
+
 #数据过多的分页处理
 
 #自定义after方式

@@ -1,7 +1,7 @@
 package com.atjl.jfeild.util;
 
 import com.atjl.jfeild.domain.JTabMeta;
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.jfeild.util.eg.*;
 import com.atjl.util.common.SystemUtil;
 import com.atjl.util.json.JSONFastJsonUtil;
 import com.atjl.util.json.JSONFmtUtil;
@@ -87,7 +87,7 @@ public class JFieldUtilTest {
             biz.setExtf1("nnnnn");
             biz.setBizObjI1(new BizObjI1("xx", "bbb"));
 
-            DbObj d = JFieldUtil.updateSpecified(biz, dbObj, BizObjMetaUtil.getTabMeta(), true, true, CollectionUtil.newList("bizObjI1"));
+//            DbObj d = JFieldUtil.updateSpecified(biz, dbObj, BizObjMetaUtil.getTabMeta(), true, true, CollectionUtil.newList("bizObjI1"));
 
 /**
  before: {
@@ -96,8 +96,8 @@ public class JFieldUtilTest {
  "oi1":"{\"f3\":\"C\",\"f4\":\"D\"}"
  }
  */
-            System.out.println("res: succ " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(d)));
-            bo = JFieldUtil.select(d, BizObjMetaUtil.getTabMeta(), BizObj.class);
+//            System.out.println("res: succ " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(d)));
+//            bo = JFieldUtil.select(d, BizObjMetaUtil.getTabMeta(), BizObj.class);
             System.out.println("before: " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(bo)));
 
 
@@ -113,7 +113,6 @@ public class JFieldUtilTest {
         long t = System.currentTimeMillis();
         try {
 //            Object res = null;
-
 
 
             JTabMeta meta = BizObjMetaUtil.getTabMeta();

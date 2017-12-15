@@ -1,7 +1,7 @@
 package com.atjl.dbservice.manager;
 
 import com.atjl.dbservice.api.domain.DataCoverteConfig;
-import com.atjl.dbservice.api.domain.DbTableTransferConfig;
+import com.atjl.dbservice.api.domain.DataCpConfig;
 import com.atjl.dbservice.api.domain.SearchCondBase;
 import com.atjl.dbservice.mapper.biz.DataTransferMapper;
 import org.springframework.stereotype.Component;
@@ -18,11 +18,11 @@ public class RawTableDataGetManager {
     /**
      * 如果所属字段 值为null，对应的key也为空
      */
-    public List<Map> getData(DbTableTransferConfig config, SearchCondBase cond) {
+    public List<Map> getData(DataCpConfig config, SearchCondBase cond) {
         return dataTransferMapper.getRawTableData(config, cond);
     }
 
-    public int getCount(DbTableTransferConfig config, SearchCondBase searchCondBase) {
+    public int getCount(DataCpConfig config, SearchCondBase searchCondBase) {
         return dataTransferMapper.getRawTableDataCount(config, searchCondBase);
     }
 

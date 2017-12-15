@@ -3,7 +3,7 @@ package com.atjl.eg;
 
 import com.atjl.dbservice.api.RawDataValidator;
 import com.atjl.dbservice.api.TgtDataNeedUpdateChecker;
-import com.atjl.dbservice.api.domain.DbTableTransferConfig;
+import com.atjl.dbservice.api.domain.DataCpConfig;
 import com.atjl.dbservice.service.DataTransferService;
 import com.atjl.dbservice.util.DataFilterUtil;
 import com.atjl.retry.api.GetOptionService;
@@ -27,13 +27,13 @@ public class TransAreaMonitorService extends DataTransferService implements GetO
     @Test
     public void testConfig() {
         TransAreaMonitorService s = new TransAreaMonitorService();
-        DbTableTransferConfig c = s.getTransConfig();
+        DataCpConfig c = s.getTransConfig();
         System.out.println("res: succ " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(c)));
     }
 
     @Override
-    public DbTableTransferConfig getTransConfig() {
-        DbTableTransferConfig config = new DbTableTransferConfig();
+    public DataCpConfig getTransConfig() {
+        DataCpConfig config = new DataCpConfig();
 
         //对比值
 //        config.setNoUpdateCheckMapping(CollectionUtil.newMap("load_tm", "LOAD_TM"));

@@ -2,6 +2,7 @@ package com.atjl.jfeild.util;
 
 import com.atjl.jfeild.domain.JFieldMeta;
 import com.atjl.jfeild.domain.JTabMeta;
+import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.common.ReflectUtil;
 import com.atjl.util.json.JSONFastJsonUtil;
@@ -24,13 +25,16 @@ import java.util.List;
 public class JFieldUtil {
     private static final Logger logger = LoggerFactory.getLogger(JFieldUtil.class);
 
+    public static <T> T updatePrimitive(Object bizObj, T dbObj, JTabMeta meta) {
+        return updateSpecified(bizObj, dbObj, meta, true, false, null,null);
+    }
     /**
      * 只更新 基础字段
      *
      * @param bizObj 更新了 primitive 值的对象
      */
-    public static <T> T updatePrimitive(Object bizObj, T dbObj, JTabMeta meta) {
-        return updateSpecified(bizObj, dbObj, meta, true, false, null);
+    public static <T> T updatePrimitive(Object bizObj, T dbObj, JTabMeta meta,String[] fieldNotWrite2json) {
+        return updateSpecified(bizObj, dbObj, meta, true, false, null,fieldNotWrite2json);
     }
 
 
@@ -49,9 +53,9 @@ public class JFieldUtil {
      * @param fieldNames 要更新的字段列表
      * @return 生成的db对象，可直接调用 updateSelective
      */
-    public static <T> T updateSpecified(Object bizObj, T dbObj, JTabMeta meta, boolean tb, boolean to, List<String> fieldNames) {
+    public static <T> T updateSpecified(Object bizObj, T dbObj, JTabMeta meta, boolean tb, boolean to, List<String> fieldNames,String[] fieldNotWrite2json) {
 
-        //basic json 中字段
+        //处理basic json 中字段
         if (tb) {
             Object basicJsonObj = ReflectGetUtil.getterForce(dbObj, meta.getBasic().getColumnName());
             if (basicJsonObj != null) {
@@ -64,7 +68,14 @@ public class JFieldUtil {
                 ReflectFieldUtil.copyField(bizObj, basicObj, ReflectUtil.GetClzOpt.ALL, false, CollectionUtil.list2array(blackList), null);
                 ReflectSetUtil.setterForce(basicObj, meta.getBasic().getFieldName(), null);
 
+                if (!StringCheckUtil.isEmpty(fieldNotWrite2json)) {
+                    for (String f : fieldNotWrite2json) {
+                        ReflectSetUtil.setterForce(basicObj, f, null);
+                    }
+                }
+
                 String basicJsonUpdated = JSONFastJsonUtil.objectToJson(basicObj);
+
                 ReflectSetUtil.setterForce(dbObj, meta.getBasic().getColumnName(), basicJsonUpdated);
                 ReflectSetUtil.setterForce(bizObj, meta.getBasic().getFieldName(), null);
 
@@ -113,14 +124,24 @@ public class JFieldUtil {
     }
 
     /**
-     * biz -> db
+     * @param bizObj
+     * @param meta
+     * @param dbClass
+     * @param fieldNotWrite2json 默认 表内基础col字段会被写入json，但不影响查询，如果 字段长度较大，需要设置此值，以便数据 只保存一份
      */
-    public static <T> T update(Object bizObj, JTabMeta meta, Class<T> dbClass) {
+    public static <T> T update(Object bizObj, JTabMeta meta, Class<T> dbClass, String[] fieldNotWrite2json) {
         Object dbObj = ReflectClassUtil.newInstance(dbClass);
         ReflectFieldUtil.copyField(bizObj, dbObj);
 
+        //拷贝 其他json字段
         if (!CollectionUtil.isEmpty(meta.getFieldList())) {
             filter(bizObj, dbObj, meta);
+        }
+
+        if (!StringCheckUtil.isEmpty(fieldNotWrite2json)) {
+            for (String f : fieldNotWrite2json) {
+                ReflectSetUtil.setterForce(bizObj, f, null);
+            }
         }
 
         String json = JSONFastJsonUtil.objectToJson(bizObj);
@@ -131,6 +152,14 @@ public class JFieldUtil {
         ReflectSetUtil.setterForce(dbObj, "deleted", null);
         logger.debug("upd obj,{}", JSONFastJsonUtil.objectToJson(dbObj));
         return (T) dbObj;
+
+    }
+
+    /**
+     * biz -> db
+     */
+    public static <T> T update(Object bizObj, JTabMeta meta, Class<T> dbClass) {
+        return update(bizObj, meta, dbClass, null);
     }
 
     private static void filter(Object bizObj, Object dbObj, JTabMeta meta) {

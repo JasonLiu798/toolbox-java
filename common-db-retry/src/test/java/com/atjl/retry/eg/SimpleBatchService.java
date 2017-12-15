@@ -3,23 +3,22 @@ package com.atjl.retry.eg;
 
 import com.atjl.retry.api.CustomGetSimpleDatas;
 import com.atjl.retry.api.ExecuteBatchService;
+import com.atjl.retry.api.GeneralPreService;
 import com.atjl.retry.api.GetOptionService;
 import com.atjl.retry.api.domain.ExecuteStatusResp;
 import com.atjl.retry.api.option.GetDataType;
 import com.atjl.retry.api.option.PageOption;
 import com.atjl.retry.api.option.RetryAfterType;
 import com.atjl.util.json.JSONFastJsonUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class SimpleBatchService implements ExecuteBatchService<Data>, CustomGetSimpleDatas, GetOptionService {
+public class SimpleBatchService implements ExecuteBatchService<Data>, CustomGetSimpleDatas, GetOptionService, GeneralPreService {
 
-    private static final Logger logger = LoggerFactory.getLogger(SimpleBatchService.class);
+//    private static final Logger logger = LoggerFactory.getLogger(SimpleBatchService.class);
 
 //    @Override
 //    public boolean execute(List<Data> datas) {
@@ -39,6 +38,8 @@ public class SimpleBatchService implements ExecuteBatchService<Data>, CustomGetS
         opt.setServiceName(TestConstant.SIMPLE_BATCH_SERVICE);
         opt.setPageSize(5);
         opt.setBatchProcess(true);
+        opt.setGeneralPreService(true);
+        opt.setGeneralPreServiceFailContinue(false);
         opt.setAfterType(RetryAfterType.NONE);
         opt.setGetDataType(GetDataType.CUSTOM_BATCH_USEPAGE);
         return opt;
@@ -114,6 +115,13 @@ public class SimpleBatchService implements ExecuteBatchService<Data>, CustomGetS
             return l;
         }
         return null;
+    }
+
+    @Override
+    public boolean process() {
+        System.out.printf("general pre service");
+        throw new RuntimeException("general pre service fail");
+//        return true;
     }
 
 

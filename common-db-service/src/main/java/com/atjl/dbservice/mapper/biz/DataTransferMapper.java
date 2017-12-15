@@ -3,7 +3,7 @@ package com.atjl.dbservice.mapper.biz;
 
 import com.atjl.dbservice.api.domain.DataBaseConfig;
 import com.atjl.dbservice.api.domain.DataCoverteConfig;
-import com.atjl.dbservice.api.domain.DbTableTransferConfig;
+import com.atjl.dbservice.api.domain.DataCpConfig;
 import com.atjl.dbservice.api.domain.SearchCondBase;
 import com.atjl.dbservice.domain.KeyValue;
 import com.atjl.dbservice.domain.TgtTableDataPkg;
@@ -18,9 +18,9 @@ public interface DataTransferMapper {
     /**
      * 导数据相关
      */
-    List<Map> getRawTableData(@Param("config") DbTableTransferConfig req, @Param("otherCond") SearchCondBase searchCondBase);
+    List<Map> getRawTableData(@Param("config") DataCpConfig req, @Param("otherCond") SearchCondBase searchCondBase);
 
-    int getRawTableDataCount(@Param("config") DbTableTransferConfig req, @Param("otherCond") SearchCondBase searchCondBase);
+    int getRawTableDataCount(@Param("config") DataCpConfig req, @Param("otherCond") SearchCondBase searchCondBase);
 
 
     /**
@@ -31,11 +31,11 @@ public interface DataTransferMapper {
     int getCoverteTableCount(@Param("config") DataCoverteConfig config, @Param("otherCond") SearchCondBase searchCondBase);
 
 
-//    int getTgtTableDataCout(@Param("config") DbTableTransferConfig req, @Param("conds") List<CondValue> conds);
+//    int getTgtTableDataCout(@Param("config") DataCpConfig req, @Param("conds") List<CondValue> conds);
 
-    List<Map> getTgtTableData(@Param("config") DbTableTransferConfig req, @Param("conds") List<List<KeyValue>> conds);
+    List<Map> getTgtTableData(@Param("config") DataCpConfig req, @Param("conds") List<List<KeyValue>> conds);
 
-    int insertBatch(@Param("config") DbTableTransferConfig req, @Param("dataPkg") TgtTableDataPkg dataPkg);
+    int insertBatch(@Param("config") DataCpConfig req, @Param("dataPkg") TgtTableDataPkg dataPkg);
 
     int updateBatch(@Param("config") DataBaseConfig req, @Param("dataPkg") TgtTableDataUpdatePkg dataPkg);
 

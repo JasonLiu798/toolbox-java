@@ -1,8 +1,11 @@
-package com.atjl.jfeild.util;
+package com.atjl.jfeild.util.eg;
 
 
 import com.atjl.jfeild.domain.JFieldMeta;
 import com.atjl.jfeild.domain.JTabMeta;
+import com.atjl.jfeild.util.eg.BizObj;
+import com.atjl.jfeild.util.eg.BizObjI1;
+import com.atjl.jfeild.util.eg.BizObjI2;
 
 import java.util.ArrayList;
 import java.util.List;

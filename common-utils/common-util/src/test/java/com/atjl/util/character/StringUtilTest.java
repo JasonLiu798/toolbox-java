@@ -1,6 +1,9 @@
 package com.atjl.util.character;
 
+import com.atjl.util.collection.CollectionUtil;
 import org.junit.Test;
+
+import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -604,5 +607,33 @@ public class StringUtilTest {
         assertEquals(null, StringUtil.getFirstUpperBefore(null));
         assertEquals("a", StringUtil.getFirstUpperBefore("a"));
         assertEquals("", StringUtil.getFirstUpperBefore("A"));
+    }
+
+
+    @Test
+    public void testFilterEmpty() {
+        String[] s = {};
+        String[] res = StringUtil.filterEmpty(s);
+        System.out.println("res:" + res);
+
+        res = StringUtil.filterEmpty(new String[]{"123", null, "234"});
+        System.out.println("res:" + CollectionUtil.array2List(res));
+
+        res = StringUtil.filterEmpty(new String[]{"", "123", null, "234"});
+        System.out.println("res:" + CollectionUtil.array2List(res));
+
+    }
+
+    @Test
+    public void testFilterEmptyList() {
+        List<String> res = StringUtil.filterEmpty((List) null);
+        System.out.println("res:" + res);
+
+        res = StringUtil.filterEmpty(CollectionUtil.newList("123", null, "234"));
+        System.out.println("res:" + res);
+
+        res = StringUtil.filterEmpty(CollectionUtil.newList("", "123", null, "234"));
+        System.out.println("res:" + res);
+
     }
 }

@@ -14,12 +14,9 @@
 		${sqltext}
 	</insert>
 
-    <!-- <update id="updateSequence">
-        update apply_sequences set id = id+1 where code=#{p_code}
-    </update>
+	<update id="clearTable">
+		truncate table ${tableName}
+	</update>
 
-    <select id="getSequence" resultType="java.lang.Integer">
-        SELECT id FROM apply_sequences where code=#{p_code}
-    </select> -->
 
 </mapper>

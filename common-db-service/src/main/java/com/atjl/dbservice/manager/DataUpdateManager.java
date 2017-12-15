@@ -2,8 +2,7 @@ package com.atjl.dbservice.manager;
 
 import com.atjl.dbservice.api.domain.DataBaseConfig;
 import com.atjl.dbservice.api.domain.DataCoverteConfig;
-import com.atjl.dbservice.api.domain.DbTableTransferConfig;
-import com.atjl.dbservice.api.domain.PropertyCovertor;
+import com.atjl.dbservice.api.domain.DataCpConfig;
 import com.atjl.dbservice.domain.KeyValue;
 import com.atjl.dbservice.domain.TgtTableDataUpdatePkg;
 import com.atjl.dbservice.helper.DataUpdateGenHelper;
@@ -43,7 +42,7 @@ public class DataUpdateManager {
     /**
      * 生成 需要更新的数据结构
      */
-    public TgtTableDataUpdatePkg tgtDataGenUpdate(List<Map> datas, DbTableTransferConfig config) {
+    public TgtTableDataUpdatePkg tgtDataGenUpdate(List<Map> datas, DataCpConfig config) {
         /**
          Map<String, List<KeyValue>> items;
          List<KeyValue> pkValues;
@@ -134,8 +133,6 @@ public class DataUpdateManager {
         if (!CollectionUtil.isEmpty(config.getCovertors())) {
             int failCnt = dataUpdateGenHelper.genUpdateInner(datas, config, config.getCovertors(), prop2listMap);
             res.setFailCount(failCnt);
-//            for (PropertyCovertor pc : config.getCovertors()) {
-//            }
         }
         res.setItems(prop2listMap);
         return res;

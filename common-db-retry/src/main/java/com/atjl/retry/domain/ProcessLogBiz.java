@@ -13,6 +13,16 @@ public class ProcessLogBiz extends TsProcessLog {
 
     private Object cond;
 
+    private boolean preServiceResult;
+
+    public boolean isPreServiceResult() {
+        return preServiceResult;
+    }
+
+    public void setPreServiceResult(boolean preServiceResult) {
+        this.preServiceResult = preServiceResult;
+    }
+
 //    private List<ExecuteStatusResp> processLog;
 
 

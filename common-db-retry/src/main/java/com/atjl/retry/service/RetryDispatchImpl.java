@@ -1,9 +1,6 @@
 package com.atjl.retry.service;
 
-import com.atjl.retry.api.ExecuteBatchService;
-import com.atjl.retry.api.ExecuteService;
-import com.atjl.retry.api.GetOptionService;
-import com.atjl.retry.api.RetryDispatch;
+import com.atjl.retry.api.*;
 import com.atjl.retry.api.domain.RetryStatusDto;
 import com.atjl.retry.api.exception.RetryExecuteException;
 import com.atjl.retry.api.exception.RetryRegisteCanIgnoreException;
@@ -92,7 +89,7 @@ public class RetryDispatchImpl implements RetryDispatch {
         GetOptionService getOptionService = (GetOptionService) serviceObj;
         PageOption opt = getOptionService.getInitOption();
         if (opt.isBatchProcess()) {
-            if (ReflectClassUtil.chkAImplementB(serviceName, ExecuteBatchService.class)) {
+            if (!ReflectClassUtil.chkAImplementB(serviceObj, ExecuteBatchService.class)) {
                 throw new RetryRegisteException("获取重试服务未实现 " + ExecuteBatchService.class.getName() + " 接口，服务名" + serviceName);
             }
             ExecuteBatchService service = (ExecuteBatchService) serviceObj;
@@ -103,6 +100,15 @@ public class RetryDispatchImpl implements RetryDispatch {
             }
             ExecuteService service = (ExecuteService) serviceObj;
             retryServiceItem.setRetryService(service);
+        }
+
+        //check general pre service
+        if (opt.isGeneralPreService()) {
+            if (!ReflectClassUtil.chkAImplementB(serviceObj, GeneralPreService.class)) {
+                throw new RetryRegisteException("service not implement " + GeneralPreService.class.getName() + ",service " + serviceName);
+            }
+            GeneralPreService service = (GeneralPreService) serviceObj;
+            retryServiceItem.setGeneralPreService(service);
         }
 
         //检查并设置 自定义取数服务

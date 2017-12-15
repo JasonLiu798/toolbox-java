@@ -21,7 +21,9 @@ public class DataCoverteConfig extends DataBaseConfig {
         }
         List<String> res = new ArrayList<>();
         for (PropertyCovertor pc : covertors) {
-            res.add(pc.getSrcCol());
+            if (!CollectionUtil.isEmpty(pc.getSrcCols())) {
+                res.addAll(pc.getSrcCols());
+            }
         }
         res.add(getTgtTablePk());
         return res;

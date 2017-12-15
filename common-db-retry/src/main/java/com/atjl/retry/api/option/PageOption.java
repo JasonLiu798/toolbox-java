@@ -9,13 +9,11 @@ public class PageOption {
     public PageOption() {
     }
 
-
     @ApiModelProperty(value = "服务名（必填），如果使用registeBean方式注册，服务名必须为简写且首字母小写的类名，即bean的默认id")
     private String serviceName;
 
     @ApiModelProperty(value = "取数方式：自定义取数（需要实现RetryServiceCustomGetDatas接口，如果使用默认后置处理服务，结果对象需要设置 主键、上次执行时间、执行次数，后置服务会自动更新）")
     private GetDataType getDataType = GetDataType.DEFAULT;
-
 
     @ApiModelProperty(value = "后置处理类型：只用默认、只用自定义；先默认 再自定义；先自定义 再默认；无")
     private RetryAfterType afterType = RetryAfterType.DEFAULT;
@@ -24,16 +22,29 @@ public class PageOption {
     @ApiModelProperty(value = "如果重试数据量超过分页大小，则分页查询，如果retryService的executeService条件参数 实现了PageIntReq，并且传递了值，则用条件参数的值")
     private int pageSize = 10;
 
-
     @ApiModelProperty(value = "是否批量处理，需要实现 ExecuteBatchService")
     private boolean batchProcess = false;
 
-    @ApiModelProperty(value = "是否检查重复执行")
-    private boolean checkRepeatExecute = true;
+    /**
+     * general pre service associate
+     */
+    @ApiModelProperty(value = "open general pre service")
+    private boolean generalPreService = false;
+    @ApiModelProperty(value = "execute general pre service fail,still continue=true")
+    private boolean generalPreServiceFailContinue = true;
 
+    /**
+     * check duplicate run associate
+     */
+    @ApiModelProperty(value = "check duplicate execute by process log",notes = "can't process  concurrent situation")
+    private boolean checkRepeatExecute = true;
     @ApiModelProperty(value = "检查重复执行的间隔，单位秒，默认60秒内不能重复执行")
     private int checkRepeatExecuteInterval = 60;
 
+
+    /**
+     * ############## getter && setter ####################
+     */
     public boolean isCheckRepeatExecute() {
         return checkRepeatExecute;
     }
@@ -50,9 +61,14 @@ public class PageOption {
         this.checkRepeatExecuteInterval = checkRepeatExecuteInterval;
     }
 
-    /**
-     * ############## getter && setter ####################
-     */
+    public boolean isGeneralPreService() {
+        return generalPreService;
+    }
+
+    public void setGeneralPreService(boolean generalPreService) {
+        this.generalPreService = generalPreService;
+    }
+
     public String getServiceName() {
         return serviceName;
     }
@@ -91,5 +107,13 @@ public class PageOption {
 
     public void setBatchProcess(boolean batchProcess) {
         this.batchProcess = batchProcess;
+    }
+
+    public boolean isGeneralPreServiceFailContinue() {
+        return generalPreServiceFailContinue;
+    }
+
+    public void setGeneralPreServiceFailContinue(boolean generalPreServiceFailContinue) {
+        this.generalPreServiceFailContinue = generalPreServiceFailContinue;
     }
 }

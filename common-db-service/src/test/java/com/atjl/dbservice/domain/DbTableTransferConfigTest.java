@@ -1,6 +1,6 @@
 package com.atjl.dbservice.domain; 
 
-import com.atjl.dbservice.api.domain.DbTableTransferConfig;
+import com.atjl.dbservice.api.domain.DataCpConfig;
 import com.atjl.eg.DataTestUtil;
 import com.atjl.util.common.SystemUtil;
 import com.atjl.util.json.JSONFastJsonUtil;
@@ -19,7 +19,7 @@ public class DbTableTransferConfigTest {
 		try {
 			Object res = null;
 			
-			DbTableTransferConfig config = DataTestUtil.getConfig();
+			DataCpConfig config = DataTestUtil.getConfig();
 			List l = config.getAllTgtSortFields();
 			System.out.println("res: succ" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
 		} catch (Exception e) {

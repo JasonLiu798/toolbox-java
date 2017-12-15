@@ -1,4 +1,4 @@
-package com.atjl.jfeild.util;
+package com.atjl.jfeild.util.eg;
 
 
 public class BizObjI2 {

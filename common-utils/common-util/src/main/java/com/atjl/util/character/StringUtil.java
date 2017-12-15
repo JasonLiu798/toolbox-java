@@ -1053,6 +1053,35 @@ public final class StringUtil {
         }
     }
 
+    /**
+     * filter empty string
+     */
+    public static String[] filterEmpty(String[] raw) {
+        if (raw == null || raw.length == 0) {
+            return null;
+        }
+        List<String> list = new ArrayList<>(raw.length);
+        for (String s : raw) {
+            if (!StringCheckUtil.isEmpty(s)) {
+                list.add(s);
+            }
+        }
+        return CollectionUtil.list2array(list);
+    }
+
+    public static List<String> filterEmpty(List<String> raw) {
+        if (raw == null || raw.size() == 0) {
+            return new ArrayList<>();
+        }
+        List<String> list = new ArrayList<>(raw.size());
+        for (String s : raw) {
+            if (!StringCheckUtil.isEmpty(s)) {
+                list.add(s);
+            }
+        }
+        return list;
+    }
+
 
     public static String escapeHtml4(String val) {
         return StringEscapeUtils.escapeHtml4(val);

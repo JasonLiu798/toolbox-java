@@ -1,6 +1,7 @@
 package com.atjl.dbservice.service;
 
 import com.atjl.common.api.resp1.ResponseDataDtoV1;
+import com.atjl.dbservice.mapper.biz.SysDao;
 import com.atjl.util.common.SystemUtil;
 import com.atjl.util.json.JSONFastJsonUtil;
 import com.atjl.util.json.JSONFmtUtil;
@@ -20,6 +21,17 @@ public class TextServiceTest {
 
     @Resource
     TextService textService;
+
+    @Resource
+    private SysDao sysDao;
+
+    @Test
+    public void clearTable() {
+
+        sysDao.clearTable("t_approve");
+
+
+    }
 
 
     @Test

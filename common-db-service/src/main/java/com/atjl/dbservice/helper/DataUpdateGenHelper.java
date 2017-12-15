@@ -2,7 +2,7 @@ package com.atjl.dbservice.helper;
 
 import com.atjl.dbservice.api.domain.DataBaseConfig;
 import com.atjl.dbservice.api.domain.DataCoverteConfig;
-import com.atjl.dbservice.api.domain.DbTableTransferConfig;
+import com.atjl.dbservice.api.domain.DataCpConfig;
 import com.atjl.dbservice.api.domain.PropertyCovertor;
 import com.atjl.dbservice.domain.KeyValue;
 import com.atjl.dbservice.domain.TgtTableDataUpdatePkg;
@@ -33,7 +33,7 @@ public class DataUpdateGenHelper {
         res.setPkValues(pks);
     }
 
-    public void genUpdateInner(List<Map> datas, DbTableTransferConfig config, Map<String, String> mapping, Map<String, List<KeyValue>> prop2listMap) {
+    public void genUpdateInner(List<Map> datas, DataCpConfig config, Map<String, String> mapping, Map<String, List<KeyValue>> prop2listMap) {
         for (Map.Entry<String, String> pkentry : mapping.entrySet()) {
             String raw = pkentry.getKey();
             String tgt = pkentry.getValue();
@@ -84,17 +84,17 @@ public class DataUpdateGenHelper {
                     continue;
                 }
 
-                //String rawVal = StringUtil.getEmptyString(data.get(pc.getSrcCol()));
+                KeyValue kv = new KeyValue();
+                kv.setKey(pkVal);
                 try {
                     String covResp = pc.getCovertor().coverte(data);
-                    KeyValue kv = new KeyValue();
-                    kv.setKey(pkVal);
                     kv.setValue(covResp);
-                    pk2propvalueList.add(kv);
                 } catch (Exception e) {
+                    kv.setValue(pc.getDefaultValue());
                     succMap.put(pkVal, false);
                     logger.debug("covert value error {}", e);
                 }
+                pk2propvalueList.add(kv);
             }
             prop2listMap.put(tgt, pk2propvalueList);
         }

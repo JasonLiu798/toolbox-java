@@ -33,21 +33,31 @@ public class PageProcessorManager {
     private ProcessManager retryProcessManager;
     @Resource
     private ProcessStatusManager processStatusManager;
+    @Resource
+    private GeneralPreServiceManager generalPreServiceManager;
 
     public void pageProcess(RetryServiceItem retryServiceItem, Object cond) {
-
         long totalStart = System.currentTimeMillis();
         long failPageCount = 0;
 
         PageOption opt = retryServiceItem.getPageOption();
+
+        // repeate execute check, by process log,can't process concurrent situation
         processStatusManager.repeatExecuteCheck(opt);
 
-        Long logPk = processStatusManager.addStatus(opt.getServiceName());
+        // general pre service
+        boolean res = generalPreServiceManager.preService(retryServiceItem, opt);
+        Long logPk = processStatusManager.addStatus(opt, res);
+        if (!res && !opt.isGeneralPreServiceFailContinue()) {
+            logger.info("execute service general pre service fail,service {}", opt.getServiceName());
+            return;
+        }
+
         ProcessLogBiz log = new ProcessLogBiz();
         log.setDataProcessId(logPk);
+        log.setPreServiceResult(res);
 
-
-        //获取总数
+        //get actual data count,and add time cost statistics
         long getCountStart = System.currentTimeMillis();
         int totalCount = retryGetManager.getTotalCount(retryServiceItem, cond);
         long getCountCost = System.currentTimeMillis() - getCountStart;
@@ -67,7 +77,7 @@ public class PageProcessorManager {
 
         logger.info("process service {},get data count {}", opt.getServiceName(), totalCount);
 
-        int pageSize = OptionUtil.getPageCount(cond, opt);
+        int pageSize = OptionUtil.getPageSize(cond, opt);
         int pageCnt = PageUtil.getPageCount(totalCount, pageSize);
         logger.info("process service {},get page count {}", opt.getServiceName(), pageCnt);
         String startId = null;

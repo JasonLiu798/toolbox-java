@@ -4,6 +4,7 @@ import com.atjl.dbservice.api.RawDataValidator;
 import com.atjl.dbservice.api.TgtDataNeedUpdateChecker;
 import com.atjl.dbservice.domain.KeyValue;
 import com.atjl.dbservice.util.DataFieldUtil;
+import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.collection.CollectionSortUtil;
 import com.atjl.util.collection.CollectionUtil;
 import io.swagger.annotations.ApiModel;
@@ -13,8 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@ApiModel("数据清洗配置")
-public class DbTableTransferConfig extends DataBaseConfig {
+@ApiModel("数据表间拷贝配置")
+public class DataCpConfig extends DataBaseConfig {
+
+    @ApiModelProperty(value = "是否清空目标表")
+    private boolean clearTgtTable = false;
 
     @ApiModelProperty(value = "原始数据 初步校验 校验器，不可有spring依赖，只校验 是否为空，格式，长度等简单数据")
     private RawDataValidator rawDataValidator;
@@ -88,17 +92,15 @@ public class DbTableTransferConfig extends DataBaseConfig {
             List<String> field = CollectionUtil.map2list(fieldMapping, false);
             res.addAll(field);
         }
-//        if (!CollectionUtil.isEmpty(noUpdateCheckMapping)) {
-//            List<String> field = CollectionUtil.map2list(noUpdateCheckMapping, false);
-//            res.addAll(field);
-//        }
 
         if (!CollectionUtil.isEmpty(defaultValues)) {
             List<String> field = CollectionUtil.map2list(defaultValues, true);
             res.addAll(field);
         }
 
-        res.add(jsonField);
+        if (!StringCheckUtil.isEmpty(jsonField)) {
+            res.add(jsonField);
+        }
         res = CollectionSortUtil.sort(res);
         return res;
     }
@@ -217,5 +219,13 @@ public class DbTableTransferConfig extends DataBaseConfig {
 
     public void setTgtTableGetExtFields(List<String> tgtTableGetExtFields) {
         this.tgtTableGetExtFields = tgtTableGetExtFields;
+    }
+
+    public boolean isClearTgtTable() {
+        return clearTgtTable;
+    }
+
+    public void setClearTgtTable(boolean clearTgtTable) {
+        this.clearTgtTable = clearTgtTable;
     }
 }

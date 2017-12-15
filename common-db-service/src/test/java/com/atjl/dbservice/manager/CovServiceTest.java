@@ -23,20 +23,16 @@ public class CovServiceTest {
     @Resource
     private RetryDispatch retryDispatch;
 
-
     @Test
     public void testAll() {
-
         retryDispatch.registe(EgConstant.COV_SERVICE);
-
         SearchCondBase cond = new SearchCondBase();
         String st = DateUtil.format(DateUtil.getDate(-20), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
-        String et = DateUtil.format(DateUtil.getDate(0), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
+        String et = DateUtil.format(DateUtil.getDate(1), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
         cond.setStartLoadTm(st);
         cond.setEndLoadTm(et);
         cond.setPageSize(100);
         retryDispatch.executeService(EgConstant.COV_SERVICE, cond);
-
     }
 
 
