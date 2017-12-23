@@ -32,15 +32,15 @@ public class WithRetryServiceTest {
     @Test
     public void testAll() {
 
-        retryDispatch.registe(EgConstant.SERVICE);
+        retryDispatch.registe(EgConstant.TRANS_AREA_MONITOR_SERVICE);
 
         SearchCondBase cond = new SearchCondBase();
-        String st = DateUtil.format(DateUtil.getDate(-20), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
+        String st = DateUtil.format(DateUtil.getDate(-30), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
         String et = DateUtil.format(DateUtil.getDate(0), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
         cond.setStartLoadTm(st);
         cond.setEndLoadTm(et);
         cond.setPageSize(200);
-        retryDispatch.executeService(EgConstant.SERVICE, cond);
+        retryDispatch.executeService(EgConstant.TRANS_AREA_MONITOR_SERVICE, cond);
 
     }
 

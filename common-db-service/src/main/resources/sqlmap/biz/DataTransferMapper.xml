@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.atjl.dbservice.mapper.biz.DataTransferMapper">
-    <sql id="getRawCond">
+    <sql id="getRawCondSql">
         1=1
         <if test="config.otherCond!=null and config.otherCond!=''">
             and ${config.otherCond}
@@ -28,17 +28,26 @@
         select count(1)
         from ${config.rawTable}
         where
-        <include refid="getRawCond"/>
+        <include refid="getRawCondSql"/>
         <include refid="getRawCondExt"/>
     </select>
 
     <select id="getRawTableData"
             resultType="java.util.Map">
-        select ${config.allRawFieldsStr}
-        from ${config.rawTable}
-        where
-        <include refid="getRawCond"/>
-        <include refid="getRawCondExt"/>
+        <if test="config.customSelect">
+            ${config.customSelectSqlPrefix}
+            where
+            <include refid="getRawCondSql"/>
+            <include refid="getRawCondExt"/>
+            ${config.customSelectSqlSuffix}
+        </if>
+        <if test="!config.customSelect">
+            select ${config.allRawFieldsStr}
+            from ${config.rawTable}
+            where
+            <include refid="getRawCondSql"/>
+            <include refid="getRawCondExt"/>
+        </if>
         <if test="config.orderClause!=null and config.orderClause!=''">
             order by ${config.orderClause}
         </if>
@@ -50,14 +59,14 @@
         select count(1)
         from ${config.tgtTable}
         where
-        <include refid="getRawCond"/>
+        <include refid="getRawCondSql"/>
         <include refid="getRawCovCond"/>
     </select>
     <select id="getCoverteTableData" resultType="java.util.Map">
         select ${config.searchFieldListStr}
         from ${config.tgtTable}
         where
-        <include refid="getRawCond"/>
+        <include refid="getRawCondSql"/>
         <include refid="getRawCovCond"/>
         <if test="config.orderClause!=null and config.orderClause!=''">
             order by ${config.orderClause}

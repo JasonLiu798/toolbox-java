@@ -74,17 +74,18 @@ public class TextServiceTest {
     }
 
     @Test
-    public void testProcessSelect() throws Exception { 
-                /* 
-                try { 
-                   Method method = TextService.getClass().getMethod("processSelect", String.class, String.class); 
-                   method.setAccessible(true); 
-                   method.invoke(<Object>, <Parameters>); 
-                } catch(NoSuchMethodException e) { 
-                } catch(IllegalAccessException e) { 
-                } catch(InvocationTargetException e) { 
-                } 
-                */
+    public void testProcessSelect() throws Exception {
+        //select * bie_dim_audit_risk_key_conf  from  limit 1
+
+        try {
+            String sql = "select * from ts_task    limit 1";
+            ResponseDataDtoV1 resp = textService.processSelect(sql, "J");
+            System.out.println("res: succ " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(resp)));
+        } catch (Exception e) {
+            System.out.println("res: error " + e);
+            e.printStackTrace();
+        }
+
     }
 
     @Test

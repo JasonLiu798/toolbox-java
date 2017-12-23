@@ -59,7 +59,7 @@ public class ProcessStatusManager {
         }
         TsProcessLog dlog = JFieldUtil.update(log, ProcessLogMetaUtil.getBizTabMeta(), TsProcessLog.class);
         tsProcessLogMapper.insertSelective(dlog);
-        return log.getDataProcessId();
+        return dlog.getDataProcessId();
     }
 
     public void updateByPk(ProcessLogBiz log) {

@@ -1,5 +1,7 @@
 package com.atjl.dbservice.api.domain;
 
+import com.atjl.dbservice.api.validator.DftRawDataDuplicateChecker;
+import com.atjl.dbservice.api.RawDataDuplicateChecker;
 import com.atjl.dbservice.api.RawDataValidator;
 import com.atjl.dbservice.api.TgtDataNeedUpdateChecker;
 import com.atjl.dbservice.domain.KeyValue;
@@ -26,6 +28,10 @@ public class DataCpConfig extends DataBaseConfig {
     @ApiModelProperty(value = "原始数据+目标数据 校验，不满足的不更新,原表数据注入 所有字段，目标表 数据注入 主键+普通字段+指定的附加字段")
     private TgtDataNeedUpdateChecker tgtDataUpdateCheck;
 
+
+    @ApiModelProperty(value = "一个分页内的原始数据重复，保留哪条校验器")
+    private RawDataDuplicateChecker rawDataDuplicateCheck = new DftRawDataDuplicateChecker();
+
     @ApiModelProperty(value = "原表-目标表 主键字段映射关系")
     private Map<String, String> pkFieldMapping;
     @ApiModelProperty(value = "原表-目标表 基础字段映射关系")
@@ -36,9 +42,17 @@ public class DataCpConfig extends DataBaseConfig {
     @ApiModelProperty(value = "目标表 需要预置 默认值字段")
     private Map<String, String> defaultValues;
 
-
     @ApiModelProperty(value = "原始表名")
     private String rawTable;
+
+    @ApiModelProperty(value = "是否自定义查询")
+    private boolean customSelect = false;
+
+    @ApiModelProperty(value = "自定义查询sql前缀")
+    private String customSelectSqlPrefix;
+
+    @ApiModelProperty(value = "自定义查询sql后缀")
+    private String customSelectSqlSuffix;
 
 
     @ApiModelProperty(value = "目标表，需要取的附加字段")
@@ -50,6 +64,11 @@ public class DataCpConfig extends DataBaseConfig {
 
 //    @ApiModelProperty(value = "需要转换的字段")
 //    private Map<String, PropertyCovertor> covertors;
+
+    public List<String> getRawPkFieldList() {
+        return CollectionUtil.map2list(pkFieldMapping, true);
+    }
+
 
     @ApiModelProperty(value = "主键域 字符串")
     public String getTgtPkFields() {
@@ -156,6 +175,30 @@ public class DataCpConfig extends DataBaseConfig {
 //    }
 
 
+    public boolean isCustomSelect() {
+        return customSelect;
+    }
+
+    public void setCustomSelect(boolean customSelect) {
+        this.customSelect = customSelect;
+    }
+
+    public String getCustomSelectSqlPrefix() {
+        return customSelectSqlPrefix;
+    }
+
+    public void setCustomSelectSqlPrefix(String customSelectSqlPrefix) {
+        this.customSelectSqlPrefix = customSelectSqlPrefix;
+    }
+
+    public String getCustomSelectSqlSuffix() {
+        return customSelectSqlSuffix;
+    }
+
+    public void setCustomSelectSqlSuffix(String customSelectSqlSuffix) {
+        this.customSelectSqlSuffix = customSelectSqlSuffix;
+    }
+
     public Map<String, String> getJsonFieldMapping() {
         return jsonFieldMapping;
     }
@@ -223,6 +266,14 @@ public class DataCpConfig extends DataBaseConfig {
 
     public boolean isClearTgtTable() {
         return clearTgtTable;
+    }
+
+    public RawDataDuplicateChecker getRawDataDuplicateCheck() {
+        return rawDataDuplicateCheck;
+    }
+
+    public void setRawDataDuplicateCheck(RawDataDuplicateChecker rawDataDuplicateCheck) {
+        this.rawDataDuplicateCheck = rawDataDuplicateCheck;
     }
 
     public void setClearTgtTable(boolean clearTgtTable) {

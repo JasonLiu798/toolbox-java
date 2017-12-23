@@ -2,6 +2,7 @@ package com.atjl.eg;
 
 
 import com.atjl.dbservice.api.CoverteDataService;
+import com.atjl.dbservice.api.RawDataDuplicateChecker;
 import com.atjl.dbservice.api.domain.DataCoverteConfig;
 import com.atjl.dbservice.api.domain.DataCpConfig;
 import com.atjl.dbservice.api.domain.PropertyCovertor;
@@ -70,6 +71,14 @@ public class DataTestUtil {
 
         DataCpConfig config = new DataCpConfig();
 
+        config.setRawDataDuplicateCheck(new RawDataDuplicateChecker() {
+            @Override
+            public boolean keepWhich(Map raw1, Map raw2) {
+                String l1 = String.valueOf(raw1.get("load_tm"));
+                String l2 = String.valueOf(raw2.get("load_tm"));
+                return l1.compareTo(l2) > 0;
+            }
+        });
         config.setDefaultValues(CollectionUtil.newMap("ORG_REGION_RAW", "AA"));
 
 //        config.setNoUpdateCheckMapping(CollectionUtil.newMap("load_tm", "LOAD_TM"));
@@ -78,8 +87,6 @@ public class DataTestUtil {
         pkmap.put("month_code", "ORG_TM_RAW");
         pkmap.put("area_code", "ORG_CODE_RAW");
         config.setPkFieldMapping(pkmap);
-
-        pkmap.put("month_code", "ORG_TM_RAW");
 
 
         Map<String, String> fmap = new HashMap<>();
@@ -98,6 +105,45 @@ public class DataTestUtil {
         config.setRawTable("bie_fact_audit_idx_sum");
 //        config.setOtherCond("order by area_code");
         config.setOrderClause(" area_code ");
+        config.setJsonField("BASIC");
+
+        config.setRawTableLoadTmColumnName("load_tm");
+        return config;
+    }
+
+
+    public static DataCpConfig getCustomSelectConfig() {
+
+        DataCpConfig config = new DataCpConfig();
+        config.setCustomSelect(true);
+        config.setCustomSelectSqlPrefix("select area_code,month_code,load_tm,obj_type,sum(obj_point) obj_point from bie_fact_audit_area_point");
+        config.setCustomSelectSqlSuffix("group by area_code,month_code,load_tm,obj_type ");
+
+        config.setDefaultValues(CollectionUtil.newMap("ORG_REGION_RAW", "AA"));
+
+//        config.setNoUpdateCheckMapping(CollectionUtil.newMap("load_tm", "LOAD_TM"));
+
+        Map<String, String> pkmap = new HashMap<>();
+        pkmap.put("month_code", "ORG_TM_RAW");
+        pkmap.put("area_code", "ORG_CODE_RAW");
+        config.setPkFieldMapping(pkmap);
+
+        Map<String, String> fmap = new HashMap<>();
+        fmap.put("obj_point", "OBJ_POINT");
+        fmap.put("load_tm", "LOAD_TM");
+
+        config.setTgtTablePk("AREA_MONITOR_ID");
+        config.setFieldMapping(fmap);
+
+        Map<String, String> jmap = new HashMap<>();
+//        jmap.put("shou_mont", "shouMont");
+//        config.setJsonFieldMapping(jmap);
+
+        config.setTgtTable("tm_area_monitor");
+
+        config.setRawTable("bie_fact_audit_area_point");
+//        config.setOtherCond("order by area_code");
+        config.setOrderClause(" area_code,month_code ");
         config.setJsonField("BASIC");
 
         config.setRawTableLoadTmColumnName("load_tm");

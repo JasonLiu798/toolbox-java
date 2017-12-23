@@ -6,7 +6,7 @@
 		values(#{p_classname},#{p_methodname},#{p_key},#{p_content})
 	</insert>
 
-    <select id="search" resultType="java.util.LinkedHashMap">
+    <select id="search" resultType="java.util.Map">
 		${sqltext}
 	</select>
 

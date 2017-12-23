@@ -68,7 +68,30 @@ public class OpLog implements Serializable {
     private Long threadId;
 
 
+    @ApiModelProperty(value = "操作uri", required = true)
+    private String uri;
+
+    @ApiModelProperty(value = "user agent", required = true)
+    private String userAgent;
+
+
     public OpLog() {
+    }
+
+    public String getUserAgent() {
+        return userAgent;
+    }
+
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     public Long getLogId() {

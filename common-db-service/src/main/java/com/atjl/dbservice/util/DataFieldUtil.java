@@ -1,11 +1,23 @@
 package com.atjl.dbservice.util;
 
 
+import com.atjl.dbservice.api.domain.DataCpConfig;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class DataFieldUtil {
+
+
+    public static String getPkValues(Map data, DataCpConfig config) {
+        List<String> pks = config.getRawPkFieldList();
+        StringBuilder sb = new StringBuilder();
+        for (String pk : pks) {
+            sb.append(String.valueOf(data.get(pk))).append("-");
+        }
+        return sb.toString();
+    }
 
     public static String field2string(List<String> field) {
         StringBuilder sb = new StringBuilder();
@@ -38,7 +50,7 @@ public class DataFieldUtil {
     }
 
 
-    private DataFieldUtil(){
+    private DataFieldUtil() {
         super();
     }
 }

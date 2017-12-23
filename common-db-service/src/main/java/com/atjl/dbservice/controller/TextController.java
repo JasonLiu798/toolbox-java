@@ -23,7 +23,6 @@ public class TextController {
     @Resource
     private TextService textService;
 
-
     /**
      * 系统测试
      * pre/TEST
@@ -57,8 +56,8 @@ public class TextController {
         if (StringCheckUtil.isEmpty(text)) {
             return resp;
         }
-        text = StringEscapeUtils.escapeHtml4(text);
-        type = StringEscapeUtils.escapeHtml4(type);
+//        text = StringEscapeUtils.escapeHtml4(text);
+//        type = StringEscapeUtils.escapeHtml4(type);
         return textService.process(text, type);
     }
 
@@ -72,8 +71,12 @@ public class TextController {
         if (StringCheckUtil.isEmpty(req.getText())) {
             return resp;
         }
-        String text = StringEscapeUtils.escapeHtml4(req.getText());
-        String type = StringEscapeUtils.escapeHtml4(req.getType());
+//        String text = StringEscapeUtils.escapeHtml4(req.getText());
+        String text = req.getText();
+//        if (req.getType() != null) {
+//            type = StringEscapeUtils.escapeHtml4(req.getType());
+//        }
+        String type = req.getType();
         return textService.process(text, type);
     }
 

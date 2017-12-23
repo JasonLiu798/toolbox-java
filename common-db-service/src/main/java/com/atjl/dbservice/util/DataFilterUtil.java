@@ -2,14 +2,44 @@ package com.atjl.dbservice.util;
 
 
 import com.atjl.common.constant.CommonConstant;
+import com.atjl.dbservice.api.domain.DataCpConfig;
 import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.character.StringUtil;
+import com.atjl.util.collection.CollectionUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class DataFilterUtil {
+
+
+    /**
+     * 内存过滤重复数据
+     */
+    public static List<Map> filterDuplicate(DataCpConfig config, List<Map> l) {
+        if (CollectionUtil.isEmpty(l)) {
+            return l;
+        }
+        List<Map> res = new ArrayList<>();
+        Map<String, Map> noDuplicateMap = new HashMap<>();
+        for (Map item : l) {
+            String pk = DataFieldUtil.getPkValues(item, config);
+            Map existItem = noDuplicateMap.get(pk);
+            if (existItem != null) {
+                if (config.getRawDataDuplicateCheck().keepWhich(existItem, item)) {
+                    item = existItem;
+                }
+            }
+            noDuplicateMap.put(pk, item);
+        }
+        for (Map.Entry<String, Map> entry : noDuplicateMap.entrySet()) {
+            res.add(entry.getValue());
+        }
+        return res;
+    }
+
 
     public static boolean loadTmDftChecker(Map raw, Map tgt) {
         String rawStr = StringUtil.getEmptyString(raw.get("load_tm"));

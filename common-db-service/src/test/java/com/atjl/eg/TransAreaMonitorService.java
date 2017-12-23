@@ -1,9 +1,11 @@
 package com.atjl.eg;
 
 
+import com.atjl.dbservice.api.RawDataDuplicateChecker;
 import com.atjl.dbservice.api.RawDataValidator;
 import com.atjl.dbservice.api.TgtDataNeedUpdateChecker;
 import com.atjl.dbservice.api.domain.DataCpConfig;
+import com.atjl.dbservice.api.validator.DftRawDataDuplicateCheckerByLoadTm;
 import com.atjl.dbservice.service.DataTransferService;
 import com.atjl.dbservice.util.DataFilterUtil;
 import com.atjl.retry.api.GetOptionService;
@@ -21,7 +23,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service(EgConstant.SERVICE)
+@Service(EgConstant.TRANS_AREA_MONITOR_SERVICE)
 public class TransAreaMonitorService extends DataTransferService implements GetOptionService {
 
     @Test
@@ -39,6 +41,7 @@ public class TransAreaMonitorService extends DataTransferService implements GetO
 //        config.setNoUpdateCheckMapping(CollectionUtil.newMap("load_tm", "LOAD_TM"));
 
         config.setDefaultValues(CollectionUtil.newMap("ORG_REGION_RAW", "CXXX"));
+        config.setRawDataDuplicateCheck(new DftRawDataDuplicateCheckerByLoadTm());
 
         config.setTgtTableGetExtFields(CollectionUtil.newList("IS_MODIFY"));
 
@@ -172,7 +175,7 @@ public class TransAreaMonitorService extends DataTransferService implements GetO
     @Override
     public PageOption getInitOption() {
         PageOption opt = new PageOption();
-        opt.setServiceName(EgConstant.SERVICE);
+        opt.setServiceName(EgConstant.TRANS_AREA_MONITOR_SERVICE);
         opt.setPageSize(10);
         opt.setBatchProcess(true);
         opt.setAfterType(RetryAfterType.NONE);

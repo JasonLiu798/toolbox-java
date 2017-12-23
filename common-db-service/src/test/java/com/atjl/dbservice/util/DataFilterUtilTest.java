@@ -1,17 +1,65 @@
 package com.atjl.dbservice.util;
 
+import com.atjl.dbservice.api.domain.DataCpConfig;
+import com.atjl.eg.DataTestUtil;
 import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.common.SystemUtil;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(locations = {"classpath:test-service.xml"})
 public class DataFilterUtilTest {
 
+    @Test
+    public void filterDuplicate(){
+
+/**
+ *         Map<String, String> pkmap = new HashMap<>();
+ pkmap.put("month_code", "ORG_TM_RAW");
+ pkmap.put("area_code", "ORG_CODE_RAW");
+ */
+
+        DataCpConfig config = DataTestUtil.getConfig();
+
+        List<Map> l =  new ArrayList<>();
+
+        Map<String, String> raw = CollectionUtil.newMap("month_code", "m1");
+        raw.put("area_code","a1");
+        raw.put("load_tm","1");
+        l.add(raw);
+
+        raw = CollectionUtil.newMap("month_code", "m1");
+        raw.put("area_code","a1");
+        raw.put("load_tm","2");
+        l.add(raw);
+
+        raw = CollectionUtil.newMap("month_code", "m1");
+        raw.put("area_code","a1");
+        raw.put("load_tm","3");
+        l.add(raw);
+
+        raw = CollectionUtil.newMap("month_code", "m2");
+        raw.put("area_code","a1");
+        l.add(raw);
+
+        raw = CollectionUtil.newMap("month_code", "m1");
+        raw.put("area_code","a2");
+        l.add(raw);
+
+        System.out.println("bf:"+l);
+        List res = DataFilterUtil.filterDuplicate(config,l);
+
+        System.out.println("af:"+res);
+
+
+
+    }
 
     @Test
     public void testCanUpdate() throws Exception {
