@@ -2,7 +2,6 @@ package com.atjl.jetty.util;
 
 import com.atjl.jetty.classpath.ClassPathMavenUtil;
 import com.atjl.jetty.constant.EclipsePluginConstant;
-import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.file.FileUtil;
 import com.atjl.util.file.PathUtil;
 import org.slf4j.Logger;
@@ -54,13 +53,14 @@ public class EclipsePluginUtil {
     }
 
 
-    public Map<String, String> getConfigMaven(int port, String profile, String webprjName, String base, String[] lib, String[] modules, boolean useWar, String webdft) throws IOException {
-        String dftWebXml = "";
-        if (!StringCheckUtil.isEmpty(webdft)) {
-            dftWebXml = webdft;
-        } else {
-            dftWebXml = FileUtil.getFilePathFromClasspath("webdefault.xml");
-        }
+    public Map<String, String> getConfigMaven(int port, String profile, String webprjName, String base, String[] lib, String[] modules, boolean useWar) throws IOException {
+//        String dftWebXml = "";
+//        if (!StringCheckUtil.isEmpty(webdft)) {
+//            dftWebXml = webdft;
+//        } else {
+//        }
+
+//        dftWebXml = FileUtil.getFilePathFromClasspath("webdefault.xml");
 
         Map<String, String> map = new HashMap<>();
         map.put(EclipsePluginConstant.PORT, String.valueOf(port));//port
@@ -71,7 +71,7 @@ public class EclipsePluginUtil {
 //        String webpath = PathUtil.join(base, webprjName, "src", "main", "webapp");
         map.put(EclipsePluginConstant.WEB_PATH, webpath);//web
         map.put(EclipsePluginConstant.WEB_CONTEXT, "/");
-        map.put(EclipsePluginConstant.DFT_DESC, dftWebXml);
+//        map.put(EclipsePluginConstant.DFT_DESC, dftWebXml);
 
         ClassPathMavenUtil c = new ClassPathMavenUtil(profile, base, webprjName, modules);
 

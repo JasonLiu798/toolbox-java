@@ -1,0 +1,15 @@
+package com.atjl.validate.form;
+
+import com.atjl.validate.api.field.StringField;
+import com.atjl.validate.validator.noparam.Email;
+import com.atjl.validate.validator.param.Length;
+import com.atjl.validate.validator.noparam.Optional;
+import com.atjl.validate.validator.noparam.Require;
+
+/**
+ * 校验表单示例
+ */
+public class FormEg {
+    StringField f1 = new StringField("字段email", new Require(), new Email());
+    StringField f2 = new StringField("字段2", new Optional(), new Length(3));
+}

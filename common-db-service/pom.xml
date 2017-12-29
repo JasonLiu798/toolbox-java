@@ -10,7 +10,7 @@
 
     <groupId>com.atjl</groupId>
     <artifactId>common-db-service</artifactId>
-    <version>4.3.0</version>
+    <version>4.5.0</version>
 
     <name>common-db-service</name>
     <packaging>jar</packaging>

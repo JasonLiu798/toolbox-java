@@ -18,12 +18,19 @@ public class ThreadManualManager extends ThreadManager {
         String[] params = param.split(ThreadConstant.PARAM_SEP);
         //corePoolSize,maxPoolSize,keepAliveTime,maxTaskCount
         //PoolName,UD,12,12,30000,200000
+        /**
+         * int corePoolSize, 12
+         int maximumPoolSize, 12
+         long keepAliveTime, 30*1000
+         TimeUnit unit,
+         BlockingQueue<Runnable> workQueue ,
+         */
         ExecutorService execFixed = new ThreadPoolExecutor(
                 Integer.parseInt(params[2]),//corePoolSize	5
                 Integer.parseInt(params[3]),//maximumPoolSize	10
                 Long.parseLong(params[4]),//maxTasksCount	200000
                 TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<>(Integer.parseInt(params[5]))
+                new LinkedBlockingQueue<>(Integer.parseInt(params[5]))//queueSize
         );
         if (execFixed == null) {
             return false;

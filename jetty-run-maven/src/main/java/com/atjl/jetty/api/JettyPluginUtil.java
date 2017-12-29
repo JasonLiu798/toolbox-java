@@ -31,11 +31,12 @@ public class JettyPluginUtil {
      * @param lib
      * @throws Exception
      */
-    public static void startServerUsePlugin(int port, String profile, String base, String webPrj, String[] modules, String[] lib, boolean jndi, boolean useWar, String webdftPath) throws Exception {
+    public static void startServerUsePlugin(int port, String profile, String base, String webPrj, String[] modules, String[] lib, boolean jndi, boolean useWar) throws Exception {
+        //, String webdftPath
         //ClassPathMavenUtil cpu = new ClassPathMavenUtil(base);
         EclipsePluginUtil pluginUtil = new EclipsePluginUtil();
 
-        Map<String, String> configs = pluginUtil.getConfigMaven(port, profile, webPrj, base, lib, modules, useWar, webdftPath);
+        Map<String, String> configs = pluginUtil.getConfigMaven(port, profile, webPrj, base, lib, modules, useWar);//, webdftPath);
 
         String tmpXml = SystemConstant.TMP_DIR + "tmp.xml";
         logger.info("use tmp xml {}", tmpXml);

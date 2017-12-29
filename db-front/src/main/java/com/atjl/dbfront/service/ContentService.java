@@ -42,6 +42,9 @@ public class ContentService {
         }
     }
 
+
+
+
     public void printJs(String name, String ver, HttpServletResponse resp) {
         ContentDomain cd = getContent(ContentConstant.TP_JS, name, ver);
         String jsContent = "";

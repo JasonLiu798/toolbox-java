@@ -16,11 +16,10 @@
     <packaging>jar</packaging>
 
     <properties>
-        <util.version>6.0.0</util.version>
+        <util.version>6.8.2</util.version>
 		<log.version>6.2.0</log.version>
 
-        <!--<validator.version>5.0.0</validator.version>-->
-        <!--<config.version>5.1.0</config.version>-->
+        <config.version>5.1.0</config.version>
         <!--<validator.version>5.0.0</validator.version>-->
     </properties>
 
@@ -53,6 +52,16 @@
             <version>${log.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.atjl</groupId>
+            <artifactId>common-config-main</artifactId>
+            <version>${config.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.atjl</groupId>
+            <artifactId>common-config-db-tree</artifactId>
+            <version>${config.version}</version>
+        </dependency>
 
         <!-- other pkg -->
 
@@ -84,6 +93,11 @@
             <artifactId>mybatis-spring</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>4.1.6</version>
+        </dependency>
 
         <!-- log start -->
         <dependency>

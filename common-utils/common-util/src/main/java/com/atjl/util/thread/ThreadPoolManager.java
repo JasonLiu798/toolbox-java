@@ -121,8 +121,7 @@ public class ThreadPoolManager {
     }
 
     /**
-     * @param param
-     * @return
+     *
      */
     private static ThreadManager initOne(String param) {
         Class clz = ThreadInnerUtil.getType(param);

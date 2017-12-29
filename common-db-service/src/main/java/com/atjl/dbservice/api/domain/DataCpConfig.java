@@ -48,11 +48,17 @@ public class DataCpConfig extends DataBaseConfig {
     @ApiModelProperty(value = "是否自定义查询")
     private boolean customSelect = false;
 
-    @ApiModelProperty(value = "自定义查询sql前缀")
+    @ApiModelProperty(value = "自定义查询sql select 前缀")
     private String customSelectSqlPrefix;
 
-    @ApiModelProperty(value = "自定义查询sql后缀")
+    @ApiModelProperty(value = "自定义查询sql select 后缀")
     private String customSelectSqlSuffix;
+
+    @ApiModelProperty(value = "自定义查询sql count前缀")
+    private String customCountSqlPrefix;
+
+    @ApiModelProperty(value = "自定义查询sql count后缀")
+    private String customCountSqlSuffix;
 
 
     @ApiModelProperty(value = "目标表，需要取的附加字段")
@@ -270,6 +276,22 @@ public class DataCpConfig extends DataBaseConfig {
 
     public RawDataDuplicateChecker getRawDataDuplicateCheck() {
         return rawDataDuplicateCheck;
+    }
+
+    public String getCustomCountSqlPrefix() {
+        return customCountSqlPrefix;
+    }
+
+    public void setCustomCountSqlPrefix(String customCountSqlPrefix) {
+        this.customCountSqlPrefix = customCountSqlPrefix;
+    }
+
+    public String getCustomCountSqlSuffix() {
+        return customCountSqlSuffix;
+    }
+
+    public void setCustomCountSqlSuffix(String customCountSqlSuffix) {
+        this.customCountSqlSuffix = customCountSqlSuffix;
     }
 
     public void setRawDataDuplicateCheck(RawDataDuplicateChecker rawDataDuplicateCheck) {

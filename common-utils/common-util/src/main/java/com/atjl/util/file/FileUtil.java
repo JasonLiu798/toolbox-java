@@ -4,7 +4,7 @@ import com.atjl.util.character.RegexUtil;
 import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.character.StringUtil;
 import com.atjl.util.collection.CollectionUtil;
-import com.atjl.util.common.DateUtil;
+import com.atjl.util.common.CmdOptionUtil;
 import com.atjl.util.config.ConfigIntParser;
 import com.atjl.util.constant.SystemConstant;
 import org.apache.commons.io.FileUtils;
@@ -30,11 +30,6 @@ public final class FileUtil {
     }
 
     private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
-
-    /**
-     * permission size lastmodified name
-     */
-    private static final String FORMAT_LS = "%s %s %s %s";
 
     /**
      * ############################# check #############################
@@ -73,6 +68,8 @@ public final class FileUtil {
      * ############################# ls #############################
      */
     /**
+     * ls
+     *
      * @param dirPath path
      * @return
      * @if file
@@ -81,17 +78,36 @@ public final class FileUtil {
      * return list dir's child file
      */
     public static List<String> ls(String dirPath) {
-        return lsInner(dirPath, null);
+        return ls(dirPath, null);
+    }
+
+    public static List<String> ll(String dirPath) {
+        return ls(dirPath, "-l");
+    }
+
+    public static List<String> llh(String dirPath) {
+        return ls(dirPath, "-l -h");
     }
 
     /**
+     * ls
+     *
      * @param dirPath
      * @return file
      */
-    public static List<String> ll(String dirPath) {
-        return lsInner(dirPath, "-l");
+    public static List<String> ls(String dirPath, String option) {
+        List<String> res = new ArrayList<>();
+        FileBrowserUtil.lsInner(dirPath, option, res);
+        if (CmdOptionUtil.hasOption(option, "-R")) {
+            if (!CollectionUtil.isEmpty(res)) {
+                if (StringCheckUtil.isEmpty(res.get(res.size() - 1))) {
+                    res.remove(res.size() - 1);
+                }
+            }
+            return res;
+        }
+        return res;
     }
-
 
     public static File getFileFromClasspath(String filename) {
         ClassLoader classLoader = FileUtil.class.getClassLoader();
@@ -99,7 +115,6 @@ public final class FileUtil {
         File file = new File(url.getFile());
         return file;
     }
-
 
     /**
      * 获取 classpath 下文件全路径
@@ -123,68 +138,6 @@ public final class FileUtil {
          */
     }
 
-    public static List<String> lsInner(String dirPath, String option) {
-        File file = new File(dirPath);
-        List<String> list = new LinkedList<>();
-        if (!file.exists()) {
-            return list;
-        }
-        if (file.isDirectory()) {
-            File[] childs = file.listFiles();
-            if (CollectionUtil.isEmpty(childs)) {
-                return list;
-            }
-            for (File f : childs) {
-                if (option != null && option.indexOf("-l") >= 0) {
-                    list.add(formatFile(f));
-                } else {
-                    list.add(f.getName());
-                }
-            }
-        } else {
-            if (option != null && option.indexOf("-l") >= 0) {
-                list.add(formatFile(file));
-            } else {
-                list.add(file.getAbsolutePath());
-            }
-            return list;
-        }
-        return list;
-    }
-
-    private static String formatFile(File f) {
-        String permission = formatPermit(f);
-        String size = String.valueOf(f.length());
-        String lastModified = DateUtil.formatDefault(DateUtil.tsms2Date(f.lastModified()));
-        String name = f.getName();
-        return String.format(FORMAT_LS, permission, size, lastModified, name);
-    }
-
-    private static String formatPermit(File f) {
-        String res = "";
-        if (!f.exists()) {
-            return res;
-        }
-        if (f.isDirectory()) {
-            res += "d";
-        }
-        if (f.canRead()) {
-            res += "r";
-        } else {
-            res += "-";
-        }
-        if (f.canWrite()) {
-            res += "w";
-        } else {
-            res += "-";
-        }
-        if (f.canExecute()) {
-            res += "x";
-        } else {
-            res += "-";
-        }
-        return res;
-    }
 
     /**
      * @param dirPath
@@ -195,29 +148,8 @@ public final class FileUtil {
             return null;
         }
         List<String> res = new LinkedList<>();
-        traverseDir(dirPath, res);
+        FileBrowserUtil.traverseDir(dirPath, res);
         return res;
-    }
-
-    /**
-     * traverse dir
-     *
-     * @param dirpath
-     * @param res
-     */
-    private static void traverseDir(String dirpath, List<String> res) {
-        File parent = new File(dirpath);
-        File[] childs = parent.listFiles();
-        if (CollectionUtil.isEmpty(childs)) {
-            return;
-        }
-        for (File c : childs) {
-            if (c.isDirectory()) {
-                traverseDir(PathUtil.join(dirpath, c.getName()), res);
-            } else {
-                res.add(PathUtil.join(dirpath, c.getName()));
-            }
-        }
     }
 
 
@@ -254,7 +186,6 @@ public final class FileUtil {
      * new file
      *
      * @param filepath
-     * @throws IOException
      */
     public static void touch(String filepath) throws IOException {
         File file = new File(filepath);
@@ -352,6 +283,29 @@ public final class FileUtil {
         FileUtils.copyFile(srcFile, destFile);
     }
 
+    public static String catFromClassPath(String file) {
+        ClassLoader classLoader = FileUtil.class.getClassLoader();
+        InputStream ip = classLoader.getResourceAsStream(file);
+
+        InputStreamReader isr = new InputStreamReader(ip);
+        BufferedReader reader = new BufferedReader(isr);
+        StringBuilder sb = new StringBuilder();
+        String line;
+        try {
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append(SystemConstant.LINE_SEP);
+            }
+        } catch (IOException e) {
+            logger.error("cat from classpath fail {}", e);
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                logger.error("close fail {}", e);
+            }
+        }
+        return sb.toString();
+    }
 
     /**
      * *********************** read  file apis ************************
@@ -620,12 +574,16 @@ public final class FileUtil {
 
 
     /**
-     * write contents to file
+     * 写列表内容到文件，不适合超大数据量写入
+     * write contents to file,not support big data
      *
      * @param filepath file path
      * @param contents content
      */
     public static void append(String filepath, List<String> contents) {
+        if (CollectionUtil.isEmpty(contents)) {
+            return;
+        }
         FileWriter writer = null;
         try {
             if (fileExist(filepath)) {
@@ -635,8 +593,9 @@ public final class FileUtil {
                 writer = new FileWriter(filepath, false);//if file exist ,it will rm the file then create
             }
             StringBuilder sb = new StringBuilder();
+
             for (String str : contents) {
-                sb.append(str).append("\n");
+                sb.append(str).append(SystemConstant.LINE_SEP);
             }
             writer.write(sb.toString());
             if (logger.isDebugEnabled()) {
@@ -675,19 +634,21 @@ public final class FileUtil {
 
 
     /**
-     * @param sPath
+     * delete file
+     *
+     * @param fileOrDirPath
      * @return
      */
-    public static boolean rm(String sPath) {
+    public static boolean rm(String fileOrDirPath) {
         boolean flag = false;
-        File file = new File(sPath);
+        File file = new File(fileOrDirPath);
         if (!file.exists()) {
             return flag;
         } else {
             if (file.isFile()) {
-                return rmFile(sPath);
+                return rmFile(fileOrDirPath);
             } else {
-                return rmDir(sPath);
+                return rmDir(fileOrDirPath);
             }
         }
     }
@@ -695,11 +656,11 @@ public final class FileUtil {
     /**
      * rm file
      *
-     * @param sPath
+     * @param filePath
      * @return
      */
-    public static boolean rmFile(String sPath) {
-        File file = new File(sPath);
+    public static boolean rmFile(String filePath) {
+        File file = new File(filePath);
         if (file.isFile() && file.exists()) {
             return file.delete();
         }
@@ -709,14 +670,14 @@ public final class FileUtil {
     /**
      * rm dir none recu
      *
-     * @param sPath dir path
+     * @param dirPath dir path
      * @return success or not
      */
-    public static boolean rmDir(String sPath) {
-        if (!sPath.endsWith(File.separator)) {//add sep
-            sPath = sPath + File.separator;
+    public static boolean rmDir(String dirPath) {
+        if (!dirPath.endsWith(File.separator)) {//add sep
+            dirPath = dirPath + File.separator;
         }
-        File dirFile = new File(sPath);
+        File dirFile = new File(dirPath);
         if (!dirFile.exists() || !dirFile.isDirectory()) {//check exist,type
             return false;
         }

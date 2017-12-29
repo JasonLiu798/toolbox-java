@@ -25,21 +25,37 @@
 
 
     <select id="getRawTableDataCount" resultType="java.lang.Integer">
-        select count(1)
-        from ${config.rawTable}
-        where
-        <include refid="getRawCondSql"/>
-        <include refid="getRawCondExt"/>
-    </select>
-
-    <select id="getRawTableData"
-            resultType="java.util.Map">
         <if test="config.customSelect">
-            ${config.customSelectSqlPrefix}
+            <if test="config.customCountSqlPrefix!=null and config.customCountSqlPrefix!=''">
+                ${config.customCountSqlPrefix}
+            </if>
             where
             <include refid="getRawCondSql"/>
             <include refid="getRawCondExt"/>
-            ${config.customSelectSqlSuffix}
+            <if test="config.customCountSqlSuffix!=null and config.customCountSqlSuffix!=''">
+                ${config.customCountSqlSuffix}
+            </if>
+        </if>
+        <if test="!config.customSelect">
+            select count(1)
+            from ${config.rawTable}
+            where
+            <include refid="getRawCondSql"/>
+            <include refid="getRawCondExt"/>
+        </if>
+    </select>
+
+    <select id="getRawTableData" resultType="java.util.Map">
+        <if test="config.customSelect">
+            <if test="config.customSelectSqlPrefix!=null and config.customSelectSqlPrefix!=''">
+                ${config.customSelectSqlPrefix}
+            </if>
+            where
+            <include refid="getRawCondSql"/>
+            <include refid="getRawCondExt"/>
+            <if test="config.customSelectSqlSuffix!=null and config.customSelectSqlSuffix!=''">
+                ${config.customSelectSqlSuffix}
+            </if>
         </if>
         <if test="!config.customSelect">
             select ${config.allRawFieldsStr}

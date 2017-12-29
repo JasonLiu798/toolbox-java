@@ -11,6 +11,8 @@ public class ContentConstant {
     public static final String CONTENT_CACHE =  "CONTENT";
 
 
+    public static final String FILE_NAME_FMT = "%s-%s-%s";
+
     public static final String MODULE_STATIC = "static";
     /**
      * URLs
