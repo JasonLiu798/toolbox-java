@@ -40,9 +40,9 @@ public class ExcelUtil {
     public static List<List<Object>> readExcel(InputStream stream, String fileName) {
         String extension = fileName.lastIndexOf(".") == -1 ? "" : fileName.substring(fileName.lastIndexOf(".") + 1);
         if ("xls".equals(extension)) {
-            return ExcelReadUtil.readExcelFromStream(stream);
+            return ExcelReadUtil.read2003Excel(stream);
         } else if ("xlsx".equals(extension)) {
-            return ExcelReadUtil.readExcelFromStream(stream);
+            return ExcelReadUtil.read2007Excel(stream);
         } else {
             throw new ExcelException("不支持的文件类型!!");
         }
@@ -59,7 +59,6 @@ public class ExcelUtil {
             throw new ExcelException("不支持的文件类型!!");
         }
     }
-
 
 
     /**

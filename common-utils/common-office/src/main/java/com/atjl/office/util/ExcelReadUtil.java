@@ -91,7 +91,7 @@ public class ExcelReadUtil {
     }
 
 
-    public static List<List<Object>> readExcelFromStream(InputStream stream) {
+    public static List<List<Object>> read2007Excel(InputStream stream) {
         try {
             Workbook wb = new XSSFWorkbook(stream);
             Sheet sheet = wb.getSheetAt(0);
@@ -105,20 +105,19 @@ public class ExcelReadUtil {
         }
     }
 
-//
-//    public static List<List<Object>> read2003Excel(InputStream stream) {
-//        try {
-//            Workbook wb = new HSSFWorkbook(stream, true);
-//            Sheet sheet = wb.getSheetAt(0);
-//            try {
-//                return getRowLst(sheet);
-//            } finally {
-//                stream.close();
-//            }
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+    public static List<List<Object>> read2003Excel(InputStream stream) {
+        try {
+            Workbook wb = new HSSFWorkbook(stream, true);
+            Sheet sheet = wb.getSheetAt(0);
+            try {
+                return getRowLst(sheet);
+            } finally {
+                stream.close();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     /**

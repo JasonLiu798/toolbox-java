@@ -10,8 +10,10 @@ public class Html2WordUtilTest {
 
     @Test
     public void testHtmlToWord() throws Exception {
-        String content = FileUtil.cat("E:\\a.html");
-        Html2WordUtil.htmlToWord(content, "e:\\1.docx");
+        String content = FileUtil.cat("E:\\test.html");
+
+
+        Html2WordUtil.htmlToWord(content, "e:\\1.doc");
 
     }
 

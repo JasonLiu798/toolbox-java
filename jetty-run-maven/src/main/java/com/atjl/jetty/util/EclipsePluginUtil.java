@@ -53,7 +53,11 @@ public class EclipsePluginUtil {
     }
 
 
-    public Map<String, String> getConfigMaven(int port, String profile, String webprjName, String base, String[] lib, String[] modules, boolean useWar) throws IOException {
+    public Map<String, String> getConfigMavenWar(int port, String profile, String webprjName, String base) throws IOException {
+        return getConfigMaven(port, profile, webprjName, base, true, null, null);
+    }
+
+    public Map<String, String> getConfigMaven(int port, String profile, String webprjName, String base, boolean useWar, String[] lib, String[] modules) throws IOException {
 //        String dftWebXml = "";
 //        if (!StringCheckUtil.isEmpty(webdft)) {
 //            dftWebXml = webdft;

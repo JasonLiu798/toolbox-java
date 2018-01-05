@@ -21,19 +21,19 @@ public class WordUtil {
      * Word整体样式
      */
     static {
-        XWPFDocument template;
-        try {
-            // 读取模板文档
-            template = new XWPFDocument(new FileInputStream("E:/format.docx"));
-            // 获得模板文档的整体样式
-            wordStyles = template.getStyle();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XmlException e) {
-            e.printStackTrace();
-        }
+//        XWPFDocument template;
+//        try {
+//            // 读取模板文档
+//            template = new XWPFDocument(new FileInputStream("E:/format.docx"));
+//            // 获得模板文档的整体样式
+//            wordStyles = template.getStyle();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (XmlException e) {
+//            e.printStackTrace();
+//        }
     }
 
     // 模板方式实现
@@ -43,7 +43,7 @@ public class WordUtil {
         // 获取新建文档对象的样式
         XWPFStyles newStyles = doc.createStyles();
         // 关键行// 修改设置文档样式为静态块中读取到的样式
-        newStyles.setStyles(wordStyles);
+        //newStyles.setStyles(wordStyles);
 
         // 开始内容输入
         // 标题1，1级大纲
@@ -85,8 +85,6 @@ public class WordUtil {
 
     /**
      * 自定义样式方式写word，参考statckoverflow的源码
-     *
-     * @throws IOException
      */
     public static void writeSimpleDocxFile() throws IOException {
         XWPFDocument docxDocument = new XWPFDocument();
@@ -113,7 +111,7 @@ public class WordUtil {
         runX.setText("正文");
 
         // word写入到文件
-        FileOutputStream fos = new FileOutputStream("E:/myDoc2.docx");
+        FileOutputStream fos = new FileOutputStream("E:\\myDoc2.docx");
         docxDocument.write(fos);
         fos.close();
     }
@@ -156,7 +154,6 @@ public class WordUtil {
         // is a null op if already defined
         XWPFStyles styles = docxDocument.createStyles();
 
-        style.setType(STStyleType.PARAGRAPH);
         styles.addStyle(style);
 
     }

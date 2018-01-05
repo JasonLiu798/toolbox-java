@@ -3,6 +3,7 @@ package com.atjl.dbfront.controller;
 import com.atjl.common.api.resp1.ResponseDataDtoV1;
 import com.atjl.common.constant.CommonConstant;
 import com.atjl.dbfront.constant.ContentConstant;
+import com.atjl.dbfront.domain.biz.UpdContentResp;
 import com.atjl.dbfront.service.ContentService;
 import com.atjl.util.character.StringCheckUtil;
 import io.swagger.annotations.Api;
@@ -68,11 +69,11 @@ public class ContentUpdController {
      */
     @ApiOperation(value = "更新文件内容", httpMethod = "POST")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "成功")})
-    @RequestMapping(ContentConstant.UPD_CONTENT)
+    @RequestMapping("upd")
     @ResponseBody
     public ResponseDataDtoV1 addOrUpdateContent(String type, String name, String version, String content) {
-        contentService.addOrUpdateContent(type, name, version, content);
-        return ResponseDataDtoV1.buildOk();
+        UpdContentResp resp = contentService.addOrUpdateContent(type, name, version, content);
+        return ResponseDataDtoV1.buildOk(resp);
     }
 
     /**
