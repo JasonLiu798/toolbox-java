@@ -4,7 +4,7 @@ import com.atjl.dbservice.api.validator.DftRawDataDuplicateChecker;
 import com.atjl.dbservice.api.RawDataDuplicateChecker;
 import com.atjl.dbservice.api.RawDataValidator;
 import com.atjl.dbservice.api.TgtDataNeedUpdateChecker;
-import com.atjl.dbservice.domain.KeyValue;
+import com.atjl.common.domain.KeyValue;
 import com.atjl.dbservice.util.DataFieldUtil;
 import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.collection.CollectionSortUtil;

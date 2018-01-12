@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+    <groupId>com.atjl</groupId>
+    <artifactId>common-extend-utils-parent</artifactId>
+    <version>1.0.2</version>
+        <relativePath>../</relativePath>
+    </parent>
+
+    <groupId>com.atjl</groupId>
+    <artifactId>common-htmlparser</artifactId>
+
+    <packaging>jar</packaging>
+    <name>common-htmlparser</name>
+
+    <properties>
+        <soup.version>1.9.2</soup.version>
+        <!-- <poi.version>3.14</poi.version> -->
+        <!--<swagger.version>2.2.2</swagger.version>-->
+        <!--<jsckson.version>2.8.7</jsckson.version>-->
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${soup.version}</version>
+        </dependency>
+
+
+        <!--<dependency>-->
+            <!--<groupId>com.atjl</groupId>-->
+            <!--<artifactId>common-util</artifactId>-->
+            <!--<version>${util.version}</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>com.atjl</groupId>-->
+            <!--<artifactId>common-api</artifactId>-->
+            <!--<version>${util.version}</version>-->
+        <!--</dependency>-->
+
+
+<!--         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
+ -->
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>

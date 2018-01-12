@@ -22,7 +22,7 @@
 		<property name="configLocation" value="classpath:ehcache/ehcache.xml"/>
 	</bean>
 
-	<bean id="commonApplicationContextHepler" class="com.atjl.util.common.ApplicationContextHepler" />
+	<!--<bean id="commonApplicationContextHepler" class="com.atjl.util.common.ApplicationContextHepler" />-->
 
 
 

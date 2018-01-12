@@ -1,7 +1,7 @@
 package com.atjl.dbservice.manager;
 
 import com.atjl.dbservice.api.domain.DataCpConfig;
-import com.atjl.dbservice.domain.KeyValue;
+import com.atjl.common.domain.KeyValue;
 import com.atjl.dbservice.domain.TgtTableData;
 import com.atjl.dbservice.domain.TgtTableDataPkg;
 import com.atjl.dbservice.mapper.biz.DataTransferMapper;

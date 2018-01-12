@@ -5,7 +5,7 @@ import com.atjl.dbservice.api.domain.DataBaseConfig;
 import com.atjl.dbservice.api.domain.DataCoverteConfig;
 import com.atjl.dbservice.api.domain.DataCpConfig;
 import com.atjl.dbservice.api.domain.SearchCondBase;
-import com.atjl.dbservice.domain.KeyValue;
+import com.atjl.common.domain.KeyValue;
 import com.atjl.dbservice.domain.TgtTableDataPkg;
 import com.atjl.dbservice.domain.TgtTableDataUpdatePkg;
 import org.apache.ibatis.annotations.Param;

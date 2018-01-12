@@ -59,7 +59,7 @@ public class TextService {
                 if (containX(trimedText)) {
                     throw new ParamFormatException("语句不合法！");
                 } else {
-//                    if (trimedText.contains(OP_LOG_TAB)) {
+//                    if (trimedText.existContain(OP_LOG_TAB)) {
 //                        return new ResponseDataDtoV1("ts_op_log permission deny");
 //                    }
                     if (trimedText.contains("insert") || trimedText.contains("delete") || trimedText.contains("update") || trimedText.contains("alter") || trimedText.contains("truncate")) {

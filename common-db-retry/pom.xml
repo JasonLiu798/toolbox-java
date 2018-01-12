@@ -10,16 +10,16 @@
 
     <groupId>com.atjl</groupId>
     <artifactId>common-db-retry</artifactId>
-    <version>8.0.0</version>
+    <version>8.0.3</version>
 
     <name>common-db-retry</name>
     <packaging>jar</packaging>
 
     <properties>
-        <util.version>6.8.0</util.version>
+        <util.version>7.0.1</util.version>
         <!--<config.version>5.0.0</config.version>-->
-        <validator.version>5.11.0</validator.version>
-        <jsondb.version>2.3.0</jsondb.version>
+        <validator.version>6.0.1</validator.version>
+        <jsondb.version>2.5.0</jsondb.version>
     </properties>
 
     <dependencies>

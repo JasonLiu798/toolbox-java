@@ -1,9 +1,25 @@
 
 
-
-
-
 ---
+#v7.0 history
+
+#v7.0.2
+comon-util,add NumberUtil.toChinese
+#v7.0.1
+common-api,add class KeyValue
+
+#v7.0.0
+separate observer,office,fmt to common-extend-util project
+---
+#v6.0 history
+#v6.8.7-6.8.8
+common-util
+StringCheckUtil,batchContain rename containExist
+
+#v6.8.6
+common-util
+StringCheckUtil,add startWithExist
+
 #v6.8.4-6.8.5
 common-office
 ExcelUtil,fix 07,03 bug
@@ -51,7 +67,6 @@ add PageIntReqV1
 #v6.0.0
 common-util
 ReflectFieldUtil,add some other style copyField
-
 ---
 
 

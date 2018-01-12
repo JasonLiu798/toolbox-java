@@ -12,14 +12,14 @@
 
     <groupId>com.atjl</groupId>
     <artifactId>common-util-parent</artifactId>
-    <version>6.8.5</version>
+    <version>7.0.2</version>
 
     <packaging>pom</packaging>
     <name>common-util-parent</name>
     <description>prj management</description>
 
     <properties>
-        <prj.version>6.8.5</prj.version>
+        <prj.version>7.0.2</prj.version>
 
         <!--common -->
         <api.version>${prj.version}</api.version>
@@ -30,6 +30,7 @@
         <java.version>1.8</java.version>
         <swagger.version>2.2.2</swagger.version>
         <jsckson.version>2.8.7</jsckson.version>
+        <fast.version>2.8.7</fast.version>
 
         <maven.test.skip>true</maven.test.skip>
     </properties>
@@ -146,15 +147,8 @@
 
     <modules>
         <module>common-api</module><!-- 接口 -->
-
-        <module>common-fmt</module><!-- 模板引擎封装 -->
-
-        <module>common-observer</module>
-        <module>common-office</module><!-- word/excel -->
-
         <module>common-util</module><!-- 工具类 -->
         <module>common-util-ex</module><!-- spring相关工具类 -->
-
 
     </modules>
 </project>

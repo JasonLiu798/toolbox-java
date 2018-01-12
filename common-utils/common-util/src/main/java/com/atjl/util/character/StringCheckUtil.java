@@ -11,6 +11,9 @@ public final class StringCheckUtil {
 
     private static final String NULL = "NULL";
 
+    /**
+     * ################## empty check ##################
+     */
     public static boolean isEmpty(String target) {
         return (target == null || target.length() == 0);
     }
@@ -103,7 +106,6 @@ public final class StringCheckUtil {
     }
 
 
-
     public static boolean isAllEmpty(Object... targets) {
         if (targets == null || targets.length == 0) {
             return true;
@@ -130,6 +132,9 @@ public final class StringCheckUtil {
         return !isExistEmpty(targets);
     }
 
+    /**
+     * ################## equal check ##################
+     */
     /**
      * check string equals
      *
@@ -172,26 +177,10 @@ public final class StringCheckUtil {
         return false;
     }
 
+
     /**
-     * string array contain target string
-     *
-     * @param strArr
-     * @param target
-     * @return
+     * ################## length check ##################
      */
-    public static boolean contains(String[] strArr, String target) {
-        if (null == strArr || null == target) {
-            return false;
-        }
-        for (String temp : strArr) {
-            if (temp.equals(target)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
     /**
      * length >0 ?
      *
@@ -256,27 +245,80 @@ public final class StringCheckUtil {
     }
 
     /**
-     * @param raw
-     * @param arr
-     * @return
+     * ################## contain check ##################
      */
-    public static boolean batchContainInCollection(String raw, Collection<String> arr) {
-        if (CollectionUtil.isEmpty(arr) || StringCheckUtil.isEmpty(raw)) {
+    /**
+     * string array contain target string
+     */
+    public static boolean existContain(String[] strArr, String target) {
+        if (null == strArr || null == target) {
             return false;
         }
-        for (String s : arr) {
-            if (raw.contains(s)) {
+        for (String temp : strArr) {
+            if (temp.equals(target)) {
                 return true;
             }
         }
         return false;
     }
 
-    public static boolean batchContain(String raw, String... arr) {
+
+    public static boolean containExist(String raw, String... arr) {
         if (CollectionUtil.isEmpty(arr)) {
             return false;
         }
         List<String> l = Arrays.asList(arr);
-        return batchContainInCollection(raw, l);
+        return containExistInCollection(raw, l);
+    }
+
+    /**
+     * raw是否包含了 arr内任何一个子字符串
+     */
+    public static boolean containExistInCollection(String raw, Collection<String> arr) {
+        if (CollectionUtil.isEmpty(arr) || StringCheckUtil.isEmpty(raw)) {
+            return false;
+        }
+        for (String s : arr) {
+            if (!StringCheckUtil.isEmpty(s)) {
+                if (raw.length() < s.length()) {
+                    continue;
+                }
+                if (raw.contains(s)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean startWith(String raw, String tgt) {
+        if (StringCheckUtil.isEmpty(raw)) {
+            return false;
+        }
+        if (StringCheckUtil.isEmpty(tgt)) {
+            return false;
+        }
+        return raw.startsWith(tgt);
+    }
+
+    public static boolean startWithExist(String raw, String... arr) {
+        if (CollectionUtil.isEmpty(arr)) {
+            return false;
+        }
+        if (StringCheckUtil.isEmpty(raw)) {
+            return false;
+        }
+        for (String str : arr) {
+            if (!StringCheckUtil.isEmpty(str)) {
+                if (raw.length() < str.length()) {
+                    continue;
+                }
+                if (raw.startsWith(str)) {
+                    return true;
+
+                }
+            }
+        }
+        return false;
     }
 }

@@ -1,5 +1,7 @@
 package com.atjl.util.number;
 
+import com.atjl.common.api.exception.ParamFormatException;
+import com.atjl.util.character.StringCheckUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,13 +15,17 @@ import java.lang.reflect.InvocationTargetException;
  * @date 2013/2/26 11:43
  */
 public class NumberUtil {
-	private NumberUtil(){
-		throw new UnsupportedOperationException();
-	}
+    private NumberUtil() {
+        throw new UnsupportedOperationException();
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(NumberUtil.class);
 
     public static final String DOT = ".";
+
+    private static String[] NUM_CN = {"零", "一", "二", "三", "四", "五", "六", "七", "八", "九"};
+    private static String[] NUM_CARRY_CN = {"十", "百", "千", "万", "十", "百", "千", "亿", "十", "百", "千"};
+
 
     /**
      * string to int
@@ -34,6 +40,31 @@ public class NumberUtil {
             logger.error("str to int fail,{}", e.getMessage());
             return null;
         }
+    }
+
+    public static String toChinese(Integer input) {
+        if (input == null || input < 0) {
+            throw new ParamFormatException();
+        }
+        String s = String.valueOf(input);
+        if (StringCheckUtil.isEmpty(input)) {
+            return "";
+        }
+        String result = "";
+        int n = s.length();
+        for (int i = 0; i < n; i++) {
+            int num = s.charAt(i) - '0';
+            if (i != n - 1 && num != 0) {
+                result += NUM_CN[num] + NUM_CARRY_CN[n - 2 - i];
+            } else {
+                result += NUM_CN[num];
+            }
+//            System.out.println("  "+result);
+        }
+//        System.out.println("----------------");
+//        System.out.println(result);
+        return result;
+
     }
 
     /**

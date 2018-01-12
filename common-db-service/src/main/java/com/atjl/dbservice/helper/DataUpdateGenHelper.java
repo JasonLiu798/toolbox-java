@@ -4,7 +4,7 @@ import com.atjl.dbservice.api.domain.DataBaseConfig;
 import com.atjl.dbservice.api.domain.DataCoverteConfig;
 import com.atjl.dbservice.api.domain.DataCpConfig;
 import com.atjl.dbservice.api.domain.PropertyCovertor;
-import com.atjl.dbservice.domain.KeyValue;
+import com.atjl.common.domain.KeyValue;
 import com.atjl.dbservice.domain.TgtTableDataUpdatePkg;
 import com.atjl.util.character.StringCheckUtil;
 import com.atjl.util.character.StringUtil;

@@ -1,5 +1,7 @@
 package com.atjl.dbservice.domain;
 
+import com.atjl.common.domain.KeyValue;
+
 import java.util.List;
 import java.util.Map;
 

@@ -2,7 +2,7 @@ package com.atjl.dbservice.manager;
 
 import com.atjl.dbservice.api.TgtDataNeedUpdateChecker;
 import com.atjl.dbservice.api.domain.DataCpConfig;
-import com.atjl.dbservice.domain.KeyValue;
+import com.atjl.common.domain.KeyValue;
 import com.atjl.dbservice.domain.SeparatedDatas;
 import com.atjl.dbservice.mapper.biz.DataTransferMapper;
 import com.atjl.dbservice.util.DataFilterUtil;

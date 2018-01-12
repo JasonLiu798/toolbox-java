@@ -94,7 +94,7 @@ public class XmlElement {
                 Object contentsString = child.content.get(0);
                 if (!(contentsString instanceof String)) {
                     throw new RuntimeException("can't get property '" + propertyName + "' from element '" + name + "'" +
-                            " : child-element with that name contains an element instead of text");
+                            " : child-element with that name existContain an element instead of text");
                 }
                 propertyValue = (String) contentsString;
             }
