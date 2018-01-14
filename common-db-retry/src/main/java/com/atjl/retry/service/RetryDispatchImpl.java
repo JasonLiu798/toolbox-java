@@ -1,11 +1,9 @@
 package com.atjl.retry.service;
 
-import com.atjl.retry.api.ExecuteBatchService;
-import com.atjl.retry.api.ExecuteService;
-import com.atjl.retry.api.GetOptionService;
-import com.atjl.retry.api.RetryDispatch;
+import com.atjl.retry.api.*;
 import com.atjl.retry.api.domain.RetryStatusDto;
-import com.atjl.retry.api.exception.RetryInitException;
+import com.atjl.retry.api.exception.RetryExecuteException;
+import com.atjl.retry.api.exception.RetryRegisteCanIgnoreException;
 import com.atjl.retry.api.exception.RetryRegisteException;
 import com.atjl.retry.api.option.PageOption;
 import com.atjl.retry.api.option.RetryInstanceOption;
@@ -16,6 +14,7 @@ import com.atjl.retry.manager.OptionManager;
 import com.atjl.retry.manager.PageProcessorManager;
 import com.atjl.retry.manager.ProcessManager;
 import com.atjl.retry.util.RetryCheckUtil;
+import com.atjl.util.character.StringUtil;
 import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.reflect.ReflectClassUtil;
 import com.atjl.utilex.ApplicationContextHepler;
@@ -55,6 +54,16 @@ public class RetryDispatchImpl implements RetryDispatch {
     @Resource
     ProcessManager retryProcessManager;
 
+    @Override
+    public void registeBean(Object bean) {
+        if (bean == null) {
+            throw new RetryRegisteException("服务bean为空");
+        }
+        String beanName = StringUtil.toLowerCaseFirstOne(bean.getClass().getSimpleName());
+        registe(beanName);
+    }
+
+
     /**
      * 注册重试服务
      *
@@ -63,16 +72,16 @@ public class RetryDispatchImpl implements RetryDispatch {
     @Override
     public void registe(String serviceName) {
         if (retryServices.containsKey(serviceName)) {
-            throw new RetryRegisteException("已经注册了服务，" + serviceName);
+            throw new RetryRegisteCanIgnoreException("已经注册了服务，" + serviceName);
         }
 
         Object serviceObj = ApplicationContextHepler.getBeanByName(serviceName);
         if (serviceObj == null) {
-            throw new RetryInitException("获取重试服务为空，服务名" + serviceName);
+            throw new RetryRegisteException("获取重试服务为空，服务名" + serviceName);
         }
 
         if (!ReflectClassUtil.chkAImplementB(serviceObj, GetOptionService.class)) {
-            throw new RetryInitException("服务未实现 " + GetOptionService.class.getName() + " 接口，服务名" + serviceName);
+            throw new RetryRegisteException("服务未实现 " + GetOptionService.class.getName() + " 接口，服务名" + serviceName);
         }
 
         RetryServiceItem retryServiceItem = new RetryServiceItem();
@@ -80,17 +89,26 @@ public class RetryDispatchImpl implements RetryDispatch {
         GetOptionService getOptionService = (GetOptionService) serviceObj;
         PageOption opt = getOptionService.getInitOption();
         if (opt.isBatchProcess()) {
-            if (ReflectClassUtil.chkAImplementB(serviceName, ExecuteBatchService.class)) {
-                throw new RetryInitException("获取重试服务未实现 " + ExecuteBatchService.class.getName() + " 接口，服务名" + serviceName);
+            if (!ReflectClassUtil.chkAImplementB(serviceObj, ExecuteBatchService.class)) {
+                throw new RetryRegisteException("获取重试服务未实现 " + ExecuteBatchService.class.getName() + " 接口，服务名" + serviceName);
             }
             ExecuteBatchService service = (ExecuteBatchService) serviceObj;
             retryServiceItem.setExecuteBatchService(service);
         } else {
             if (!ReflectClassUtil.chkAImplementB(serviceObj, ExecuteService.class)) {
-                throw new RetryInitException("获取重试服务未实现 " + ExecuteService.class.getName() + " 接口，服务名" + serviceName);
+                throw new RetryRegisteException("获取重试服务未实现 " + ExecuteService.class.getName() + " 接口，服务名" + serviceName);
             }
             ExecuteService service = (ExecuteService) serviceObj;
             retryServiceItem.setRetryService(service);
+        }
+
+        //check general pre service
+        if (opt.isGeneralPreService()) {
+            if (!ReflectClassUtil.chkAImplementB(serviceObj, GeneralPreService.class)) {
+                throw new RetryRegisteException("service not implement " + GeneralPreService.class.getName() + ",service " + serviceName);
+            }
+            GeneralPreService service = (GeneralPreService) serviceObj;
+            retryServiceItem.setGeneralPreService(service);
         }
 
         //检查并设置 自定义取数服务
@@ -123,16 +141,19 @@ public class RetryDispatchImpl implements RetryDispatch {
     public void executeAll() {
         for (Map.Entry<String, RetryServiceItem> entry : retryServices.entrySet()) {
             logger.info("process service {}", entry.getKey());
-            pageProcessManager.pageProcess(entry.getValue(),null);
+            pageProcessManager.pageProcess(entry.getValue(), null);
         }
     }
 
     /**
      * 只调度，指定服务,并可传参
      */
-    public void executeService(String service,Object cond) {
+    public void executeService(String service, Object cond) {
         RetryServiceItem retryServiceItem = retryServices.get(service);
-        pageProcessManager.pageProcess(retryServiceItem,cond);
+        if (retryServiceItem == null) {
+            throw new RetryExecuteException("服务" + service + "不存在");
+        }
+        pageProcessManager.pageProcess(retryServiceItem, cond);
 
     }
 

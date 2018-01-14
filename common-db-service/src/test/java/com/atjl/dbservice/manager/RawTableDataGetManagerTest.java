@@ -1,6 +1,8 @@
 package com.atjl.dbservice.manager;
 
-import com.atjl.dbservice.domain.DbTableTransferConfig;
+import com.atjl.dbservice.api.domain.SearchCondBase;
+import com.atjl.eg.DataTestUtil;
+import com.atjl.util.common.DateUtil;
 import com.atjl.util.common.SystemUtil;
 import com.atjl.util.json.JSONFastJsonUtil;
 import com.atjl.util.json.JSONFmtUtil;
@@ -11,7 +13,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,33 +25,17 @@ public class RawTableDataGetManagerTest {
     private RawTableDataGetManager rawTableDataGetManager;
 
     @Test
-    public void testGetData() throws Exception {
+    public void testCount() {
         long t = System.currentTimeMillis();
         try {
-
-            DbTableTransferConfig config = new DbTableTransferConfig();
-
-            Map<String, String> pkmap = new HashMap<>();
-            pkmap.put("month_code", "ORG_TM_RAW");
-            pkmap.put("area_code", "ORG_CODE_RAW");
-            config.setPkFieldMapping(pkmap);
-
-            Map<String, String> fmap = new HashMap<>();
-            fmap.put("area_name", "ORG_NAME_RAW");
-
-            config.setFieldMapping(fmap);
-
-            Map<String, String> jmap = new HashMap<>();
-            jmap.put("shou_mont", "shouMont");
-			jmap.put("dept_count", "deptCount");
-			jmap.put("emp_count","empCount");
-            config.setJsonFieldMapping(jmap);
-
-
-            config.setRawTable("bie_fact_audit_idx_sum");
-
-            List<Map> res = rawTableDataGetManager.getData(config);
-            System.out.println("res: succ " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(res)));
+            // 213条 ， succ 209
+            SearchCondBase cond = new SearchCondBase();
+            String st = DateUtil.format(DateUtil.getDate(-20), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
+            String et = DateUtil.format(DateUtil.getDate(0), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
+            cond.setStartLoadTm(st);
+            cond.setEndLoadTm(et);
+            int l = rawTableDataGetManager.getCount(DataTestUtil.getConfig(), cond);
+            System.out.println("res: succ " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
         } catch (Exception e) {
             System.out.println("res: error " + e);
             e.printStackTrace();
@@ -59,6 +44,88 @@ public class RawTableDataGetManagerTest {
         System.out.println("cost:" + cost);
     }
 
+    @Test
+    public void testGetData() throws Exception {
+        long t = System.currentTimeMillis();
+        try {
+            SearchCondBase cond = new SearchCondBase();
+            String st = DateUtil.format(DateUtil.getDate(-20), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
+            String et = DateUtil.format(DateUtil.getDate(0), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
+            cond.setStartLoadTm(st);
+            cond.setEndLoadTm(et);
+            List<Map> l = rawTableDataGetManager.getData(DataTestUtil.getConfig(), cond);
+            System.out.println("res: succ " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
+        } catch (Exception e) {
+            System.out.println("res: error " + e);
+            e.printStackTrace();
+        }
+        long cost = System.currentTimeMillis() - t;
+        System.out.println("cost:" + cost);
+    }
+
+
+    @Test
+    public void testCovCount() {
+        long t = System.currentTimeMillis();
+        try {
+            // 213条 ， succ 209
+            SearchCondBase cond = new SearchCondBase();
+            String st = DateUtil.format(DateUtil.getDate(-20), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
+            String et = DateUtil.format(DateUtil.getDate(0), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
+            cond.setStartLoadTm(st);
+            cond.setEndLoadTm(et);
+            int l = rawTableDataGetManager.getCount(DataTestUtil.getConfig(), cond);
+            System.out.println("res: succ " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
+        } catch (Exception e) {
+            System.out.println("res: error " + e);
+            e.printStackTrace();
+        }
+        long cost = System.currentTimeMillis() - t;
+        System.out.println("cost:" + cost);
+    }
+
+    @Test
+    public void testCovGetData() throws Exception {
+        long t = System.currentTimeMillis();
+        try {
+            SearchCondBase cond = new SearchCondBase();
+            String st = DateUtil.format(DateUtil.getDate(-20), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
+            String et = DateUtil.format(DateUtil.getDate(0), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
+            cond.setStartLoadTm(st);
+            cond.setEndLoadTm(et);
+            cond.setPageSize(8);
+            List<Map> l = rawTableDataGetManager.getData(DataTestUtil.getCovConfig(), cond);
+
+            System.out.println("res: succ " + l.size() + "," + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
+        } catch (Exception e) {
+            System.out.println("res: error " + e);
+            e.printStackTrace();
+        }
+        long cost = System.currentTimeMillis() - t;
+        System.out.println("cost:" + cost);
+    }
+
+
+
+
+    @Test
+    public void testCustomGet() throws Exception {
+        long t = System.currentTimeMillis();
+        try {
+            SearchCondBase cond = new SearchCondBase();
+            String st = DateUtil.format(DateUtil.getDate(-20), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
+            String et = DateUtil.format(DateUtil.getDate(0), DateUtil.yyyy_MM_dd_HH_mm_ss_EN);
+            cond.setStartLoadTm(st);
+            cond.setEndLoadTm(et);
+            List<Map> l = rawTableDataGetManager.getData(DataTestUtil.getCustomSelectConfig(), cond);
+            System.out.println("res: succ " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
+        } catch (Exception e) {
+            System.out.println("res: error " + e);
+            e.printStackTrace();
+        }
+        long cost = System.currentTimeMillis() - t;
+        System.out.println("cost:" + cost);
+    }
 
     @Before
     public void before() throws Exception {

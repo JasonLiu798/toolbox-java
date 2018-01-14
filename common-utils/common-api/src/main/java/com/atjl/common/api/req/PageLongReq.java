@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author jasondliu
  */
 @ApiModel(value = "分页基础请求对象")
-public class PageLongReq implements Serializable {
+public class PageLongReq extends PageBaseReq implements Serializable {
     @ApiModelProperty(value = "当前页码", example = "查询需分页时传递，默认1")
     private Long currentPage = CommonConstant.DFT_PAGE_START;
     @ApiModelProperty(value = "页大小", example = "查询需分页时传递，默认10")

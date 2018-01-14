@@ -3,6 +3,7 @@ package com.atjl.dbfront.service;
 import com.atjl.common.api.exception.ParamFormatException;
 import com.atjl.dbfront.constant.ContentConstant;
 import com.atjl.dbfront.domain.biz.ContentDomain;
+import com.atjl.dbfront.domain.biz.UpdContentResp;
 import com.atjl.dbfront.domain.gen.TsContent;
 import com.atjl.dbfront.domain.gen.TsContentExample;
 import com.atjl.dbfront.mapper.biz.ContentMapper;
@@ -41,6 +42,7 @@ public class ContentService {
             LogDbUtil.error(ContentConstant.MODULE_STATIC, "index get writer exception,path " + path, e);
         }
     }
+
 
     public void printJs(String name, String ver, HttpServletResponse resp) {
         ContentDomain cd = getContent(ContentConstant.TP_JS, name, ver);
@@ -159,10 +161,13 @@ public class ContentService {
         return tsContentMapper.insertSelective(rec);
     }
 
+    @Resource
+    private ContentFileService contentFileService;
+
     /**
      * 新增或更新
      */
-    public int addOrUpdateContent(String type, String name, String ver, String content) {
+    public UpdContentResp addOrUpdateContent(String type, String name, String ver, String content) {
         if (StringCheckUtil.isExistEmpty(type, name, ver, content)) {
             throw new ParamFormatException("存在空值 type " + type + ",name " + name + ",ver " + ver + ",content " + content);
         }
@@ -173,13 +178,32 @@ public class ContentService {
         rec.setCname(name);
         rec.setContent(content);
 
+        UpdContentResp resp = new UpdContentResp();
+        try {
+            contentFileService.addContent(type, name, ver, content);
+            resp.setFileRes("file write succ");
+        } catch (Exception e) {
+            resp.setFileRes("file write fail" + e.getMessage());
+        }
+
         if (exist(type, name, ver)) {
             //update
-            return updateContent(type, name, ver, content);
+            int res = updateContent(type, name, ver, content);
+            if (res > 0) {
+                resp.setUpdRes("succ " + res);
+            } else {
+                resp.setUpdRes("fail" + res);
+            }
         } else {
             //add
-            return addContent(type, name, ver, content);
+            int res = addContent(type, name, ver, content);
+            if (res > 0) {
+                resp.setAddRes("succ " + res);
+            } else {
+                resp.setAddRes("fail " + res);
+            }
         }
+        return resp;
     }
 
 

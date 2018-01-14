@@ -70,7 +70,7 @@ public abstract class AbstractField implements ValidateField, Serializable {
     public String getStrValue() {
         ValueMsg vm = rawValue.get();
         if (vm != null) {
-            return vm.getRawVal() == null ? "" : String.valueOf(vm.getRawVal());
+            return vm.getRawVal() == null ? "" : String.valueOf(vm.getRawVal()).trim();
         } else {
             return "";
         }

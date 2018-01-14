@@ -38,7 +38,7 @@ public abstract class ExistBase extends ValidatorBase {
         this.otherConds = otherConds;
         this.msg = msg;
         chk();
-        dbChk();
+//        dbChk();
     }
 
     private void chk() {

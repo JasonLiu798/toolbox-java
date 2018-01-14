@@ -27,6 +27,16 @@ public class ThreadConstant {
     /**
      * io密集型业务
      * count=业务执行时间
+     * 20-corePoolSize
+     * 20-maximumPoolSize
+     * 200000=200*1000 - keepAliveTime,effect only maximumPoolSize > corePoolSize
+     * 30000=30*1000 - queueSize
+     *
+     *          * int corePoolSize, 12
+     int maximumPoolSize, 12
+     long keepAliveTime, 30*1000
+     TimeUnit unit,
+     BlockingQueue<Runnable> workQueue ,
      */
     public static final String IO_POOL_PARAM = ",UD,20,20,200000,30000";
     /**

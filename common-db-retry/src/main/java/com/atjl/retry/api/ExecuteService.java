@@ -6,7 +6,7 @@ package com.atjl.retry.api;
  *
  * @param <D> 重试上下文数据，execute ,
  */
-public interface ExecuteService<D> extends GetOptionService {
+public interface ExecuteService<D> {
 
     /**
      * 执行 重试操作

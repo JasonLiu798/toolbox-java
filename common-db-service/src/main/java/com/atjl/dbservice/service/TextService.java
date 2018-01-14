@@ -27,8 +27,8 @@ public class TextService {
     SysDao sysDao;
     //private static final String OP_LOG_TAB = "ts_op_log";
 
-    static String[] NOT_ALLOW = {"insert ", "update ", "delete ", "create ", "alter", "drop",
-            "grant", "revoke", "truncate"};
+    static String[] NOT_ALLOW = {"insert ", "update ", "delete ", "create ", "alter ", "drop",
+            "grant", "revoke", "truncate "};
 
     private boolean containX(String text) {
         if (StringCheckUtil.isEmpty(text)) {
@@ -44,10 +44,6 @@ public class TextService {
 
     /**
      * 处理数据
-     *
-     * @param text
-     * @param type
-     * @return
      */
     @Transactional
     public ResponseDataDtoV1 process(String text, String type) {
@@ -63,11 +59,10 @@ public class TextService {
                 if (containX(trimedText)) {
                     throw new ParamFormatException("语句不合法！");
                 } else {
-//                    if (trimedText.contains(OP_LOG_TAB)) {
+//                    if (trimedText.existContain(OP_LOG_TAB)) {
 //                        return new ResponseDataDtoV1("ts_op_log permission deny");
 //                    }
-
-                    if (trimedText.contains("insert") || trimedText.contains("delete") || trimedText.contains("update")) {
+                    if (trimedText.contains("insert") || trimedText.contains("delete") || trimedText.contains("update") || trimedText.contains("alter") || trimedText.contains("truncate")) {
                         return new ResponseDataDtoV1(sysDao.insertUpdate(text));
                     } else {
                         return processSelect(text, type);
@@ -84,12 +79,8 @@ public class TextService {
 
     /**
      * 拼接 table
-     *
-     * @param text
-     * @param type
-     * @return
      */
-    private ResponseDataDtoV1 processSelect(String text, String type) {
+    public ResponseDataDtoV1 processSelect(String text, String type) {
         List<LinkedHashMap<String, Object>> data = sysDao.search("select * from ( " + text + " ) x limit 500");
         if (StringCheckUtil.equal(type, "j")) {
             ResponseDataDtoV1 resp = new ResponseDataDtoV1();
@@ -97,8 +88,8 @@ public class TextService {
             return resp;
         } else {
             StringBuilder sb = new StringBuilder();
-            sb.append("<table id='table1' border=0px>");
-            sb.append("<tr bgcolor=blue>");
+            sb.append("<table id='dboutput' border=1px>");
+            sb.append("<tr bgcolor=grey>");
             if (data != null && !data.isEmpty()) {
                 processTable(sb, data);
                 ResponseDataDtoV1 resp = new ResponseDataDtoV1();

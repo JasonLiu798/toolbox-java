@@ -1,5 +1,7 @@
 package com.atjl.jfeild.util;
 
+import com.atjl.jfeild.util.eg.*;
+import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.common.SystemUtil;
 import com.atjl.util.json.JSONFastJsonUtil;
 import com.atjl.util.json.JSONFmtUtil;
@@ -29,17 +31,25 @@ public class UpdateTest {
 //            String djson = JSONFastJsonUtil.objectToJson(dbObj);
 
             System.out.println("before db json: " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(dbObj)));
+
+
+
             BizObj bo = JFieldUtil.select(dbObj, BizObjMetaUtil.getTabMeta(), BizObj.class);
             System.out.println("before obj json: " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(bo)));
 
+
 //            BizObj biz = new BizObj();
-            bo.setExtf1("nnnnn");
-            bo.setFidx("fdfd");
-            BizObjI2 bi5 = new BizObjI2("X", "Y");
-            bo.setBizObjI2(bi5);
+            BizObj bizObj = new BizObj();
+            bizObj.setExtf1("aaa");
+            bizObj.setExtf2("aaa");
+            bizObj.setFidx("xxxx");
+//            bo.setExtf1("nnnnn");
+//            bo.setFidx("fdfd");
+//            BizObjI2 bi5 = new BizObjI2("X", "Y");
+//            bo.setBizObjI2(bi5);
 //            biz.setBizObjI1(new BizObjI1("xx", "bbb"));
 
-            DbObj d = JFieldUtil.update(bo, BizObjMetaUtil.getTabMeta(), DbObj.class);
+            DbObj d = JFieldUtil.updatePrimitive(bo, dbObj, BizObjMetaUtil.getTabMeta(), CollectionUtil.newArr("fidx"));
 
             System.out.println("after db json:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(d)));
             bo = JFieldUtil.select(d, BizObjMetaUtil.getTabMeta(), BizObj.class);
@@ -52,6 +62,75 @@ public class UpdateTest {
         long cost = System.currentTimeMillis() - t;
         System.out.println("cost:" + cost);
     }
+
+
+
+
+
+
+
+    @Test
+    public void testUpdate() throws Exception {
+        long t = System.currentTimeMillis();
+        try {
+            DbObj dbObj = new DbObj();
+            dbObj.setFidx("idx");
+            BizObj bizBasic = new BizObj();
+            bizBasic.setExtf1("ext1");
+            bizBasic.setExtf2("ext2");
+            JSONFastJsonUtil.objectToJson(bizBasic);
+            dbObj.setBasic(JSONFastJsonUtil.objectToJson(bizBasic));
+            BizObjI1 bi1 = new BizObjI1("A", "B");
+            dbObj.setOi1(JSONFastJsonUtil.objectToJson(bi1));
+            BizObjI2 bi2 = new BizObjI2("C", "D");
+            dbObj.setOi2(JSONFastJsonUtil.objectToJson(bi2));
+//            String djson = JSONFastJsonUtil.objectToJson(dbObj);
+
+            System.out.println("before db json: " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(dbObj)));
+
+            BizObj bo = JFieldUtil.select(dbObj, BizObjMetaUtil.getTabMeta(), BizObj.class);
+            System.out.println("before obj json: " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(bo)));
+
+//            BizObj biz = new BizObj();
+            bo.setExtf1("nnnnn");
+            bo.setFidx("fdfd");
+            BizObjI2 bi5 = new BizObjI2("X", "Y");
+            bo.setBizObjI2(bi5);
+//            biz.setBizObjI1(new BizObjI1("xx", "bbb"));
+
+            /**
+             * after db json:{
+             "basic":"{\"extf1\":\"nnnnn\",\"extf2\":\"ext2\",\"fidx\":\"fdfd\"}",
+             "fidx":"fdfd",
+             "oi1":"{\"f1\":\"A\",\"f2\":\"B\"}",
+             "oi2":"{\"f3\":\"X\",\"f4\":\"Y\"}"
+             }
+             */
+//            DbObj d = JFieldUtil.update(bo, BizObjMetaUtil.getTabMeta(), DbObj.class );
+            /**
+             * after db json:{
+             "basic":"{\"extf1\":\"nnnnn\",\"extf2\":\"ext2\"}",
+             "fidx":"fdfd",
+             "oi1":"{\"f1\":\"A\",\"f2\":\"B\"}",
+             "oi2":"{\"f3\":\"X\",\"f4\":\"Y\"}"
+             }
+             */
+            DbObj d = JFieldUtil.update(bo, BizObjMetaUtil.getTabMeta(), DbObj.class, CollectionUtil.newArr("fidx"));
+
+            System.out.println("after db json:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(d)));
+
+
+            bo = JFieldUtil.select(d, BizObjMetaUtil.getTabMeta(), BizObj.class);
+            System.out.println("after obj json: " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(bo)));
+
+
+        } catch (Exception e) {
+            System.out.println("res: error " + e);
+        }
+        long cost = System.currentTimeMillis() - t;
+        System.out.println("cost:" + cost);
+    }
+
 
 
     @Before

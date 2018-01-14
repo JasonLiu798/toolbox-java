@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atjl.retry.mapper.gen.TsProcessLogMapper" >
+  <resultMap id="BaseResultMap" type="com.atjl.retry.domain.gen.TsProcessLog" >
+    <id column="DATA_PROCESS_ID" property="dataProcessId" jdbcType="BIGINT" />
+    <result column="SERVICE_KEY" property="serviceKey" jdbcType="VARCHAR" />
+    <result column="TOTAL_COUNT" property="totalCount" jdbcType="BIGINT" />
+    <result column="TOTAL_PAGE" property="totalPage" jdbcType="BIGINT" />
+    <result column="ADD_COUNT" property="addCount" jdbcType="BIGINT" />
+    <result column="UPD_COUNT" property="updCount" jdbcType="BIGINT" />
+    <result column="FAIL_COUNT" property="failCount" jdbcType="BIGINT" />
+    <result column="NO_NEED_UPD_COUNT" property="noNeedUpdCount" jdbcType="BIGINT" />
+    <result column="FAIL_PAGE_COUNT" property="failPageCount" jdbcType="BIGINT" />
+    <result column="UNKNOWN_FAIL_COUNT" property="unknownFailCount" jdbcType="BIGINT" />
+    <result column="TOTAL_COST" property="totalCost" jdbcType="BIGINT" />
+    <result column="CRT_TM" property="crtTm" jdbcType="TIMESTAMP" />
+    <result column="UPD_TM" property="updTm" jdbcType="TIMESTAMP" />
+    <result column="PROCESS_END" property="processEnd" jdbcType="CHAR" />
+    <result column="SUCCESS" property="success" jdbcType="CHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.atjl.retry.domain.gen.TsProcessLog" extends="BaseResultMap" >
+    <result column="PROCESS_DETAIL" property="processDetail" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    DATA_PROCESS_ID, SERVICE_KEY, TOTAL_COUNT, TOTAL_PAGE, ADD_COUNT, UPD_COUNT, FAIL_COUNT, 
+    NO_NEED_UPD_COUNT, FAIL_PAGE_COUNT, UNKNOWN_FAIL_COUNT, TOTAL_COST, CRT_TM, UPD_TM, 
+    PROCESS_END, SUCCESS
+  </sql>
+  <sql id="Blob_Column_List" >
+    PROCESS_DETAIL
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.atjl.retry.domain.gen.TsProcessLogExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ts_process_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.atjl.retry.domain.gen.TsProcessLogExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ts_process_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ts_process_log
+    where DATA_PROCESS_ID = #{dataProcessId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ts_process_log
+    where DATA_PROCESS_ID = #{dataProcessId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.atjl.retry.domain.gen.TsProcessLogExample" >
+    delete from ts_process_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.atjl.retry.domain.gen.TsProcessLog" >
+    <selectKey resultType="java.lang.Long" keyProperty="dataProcessId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ts_process_log (SERVICE_KEY, TOTAL_COUNT, TOTAL_PAGE, 
+      ADD_COUNT, UPD_COUNT, FAIL_COUNT, 
+      NO_NEED_UPD_COUNT, FAIL_PAGE_COUNT, UNKNOWN_FAIL_COUNT, 
+      TOTAL_COST, CRT_TM, UPD_TM, 
+      PROCESS_END, SUCCESS, PROCESS_DETAIL
+      )
+    values (#{serviceKey,jdbcType=VARCHAR}, #{totalCount,jdbcType=BIGINT}, #{totalPage,jdbcType=BIGINT}, 
+      #{addCount,jdbcType=BIGINT}, #{updCount,jdbcType=BIGINT}, #{failCount,jdbcType=BIGINT}, 
+      #{noNeedUpdCount,jdbcType=BIGINT}, #{failPageCount,jdbcType=BIGINT}, #{unknownFailCount,jdbcType=BIGINT}, 
+      #{totalCost,jdbcType=BIGINT}, #{crtTm,jdbcType=TIMESTAMP}, #{updTm,jdbcType=TIMESTAMP}, 
+      #{processEnd,jdbcType=CHAR}, #{success,jdbcType=CHAR}, #{processDetail,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.atjl.retry.domain.gen.TsProcessLog" >
+    <selectKey resultType="java.lang.Long" keyProperty="dataProcessId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ts_process_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="serviceKey != null" >
+        SERVICE_KEY,
+      </if>
+      <if test="totalCount != null" >
+        TOTAL_COUNT,
+      </if>
+      <if test="totalPage != null" >
+        TOTAL_PAGE,
+      </if>
+      <if test="addCount != null" >
+        ADD_COUNT,
+      </if>
+      <if test="updCount != null" >
+        UPD_COUNT,
+      </if>
+      <if test="failCount != null" >
+        FAIL_COUNT,
+      </if>
+      <if test="noNeedUpdCount != null" >
+        NO_NEED_UPD_COUNT,
+      </if>
+      <if test="failPageCount != null" >
+        FAIL_PAGE_COUNT,
+      </if>
+      <if test="unknownFailCount != null" >
+        UNKNOWN_FAIL_COUNT,
+      </if>
+      <if test="totalCost != null" >
+        TOTAL_COST,
+      </if>
+      <if test="crtTm != null" >
+        CRT_TM,
+      </if>
+      <if test="updTm != null" >
+        UPD_TM,
+      </if>
+      <if test="processEnd != null" >
+        PROCESS_END,
+      </if>
+      <if test="success != null" >
+        SUCCESS,
+      </if>
+      <if test="processDetail != null" >
+        PROCESS_DETAIL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="serviceKey != null" >
+        #{serviceKey,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCount != null" >
+        #{totalCount,jdbcType=BIGINT},
+      </if>
+      <if test="totalPage != null" >
+        #{totalPage,jdbcType=BIGINT},
+      </if>
+      <if test="addCount != null" >
+        #{addCount,jdbcType=BIGINT},
+      </if>
+      <if test="updCount != null" >
+        #{updCount,jdbcType=BIGINT},
+      </if>
+      <if test="failCount != null" >
+        #{failCount,jdbcType=BIGINT},
+      </if>
+      <if test="noNeedUpdCount != null" >
+        #{noNeedUpdCount,jdbcType=BIGINT},
+      </if>
+      <if test="failPageCount != null" >
+        #{failPageCount,jdbcType=BIGINT},
+      </if>
+      <if test="unknownFailCount != null" >
+        #{unknownFailCount,jdbcType=BIGINT},
+      </if>
+      <if test="totalCost != null" >
+        #{totalCost,jdbcType=BIGINT},
+      </if>
+      <if test="crtTm != null" >
+        #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updTm != null" >
+        #{updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="processEnd != null" >
+        #{processEnd,jdbcType=CHAR},
+      </if>
+      <if test="success != null" >
+        #{success,jdbcType=CHAR},
+      </if>
+      <if test="processDetail != null" >
+        #{processDetail,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.atjl.retry.domain.gen.TsProcessLogExample" resultType="java.lang.Integer" >
+    select count(*) from ts_process_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ts_process_log
+    <set >
+      <if test="record.dataProcessId != null" >
+        DATA_PROCESS_ID = #{record.dataProcessId,jdbcType=BIGINT},
+      </if>
+      <if test="record.serviceKey != null" >
+        SERVICE_KEY = #{record.serviceKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalCount != null" >
+        TOTAL_COUNT = #{record.totalCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.totalPage != null" >
+        TOTAL_PAGE = #{record.totalPage,jdbcType=BIGINT},
+      </if>
+      <if test="record.addCount != null" >
+        ADD_COUNT = #{record.addCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.updCount != null" >
+        UPD_COUNT = #{record.updCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.failCount != null" >
+        FAIL_COUNT = #{record.failCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.noNeedUpdCount != null" >
+        NO_NEED_UPD_COUNT = #{record.noNeedUpdCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.failPageCount != null" >
+        FAIL_PAGE_COUNT = #{record.failPageCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.unknownFailCount != null" >
+        UNKNOWN_FAIL_COUNT = #{record.unknownFailCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.totalCost != null" >
+        TOTAL_COST = #{record.totalCost,jdbcType=BIGINT},
+      </if>
+      <if test="record.crtTm != null" >
+        CRT_TM = #{record.crtTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updTm != null" >
+        UPD_TM = #{record.updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.processEnd != null" >
+        PROCESS_END = #{record.processEnd,jdbcType=CHAR},
+      </if>
+      <if test="record.success != null" >
+        SUCCESS = #{record.success,jdbcType=CHAR},
+      </if>
+      <if test="record.processDetail != null" >
+        PROCESS_DETAIL = #{record.processDetail,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update ts_process_log
+    set DATA_PROCESS_ID = #{record.dataProcessId,jdbcType=BIGINT},
+      SERVICE_KEY = #{record.serviceKey,jdbcType=VARCHAR},
+      TOTAL_COUNT = #{record.totalCount,jdbcType=BIGINT},
+      TOTAL_PAGE = #{record.totalPage,jdbcType=BIGINT},
+      ADD_COUNT = #{record.addCount,jdbcType=BIGINT},
+      UPD_COUNT = #{record.updCount,jdbcType=BIGINT},
+      FAIL_COUNT = #{record.failCount,jdbcType=BIGINT},
+      NO_NEED_UPD_COUNT = #{record.noNeedUpdCount,jdbcType=BIGINT},
+      FAIL_PAGE_COUNT = #{record.failPageCount,jdbcType=BIGINT},
+      UNKNOWN_FAIL_COUNT = #{record.unknownFailCount,jdbcType=BIGINT},
+      TOTAL_COST = #{record.totalCost,jdbcType=BIGINT},
+      CRT_TM = #{record.crtTm,jdbcType=TIMESTAMP},
+      UPD_TM = #{record.updTm,jdbcType=TIMESTAMP},
+      PROCESS_END = #{record.processEnd,jdbcType=CHAR},
+      SUCCESS = #{record.success,jdbcType=CHAR},
+      PROCESS_DETAIL = #{record.processDetail,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ts_process_log
+    set DATA_PROCESS_ID = #{record.dataProcessId,jdbcType=BIGINT},
+      SERVICE_KEY = #{record.serviceKey,jdbcType=VARCHAR},
+      TOTAL_COUNT = #{record.totalCount,jdbcType=BIGINT},
+      TOTAL_PAGE = #{record.totalPage,jdbcType=BIGINT},
+      ADD_COUNT = #{record.addCount,jdbcType=BIGINT},
+      UPD_COUNT = #{record.updCount,jdbcType=BIGINT},
+      FAIL_COUNT = #{record.failCount,jdbcType=BIGINT},
+      NO_NEED_UPD_COUNT = #{record.noNeedUpdCount,jdbcType=BIGINT},
+      FAIL_PAGE_COUNT = #{record.failPageCount,jdbcType=BIGINT},
+      UNKNOWN_FAIL_COUNT = #{record.unknownFailCount,jdbcType=BIGINT},
+      TOTAL_COST = #{record.totalCost,jdbcType=BIGINT},
+      CRT_TM = #{record.crtTm,jdbcType=TIMESTAMP},
+      UPD_TM = #{record.updTm,jdbcType=TIMESTAMP},
+      PROCESS_END = #{record.processEnd,jdbcType=CHAR},
+      SUCCESS = #{record.success,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atjl.retry.domain.gen.TsProcessLog" >
+    update ts_process_log
+    <set >
+      <if test="serviceKey != null" >
+        SERVICE_KEY = #{serviceKey,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCount != null" >
+        TOTAL_COUNT = #{totalCount,jdbcType=BIGINT},
+      </if>
+      <if test="totalPage != null" >
+        TOTAL_PAGE = #{totalPage,jdbcType=BIGINT},
+      </if>
+      <if test="addCount != null" >
+        ADD_COUNT = #{addCount,jdbcType=BIGINT},
+      </if>
+      <if test="updCount != null" >
+        UPD_COUNT = #{updCount,jdbcType=BIGINT},
+      </if>
+      <if test="failCount != null" >
+        FAIL_COUNT = #{failCount,jdbcType=BIGINT},
+      </if>
+      <if test="noNeedUpdCount != null" >
+        NO_NEED_UPD_COUNT = #{noNeedUpdCount,jdbcType=BIGINT},
+      </if>
+      <if test="failPageCount != null" >
+        FAIL_PAGE_COUNT = #{failPageCount,jdbcType=BIGINT},
+      </if>
+      <if test="unknownFailCount != null" >
+        UNKNOWN_FAIL_COUNT = #{unknownFailCount,jdbcType=BIGINT},
+      </if>
+      <if test="totalCost != null" >
+        TOTAL_COST = #{totalCost,jdbcType=BIGINT},
+      </if>
+      <if test="crtTm != null" >
+        CRT_TM = #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updTm != null" >
+        UPD_TM = #{updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="processEnd != null" >
+        PROCESS_END = #{processEnd,jdbcType=CHAR},
+      </if>
+      <if test="success != null" >
+        SUCCESS = #{success,jdbcType=CHAR},
+      </if>
+      <if test="processDetail != null" >
+        PROCESS_DETAIL = #{processDetail,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where DATA_PROCESS_ID = #{dataProcessId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.atjl.retry.domain.gen.TsProcessLog" >
+    update ts_process_log
+    set SERVICE_KEY = #{serviceKey,jdbcType=VARCHAR},
+      TOTAL_COUNT = #{totalCount,jdbcType=BIGINT},
+      TOTAL_PAGE = #{totalPage,jdbcType=BIGINT},
+      ADD_COUNT = #{addCount,jdbcType=BIGINT},
+      UPD_COUNT = #{updCount,jdbcType=BIGINT},
+      FAIL_COUNT = #{failCount,jdbcType=BIGINT},
+      NO_NEED_UPD_COUNT = #{noNeedUpdCount,jdbcType=BIGINT},
+      FAIL_PAGE_COUNT = #{failPageCount,jdbcType=BIGINT},
+      UNKNOWN_FAIL_COUNT = #{unknownFailCount,jdbcType=BIGINT},
+      TOTAL_COST = #{totalCost,jdbcType=BIGINT},
+      CRT_TM = #{crtTm,jdbcType=TIMESTAMP},
+      UPD_TM = #{updTm,jdbcType=TIMESTAMP},
+      PROCESS_END = #{processEnd,jdbcType=CHAR},
+      SUCCESS = #{success,jdbcType=CHAR},
+      PROCESS_DETAIL = #{processDetail,jdbcType=LONGVARCHAR}
+    where DATA_PROCESS_ID = #{dataProcessId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atjl.retry.domain.gen.TsProcessLog" >
+    update ts_process_log
+    set SERVICE_KEY = #{serviceKey,jdbcType=VARCHAR},
+      TOTAL_COUNT = #{totalCount,jdbcType=BIGINT},
+      TOTAL_PAGE = #{totalPage,jdbcType=BIGINT},
+      ADD_COUNT = #{addCount,jdbcType=BIGINT},
+      UPD_COUNT = #{updCount,jdbcType=BIGINT},
+      FAIL_COUNT = #{failCount,jdbcType=BIGINT},
+      NO_NEED_UPD_COUNT = #{noNeedUpdCount,jdbcType=BIGINT},
+      FAIL_PAGE_COUNT = #{failPageCount,jdbcType=BIGINT},
+      UNKNOWN_FAIL_COUNT = #{unknownFailCount,jdbcType=BIGINT},
+      TOTAL_COST = #{totalCost,jdbcType=BIGINT},
+      CRT_TM = #{crtTm,jdbcType=TIMESTAMP},
+      UPD_TM = #{updTm,jdbcType=TIMESTAMP},
+      PROCESS_END = #{processEnd,jdbcType=CHAR},
+      SUCCESS = #{success,jdbcType=CHAR}
+    where DATA_PROCESS_ID = #{dataProcessId,jdbcType=BIGINT}
+  </update>
+  <insert id="insertBatchSelective" parameterType="java.util.List" >
+    insert into ts_process_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="list[0].dataProcessId!=null" >
+        DATA_PROCESS_ID,
+      </if>
+      <if test="list[0].serviceKey!=null" >
+        SERVICE_KEY,
+      </if>
+      <if test="list[0].totalCount!=null" >
+        TOTAL_COUNT,
+      </if>
+      <if test="list[0].totalPage!=null" >
+        TOTAL_PAGE,
+      </if>
+      <if test="list[0].addCount!=null" >
+        ADD_COUNT,
+      </if>
+      <if test="list[0].updCount!=null" >
+        UPD_COUNT,
+      </if>
+      <if test="list[0].failCount!=null" >
+        FAIL_COUNT,
+      </if>
+      <if test="list[0].noNeedUpdCount!=null" >
+        NO_NEED_UPD_COUNT,
+      </if>
+      <if test="list[0].failPageCount!=null" >
+        FAIL_PAGE_COUNT,
+      </if>
+      <if test="list[0].unknownFailCount!=null" >
+        UNKNOWN_FAIL_COUNT,
+      </if>
+      <if test="list[0].totalCost!=null" >
+        TOTAL_COST,
+      </if>
+      <if test="list[0].crtTm!=null" >
+        CRT_TM,
+      </if>
+      <if test="list[0].updTm!=null" >
+        UPD_TM,
+      </if>
+      <if test="list[0].processEnd!=null" >
+        PROCESS_END,
+      </if>
+      <if test="list[0].success!=null" >
+        SUCCESS,
+      </if>
+      <if test="list[0].processDetail!=null" >
+        PROCESS_DETAIL,
+      </if>
+    </trim>
+     values 
+    <foreach collection="list" index="index" item="item" separator="," >
+      <trim prefix=" (" suffix=")" suffixOverrides="," >
+        <if test="item.dataProcessId!=null" >
+          #{item.dataProcessId,jdbcType=BIGINT},
+        </if>
+        <if test="item.serviceKey!=null" >
+          #{item.serviceKey,jdbcType=VARCHAR},
+        </if>
+        <if test="item.totalCount!=null" >
+          #{item.totalCount,jdbcType=BIGINT},
+        </if>
+        <if test="item.totalPage!=null" >
+          #{item.totalPage,jdbcType=BIGINT},
+        </if>
+        <if test="item.addCount!=null" >
+          #{item.addCount,jdbcType=BIGINT},
+        </if>
+        <if test="item.updCount!=null" >
+          #{item.updCount,jdbcType=BIGINT},
+        </if>
+        <if test="item.failCount!=null" >
+          #{item.failCount,jdbcType=BIGINT},
+        </if>
+        <if test="item.noNeedUpdCount!=null" >
+          #{item.noNeedUpdCount,jdbcType=BIGINT},
+        </if>
+        <if test="item.failPageCount!=null" >
+          #{item.failPageCount,jdbcType=BIGINT},
+        </if>
+        <if test="item.unknownFailCount!=null" >
+          #{item.unknownFailCount,jdbcType=BIGINT},
+        </if>
+        <if test="item.totalCost!=null" >
+          #{item.totalCost,jdbcType=BIGINT},
+        </if>
+        <if test="item.crtTm!=null" >
+          #{item.crtTm,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.updTm!=null" >
+          #{item.updTm,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.processEnd!=null" >
+          #{item.processEnd,jdbcType=CHAR},
+        </if>
+        <if test="item.success!=null" >
+          #{item.success,jdbcType=CHAR},
+        </if>
+        <if test="item.processDetail!=null" >
+          #{item.processDetail,jdbcType=LONGVARCHAR},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+  <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List" >
+    <foreach collection="list" item="item" index="index" separator=";" >
+      update ts_process_log
+      <set >
+        <if test="item.serviceKey!=null" >
+          SERVICE_KEY=#{item.serviceKey,jdbcType=VARCHAR},
+        </if>
+        <if test="item.totalCount!=null" >
+          TOTAL_COUNT=#{item.totalCount,jdbcType=BIGINT},
+        </if>
+        <if test="item.totalPage!=null" >
+          TOTAL_PAGE=#{item.totalPage,jdbcType=BIGINT},
+        </if>
+        <if test="item.addCount!=null" >
+          ADD_COUNT=#{item.addCount,jdbcType=BIGINT},
+        </if>
+        <if test="item.updCount!=null" >
+          UPD_COUNT=#{item.updCount,jdbcType=BIGINT},
+        </if>
+        <if test="item.failCount!=null" >
+          FAIL_COUNT=#{item.failCount,jdbcType=BIGINT},
+        </if>
+        <if test="item.noNeedUpdCount!=null" >
+          NO_NEED_UPD_COUNT=#{item.noNeedUpdCount,jdbcType=BIGINT},
+        </if>
+        <if test="item.failPageCount!=null" >
+          FAIL_PAGE_COUNT=#{item.failPageCount,jdbcType=BIGINT},
+        </if>
+        <if test="item.unknownFailCount!=null" >
+          UNKNOWN_FAIL_COUNT=#{item.unknownFailCount,jdbcType=BIGINT},
+        </if>
+        <if test="item.totalCost!=null" >
+          TOTAL_COST=#{item.totalCost,jdbcType=BIGINT},
+        </if>
+        <if test="item.crtTm!=null" >
+          CRT_TM=#{item.crtTm,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.updTm!=null" >
+          UPD_TM=#{item.updTm,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.processEnd!=null" >
+          PROCESS_END=#{item.processEnd,jdbcType=CHAR},
+        </if>
+        <if test="item.success!=null" >
+          SUCCESS=#{item.success,jdbcType=CHAR},
+        </if>
+        <if test="item.processDetail!=null" >
+          PROCESS_DETAIL=#{item.processDetail,jdbcType=LONGVARCHAR},
+        </if>
+      </set>
+      where 
+      DATA_PROCESS_ID = #{item.dataProcessId,jdbcType=BIGINT}
+    </foreach>
+  </update>
+</mapper>

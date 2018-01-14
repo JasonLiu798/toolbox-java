@@ -2,10 +2,9 @@ package com.atjl.util.aconcurrent;
 
 import com.atjl.util.collection.CollectionUtil;
 import org.junit.Test;
+
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class TestConcurrent {
 
@@ -13,13 +12,13 @@ public class TestConcurrent {
     public void test() throws InterruptedException {
 
         CountDownLatch l = new CountDownLatch(2);
-        T1 t1 = new T1("t1",  l);
-        T1 t2 = new T1("t2",  l);
-        ExecutorService es = Executors.newFixedThreadPool(10);
-        es.submit(t1);
-        es.submit(t2);
+        T1 t1 = new T1("t1", l);
+        T1 t2 = new T1("t2", l);
+//        ExecutorService es = Executors.newFixedThreadPool(10);
+//        es.submit(t1);
+//        es.submit(t2);
 
-        Thread.sleep(100000L);
+//        Thread.sleep(100000L);
     }
 
     public static class T1 implements Runnable {
@@ -36,9 +35,9 @@ public class TestConcurrent {
             try {
                 latch.countDown();
                 latch.await();
-                System.out.println(key+"thread start run " + id);
-                Map res = CollectionUtil.addKV(CollectionUtil.newMap(id,id),id+1,id+1);
-                System.out.println(key+"res:" + res);
+                System.out.println(key + "thread start run " + id);
+                Map res = CollectionUtil.addKV(CollectionUtil.newMap(id, id), id + 1, id + 1);
+                System.out.println(key + "res:" + res);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

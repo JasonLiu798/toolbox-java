@@ -2,6 +2,7 @@ package com.atjl.dbfront.controller;
 
 import com.atjl.dbfront.constant.ContentConstant;
 import com.atjl.dbfront.domain.biz.ContentDomain;
+import com.atjl.dbfront.service.ContentFileService;
 import com.atjl.dbfront.service.ContentService;
 import com.atjl.logdb.api.LogDbUtil;
 import io.swagger.annotations.Api;
@@ -19,11 +20,13 @@ import java.io.PrintWriter;
 
 @Api(value = "静态内容", description = "静态内容")
 @Controller
-@RequestMapping(ContentConstant.CONTENT)
+@RequestMapping("content")
 public class ContentGetController {
     //    private static Logger logger = LoggerFactory.getLogger(ContentGetController.class);
     @Resource
     private ContentService contentService;
+    @Resource
+    private ContentFileService contentFileService;
 
     /**
      * 获取js文件
@@ -42,11 +45,21 @@ public class ContentGetController {
      * content/script/{name}/{ver}
      * content/script/main/1111
      */
-    @ApiOperation(value = "获取js文件，通过pathvalue", httpMethod = "POST")
+    @ApiOperation(value = "获取js文件，通过pathvalue，从db获取", httpMethod = "POST")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "成功")})
-    @RequestMapping(ContentConstant.JS_PATH)
-    public void jsPath(@PathVariable String name, @PathVariable String ver, HttpServletResponse resp) {
+    @RequestMapping("script/{name}/{ver}")
+    public void jsDb(@PathVariable String name, @PathVariable String ver, HttpServletResponse resp) {
         contentService.printJs(name, ver, resp);
+    }
+
+    /**
+     * content/scriptf/main/1111
+     */
+    @ApiOperation(value = "获取js文件，通过pathvalue，从文件获取", httpMethod = "POST")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "成功")})
+    @RequestMapping("scriptf/{name}/{ver}")
+    public void jsFile(@PathVariable String name, @PathVariable String ver, HttpServletResponse resp) {
+        contentFileService.printJsFromFile(name, ver, resp);
     }
 
     /**

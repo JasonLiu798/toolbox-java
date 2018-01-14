@@ -13,6 +13,6 @@ public interface CustomGetSimpleDatas<D, C> extends CustomGetCount<C> {
      * @param page 页数
      *             # pageSize 页大小，自行从 option中取
      */
-    List<D> getRetryDataContextListPaged(int page, C cond);
+    List<D> getRetryDataContextListPaged(int page,int pagesize,C cond);
 
 }

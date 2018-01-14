@@ -64,6 +64,10 @@ public class DateUtil {
         return new Date().getTime() / 1000;
     }
 
+    public static String getNowFmtDate() {
+        return format(new Date(), yyyy_MM_dd_HH_mm_ss_EN);
+    }
+
     public static Date ts2Date(long ts) {
         return new Date(ts * 1000);
     }
@@ -515,9 +519,13 @@ public class DateUtil {
         return delayStr;
     }
 
-    public static Date str2date(String raw, String fmt) throws ParseException {
+    public static Date str2date(String raw, String fmt) {//throws ParseException {
         DateFormat logRawFormat = new SimpleDateFormat(fmt);
-        return logRawFormat.parse(raw);
+        try {
+            return logRawFormat.parse(raw);
+        } catch (ParseException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
 

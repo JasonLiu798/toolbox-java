@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component("simplePageService")
-public class SimpleService implements ExecuteService<Data>, AfterService<Data>, CustomGetCount, CustomGetDatas<Data> {
+public class SimpleService implements ExecuteService<Data>, AfterService<Data>,GetOptionService,  CustomGetCount, CustomGetDatas<Data> {
 
     private static final Logger logger = LoggerFactory.getLogger(SimpleService.class);
 

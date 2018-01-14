@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atjl.retry.mapper.gen.TsProcessLogDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.atjl.retry.domain.gen.TsProcessLogDetail" >
+    <id column="PROCESS_LOG_DETAIL_ID" property="processLogDetailId" jdbcType="BIGINT" />
+    <result column="PROCESS_LOG_ID" property="processLogId" jdbcType="BIGINT" />
+    <result column="CRT_TM" property="crtTm" jdbcType="TIMESTAMP" />
+    <result column="UPD_TM" property="updTm" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.atjl.retry.domain.gen.TsProcessLogDetail" extends="BaseResultMap" >
+    <result column="BASIC" property="basic" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    PROCESS_LOG_DETAIL_ID, PROCESS_LOG_ID, CRT_TM, UPD_TM
+  </sql>
+  <sql id="Blob_Column_List" >
+    BASIC
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.atjl.retry.domain.gen.TsProcessLogDetailExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ts_process_log_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.atjl.retry.domain.gen.TsProcessLogDetailExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ts_process_log_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ts_process_log_detail
+    where PROCESS_LOG_DETAIL_ID = #{processLogDetailId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ts_process_log_detail
+    where PROCESS_LOG_DETAIL_ID = #{processLogDetailId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.atjl.retry.domain.gen.TsProcessLogDetailExample" >
+    delete from ts_process_log_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.atjl.retry.domain.gen.TsProcessLogDetail" >
+    <selectKey resultType="java.lang.Long" keyProperty="processLogDetailId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ts_process_log_detail (PROCESS_LOG_ID, CRT_TM, UPD_TM, 
+      BASIC)
+    values (#{processLogId,jdbcType=BIGINT}, #{crtTm,jdbcType=TIMESTAMP}, #{updTm,jdbcType=TIMESTAMP}, 
+      #{basic,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.atjl.retry.domain.gen.TsProcessLogDetail" >
+    <selectKey resultType="java.lang.Long" keyProperty="processLogDetailId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ts_process_log_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="processLogId != null" >
+        PROCESS_LOG_ID,
+      </if>
+      <if test="crtTm != null" >
+        CRT_TM,
+      </if>
+      <if test="updTm != null" >
+        UPD_TM,
+      </if>
+      <if test="basic != null" >
+        BASIC,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="processLogId != null" >
+        #{processLogId,jdbcType=BIGINT},
+      </if>
+      <if test="crtTm != null" >
+        #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updTm != null" >
+        #{updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="basic != null" >
+        #{basic,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.atjl.retry.domain.gen.TsProcessLogDetailExample" resultType="java.lang.Integer" >
+    select count(*) from ts_process_log_detail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ts_process_log_detail
+    <set >
+      <if test="record.processLogDetailId != null" >
+        PROCESS_LOG_DETAIL_ID = #{record.processLogDetailId,jdbcType=BIGINT},
+      </if>
+      <if test="record.processLogId != null" >
+        PROCESS_LOG_ID = #{record.processLogId,jdbcType=BIGINT},
+      </if>
+      <if test="record.crtTm != null" >
+        CRT_TM = #{record.crtTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updTm != null" >
+        UPD_TM = #{record.updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.basic != null" >
+        BASIC = #{record.basic,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update ts_process_log_detail
+    set PROCESS_LOG_DETAIL_ID = #{record.processLogDetailId,jdbcType=BIGINT},
+      PROCESS_LOG_ID = #{record.processLogId,jdbcType=BIGINT},
+      CRT_TM = #{record.crtTm,jdbcType=TIMESTAMP},
+      UPD_TM = #{record.updTm,jdbcType=TIMESTAMP},
+      BASIC = #{record.basic,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ts_process_log_detail
+    set PROCESS_LOG_DETAIL_ID = #{record.processLogDetailId,jdbcType=BIGINT},
+      PROCESS_LOG_ID = #{record.processLogId,jdbcType=BIGINT},
+      CRT_TM = #{record.crtTm,jdbcType=TIMESTAMP},
+      UPD_TM = #{record.updTm,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atjl.retry.domain.gen.TsProcessLogDetail" >
+    update ts_process_log_detail
+    <set >
+      <if test="processLogId != null" >
+        PROCESS_LOG_ID = #{processLogId,jdbcType=BIGINT},
+      </if>
+      <if test="crtTm != null" >
+        CRT_TM = #{crtTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updTm != null" >
+        UPD_TM = #{updTm,jdbcType=TIMESTAMP},
+      </if>
+      <if test="basic != null" >
+        BASIC = #{basic,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where PROCESS_LOG_DETAIL_ID = #{processLogDetailId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.atjl.retry.domain.gen.TsProcessLogDetail" >
+    update ts_process_log_detail
+    set PROCESS_LOG_ID = #{processLogId,jdbcType=BIGINT},
+      CRT_TM = #{crtTm,jdbcType=TIMESTAMP},
+      UPD_TM = #{updTm,jdbcType=TIMESTAMP},
+      BASIC = #{basic,jdbcType=LONGVARCHAR}
+    where PROCESS_LOG_DETAIL_ID = #{processLogDetailId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atjl.retry.domain.gen.TsProcessLogDetail" >
+    update ts_process_log_detail
+    set PROCESS_LOG_ID = #{processLogId,jdbcType=BIGINT},
+      CRT_TM = #{crtTm,jdbcType=TIMESTAMP},
+      UPD_TM = #{updTm,jdbcType=TIMESTAMP}
+    where PROCESS_LOG_DETAIL_ID = #{processLogDetailId,jdbcType=BIGINT}
+  </update>
+  <insert id="insertBatchSelective" parameterType="java.util.List" >
+    insert into ts_process_log_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="list[0].processLogDetailId!=null" >
+        PROCESS_LOG_DETAIL_ID,
+      </if>
+      <if test="list[0].processLogId!=null" >
+        PROCESS_LOG_ID,
+      </if>
+      <if test="list[0].crtTm!=null" >
+        CRT_TM,
+      </if>
+      <if test="list[0].updTm!=null" >
+        UPD_TM,
+      </if>
+      <if test="list[0].basic!=null" >
+        BASIC,
+      </if>
+    </trim>
+     values 
+    <foreach collection="list" index="index" item="item" separator="," >
+      <trim prefix=" (" suffix=")" suffixOverrides="," >
+        <if test="item.processLogDetailId!=null" >
+          #{item.processLogDetailId,jdbcType=BIGINT},
+        </if>
+        <if test="item.processLogId!=null" >
+          #{item.processLogId,jdbcType=BIGINT},
+        </if>
+        <if test="item.crtTm!=null" >
+          #{item.crtTm,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.updTm!=null" >
+          #{item.updTm,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.basic!=null" >
+          #{item.basic,jdbcType=LONGVARCHAR},
+        </if>
+      </trim>
+    </foreach>
+  </insert>
+  <update id="updateBatchByPrimaryKeySelective" parameterType="java.util.List" >
+    <foreach collection="list" item="item" index="index" separator=";" >
+      update ts_process_log_detail
+      <set >
+        <if test="item.processLogId!=null" >
+          PROCESS_LOG_ID=#{item.processLogId,jdbcType=BIGINT},
+        </if>
+        <if test="item.crtTm!=null" >
+          CRT_TM=#{item.crtTm,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.updTm!=null" >
+          UPD_TM=#{item.updTm,jdbcType=TIMESTAMP},
+        </if>
+        <if test="item.basic!=null" >
+          BASIC=#{item.basic,jdbcType=LONGVARCHAR},
+        </if>
+      </set>
+      where 
+      PROCESS_LOG_DETAIL_ID = #{item.processLogDetailId,jdbcType=BIGINT}
+    </foreach>
+  </update>
+</mapper>

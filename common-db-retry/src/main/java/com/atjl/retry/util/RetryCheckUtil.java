@@ -2,7 +2,7 @@ package com.atjl.retry.util;
 
 
 import com.atjl.retry.api.*;
-import com.atjl.retry.api.exception.RetryInitException;
+import com.atjl.retry.api.exception.RetryRegisteException;
 import com.atjl.retry.api.option.GetDataType;
 import com.atjl.retry.api.option.PageOption;
 import com.atjl.retry.domain.RetryServiceItem;
@@ -19,7 +19,7 @@ public class RetryCheckUtil {
     public static void customAfter(PageOption opt, Object srv, RetryServiceItem retryServiceItem) {
         if (OptionUtil.isCustomAfter(opt)) {
             if (!ReflectClassUtil.chkAImplementB(srv, AfterService.class)) {
-                throw new RetryInitException("自定义后置服务，但未实现 " + AfterService.class.getName() + " 接口，服务名" + opt.getServiceName());
+                throw new RetryRegisteException("自定义后置服务，但未实现 " + AfterService.class.getName() + " 接口，服务名" + opt.getServiceName());
             }
             retryServiceItem.setAfterService((AfterService) srv);
         }
@@ -32,20 +32,20 @@ public class RetryCheckUtil {
         boolean isCustom = false;
         if (opt.isBatchProcess()) {
             if (!ReflectClassUtil.chkAImplementB(srv, CustomGetSimpleDatas.class)) {
-                throw new RetryInitException("自定义取数，但未实现 " + CustomGetSimpleDatas.class.getName() + " 接口，服务名" + opt.getServiceName());
+                throw new RetryRegisteException("自定义取数，但未实现 " + CustomGetSimpleDatas.class.getName() + " 接口，服务名" + opt.getServiceName());
             }
             retryServiceItem.setCustomGetSimpleDatas((CustomGetSimpleDatas) srv);
             isCustom = true;
         } else {
             if (opt.getGetDataType() == GetDataType.CUSTOM_USEPAGE) {
                 if (!ReflectClassUtil.chkAImplementB(srv, CustomGetDatas.class)) {
-                    throw new RetryInitException("自定义取数，但未实现 " + CustomGetDatas.class.getName() + " 接口，服务名" + opt.getServiceName());
+                    throw new RetryRegisteException("自定义取数，但未实现 " + CustomGetDatas.class.getName() + " 接口，服务名" + opt.getServiceName());
                 }
                 retryServiceItem.setCustomGetDatas((CustomGetDatas) srv);
                 isCustom = true;
             } else if (opt.getGetDataType() == GetDataType.CUSTOM_USEID) {
                 if (!ReflectClassUtil.chkAImplementB(srv, CustomGetDatasUseIdPage.class)) {
-                    throw new RetryInitException("自定义取数，但未实现 " + CustomGetDatasUseIdPage.class.getName() + " 接口，服务名" + opt.getServiceName());
+                    throw new RetryRegisteException("自定义取数，但未实现 " + CustomGetDatasUseIdPage.class.getName() + " 接口，服务名" + opt.getServiceName());
                 }
                 retryServiceItem.setCustomGetDatasUseIdPage((CustomGetDatasUseIdPage) srv);
                 isCustom = true;
@@ -53,7 +53,7 @@ public class RetryCheckUtil {
         }
         if (isCustom) {
             if (!ReflectClassUtil.chkAImplementB(srv, CustomGetCount.class)) {
-                throw new RetryInitException("自定义取数，但未实现 " + CustomGetCount.class.getName() + " 接口，服务名" + opt.getServiceName());
+                throw new RetryRegisteException("自定义取数，但未实现 " + CustomGetCount.class.getName() + " 接口，服务名" + opt.getServiceName());
             }
             retryServiceItem.setCustomGetCount((CustomGetCount) srv);
         }

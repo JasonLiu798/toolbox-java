@@ -107,7 +107,7 @@
     </if>
   </select>
   <insert id="insert" parameterType="com.atjl.dbfront.domain.gen.TsContent" >
-    insert into ts_content (CNAME, CTYPE, CVERSION, 
+    insert into ts_content (CNAME, CTYPE, CVERSION,
       PRE_VERSION, CRT_TM, UPD_TM, 
       CONTENT)
     values (#{cname,jdbcType=CHAR}, #{ctype,jdbcType=CHAR}, #{cversion,jdbcType=CHAR}, 

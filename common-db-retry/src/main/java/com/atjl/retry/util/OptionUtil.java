@@ -1,9 +1,11 @@
 package com.atjl.retry.util;
 
+import com.atjl.common.api.req.PageIntReq;
 import com.atjl.retry.api.constant.RetryConstant;
 import com.atjl.retry.api.domain.RetryData;
 import com.atjl.retry.api.option.*;
 import com.atjl.util.common.DateUtil;
+import com.atjl.util.reflect.ReflectClassUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +17,19 @@ public class OptionUtil {
 
     private OptionUtil() {
         throw new UnsupportedOperationException();
+    }
+
+
+    public static int getPageSize(Object cond, PageOption opt) {
+        if (cond != null) {
+            if (ReflectClassUtil.chkAImplementB(cond, PageIntReq.class)) {
+                PageIntReq req = (PageIntReq) cond;
+                if (req.getPageSize() != null) {
+                    return req.getPageSize();
+                }
+            }
+        }
+        return opt.getPageSize();
     }
 
     /**

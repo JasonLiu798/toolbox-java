@@ -1,10 +1,7 @@
 package com.atjl.retry.eg;
 
 
-import com.atjl.retry.api.AfterService;
-import com.atjl.retry.api.DataContext;
-import com.atjl.retry.api.DataContextFactory;
-import com.atjl.retry.api.ExecuteService;
+import com.atjl.retry.api.*;
 import com.atjl.retry.api.option.RetryOption;
 import com.atjl.retry.api.option.RetryTableMetaConf;
 import com.atjl.util.json.JSONFastJsonUtil;
@@ -16,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component("testRetryService2")
-public class TestRetryService2 implements ExecuteService<Data>, AfterService<Data> {
+public class TestRetryService2 implements ExecuteService<Data>,GetOptionService,  AfterService<Data> {
 
     private static final Logger logger = LoggerFactory.getLogger(TestRetryService2.class);
 

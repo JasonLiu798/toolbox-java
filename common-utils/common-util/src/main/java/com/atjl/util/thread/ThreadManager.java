@@ -88,6 +88,7 @@ public abstract class ThreadManager {
                 BaseTask t = entry.getValue();
                 s.setId(String.valueOf(t.getId()));
                 s.setState(t.getState());
+                s.setStartTs(t.getStartTs());
                 status.add(s);
             }
         }

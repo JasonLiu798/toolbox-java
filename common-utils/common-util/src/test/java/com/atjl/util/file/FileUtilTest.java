@@ -1,6 +1,8 @@
 package com.atjl.util.file;
 
 import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.json.JSONFastJsonUtil;
+import com.atjl.util.json.JSONFmtUtil;
 import com.atjl.util.serialize.fst.FstSerializer1;
 import org.junit.Test;
 import org.junit.Before;
@@ -69,6 +71,12 @@ public class FileUtilTest {
      */
     @Test
     public void testWrite2FileContent() throws Exception {
+        String fileName = "D:\\a.log";
+        FileUtil.write(fileName, CollectionUtil.newList("aaa"));
+
+        String res = FileUtil.cat(fileName);
+        System.out.println("res:" + res);
+
         /*
         FileDto fd = new FileDto("aaa","bbb");
         byte[] content = SerializerUtil.serialize(fd);
@@ -86,6 +94,12 @@ public class FileUtilTest {
         System.out.println(fda);
         */
 
+    }
+
+    @Test
+    public void testCatCp() {
+        String res = FileUtil.catFromClassPath("jdbc.properties");
+        System.out.println("res:" + res);
     }
 
     @Test
@@ -234,11 +248,26 @@ public class FileUtilTest {
 
     @Test
     public void testLs() {
-        List l = FileUtil.ls("D:\\");
-        System.out.println(l);
-        l = FileUtil.ll("D:\\");
-        System.out.println(l);
+        String dir = "D:\\fortest";
+        List l = FileUtil.ls(dir);
+        System.out.println("ls " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
+        l = FileUtil.ll(dir);
+        System.out.println("ll " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
+        l = FileUtil.ls(dir, "-l -h");
+        System.out.println("llh " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
+    }
 
+
+    @Test
+    public void testLsRecu() {
+        List l = FileUtil.ls("D:\\fortest", "-l -h -R");
+        System.out.println("llhR " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
+    }
+
+    @Test
+    public void testLR() {
+        List l = FileUtil.ls("D:\\fortest", "-l -R");
+        System.out.println("lR " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
     }
 
 

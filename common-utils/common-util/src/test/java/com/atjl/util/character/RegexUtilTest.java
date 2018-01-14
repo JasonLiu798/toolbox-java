@@ -3,6 +3,8 @@ package com.atjl.util.character;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 
+import java.util.regex.Matcher;
+
 import static org.junit.Assert.assertEquals;
 
 
@@ -128,7 +130,45 @@ public class RegexUtilTest {
     }
 
     @Test
-    public void testGetPattern() throws Exception {
+    public void getMatcher() throws Exception {
+
+        String regex = "FONT[1-9]+";
+//        String target = "aaa-FONT3-sdfjkdklj";
+        String target = "aaa-FONT3-sdfj-FONT5-kdklj";
+        Matcher m = RegexUtil.getMatcher(regex, target);
+
+        boolean find = m.find();
+        assertEquals(true, find);
+        System.out.println("res:" + find);
+
+        String g = m.group();
+        assertEquals("FONT3", g);
+
+
+        regex = "FONT[1-9]+";
+        target = "aaa-kdklj";
+        m = RegexUtil.getMatcher(regex, target);
+        find = m.find();
+        assertEquals(false, find);
+
+
+        regex = "FONT[1-9]+";
+        target = "aaa-kdklj-FONT2";
+        m = RegexUtil.getMatcher(regex, target);
+        find = m.find();
+        assertEquals(true, find);
+        g = m.group();
+        assertEquals("FONT2", g);
+
+
+        regex = "FONT[1-9]+";
+        target = "FONT2-aaa-kdklj";
+        m = RegexUtil.getMatcher(regex, target);
+        find = m.find();
+        assertEquals(true, find);
+        g = m.group();
+        assertEquals("FONT2", g);
+//        assertEquals("FON");
 
     }
 

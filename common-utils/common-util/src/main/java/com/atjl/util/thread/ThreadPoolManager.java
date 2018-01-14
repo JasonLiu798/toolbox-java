@@ -50,6 +50,21 @@ public class ThreadPoolManager {
         logger.info("init pool manager finish");
     }
 
+    /**
+     * dynamic add pool
+     */
+    public static ThreadManager addPool(String param) {
+        if (!createCheck(param)) {
+            return null;
+        }
+        String name = ThreadInnerUtil.getName(param);
+        ThreadManager tm = initOne(param);
+        if (tm != null) {
+            execs.put(name, tm);
+        }
+        return tm;
+    }
+
 
     public static void execute(String poolName, BaseTask runnable) {
         try {
@@ -106,8 +121,7 @@ public class ThreadPoolManager {
     }
 
     /**
-     * @param param
-     * @return
+     *
      */
     private static ThreadManager initOne(String param) {
         Class clz = ThreadInnerUtil.getType(param);
@@ -129,19 +143,6 @@ public class ThreadPoolManager {
     }
 
 
-    /**
-     * dynamic add pool
-     */
-    public static ThreadManager createPool(String name, String param) {
-        if (!createCheck(param)) {
-            return null;
-        }
-        ThreadManager tm = initOne(param);
-        if (tm != null) {
-            execs.put(name, tm);
-        }
-        return tm;
-    }
 
 
     /**

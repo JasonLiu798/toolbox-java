@@ -13,7 +13,7 @@ import com.atjl.validate.validator.base.ExistBase;
  * !!! 需要spring和 dataSource
  */
 public class NotExist extends ExistBase {
-    public static final String DFT_MSG = "不存在";
+    public static final String DFT_MSG = "%s不存在";
 
     public NotExist(String table, String column) {
         super(table, column, DFT_MSG);
@@ -30,7 +30,7 @@ public class NotExist extends ExistBase {
     public void validate(ValidateForm form, ValidateField field) {
         String raw = field.getStrValue();
         if (!ValidateDbUtil.exist(table, column, otherConds, raw)) {
-            throw new ValidateException(this.msg);
+            throw new ValidateException(String.format(this.msg,raw));
         }
     }
 

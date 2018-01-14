@@ -6,6 +6,18 @@ public class ThreadStatus {
 
     private String state;
 
+    private Long startTs;
+
+
+    public Long getStartTs() {
+        return startTs;
+    }
+
+    public void setStartTs(Long startTs) {
+        this.startTs = startTs;
+    }
+
+
     public String getId() {
         return id;
     }

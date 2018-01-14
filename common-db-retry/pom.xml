@@ -10,15 +10,16 @@
 
     <groupId>com.atjl</groupId>
     <artifactId>common-db-retry</artifactId>
-    <version>6.6.0</version>
+    <version>8.0.3</version>
 
     <name>common-db-retry</name>
     <packaging>jar</packaging>
 
     <properties>
-        <util.version>6.0.0</util.version>
+        <util.version>7.0.1</util.version>
         <!--<config.version>5.0.0</config.version>-->
-        <validator.version>5.11.0</validator.version>
+        <validator.version>6.0.1</validator.version>
+        <jsondb.version>2.5.0</jsondb.version>
     </properties>
 
     <dependencies>
@@ -34,14 +35,26 @@
             <version>${util.version}</version>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>com.atjl</groupId>-->
-            <!--<artifactId>common-config-api</artifactId>-->
-            <!--<version>${config.version}</version>-->
+        <!--<groupId>com.atjl</groupId>-->
+        <!--<artifactId>common-config-api</artifactId>-->
+        <!--<version>${config.version}</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>com.atjl</groupId>
             <artifactId>common-validator</artifactId>
             <version>${validator.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.atjl</groupId>
+            <artifactId>json-db</artifactId>
+            <version>${jsondb.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.baidu.disconf</groupId>
+                    <artifactId>disconf-client</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- other pkg -->
 

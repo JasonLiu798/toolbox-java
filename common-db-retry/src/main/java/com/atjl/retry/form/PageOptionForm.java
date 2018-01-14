@@ -32,7 +32,6 @@ public class PageOptionForm {
     /**
      * 超过此大小数据将使用分页查询
      */
-    StringField pageSize = new StringField("分页页大小", new Require(), new NumRange(1L, 100L));
-
+    StringField pageSize = new StringField("分页页大小", new Require(), new NumRange(1L, 100000L));
 
 }

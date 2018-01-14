@@ -37,6 +37,8 @@ public class ResponseDataDtoV2 extends ResponseDtoV2 {
         return resp;
     }
 
+
+
     public static ResponseDataDtoV2 buildFail(String msg) {
         ResponseDataDtoV2 resp = new ResponseDataDtoV2();
         resp.setReturnCode(RespConstant.UNKNOWN_ERROR_CODE);

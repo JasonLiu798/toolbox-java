@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author jasondliu
  */
 @ApiModel(value = "分页基础请求对象类型2")
-public class PageIntReqV1 {
+public class PageIntReqV1 extends PageBaseReq {
 
     @ApiModelProperty(value = "起始对象主键", required = true, example = "查询需分页时传递")
     private String startItemId;

@@ -1,6 +1,8 @@
 package com.atjl.util.thread.task;
 
+import com.atjl.util.common.DateUtil;
 import com.atjl.util.thread.ThreadManager;
+import io.swagger.annotations.ApiModelProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,10 +12,17 @@ import org.slf4j.LoggerFactory;
 public abstract class BaseTask implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(BaseTask.class);
 
+    @ApiModelProperty(value = "线程编号 thread id")
     private String id;
+
+    @ApiModelProperty(value = "线程管理器 thread manager")
     private ThreadManager threadManager;
 
+    @ApiModelProperty(value = "线程状态 thread state")
     private State state;
+
+    @ApiModelProperty(value = "开始时间戳，start timestamp")
+    private Long startTs;
 
     public enum State {
         NEW, RUNNING, STOP, EXCEP_STOP
@@ -35,6 +44,7 @@ public abstract class BaseTask implements Runnable {
 
     @Override
     public final void run() {
+        startTs = DateUtil.getNowTS();
         state = State.RUNNING;
         try {
             bizRun();
@@ -80,4 +90,11 @@ public abstract class BaseTask implements Runnable {
         this.state = state;
     }
 
+    public Long getStartTs() {
+        return startTs;
+    }
+
+    public void setStartTs(Long startTs) {
+        this.startTs = startTs;
+    }
 }

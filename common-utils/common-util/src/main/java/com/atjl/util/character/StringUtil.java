@@ -4,6 +4,7 @@ import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.reflect.ReflectGetUtil;
 import com.atjl.util.reflect.ReflectSetUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -835,6 +836,15 @@ public final class StringUtil {
         return message.toString();
     }
 
+    public final static String getEmptyString(Object str) {
+        if (str == null) {
+            return "";
+        }
+        if (StringCheckUtil.isEmpty(str)) {
+            return "";
+        }
+        return String.valueOf(str);
+    }
 
     public final static String getNullString(String str) {
         if (StringCheckUtil.isEmpty(str)) {
@@ -1021,10 +1031,6 @@ public final class StringUtil {
      */
     /**
      * cut string length to len
-     *
-     * @param rawStr
-     * @param len
-     * @return
      */
     public static String filter2len(String rawStr, int len) {
         if (StringCheckUtil.isEmpty(rawStr) || rawStr.length() <= len) {
@@ -1046,5 +1052,44 @@ public final class StringUtil {
             }
         }
     }
+
+    /**
+     * filter empty string
+     */
+    public static String[] filterEmpty(String[] raw) {
+        if (raw == null || raw.length == 0) {
+            return null;
+        }
+        List<String> list = new ArrayList<>(raw.length);
+        for (String s : raw) {
+            if (!StringCheckUtil.isEmpty(s)) {
+                list.add(s);
+            }
+        }
+        return CollectionUtil.list2array(list);
+    }
+
+    public static List<String> filterEmpty(List<String> raw) {
+        if (raw == null || raw.size() == 0) {
+            return new ArrayList<>();
+        }
+        List<String> list = new ArrayList<>(raw.size());
+        for (String s : raw) {
+            if (!StringCheckUtil.isEmpty(s)) {
+                list.add(s);
+            }
+        }
+        return list;
+    }
+
+
+    public static String escapeHtml4(String val) {
+        return StringEscapeUtils.escapeHtml4(val);
+    }
+
+    public static String unescapeHtml4(String val) {
+        return StringEscapeUtils.unescapeHtml4(val);
+    }
+
 
 }

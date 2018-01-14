@@ -1,17 +1,12 @@
 package com.atjl.dbservice.domain; 
 
-import com.atjl.common.api.resp.PageResp;
-import com.atjl.dbservice.manager.DataTestUtil;
+import com.atjl.dbservice.api.domain.DataCpConfig;
+import com.atjl.eg.DataTestUtil;
 import com.atjl.util.common.SystemUtil;
 import com.atjl.util.json.JSONFastJsonUtil;
 import com.atjl.util.json.JSONFmtUtil;
 import org.junit.*;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
@@ -24,7 +19,7 @@ public class DbTableTransferConfigTest {
 		try {
 			Object res = null;
 			
-			DbTableTransferConfig config = DataTestUtil.getConfig();
+			DataCpConfig config = DataTestUtil.getConfig();
 			List l = config.getAllTgtSortFields();
 			System.out.println("res: succ" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(l)));
 		} catch (Exception e) {

@@ -16,6 +16,9 @@ public class RetryServiceItem {
      */
     private ExecuteBatchService executeBatchService;
 
+    private GeneralPreService generalPreService;
+
+
     /**
      * 后置服务
      */
@@ -117,5 +120,13 @@ public class RetryServiceItem {
 
     public void setRetryOption(RetryOption retryOption) {
         this.retryOption = retryOption;
+    }
+
+    public GeneralPreService getGeneralPreService() {
+        return generalPreService;
+    }
+
+    public void setGeneralPreService(GeneralPreService generalPreService) {
+        this.generalPreService = generalPreService;
     }
 }
