@@ -1,7 +1,6 @@
 package com.atjl.fmt.api;
 
 
-import com.atjl.fmt.context.FmtContext;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.*;
 import org.slf4j.Logger;
@@ -27,13 +26,7 @@ public class FmtUtil {
 //        templateMap = templates;
 //    }
 
-    /**
-     * 渲染
-     * @param templateContent
-     * @param parameters
-     * @return
-     */
-    public static String render(String templateContent, Map<String, String> parameters) {
+    public static String render(String templateContent, Map<String, Object> parameters) {
         try {
             Configuration cfg = new Configuration();
             cfg.setObjectWrapper(new DefaultObjectWrapper());
@@ -52,7 +45,38 @@ public class FmtUtil {
             }
         }
         return null;
+
     }
+
+    /**
+     * 渲染
+     *
+     * @param templateContent
+     * @param parameters
+     * @return
+     */
+//    public static String render(String templateContent, Map<String, String> parameters) {
+//        render();
+        /*
+        try {
+            Configuration cfg = new Configuration();
+            cfg.setObjectWrapper(new DefaultObjectWrapper());
+            cfg.setTemplateExceptionHandler(TemplateExceptionHandler.IGNORE_HANDLER);
+
+            StringTemplateLoader stringLoader = new StringTemplateLoader();
+            stringLoader.putTemplate(DFT_TEMPLATE_NAME, templateContent);
+            cfg.setTemplateLoader(stringLoader);
+            Template template = cfg.getTemplate(DFT_TEMPLATE_NAME, "utf-8");
+            StringWriter writer = new StringWriter();
+            template.process(parameters, writer);
+            return writer.toString();
+        } catch (IOException | TemplateException e) {
+            if (logger.isErrorEnabled()) {
+                logger.error("render {}", e);
+            }
+        }
+        return null;*/
+//    }
 
 
 }

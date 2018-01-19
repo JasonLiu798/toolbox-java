@@ -17,7 +17,8 @@
     <name>common-email</name>
 
     <properties>
-        <utils.version>5.2.0</utils.version>
+        <utils.version>7.0.3</utils.version>
+        <utilextend.version>1.0.2</utilextend.version>
         <config.version>5.0.0</config.version>
         <log.version>6.0.0</log.version>
         <validator.version>5.0.0</validator.version>

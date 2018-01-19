@@ -14,7 +14,7 @@ public class Html2WordUtil {
 
     public static void htmlToWord(String html, String wordPath) {
         try (InputStream is = new ByteArrayInputStream(html.getBytes(CommonConstant.UTF_8));
-             OutputStream os = new FileOutputStream(wordPath)
+             OutputStream os = new FileOutputStream(wordPath+".doc")
         ) {
             POIFSFileSystem fs = new POIFSFileSystem();
             //对应于org.apache.poi.hdf.extractor.WordDocument

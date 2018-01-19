@@ -49,4 +49,12 @@ public class JSONFastJsonUtil {
             return "null";
         }
     }
+
+    // select SUBSTRING(BASIC, INSTR(BASIC, '"guardian":"' )+12, LOCATE('"', BASIC, INSTR(BASIC, '"guardian":"')+13) - (INSTR(BASIC, '"guardian":"' )+12)) from
+
+    public static String getSimpleContent(String json, String key) {
+        return null;
+    }
+
+
 }

@@ -10,6 +10,27 @@ import static org.junit.Assert.assertEquals;
 
 public class RegexUtilTest {
 
+    @Test
+    public void replaceAll() {
+        String res = RegexUtil.replaceAll("<p>hahah</p>", "<[^>]*>", "");
+        assertEquals("hahah",res);
+
+        res = RegexUtil.replaceAll(null, "<[^>]*>", "");
+        assertEquals(null,res);
+
+        res = RegexUtil.replaceAll("aa", "", "");
+        assertEquals("aa",res);
+
+        res = RegexUtil.replaceAll("aa", null, "");
+        assertEquals("aa",res);
+
+        res = RegexUtil.replaceAll("<p>hahah</p>", "<[^>]*>", null);
+        assertEquals("hahah",res);
+
+//        System.out.println("res:" + res);
+
+
+    }
 
     @Test
     public void testLeftNumStrCNUL() throws Exception {
@@ -169,6 +190,56 @@ public class RegexUtilTest {
         g = m.group();
         assertEquals("FONT2", g);
 //        assertEquals("FON");
+
+    }
+
+
+    @Test
+    public void getMatcher2() throws Exception {
+
+        String regex = "-(SEQADDPARENT)([1-9]+)-*";
+//        String target = "aaa-FONT3-sdfjkdklj";
+//        String target = "aaa-SEQADDPARENT3-sdfj";
+        String target = "aaa-SEQADDPARENT3";
+        Matcher m = RegexUtil.getMatcher(regex, target);
+
+        boolean find = m.find();
+        assertEquals(true, find);
+        System.out.println("res:" + find);
+
+
+        String g = m.group();
+        String g1 = m.group(1);
+        String g2 = m.group(2);
+        System.out.println("group " + g + ",g1 " + g1 + ",g2 " + g2);
+
+//        assertEquals("FONT3", g);
+
+
+//        regex = "FONT[1-9]+";
+//        target = "aaa-kdklj";
+//        m = RegexUtil.getMatcher(regex, target);
+//        find = m.find();
+//        assertEquals(false, find);
+//
+//
+//        regex = "FONT[1-9]+";
+//        target = "aaa-kdklj-FONT2";
+//        m = RegexUtil.getMatcher(regex, target);
+//        find = m.find();
+//        assertEquals(true, find);
+//        g = m.group();
+//        assertEquals("FONT2", g);
+//
+//
+//        regex = "FONT[1-9]+";
+//        target = "FONT2-aaa-kdklj";
+//        m = RegexUtil.getMatcher(regex, target);
+//        find = m.find();
+//        assertEquals(true, find);
+//        g = m.group();
+//        assertEquals("FONT2", g);
+////        assertEquals("FON");
 
     }
 

@@ -87,6 +87,21 @@ public final class RegexUtil {
         return res.toString();
     }
 
+    public static String replaceAll(String raw, String regex, String target) {
+        if (StringCheckUtil.isExistEmpty(raw, regex)) {
+            return raw;
+        }
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(raw);
+        if (m.find()) {
+            if(target==null){
+                target="";
+            }
+            return m.replaceAll(target);
+        }
+        return raw;
+    }
+
     /**
      * 是否数字
      *

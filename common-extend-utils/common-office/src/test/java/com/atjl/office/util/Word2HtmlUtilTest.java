@@ -20,6 +20,7 @@ public class Word2HtmlUtilTest {
         try {
             Object res = null;
 
+//            Word2HtmlUtil.word07ToHtml("E:\\rpt.docx");
             Word2HtmlUtil.word07ToHtml("E:\\rpt.docx");
             System.out.println("res: succ " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(res)));
         } catch (Exception e) {

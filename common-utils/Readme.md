@@ -2,9 +2,11 @@
 
 ---
 #v7.0 history
+#v7.0.3
+common-util,RegexUtil add replaceAll
 
 #v7.0.2
-comon-util,add NumberUtil.toChinese
+common-util,add NumberUtil.toChinese
 #v7.0.1
 common-api,add class KeyValue
 
