@@ -40,7 +40,7 @@ public class ThreadConstant {
      */
     public static final String IO_POOL_PARAM = ",UD,20,20,200000,30000";
     /**
-     * CPU密集型业务，填充cpu核数
+     * CPU密集型业务，填充cpu核数，或核数减一
      */
     public static final String CPU_POOL_PARAM = ",UD,%s,%s,200000,30000";
 

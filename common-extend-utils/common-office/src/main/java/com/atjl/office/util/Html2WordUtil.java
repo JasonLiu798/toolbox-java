@@ -12,9 +12,12 @@ public class Html2WordUtil {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * 只支持 doc 格式 文档生成
+     */
     public static void htmlToWord(String html, String wordPath) {
         try (InputStream is = new ByteArrayInputStream(html.getBytes(CommonConstant.UTF_8));
-             OutputStream os = new FileOutputStream(wordPath+".doc")
+             OutputStream os = new FileOutputStream(wordPath)
         ) {
             POIFSFileSystem fs = new POIFSFileSystem();
             //对应于org.apache.poi.hdf.extractor.WordDocument
@@ -26,41 +29,6 @@ public class Html2WordUtil {
     }
 
 
-    /**
-     * 把is写入到对应的word输出流os中
-     * 不考虑异常的捕获，直接抛出
-     *
-     * @param is
-     * @param os
-     * @throws IOException
-     */
-    private static void inputStreamToWord(InputStream is, OutputStream os) throws IOException {
-
-    }
-
-    /**
-     * 把输入流里面的内容以UTF-8编码当文本取出。
-     * 不考虑异常，直接抛出
-     *
-     * @param ises
-     * @return
-     * @throws IOException
-     */
-    private static String getContent(InputStream... ises) throws IOException {
-        if (ises != null) {
-            StringBuilder result = new StringBuilder();
-            BufferedReader br;
-            String line;
-            for (InputStream is : ises) {
-                br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-                while ((line = br.readLine()) != null) {
-                    result.append(line);
-                }
-            }
-            return result.toString();
-        }
-        return null;
-    }
 
 
 }

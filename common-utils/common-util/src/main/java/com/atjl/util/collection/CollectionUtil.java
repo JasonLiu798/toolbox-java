@@ -1,6 +1,8 @@
 package com.atjl.util.collection;
 
 import com.atjl.util.character.StringCheckUtil;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,7 +79,6 @@ public final class CollectionUtil {
     }
 
     /**
-     *
      * @param collection
      * @return
      */
@@ -291,15 +292,15 @@ public final class CollectionUtil {
         T[] arr = (T[]) Array.newInstance(clz, size);
         return list.toArray(arr);
     }
-	
-	public static <T> Set<T> list2set(List<T> list) {
-		if (isEmpty(list)) {
-			return null;
-		}
-		Set<T> res = new HashSet<T>();
-		res.addAll(list);
-		return res;
-	}
+
+    public static <T> Set<T> list2set(List<T> list) {
+        if (isEmpty(list)) {
+            return null;
+        }
+        Set<T> res = new HashSet<T>();
+        res.addAll(list);
+        return res;
+    }
 
     /**
      * array to hashset
@@ -662,11 +663,30 @@ public final class CollectionUtil {
         return l;
     }
 
+    public static <T> List<T> newAList(T el) {
+//        Lists.newArrayListWithExpectedSize(100);
+//        Lists.newArrayListWithCapacity(100);
+        List<T> l = new ArrayList<>();
+        l.add(el);
+        return l;
+    }
+
     public static <T> List<T> newList(T... els) {
         List<T> l = new LinkedList<>();
         if (els == null || els.length == 0) {
             return l;
         }
+        for (T e : els) {
+            l.add(e);
+        }
+        return l;
+    }
+
+    public static <T> List<T> newAList(T... els) {
+        if (els == null || els.length == 0) {
+            return new ArrayList<>();
+        }
+        List<T> l = new ArrayList<>(els.length);
         for (T e : els) {
             l.add(e);
         }
@@ -685,7 +705,11 @@ public final class CollectionUtil {
     }
 
     public static <K, V> Map<K, V> newMap(K key, V value) {
-        Map<K, V> map = new HashMap<>();
+        return newMap(key, value, 10);
+    }
+
+    public static <K, V> Map<K, V> newMap(K key, V value, int expectSize) {
+        Map<K, V> map = Maps.newHashMapWithExpectedSize(expectSize);
         map.put(key, value);
         return map;
     }
@@ -712,7 +736,7 @@ public final class CollectionUtil {
         }
         return res;
     }
-    
+
 
     public static <T> T[] newArr(T... v) {
         return v;
