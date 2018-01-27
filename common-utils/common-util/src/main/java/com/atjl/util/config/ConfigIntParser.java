@@ -150,9 +150,9 @@ public class ConfigIntParser {
             return res;
         }
         int max = (int) Math.pow(2, size) - 1;
-        if (configNum < 0) {
-            throw new IllegalArgumentException("config num must > 0,config num " + configNum);
-        }
+//        if (configNum < 0) {
+//            throw new IllegalArgumentException("config num must > 0,config num " + configNum);
+//        }
         if (configNum > max && logger.isWarnEnabled()) {
             logger.warn("config num {} out of range 0~{},will only use the low bit", configNum, max);
         }

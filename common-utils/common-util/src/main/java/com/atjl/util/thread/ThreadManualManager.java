@@ -28,7 +28,7 @@ public class ThreadManualManager extends ThreadManager {
         ExecutorService execFixed = new ThreadPoolExecutor(
                 Integer.parseInt(params[2]),//corePoolSize	5
                 Integer.parseInt(params[3]),//maximumPoolSize	10
-                Long.parseLong(params[4]),//maxTasksCount	200000
+                Long.parseLong(params[4]),//keepAliveTime	200000
                 TimeUnit.MILLISECONDS,
                 new LinkedBlockingQueue<>(Integer.parseInt(params[5]))//queueSize
         );
