@@ -17,7 +17,7 @@
     <name>json-db</name>
 
     <properties>
-        <util.version>6.5.0</util.version>
+        <util.version>7.0.4</util.version>
     </properties>
 
     <dependencies>

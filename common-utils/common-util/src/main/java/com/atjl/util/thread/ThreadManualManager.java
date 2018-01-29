@@ -1,9 +1,10 @@
 package com.atjl.util.thread;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import com.atjl.util.character.StringCheckUtil;
+import com.atjl.util.character.StringUtil;
+
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 使用参数  corePoolSize,maxPoolSize,keepAliveTime,maxTaskCount 初始化
@@ -30,7 +31,8 @@ public class ThreadManualManager extends ThreadManager {
                 Integer.parseInt(params[3]),//maximumPoolSize	10
                 Long.parseLong(params[4]),//keepAliveTime	200000
                 TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<>(Integer.parseInt(params[5]))//queueSize
+                new LinkedBlockingQueue<>(Integer.parseInt(params[5])),//queueSize
+                new NamedThreadFactory(params[0])//thread Factory
         );
         if (execFixed == null) {
             return false;
@@ -38,6 +40,36 @@ public class ThreadManualManager extends ThreadManager {
         this.executorService = execFixed;
         return true;
     }
+
+
+    static class NamedThreadFactory implements ThreadFactory {
+        private static final AtomicInteger poolNumber = new AtomicInteger(1);
+        private final ThreadGroup group;
+        private final AtomicInteger threadNumber = new AtomicInteger(1);
+        private final String namePrefix;
+
+        NamedThreadFactory(String name) {
+            SecurityManager s = System.getSecurityManager();
+            group = (s != null) ? s.getThreadGroup() :
+                    Thread.currentThread().getThreadGroup();
+            String filterName = StringCheckUtil.isEmpty(name) ? "P" + StringUtil.getUUID() : name;
+            namePrefix = filterName +
+                    poolNumber.getAndIncrement() +
+                    "-thread-";
+        }
+
+        public Thread newThread(Runnable r) {
+            Thread t = new Thread(group, r,
+                    namePrefix + threadNumber.getAndIncrement(),
+                    0);
+            if (t.isDaemon())
+                t.setDaemon(false);
+            if (t.getPriority() != Thread.NORM_PRIORITY)
+                t.setPriority(Thread.NORM_PRIORITY);
+            return t;
+        }
+    }
+
 
     @Override
     public boolean validParam() {

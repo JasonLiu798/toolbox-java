@@ -1,6 +1,5 @@
 package com.atjl.util.number;
 
-import com.atjl.common.api.exception.ParamFormatException;
 import com.atjl.util.character.StringCheckUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +43,8 @@ public class NumberUtil {
 
     public static String toChinese(Integer input) {
         if (input == null || input < 0) {
-            throw new ParamFormatException();
+            return "";
+            //throw new ParamFormatException();
         }
         String s = String.valueOf(input);
         if (StringCheckUtil.isEmpty(input)) {

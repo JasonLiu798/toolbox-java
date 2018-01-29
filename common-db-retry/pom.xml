@@ -16,7 +16,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <util.version>7.0.1</util.version>
+        <util.version>7.0.4</util.version>
         <!--<config.version>5.0.0</config.version>-->
         <validator.version>6.0.1</validator.version>
         <jsondb.version>2.5.0</jsondb.version>

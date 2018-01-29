@@ -16,7 +16,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <util.version>7.0.1</util.version>
+        <util.version>7.0.4</util.version>
         <config.version>5.1.1</config.version>
         <retry.version>8.0.3</retry.version>
         <!--<validator.version>6.0.0</validator.version>-->

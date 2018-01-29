@@ -103,4 +103,14 @@ public class PlainTest {
 		System.out.println("SUCCESS!!!");
 		
 	}
+
+    public static void main(String[] args) {
+        testTimed();
+        System.out.println("test ");
+    }
+
+
+    public static void testTimed(){
+        System.out.println("timed called ");
+    }
 }

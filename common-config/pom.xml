@@ -19,7 +19,7 @@
 
     <properties>
         <config.api.version>5.1.1</config.api.version>
-        <util.version>7.0.1</util.version>
+        <util.version>7.0.4</util.version>
     </properties>
 
     <dependencies>
