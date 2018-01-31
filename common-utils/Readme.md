@@ -2,6 +2,14 @@
 
 ---
 #v7.0 history
+
+
+#v7.0.5
+common-util,CollectionUtil,newKVL
+
+#v7.0.4
+common-util,CollectionUtil,newMap
+
 #v7.0.3
 common-util,RegexUtil add replaceAll
 

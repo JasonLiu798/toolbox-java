@@ -12,14 +12,14 @@
 
     <groupId>com.atjl</groupId>
     <artifactId>common-util-parent</artifactId>
-    <version>7.0.4</version>
+    <version>7.0.5</version>
 
     <packaging>pom</packaging>
     <name>common-util-parent</name>
     <description>prj management</description>
 
     <properties>
-        <prj.version>7.0.4</prj.version>
+        <prj.version>7.0.5</prj.version>
 
         <!--common -->
         <api.version>${prj.version}</api.version>

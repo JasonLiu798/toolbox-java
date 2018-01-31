@@ -1,5 +1,7 @@
 package com.atjl.util.collection;
 
+import com.atjl.common.domain.KeyValue;
+import com.atjl.util.json.JSONFastJsonUtil;
 import com.atjl.util.number.RangeUtil;
 import com.atjl.util.test.TestDto;
 import org.junit.After;
@@ -319,6 +321,57 @@ public class CollectionUtilTest {
         String[] newA = CollectionUtil.filterNull(arr);
         System.out.println("res:" + Arrays.toString(newA));
     }
+
+
+    @Test
+    public void getStringMap() {
+
+        Map<String, String> m = CollectionUtil.newStringMap("a", "b", "c");
+
+        assertEquals(m.get("a"), "b");
+        assertEquals(m.get("c"), null);
+        System.out.println("res:" + m);
+
+        m = CollectionUtil.newStringMap("a", "b", "c", "d");
+
+        assertEquals(m.get("a"), "b");
+        assertEquals(m.get("c"), "d");
+        System.out.println("res:" + m);
+
+        m = CollectionUtil.newStringMap(null);
+        assertEquals(m, new HashMap<>());
+        System.out.println("res:" + m);
+
+
+    }
+
+
+    @Test
+    public void getKVL() {
+
+        List<KeyValue> m = CollectionUtil.newKVL("a", "b", "c");
+
+        assertEquals(m.get(0).getKey(), "a");
+        assertEquals(m.get(0).getValue(), "b");
+        assertEquals(m.get(1).getKey(), "c");
+        assertEquals(m.get(1).getValue(), null);
+        System.out.println("res:" + JSONFastJsonUtil.objectToJson(m));
+
+
+        m = CollectionUtil.newKVL("a", "b", "c", "d");
+        assertEquals(m.get(0).getKey(), "a");
+        assertEquals(m.get(0).getValue(), "b");
+        assertEquals(m.get(1).getKey(), "c");
+        assertEquals(m.get(1).getValue(), "d");
+        System.out.println("res:" + JSONFastJsonUtil.objectToJson(m));
+
+        m = CollectionUtil.newKVL(null);
+        assertEquals(m, new ArrayList<>());
+        System.out.println("res:" + m);
+
+
+    }
+
 
     @Before
     public void before() throws Exception {

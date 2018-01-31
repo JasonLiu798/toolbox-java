@@ -3,7 +3,9 @@
 Field增加默认值，如果为空，则添加，空则不添加(会修改原始值)
 Field是否trim处理(会修改原始值)
 
-ListField增加按基础类型校验(String)
+增加ListSimpleField 按基础类型校验(String)
+
+notexist可取其他参考字段值
 
 
 ##优化

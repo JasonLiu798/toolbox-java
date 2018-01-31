@@ -1,7 +1,7 @@
 package com.atjl.util.collection;
 
+import com.atjl.common.domain.KeyValue;
 import com.atjl.util.character.StringCheckUtil;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
@@ -702,6 +702,43 @@ public final class CollectionUtil {
             set.add(e);
         }
         return set;
+    }
+
+    public static Map<String, String> newStringMap(String... values) {
+        if (CollectionUtil.isEmpty(values)) {
+            return new HashMap<>();
+        }
+
+        int i = 0;
+        int expectSize = values.length / 2;
+        Map<String, String> map = Maps.newHashMapWithExpectedSize(expectSize);
+        for (; i < values.length; i += 2) {
+            String v = null;
+            if (i + 1 < values.length) {
+                v = values[i + 1];
+            }
+            map.put(values[i], v);
+        }
+        return map;
+    }
+
+    public static List<KeyValue> newKVL(String... values) {
+        if (CollectionUtil.isEmpty(values)) {
+            return new ArrayList<>();
+        }
+        int i = 0;
+        List<KeyValue> res = new ArrayList<>();
+        for (; i < values.length; i += 2) {
+            String v = null;
+            if (i + 1 < values.length) {
+                v = values[i + 1];
+            }
+            KeyValue kv = new KeyValue();
+            kv.setKey(values[i]);
+            kv.setValue(v);
+            res.add(kv);
+        }
+        return res;
     }
 
     public static <K, V> Map<K, V> newMap(K key, V value) {
