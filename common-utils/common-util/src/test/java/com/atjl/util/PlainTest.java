@@ -10,6 +10,13 @@ import java.util.List;
 public class PlainTest {
 	
 	
+	private int a =1;
+	
+	public static void main(String[] args) {
+		System.out.println(new PlainTest().a);
+		
+	}
+	
 	
 	
 	@Test
@@ -104,10 +111,10 @@ public class PlainTest {
 		
 	}
 
-    public static void main(String[] args) {
-        testTimed();
-        System.out.println("test ");
-    }
+//    public static void main(String[] args) {
+//        testTimed();
+//        System.out.println("test ");
+//    }
 
 
     public static void testTimed(){

@@ -207,7 +207,32 @@ public class ThreadPoolManager {
             return ResponseDataDto.buildFail(1001, param + "rebuild fail,excep " + e);
         }
     }
-
+    
+    
+    public static ThreadManager get(String name){
+		if (CollectionUtil.isEmpty(execs)) {
+			return null;
+		}
+		ThreadManager tm = execs.get(name);
+		return tm;
+	}
+	
+	public static synchronized void shutdown(String name) {
+		logger.info("start destryo pools {}",name);
+		ThreadManager tm = get(name);
+		if(tm!=null){
+			tm.executorService.shutdown();
+		}
+	}
+	
+	public static synchronized void shutdownNow(String name) {
+		logger.info("start destryo pools {}",name);
+		ThreadManager tm = get(name);
+		if(tm!=null){
+			tm.executorService.shutdownNow();
+		}
+	}
+	
     /**
      * shutdown call before exit
      */
