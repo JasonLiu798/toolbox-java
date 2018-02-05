@@ -9,9 +9,29 @@ public class PlainTest {
     public static void main(String[] args) {
 //        testTimed();
 //        System.out.println("test ");
-        print();
+//        print();
+        test2();
     }
 
+
+    public static void test2() {
+        int MAXIMUM_CAPACITY = Integer.MAX_VALUE;
+        int c = 1073234824;
+        //4611686018427387904
+        //4611686018427387904
+        // 2147483648
+        // 1142344648
+        // 1073741824
+        // 1073234824
+        int n = c - 1;
+        n |= n >>> 1;
+        n |= n >>> 2;
+        n |= n >>> 4;
+        n |= n >>> 8;
+        n |= n >>> 16;
+        int res =  (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
+        System.out.println("res:"+res+",max:"+MAXIMUM_CAPACITY);
+    }
 
     public static void print() {
         ConcurrentHashMap<String, String> m = new ConcurrentHashMap<>();

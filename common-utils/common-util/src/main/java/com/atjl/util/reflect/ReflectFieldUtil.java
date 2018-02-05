@@ -213,7 +213,6 @@ public class ReflectFieldUtil {
 //                    if (filterClzWhite && whiteClzList.indexOf(field.getType()) < 0) {
 //                        continue;
 //                    }
-
                     res.add(field);
                 } catch (Exception e) {
                     logger.error("getFieldValue {}", e.getMessage());
