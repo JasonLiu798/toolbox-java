@@ -262,6 +262,15 @@ public final class StringCheckUtil {
         return false;
     }
 
+    public static boolean contain(String raw, String tgt) {
+        if (tgt==null|| raw==null) {
+            return false;
+        }
+        if(raw.length() < tgt.length()){
+            return false;
+        }
+        return raw.contains(tgt);
+    }
 
     public static boolean containExist(String raw, String... arr) {
         if (CollectionUtil.isEmpty(arr)) {

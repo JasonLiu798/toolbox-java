@@ -80,6 +80,23 @@ public class StringCheckUtilTest {
         assertEquals(false, StringCheckUtil.isAllNotEmpty(s1, s2, null));
     }
 
+
+    @Test
+    public void contain() throws Exception {
+        String ss = "3";//new String[]{"123", "456", "123123123", "324909803"};
+        assertEquals(true, StringCheckUtil.contain("123", "3"));
+        assertEquals(true, StringCheckUtil.contain("456", "56"));
+        assertEquals(true, StringCheckUtil.contain("56789", "56789"));
+        assertEquals(true, StringCheckUtil.contain("123123", "1"));
+        assertEquals(false, StringCheckUtil.contain("567", null));
+
+        assertEquals(false, StringCheckUtil.contain(null, "3"));
+
+        assertEquals(false, StringCheckUtil.contain(null, null));
+
+        assertEquals(true, StringCheckUtil.contain("", ""));
+    }
+
     @Test
     public void containExist() throws Exception {
         String[] ss = new String[]{"123", "456", "123123123", "324909803"};
