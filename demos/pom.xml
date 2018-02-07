@@ -9,10 +9,10 @@
     </parent>
 
     <groupId>com.atjl</groupId>
-    <artifactId>db-front</artifactId>
-    <version>1.5.0</version>
+    <artifactId>demos</artifactId>
+    <version>1.0.0</version>
 
-    <name>db-front</name>
+    <name>demos</name>
     <packaging>jar</packaging>
 
     <properties>
@@ -35,6 +35,7 @@
             <artifactId>common-util-ex</artifactId>
             <version>${util.version}</version>
         </dependency>
+
         <!--<dependency>-->
         <!--<groupId>com.atjl</groupId>-->
         <!--<artifactId>common-config-api</artifactId>-->
