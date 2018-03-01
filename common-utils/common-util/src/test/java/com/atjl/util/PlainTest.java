@@ -11,81 +11,89 @@ import java.util.List;
 
 
 public class PlainTest {
-	
-	
-	private int a =1;
-	
-	public static void main(String[] args) {
-		System.out.println(new PlainTest().a);
-		
-	}
-	
-	
-	
-	@Test
-	public void test(){
-		int COUNT_BITS = Integer.SIZE - 3;
-		
-		int CAPACITY   = (1 << COUNT_BITS) - 1;
-		System.out.println("CAPACITY "+CAPACITY);
-		List<Boolean> l =  ConfigIntParser.int2bits(CAPACITY,32);
-		System.out.println("CAPACITY "+l);
-		
-		int running = -1 << COUNT_BITS;
-		System.out.println("count "+COUNT_BITS);
-		System.out.println("RUNNING "+running);
-		int res = ctlOf(running, 0);
-		
-		l =  ConfigIntParser.int2bits(running,32);
-		System.out.println("RUNNING "+l);
-		
-		int aaa = res & CAPACITY;
-		System.out.println("aaa "+aaa);
-		l =  ConfigIntParser.int2bits(aaa,32);
-		System.out.println("aaa "+l);
-		
-		int SHUTDOWN = 1 << COUNT_BITS;
-		System.out.println("SHUTDOWN "+SHUTDOWN);
-		l =  ConfigIntParser.int2bits(SHUTDOWN,32);
-		System.out.println("SHUTDOWN "+l);
-		
-		int TIDYING    =  2 << COUNT_BITS;
-		System.out.println("TIDYING "+TIDYING);
-		l =  ConfigIntParser.int2bits(TIDYING,32);
-		System.out.println("TIDYING "+l);
-		
-		
-		int TERMINATED =  3 << COUNT_BITS;
-		System.out.println("TERMINATED "+TERMINATED);
-		l =  ConfigIntParser.int2bits(TERMINATED,32);
-		System.out.println("TERMINATED "+l);
-		
-		
-	}
-	
-	
-	private static int ctlOf(int rs, int wc) {
-		return rs | wc;
-	}
-	
-	public static Unsafe getUnsafe() {
-		try {
-			Field field = Unsafe.class.getDeclaredField("theUnsafe");
-			field.setAccessible(true);
-			return (Unsafe)field.get(null);
-			
-		} catch (Exception e) {
-		}
-		return null;
-	}
-	
-	@Test
-	public void unsafe(){
-		Unsafe unsafe = getUnsafe();//sun.misc.Unsafe.getUnsafe();
-		
-		Thread currThread = Thread.currentThread();
-		/*
-		new Thread(()->{
+
+
+    private int a = 1;
+
+    public static void main(String[] args) {
+        System.out.println(new PlainTest().a);
+
+    }
+
+
+    @Test
+    public void testAll() {
+        Double d = 0d;
+        Double d1 = 0d;
+
+        System.out.println(d == d1);
+    }
+
+
+    @Test
+    public void test() {
+        int COUNT_BITS = Integer.SIZE - 3;
+
+        int CAPACITY = (1 << COUNT_BITS) - 1;
+        System.out.println("CAPACITY " + CAPACITY);
+        List<Boolean> l = ConfigIntParser.int2bits(CAPACITY, 32);
+        System.out.println("CAPACITY " + l);
+
+        int running = -1 << COUNT_BITS;
+        System.out.println("count " + COUNT_BITS);
+        System.out.println("RUNNING " + running);
+        int res = ctlOf(running, 0);
+
+        l = ConfigIntParser.int2bits(running, 32);
+        System.out.println("RUNNING " + l);
+
+        int aaa = res & CAPACITY;
+        System.out.println("aaa " + aaa);
+        l = ConfigIntParser.int2bits(aaa, 32);
+        System.out.println("aaa " + l);
+
+        int SHUTDOWN = 1 << COUNT_BITS;
+        System.out.println("SHUTDOWN " + SHUTDOWN);
+        l = ConfigIntParser.int2bits(SHUTDOWN, 32);
+        System.out.println("SHUTDOWN " + l);
+
+        int TIDYING = 2 << COUNT_BITS;
+        System.out.println("TIDYING " + TIDYING);
+        l = ConfigIntParser.int2bits(TIDYING, 32);
+        System.out.println("TIDYING " + l);
+
+
+        int TERMINATED = 3 << COUNT_BITS;
+        System.out.println("TERMINATED " + TERMINATED);
+        l = ConfigIntParser.int2bits(TERMINATED, 32);
+        System.out.println("TERMINATED " + l);
+
+
+    }
+
+
+    private static int ctlOf(int rs, int wc) {
+        return rs | wc;
+    }
+
+    public static Unsafe getUnsafe() {
+        try {
+            Field field = Unsafe.class.getDeclaredField("theUnsafe");
+            field.setAccessible(true);
+            return (Unsafe) field.get(null);
+
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    @Test
+    public void unsafe() {
+        Unsafe unsafe = getUnsafe();//sun.misc.Unsafe.getUnsafe();
+
+        Thread currThread = Thread.currentThread();
+        /*
+        new Thread(()->{
 			try {
 				Thread.sleep(3000);
 				currThread.interrupt();
@@ -94,27 +102,26 @@ public class PlainTest {
 		}).start();
 		*/
 //		unsafe.park(false, 0);
-		unsafe.park(false, 3000 * 1000 *1000l);
-		
-		System.out.println("SUCCESS!!!");
-	}
-	@Test
-	public void unsafeUnpark(){
-		Unsafe unsafe = getUnsafe();
-		
-		Thread currThread = Thread.currentThread();
-		
-		unsafe.unpark(currThread);
-		unsafe.unpark(currThread);
-		unsafe.unpark(currThread);
-		
-		unsafe.park(false, 0);
-		
-		System.out.println("SUCCESS!!!");
-		
-	}
+        unsafe.park(false, 3000 * 1000 * 1000l);
 
+        System.out.println("SUCCESS!!!");
+    }
 
+    @Test
+    public void unsafeUnpark() {
+        Unsafe unsafe = getUnsafe();
+
+        Thread currThread = Thread.currentThread();
+
+        unsafe.unpark(currThread);
+        unsafe.unpark(currThread);
+        unsafe.unpark(currThread);
+
+        unsafe.park(false, 0);
+
+        System.out.println("SUCCESS!!!");
+
+    }
 
 
     public static void test2() {
@@ -132,8 +139,8 @@ public class PlainTest {
         n |= n >>> 4;
         n |= n >>> 8;
         n |= n >>> 16;
-        int res =  (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
-        System.out.println("res:"+res+",max:"+MAXIMUM_CAPACITY);
+        int res = (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
+        System.out.println("res:" + res + ",max:" + MAXIMUM_CAPACITY);
     }
 
     public static void print() {

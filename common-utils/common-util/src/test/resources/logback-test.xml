@@ -37,13 +37,14 @@
 
 	<!-- 日志输出级别 -->
 	<!-- OFF, ERROR, WARN, INFO, DEBUG, TRACE, ALL -->
-	<root level="DEBUG">
+	<!--<root level="DEBUG">-->
+	<root level="INFO">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="DAILYFILE" />
 	</root>
 
 
-	<logger name="com.atjl" level="DEBUG">
+	<logger name="com.atjl" level="INFO">
     </logger>
 
 

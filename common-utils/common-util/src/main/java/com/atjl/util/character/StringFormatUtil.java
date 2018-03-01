@@ -80,11 +80,11 @@ public final class StringFormatUtil {
     }
 
     public static String replaceBlank(String str) {
-        if(StringCheckUtil.isEmpty(str)){
+        if (StringCheckUtil.isEmpty(str)) {
             return str;
         }
         String dest = "";
-        if (str!=null) {
+        if (str != null) {
             Pattern p = Pattern.compile("\\s*|\t|\r|\n");
             Matcher m = p.matcher(str);
             dest = m.replaceAll("");
@@ -904,24 +904,38 @@ public final class StringFormatUtil {
         return string;
     }
 
-
-    /**
-     * rm <xxxx> of string
-     * @param raw
-     * @param n
-     * @return
-     */
-    public static String rmHtml(String raw,int n){
-        if(n<=0){
+    public static String rmHtml(String raw) {
+        if (raw == null) {
             return raw;
         }
-        for(int i=0;i<n;i++){
-            raw = rmHtmlInner(raw,"<",">");
+        int left = raw.indexOf("<");
+        int right = raw.indexOf(">");
+        while (left >= 0 && left < right && raw.length() > 0) {
+            raw = raw.substring(0, left) + raw.substring(right + 1);
+            left = raw.indexOf("<");
+            right = raw.indexOf(">");
         }
         return raw;
     }
 
-    public static String rmHtmlInner(String raw,String left,String right) {
+    /**
+     * rm <xxxx> of string
+     *
+     * @param raw
+     * @param n
+     * @return
+     */
+    public static String rmHtml(String raw, int n) {
+        if (n <= 0) {
+            return raw;
+        }
+        for (int i = 0; i < n; i++) {
+            raw = rmHtmlInner(raw, "<", ">");
+        }
+        return raw;
+    }
+
+    public static String rmHtmlInner(String raw, String left, String right) {
         if (StringCheckUtil.isEmpty(raw)) {
             return raw;
         }

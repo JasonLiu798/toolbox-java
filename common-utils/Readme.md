@@ -2,7 +2,15 @@
 
 ---
 # v7.0 history
-
+## v7.0.9
+common-util,ReflectFieldUtil,bugfix
+## v7.0.8
+common-util,
+ReflectFieldUtil
+copyField performance optimize,add field cache,remove unnecessary call getterForce
+add dozer copyFieldUseDz
+## v7.0.7
+common-util,StringFormatUtil,rmHtml
 ## v7.0.6
 common-util,StringCheckUtil,contain
 ## v7.0.5

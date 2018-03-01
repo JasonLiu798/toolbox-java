@@ -6,13 +6,16 @@ import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.common.ReflectUtil.GetClzOpt;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.dozer.DozerBeanMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.ref.SoftReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 反射 field相关 辅助类
@@ -26,6 +29,42 @@ public class ReflectFieldUtil {
 
     private static Logger logger = LoggerFactory.getLogger(ReflectFieldUtil.class);
 
+    /**
+     * cache class field list
+     */
+    private static class FieldCache {
+        private static ConcurrentHashMap<String, SoftReference<List<Field>>> cache = new ConcurrentHashMap<>();
+
+        public static String genKey(Class clz, GetClzOpt parentOpt, String[] blackArr, String[] whiteArr) {
+            StringBuilder key = new StringBuilder().append(clz.getName()).append(parentOpt);
+            if (blackArr != null) {
+                key.append("B[");
+                for (String b : blackArr) {
+                    key.append(b).append(",");
+                }
+            }
+            if (whiteArr != null) {
+                key.append("W[");
+                for (String w : whiteArr) {
+                    key.append(w).append(",");
+                }
+            }
+            return key.toString();
+        }
+
+        public static List<Field> get(Class clz, GetClzOpt parentOpt, String[] blackArr, String[] whiteArr) {
+            SoftReference<List<Field>> sr = cache.get(genKey(clz, parentOpt, blackArr, whiteArr));
+            if (sr != null) {
+                return sr.get();
+            }
+            return null;
+        }
+
+        public static void put(Class clz, GetClzOpt opt, String[] blackArr, String[] whiteArr, List<Field> fields) {
+            SoftReference<List<Field>> sr = new SoftReference<>(fields);
+            cache.put(genKey(clz, opt, blackArr, whiteArr), sr);
+        }
+    }
 
     /**
      * 字段拷贝
@@ -45,7 +84,13 @@ public class ReflectFieldUtil {
                 continue;
             }
             String fieldName = field.getName();
-            Object sourceFieldValue = ReflectGetUtil.getterForce(source, fieldName);
+            field.setAccessible(true);
+            Object sourceFieldValue = null;
+            try {
+                sourceFieldValue = field.get(source);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
             if (!allowNull && sourceFieldValue == null || ReflectCommonUtil.isEmpty(sourceFieldValue)) {
                 continue;
             }
@@ -82,13 +127,101 @@ public class ReflectFieldUtil {
         }
     }
 
-//    public static void copyFieldUseDz(Object src, Object tgt) {
-//        try {
-//            BeanUtils.copyProperties(tgt, src);
-//        } catch (InvocationTargetException | IllegalAccessException e) {
-//            logger.error("copyfield use beanutil error {}", e);
-//        }
+    /**
+     * ######################### copy ################################
+     */
+    /**
+     * @param src
+     * @param tgt
+     */
+    public static void copyFieldUseDz(Object src, Object tgt) {
+        try {
+            DozerBeanMapper mapper = MapperInstanceCache.getInstance();
+//            mapper.addMapping(genBuilder(src.getClass(), tgt.getClass()));
+            mapper.map(src, tgt);
+        } catch (Exception e) {
+            logger.error("copyfield use dozer error {}", e);
+        }
+    }
+
+    /**
+     * BeanMappingBuilder builder = new BeanMappingBuilder() {
+     * protected void configure() {
+     * mapping(Bean.class, Bean.class,
+     * TypeMappingOptions.oneWay(),
+     * mapId("A"),
+     * mapNull(true)
+     * )
+     * .exclude("excluded")
+     * .fields("src", "dest",
+     * copyByReference(),
+     * collectionStrategy(true,
+     * RelationshipType.NON_CUMULATIVE),
+     * hintA(String.class),
+     * hintB(Integer.class),
+     * FieldsMappingOptions.oneWay(),
+     * useMapId("A"),
+     * customConverterId("id")
+     * )
+     * .fields("src", "dest",
+     * customConverter("org.dozer.CustomConverter")
+     * );
+     * }
+     * };
+     * <p>
+     * public static void copyFieldUseDz(Object src, Object tgt, List<String> excludes) {
+     * if (src == null || tgt == null) {
+     * return;
+     * }
+     * List<String> excludeFiltered = StringUtil.filterEmpty(excludes);
+     * if (excludeFiltered == null || excludeFiltered.size() == 0) {
+     * copyFieldUseDz(src, tgt);
+     * return;
+     * }
+     * <p>
+     * //        String key = MapperInstanceCache.genKey(src.getClass(), tgt.getClass(), excludeFiltered);
+     * DozerBeanMapper mapper = MapperInstanceCache.getInstance();
+     * //        DozerBeanMapper mapper = new DozerBeanMapper();//MapperInstanceCache.getInstance();
+     * BeanMappingBuilder builder = genExcludeBuilder(src.getClass(), tgt.getClass(), excludeFiltered);
+     * mapper.addMapping(builder);
+     * mapper.map(src, tgt);
+     * }
+     */
+
+//    private static BeanMappingBuilder genBuilder(Class src, Class tgt) {
+//        return new BeanMappingBuilder() {
+//            protected void configure() {
+//                TypeMappingBuilder typeMappingBuilder = mapping(src, tgt);
+//            }
+//        };
 //    }
+
+//    private static BeanMappingBuilder genExcludeBuilder(Class src, Class tgt, List<String> excludes) {
+//        return new BeanMappingBuilder() {
+//            protected void configure() {
+//                TypeMappingBuilder typeMappingBuilder = mapping(src, tgt);
+//                excludes.forEach(typeMappingBuilder::exclude);
+//            }
+//        };
+//    }
+
+    private static class MapperInstanceCache {
+        private static DozerBeanMapper mapper = new DozerBeanMapper();
+        /*
+        private static ConcurrentHashMap<String, DozerBeanMapper> mapperCache = new ConcurrentHashMap<>();
+
+        private static String genKey(Class src, Class tgt, String[] excludes) {
+            StringBuilder res = new StringBuilder(src.getName() + tgt.getName());
+            for (String exclude : excludes) {
+                res.append(exclude);
+            }
+            return res.toString();
+        }*/
+
+        public static DozerBeanMapper getInstance() {
+            return mapper;
+        }
+    }
 
 
     /**
@@ -161,14 +294,19 @@ public class ReflectFieldUtil {
 //    }
 
     /**
-     * @param obj       对象
+     * @param clz       对象
      * @param parentOpt 选项
      * @param blackArr  黑名单
      * @param whiteArr  白名单（优先级高于黑名单）
      * @return
      */
-    public static List<Field> getFieldList(Class obj, GetClzOpt parentOpt, String[] blackArr, String[] whiteArr) {
-        List<Class<?>> clazzList = ReflectClassUtil.getClassList(obj, parentOpt);
+    public static List<Field> getFieldList(Class clz, GetClzOpt parentOpt, String[] blackArr, String[] whiteArr) {
+        List<Field> l = FieldCache.get(clz, parentOpt, blackArr, whiteArr);
+        if (l != null) {
+            return l;
+        }
+
+        List<Class<?>> clazzList = ReflectClassUtil.getClassList(clz, parentOpt);
 //        if (logger.isDebugEnabled()) {
 //            logger.debug("getField clz list:{}", clazzList);
 //        }
@@ -221,6 +359,7 @@ public class ReflectFieldUtil {
             }
         }
 
+        FieldCache.put(clz, parentOpt, blackArr, whiteArr, res);
 //        if (logger.isDebugEnabled()) {
 //            logger.debug("get fields res {}", res);
 //        }

@@ -14,7 +14,22 @@ import java.util.Map;
 
 public class ReflectFieldUtilTest {
 
-	
+    @Test
+    public void testCopyDz() {
+        TestDtoChild src = new TestDtoChild();
+        src.setChildField(100L);
+        src.setF1(1);
+        src.setF2(2);
+
+
+        TestDtoChild dest = new TestDtoChild();
+        System.out.println("res bf:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(src)));
+        System.out.println("res bf:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(dest)));
+
+        ReflectFieldUtil.copyFieldUseDz(src, dest);
+        System.out.println("res af:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(src)));
+        System.out.println("res af:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(dest)));
+    }
 
 
     @Test

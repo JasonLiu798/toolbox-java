@@ -17,6 +17,10 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * 2.normal usage
  *
+ * 性能测试需要注意的问题：
+ * 1.初始化耗时
+ * 2.数据较大情况下的 GC耗时
+ *
  * Created by JasonLiu798 on 16/4/5.
  */
 public final class RunTimeUtil {
