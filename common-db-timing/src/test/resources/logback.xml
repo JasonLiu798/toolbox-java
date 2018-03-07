@@ -2,7 +2,6 @@
 <configuration scan="true" scanPeriod="300 seconds" debug="false">
     <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
     <property name="LOG_HOME" value="D:\logs"/>
-    <property name="instance" value="aos-web"/>
 
 	<!--安全日志 -->
 	<property name="AUDIT_LOG_HOME" value="D:\logs\audit"/>

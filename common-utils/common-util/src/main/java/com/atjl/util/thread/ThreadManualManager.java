@@ -34,6 +34,8 @@ public class ThreadManualManager extends ThreadManager {
                 new LinkedBlockingQueue<>(Integer.parseInt(params[5])),//queueSize
                 new NamedThreadFactory(params[0])//thread Factory
         );
+//        ThreadPoolExecutor t =null;
+
         if (execFixed == null) {
             return false;
         }

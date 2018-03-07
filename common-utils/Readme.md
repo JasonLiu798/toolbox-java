@@ -1,7 +1,13 @@
+# todo
+add poolsize change
+
 
 
 ---
 # v7.0 history
+## v7.1.0
+common-util,add GzipUtil
+
 ## v7.0.9
 common-util,ReflectFieldUtil,bugfix
 ## v7.0.8

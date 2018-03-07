@@ -2,11 +2,7 @@
 <configuration scan="true" scanPeriod="300 seconds" debug="false">
     <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
     <property name="LOG_HOME" value="D:\logs"/>
-    <property name="instance" value="aos-web"/>
 
-	<!--安全日志 -->
-	<property name="AUDIT_LOG_HOME" value="D:\logs\audit"/>
-	<property name="AUDIT_LOG_FORMAT" value="%msg%n"/>
 
     <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
     <!--参考ch.qos.logback.classic.PatternLayout -->

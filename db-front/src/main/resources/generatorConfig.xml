@@ -19,8 +19,8 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://10.202.125.245:3306/aos?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true"
-                        userId="aos" password="aos"/>
+                        connectionURL="jdbc:mysql://10.202.125.245:3306/test?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true"
+                        userId="test" password="test"/>
 
         <javaModelGenerator targetPackage="com.atjl.dbfront.domain.gen"
                             targetProject="src\main\java">

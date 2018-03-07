@@ -30,7 +30,6 @@ public class TextController {
      * @param req
      * @param response
      * @return
-     @RequestMapping(AOSURL.TEST)
      @ResponseBody public ResponseDataDtoV1 TEST(String text, HttpServletRequest req, HttpServletResponse response) {
      Cookie cookie = new Cookie("ttt", "tttt");
      cookie.setMaxAge(60);
