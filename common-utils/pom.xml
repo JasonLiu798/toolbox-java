@@ -12,14 +12,14 @@
 
     <groupId>com.atjl</groupId>
     <artifactId>common-util-parent</artifactId>
-    <version>7.1.0</version>
+    <version>7.1.4</version>
 
     <packaging>pom</packaging>
     <name>common-util-parent</name>
     <description>prj management</description>
 
     <properties>
-        <prj.version>7.1.0</prj.version>
+        <prj.version>7.1.4</prj.version>
 
         <!--common -->
         <api.version>${prj.version}</api.version>
@@ -29,8 +29,8 @@
         <!-- Build args -->
         <java.version>1.8</java.version>
         <swagger.version>2.2.2</swagger.version>
-        <jsckson.version>2.8.7</jsckson.version>
-        <fast.version>2.8.7</fast.version>
+
+
 
         <maven.test.skip>true</maven.test.skip>
     </properties>

@@ -806,4 +806,8 @@ public final class CollectionUtil {
         return sb.toString();
     }
 
+    /**
+     * collection operations
+     */
+//    public void
 }

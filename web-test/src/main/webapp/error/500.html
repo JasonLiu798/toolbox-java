@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>页面出错了</title>
+	<link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico">
+	<style type="text/css">
+		body{background: rgb(244,244,244);}
+		.container{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			text-align: center;
+			transform: translate(-50%, -75%);
+		}
+		.btn{
+			display:inline-block;
+			margin-top:100px;
+			width: 180px;
+			height: 40px;
+			line-height: 36px;
+			color:#fff;
+			font-size: 20px;
+			background-color: #2b5987;
+			border-radius: 5px;
+			text-decoration: none;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div id="errorImg">
+			<img src="/img/500.png"  alt="500.png"/>
+		</div>
+		<a href="javascript:;" class="btn" onclick="goback()">返回</a>
+	</div>
+	<script>
+	function goback(){
+		window.location.href = window.location.origin + '/admin/logout';
+	}
+	</script>
+</body>
+</html>

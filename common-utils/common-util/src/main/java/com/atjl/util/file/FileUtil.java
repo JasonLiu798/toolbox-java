@@ -8,6 +8,7 @@ import com.atjl.util.common.CmdOptionUtil;
 import com.atjl.util.config.ConfigIntParser;
 import com.atjl.util.constant.SystemConstant;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -359,6 +360,7 @@ public final class FileUtil {
         return cat2list(path, 0);
     }
 
+
     /**
      * read file content to List<String>
      * 1=skip space line
@@ -375,6 +377,7 @@ public final class FileUtil {
         FileReader fileReader = null;
         try {
             fileReader = new FileReader(path);
+            //res = IOUtils.readLines(fileReader);
             in = new BufferedReader(fileReader);
             line = in.readLine();
             while (line != null) {

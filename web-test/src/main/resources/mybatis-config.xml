@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <settings>
+        <setting name="logPrefix" value="dao."/>
+    </settings>
+
+    <!--<typeAliases>-->
+
+    <!--</typeAliases>-->
+
+
+    <!-- 配置分页插件 -->
+    <!--<plugins>-->
+        <!--<plugin interceptor="com.github.pagehelper.PageHelper">-->
+            <!--<property name="pageSizeZero" value="true"/>-->
+        <!--</plugin>-->
+
+        <!-- sql拦截器 	dialect 判断数据库分页语法  pageSqlId 触发方法名
+        <plugin interceptor="mybatis.PagePlugin">
+            <property name="pageSqlId" value=".*PageHelper*.*" />
+        </plugin>
+        -->
+
+    <!--</plugins>-->
+
+
+</configuration>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="300 seconds" debug="false">
+    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
+    <!--<property name="LOG_HOME" value="D:\logs" />-->
+
+    <property name="LOG_HOME" value="${jetty.base:-.}/logs"/>
+
+    <!--<property name="AUDIT_LOG_FORMAT" value="%msg%n"/>-->
+
+    <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+    <!--参考ch.qos.logback.classic.PatternLayout -->
+    <!-- property name="LOG_FORMAT" value="%d{MM-dd HH:mm:ss.SSS} [%thread]
+        %-5level %class.%exeMethod\\(%F:%L\\) - %msg%n" / -->
+    <property name="LOG_FORMAT"
+              value="%d{MM-dd HH:mm:ss.SSS} [%thread] %-5level %class.%method\\(%F:%L\\) - %msg%n"/>
+
+    <!--<appender name="STDOUT1" class="ch.qos.logback.core.ConsoleAppender">-->
+    <!--&lt;!&ndash;<filter class="ch.qos.logback.classic.filter.LevelFilter">&ndash;&gt;-->
+    <!--&lt;!&ndash;<level>INFO</level>&ndash;&gt;-->
+    <!--&lt;!&ndash;<onMatch>ACCEPT</onMatch>&ndash;&gt;-->
+    <!--&lt;!&ndash;<onMismatch>DENY</onMismatch>&ndash;&gt;-->
+    <!--&lt;!&ndash;</filter>&ndash;&gt;-->
+    <!--<filter>-->
+    <!--<evaluator> &lt;!&ndash; defaults to type ch.qos.logback.classic.boolex.JaninoEventEvaluator              event.getThreadName().contains("Catalina")-->
+    <!--&ndash;&gt;-->
+    <!--<expression><![CDATA[-->
+    <!--event.getLoggerName().contains("org.eclipse")-->
+    <!--|| event.getLoggerName().contains("o.h.")-->
+    <!--]]></expression>-->
+    <!--</evaluator>-->
+    <!--<OnMismatch>NEUTRAL</OnMismatch>-->
+    <!--<OnMatch>DENY</OnMatch>-->
+    <!--</filter>-->
+    <!--<encoder charset="UTF-8">-->
+    <!--<pattern>${LOG_FORMAT}</pattern>-->
+    <!--</encoder>-->
+    <!--</appender>-->
+
+    <!--
+<filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+    <evaluator> defaults to type ch.qos.logback.classic.boolex.JaninoEventEvaluator              event.getThreadName().contains("Catalina")
+    -->
+    <!--<expression>logger.contains("springfox") ||-->
+    <!--logger.contains("org.eclipse")-->
+    <!--</expression>-->
+    <!--   <expression><![CDATA[
+    event.getLoggerName().contains("org.eclipse")
+    || event.getLoggerName().contains("org.apache.ibatis")
+    || event.getLoggerName().contains("springfox.documentation")
+ ]]></expression>-->
+    <!--</evaluator>-->
+    <!--<OnMismatch>NEUTRAL</OnMismatch>-->
+    <!--<OnMatch>DENY</OnMatch>-->
+    <!--</filter>-->
+
+
+    <!--<filter class="ch.qos.logback.core.filter.EvaluatorFilter">-->
+    <!--<evaluator>-->
+    <!--<expression>logger.contains("springframework")</expression>-->
+    <!--</evaluator>-->
+    <!--<OnMismatch>NEUTRAL</OnMismatch>-->
+    <!--<OnMatch>DENY</OnMatch>-->
+    <!--</filter>-->
+
+    <!-- 控制台输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 日志输出编码 -->
+        <encoder charset="UTF-8">
+            <pattern>${LOG_FORMAT}</pattern>
+        </encoder>
+    </appender>
+
+
+    <!-- 按照每天生成日志文件 -->
+    <appender name="DAILYFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder charset="UTF-8">
+            <pattern>${LOG_FORMAT}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件名-->
+            <fileNamePattern>${LOG_HOME}/novatar_%d{yyyyMMdd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!--日志文件最大的大小 -->
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+
+    <!--<appender name="SECFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+    <!--<encoder charset="UTF-8">-->
+    <!--<pattern>${AUDIT_LOG_FORMAT}</pattern>-->
+    <!--</encoder>-->
+    <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+    <!--&lt;!&ndash;日志文件输出的文件名&ndash;&gt;-->
+    <!--<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">-->
+    <!--&lt;!&ndash;日志文件最大的大小 &ndash;&gt;-->
+    <!--<maxFileSize>100MB</maxFileSize>-->
+    <!--</timeBasedFileNamingAndTriggeringPolicy>-->
+    <!--<maxHistory>10</maxHistory>-->
+    <!--</rollingPolicy>-->
+    <!--</appender>-->
+
+    <!--<logger name="org.springframework.beans" level="INFO">-->
+    <!--<appender-ref ref="STDOUT"/>-->
+    <!--</logger>-->
+
+    <!--<logger name="springfox.documentation.swagger.readers.operation" level="INFO" addtivity="false">-->
+
+
+    <logger name="com.atjl" level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+
+    <!-- 日志输出级别 -->
+    <!-- OFF, ERROR, WARN, INFO, DEBUG, TRACE, ALL -->
+    <!--<root level="DEBUG">-->
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+        <!--<appender-ref ref="DAILYFILE"/>-->
+    </root>
+
+</configuration>
