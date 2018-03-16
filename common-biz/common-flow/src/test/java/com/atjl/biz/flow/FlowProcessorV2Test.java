@@ -5,8 +5,6 @@ import org.junit.rules.ExpectedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//import com.sf.inv.process.api.FlowFunc;
-//import com.sf.inv.process.flow.FlowProc;
 
 public class FlowProcessorV2Test {
     private static Logger LOG = LoggerFactory.getLogger(FlowProcessorV2Test.class);
