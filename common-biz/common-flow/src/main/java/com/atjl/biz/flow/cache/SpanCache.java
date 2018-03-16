@@ -1,7 +1,7 @@
-package com.sf.inv.process.cache;
+package com.atjl.biz.flow.cache;
 
-import com.sf.inv.process.core.Span;
-import com.sf.inv.spi.ICache;
+import com.atjl.common.api.ICache;
+import com.atjl.biz.flow.core.Span;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
@@ -37,9 +37,10 @@ public class SpanCache implements ICache<Span> {
     }
 
     @Override
-    public boolean exist(String key) {
+    public boolean contain(String key) {
         return cache.containsKey(key);
     }
+
 
     @Override
     public Span remove(String key) {

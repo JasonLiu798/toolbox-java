@@ -1,13 +1,10 @@
-package com.sf.inv.process.core;
+package com.atjl.biz.flow.core;
 
-import com.sf.inv.dto.common.ResponseDataDto;
-import com.sf.inv.dto.errorcode.CommonOuterError;
-import com.sf.inv.dto.errorcode.CommonOuterErrorCode;
-import com.sf.inv.process.api.FlowRequest;
-import com.sf.inv.log.LogContext;
-import com.sf.inv.process.dto.FlowConstant;
-import com.sf.inv.util.CollectionHelper;
-import org.apache.commons.collections.map.HashedMap;
+import com.atjl.biz.flow.dto.FlowConstant;
+import com.atjl.common.api.resp.ResponseDataDto;
+import com.atjl.log.api.LogUtil;
+import com.atjl.util.collection.CollectionUtil;
+import com.atjl.biz.flow.api.FlowRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -29,10 +26,10 @@ public class SpanExecutor {
      */
     public <P, T> ResponseDataDto process(Span span, P initParam, T globalParam) {
         List<String> seq = span.getExecuteSeq();
-        if (CollectionHelper.isEmpty(seq)) {
+        if (CollectionUtil.isEmpty(seq)) {
             return null;
         }
-        LogContext.debug("execute seq {}", seq);
+        LogUtil.debug("execute seq {}", seq);
         ResponseDataDto finalResp = null;
         FlowRequest nextParam = new FlowRequest(initParam);
         int i = 0;
@@ -52,7 +49,7 @@ public class SpanExecutor {
             }
             SpanUnit spanUnit = id2SpanUnit.get(curFlowId);
             //flow.setContextData(this.contextData);//flow共享
-            LogContext.debug("execute span unit {}", spanUnit);
+            LogUtil.debug("execute span unit {}", spanUnit);
 
             //set request
             preDataContext.put(FlowConstant.KEY_REQUEST, nextParam);
@@ -75,12 +72,12 @@ public class SpanExecutor {
             } catch (Exception e) {
                 excep = e;
                 exceptionOccur = true;
-                LogContext.debug("flow invoke exception", e);
+                LogUtil.debug("flow invoke exception", e);
             }
 
             finalResp = null;//resp;
             ResponseDataDto resp = spanUnit.getResponse();
-            LogContext.debug("span unit {} response {}", spanUnit.getSuid(), resp);
+            LogUtil.debug("span unit {} response {}", spanUnit.getSuid(), resp);
 
             if (resp != null) {
                 goon = resp.getCode() == 0 ? true : false;
@@ -89,10 +86,10 @@ public class SpanExecutor {
                     goon = true;
                 }
                 if (resp != null) {
-                    nextParam = new FlowRequest<>(resp.getData());
+                    nextParam = new FlowRequest<>(resp.getResult());
                     finalResp = resp;
                 } else {
-                    LogContext.debug("####response null");
+                    LogUtil.debug("####response null");
                 }
             } else {
                 //exception occur; flow not set response
@@ -102,7 +99,8 @@ public class SpanExecutor {
             //check exception occur 判断异常是否发生
             if (exceptionOccur) {
                 goon = false;
-                finalResp = new ResponseDataDto(CommonOuterErrorCode.FLOW_INVOKE_ERROR, CommonOuterErrorCode.FLOW_INVOKE_ERROR_MSG, excep);
+                //, excep
+                finalResp = new ResponseDataDto(1001,"xxxx");
             }
             //check exception occur continue 判断异常发生是否继续选项
             if (spanUnit.isEnableExceptionContinue()) {
@@ -142,7 +140,7 @@ public class SpanExecutor {
         }
         StringBuilder sb = new StringBuilder();
         List<String> seq = span.getExecuteSeq();
-        if (CollectionHelper.isEmpty(seq)) {
+        if (CollectionUtil.isEmpty(seq)) {
             return "";
         }
         int lastIdx = seq.size() - 1;

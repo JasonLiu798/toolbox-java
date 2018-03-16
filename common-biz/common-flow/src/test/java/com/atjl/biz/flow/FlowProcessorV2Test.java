@@ -1,28 +1,89 @@
-package com.sf.inv.process;
+package com.atjl.biz.flow;
 
-import com.sf.inv.log.LogContext;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class FlowProcessorTest {
+//import com.sf.inv.process.api.FlowFunc;
+//import com.sf.inv.process.flow.FlowProc;
+
+public class FlowProcessorV2Test {
+    private static Logger LOG = LoggerFactory.getLogger(FlowProcessorV2Test.class);
 
     @Test
     public void test1() {
     }
-/*
+    /*
     @Test
     public void testAddFuncFlow() throws Exception {
         String[] ids = new String[]{"func1", "func2", "func3"};
-        List<String> idl = CollectionHelper.array2List(ids);
+        //List<String> idl = CollectionHelper.array2List(ids);
 
-        //func1 noparam
-        IFunctionNoParam funcNoParam = (IFunctionNoParam<String>) () -> {
+        //flow1 noparam
+        Flow flow1 = new Flow() {
+            @Override
+            public void action() {
+                System.out.println("flow action,param no");
+            }
+        };
+
+        Flow flow2 = new FlowProc() {
+            @Override
+            public void action() {
+                System.out.println("flow proc action");
+            }
+        };
+
+        Flow flow3 = new FlowFunc() {
+            @Override
+            public void action() {
+                FlowRequest req = this.getRequest();
+                FlowResponse resp = new FlowResponse();
+                resp.setData("func resp");
+                LOG.info("flow func action,param {},resp {}",req,resp);
+                this.setResponse(resp);
+            }
+        };
+
+        FlowProcessor flowProcessor = new FlowProcessor();
+//        boolean res = flowProcessor.addSnippet(flow1,0);
+//        System.out.println("##########add 1 "+res);
+//        flowProcessor.addSnippet(flow2,0);
+//        System.out.println("##########add 2 "+res);
+        flowProcessor.addSnippet(flow3,0);
+//        System.out.println("##########add 3 "+res);
+        String req = "reqData";
+        String glob = "globData";
+        //flowProcessor.process(req,glob);
+
+        String graph = flowProcessor.getFlowExecuteGraph();
+        System.out.println("############## graph ############");
+        System.out.println(graph);
+        System.out.println("############## start execute ############");
+        FlowResponse resp = flowProcessor.process(req,glob);
+        System.out.println("############## final result " + resp);
+
+//        FlowOptionGen gen = new FlowOptionGen();
+//        int option = gen.getNormalOption();
+
+//        flowProcessor.addSnippet(ids[0], funcNoParam, option);
+//        flowProcessor.addSnippet(ids[1], funcParam);
+//        flowProcessor.addSnippet(ids[2], funcParam2, option);
+//        boolean res = flowProcessor.addSnippet(funcNoParam);
+//        res = flowProcessor.addSnippet(funcParam);
+//        res = flowProcessor.addSnippet(funcParam2);
+
+
+
+        /*
             FlowResponse<String> resp = new FlowResponse<>();
             resp.setData("func1's resp");
             System.out.println("func1 action,param no,res " + resp);
             return resp;
-        };
+        };*/
 
+        /*
         //func2,use func1's resp
         IFunctionParam<String, String> funcParam = param -> {
             FlowResponse<String> resp = new FlowResponse<>();
@@ -39,27 +100,10 @@ public class FlowProcessorTest {
             System.out.println(msg);
             return resp;
         };
-        FlowOptionGen gen = new FlowOptionGen();
-        int option = gen.getNormalOption();
-        FlowProcessor flowProcessor = new FlowProcessor();//ids);
-//        flowProcessor.addSnippet(ids[0], funcNoParam, option);
-//        flowProcessor.addSnippet(ids[1], funcParam);
-//        flowProcessor.addSnippet(ids[2], funcParam2, option);
-        boolean res = flowProcessor.addSnippet(funcNoParam);
-        System.out.println("##########add 1 "+res);
-        res = flowProcessor.addSnippet(funcParam);
-        System.out.println("##########add 2 "+res);
-        res = flowProcessor.addSnippet(funcParam2);
-        System.out.println("##########add 3 "+res);
-        String graph = flowProcessor.getFlowExecuteGraph();
-        System.out.println("############## graph ############");
-        System.out.println(graph);
-        System.out.println("############## start execute ############");
-        FlowResponse resp = flowProcessor.process(ids);
-        System.out.println("############## final result " + resp);
+*/
 
-    }
-
+//    }
+    /*
     @Test
     public void testExceptionBreak() {
         String[] ids = new String[]{"func1", "func2"};
@@ -187,7 +231,6 @@ public class FlowProcessorTest {
 
     @BeforeClass
     public static void beforeClass() throws Exception {
-        LogContext.enableDev();
     }
 
     @Rule

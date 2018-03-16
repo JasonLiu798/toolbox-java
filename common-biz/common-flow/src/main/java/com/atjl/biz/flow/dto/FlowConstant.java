@@ -1,4 +1,4 @@
-package com.sf.inv.process.dto;
+package com.atjl.biz.flow.dto;
 
 
 public class FlowConstant {

@@ -1,13 +1,14 @@
-package com.sf.inv.process.api;
+package com.atjl.biz.flow.api;
 
-import com.sf.inv.dto.common.ResponseDataDto;
 //import com.sf.inv.dto.flow.FlowResponse;
-import com.sf.inv.process.cache.SpanCache;
-import com.sf.inv.process.core.Span;
-import com.sf.inv.process.core.SpanExecutor;
-import com.sf.inv.process.core.SpanUtil;
-import com.sf.inv.util.CollectionHelper;
-import com.sf.inv.util.StringCheckUtil;
+
+import com.atjl.biz.flow.cache.SpanCache;
+import com.atjl.common.api.resp.ResponseDataDto;
+import com.atjl.util.character.StringCheckUtil;
+import com.atjl.util.collection.CollectionUtil;
+import com.atjl.biz.flow.core.Span;
+import com.atjl.biz.flow.core.SpanExecutor;
+import com.atjl.biz.flow.core.SpanUtil;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -17,14 +18,13 @@ import java.util.Set;
 /**
  * flow manager
  * TODO: 验证线程安全
- * com.sf.inv.process
  */
 @Component
 public class FlowManager {
     @Resource
-    SpanCache sequenceCache;
+    private SpanCache sequenceCache;
     @Resource
-    SpanExecutor spanExecutor;
+    private SpanExecutor spanExecutor;
 
     /**
      * @return
@@ -33,7 +33,7 @@ public class FlowManager {
         if (StringCheckUtil.isEmpty(id)) {
             return -1;
         }
-        if (CollectionHelper.isEmpty(snippets)) {
+        if (CollectionUtil.isEmpty(snippets)) {
             return -2;
         }
         //String spanId = SpanUtil.generateId(snippets);
@@ -46,18 +46,19 @@ public class FlowManager {
     }
 
     public boolean isRegiste(String id) {
-        return sequenceCache.exist(id);
+        return sequenceCache.contain(id);
     }
 
     /**
      * 执行
+     *
      * @param reqParam
      * @param globParam
      * @param snippets
      * @return
      */
     public ResponseDataDto execute(Object reqParam, Object globParam, Flow... snippets) {
-        if (CollectionHelper.isEmpty(snippets)) {
+        if (CollectionUtil.isEmpty(snippets)) {
             return new ResponseDataDto();//error
         }
         String id = SpanUtil.generateId(snippets);
@@ -66,9 +67,9 @@ public class FlowManager {
         }
         boolean isReg = isRegiste(id);
         if (!isReg) {
-            List<Flow> flowList = CollectionHelper.array2List(snippets);
-            int regRes = registe(id,flowList);
-            if(regRes<0){
+            List<Flow> flowList = CollectionUtil.array2List(snippets);
+            int regRes = registe(id, flowList);
+            if (regRes < 0) {
                 return null;//error
             }
         }
@@ -81,14 +82,15 @@ public class FlowManager {
         return spanExecutor.process(span, req, globParam);
     }
 
-    public Set<String> getSeqs(){
+    public Set<String> getSeqs() {
         return sequenceCache.getKeys();
     }
 
-    public String getGraph(String id){
+    public String getGraph(String id) {
         Span span = sequenceCache.get(id);
         return spanExecutor.getFlowExecuteGraph(span);
     }
+
     public SpanCache getSequenceCache() {
         return sequenceCache;
     }

@@ -1,14 +1,14 @@
-package com.sf.inv.process.core;
+package com.atjl.biz.flow.core;
 
 
-import com.sf.inv.dto.common.ResponseDataDto;
-import com.sf.inv.process.api.FlowRequest;
-//import com.sf.inv.dto.flow.FlowResponse;
-import com.sf.inv.process.api.Flow;
+import com.atjl.biz.flow.api.Flow;
+import com.atjl.common.api.resp.ResponseDataDto;
+import com.atjl.biz.flow.api.FlowRequest;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
+
+//import com.sf.inv.dto.flow.FlowResponse;
 
 /**
  * span unit
@@ -29,10 +29,11 @@ public class SpanUnit {
         snippet.setResquest(req);
     }
 
-    public Map<String,Object> getDataContextAll(){
+    public Map<String, Object> getDataContextAll() {
         return snippet.getContextDataAll();
     }
-    public void setDataContextAll(Map<String,Object> data){
+
+    public void setDataContextAll(Map<String, Object> data) {
         snippet.setContextDataAll(data);
     }
 

@@ -1,12 +1,12 @@
-package com.sf.inv.process.core;
+package com.atjl.biz.flow.core;
 
 
-import com.sf.inv.log.LogContext;
-import com.sf.inv.process.api.Flow;
-import com.sf.inv.process.dto.FlowConstant;
-import com.sf.inv.util.CollectionHelper;
-import com.sf.inv.util.ReflectHelper;
-import com.sf.inv.util.StringCheckUtil;
+import com.atjl.biz.flow.api.Flow;
+import com.atjl.biz.flow.dto.FlowConstant;
+import com.atjl.log.api.LogUtil;
+import com.atjl.util.character.StringCheckUtil;
+import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.reflect.ReflectMethodUtil;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -43,7 +43,7 @@ public class Span {
      */
     private Integer getFlowIndex(String fid) {
         int res = -1;
-        if (CollectionHelper.isEmpty(this.executeSeq)) {
+        if (CollectionUtil.isEmpty(this.executeSeq)) {
             return res;
         }
         for (int i = 0; i < this.executeSeq.size(); i++) {
@@ -89,12 +89,12 @@ public class Span {
         //String fid = snippet.getClass().getSimpleName();
         String suid = snippet.getId();
         SpanUnit spanUnit = new SpanUnit();
-        Method m = ReflectHelper.getDeclaredMethod(snippet, FlowConstant.METHOD_ACTION);
-        if(m==null){
+        Method m = ReflectMethodUtil.getDeclaredMethod(snippet, FlowConstant.METHOD_ACTION);
+        if (m == null) {
             return false;
         }
         spanUnit.setActionMethod(m).setOption(option).setSnippet(snippet).setSuid(suid);
-        LogContext.debug("add spanUnit {}",spanUnit);
+        LogUtil.debug("add spanUnit {}", spanUnit);
 
         int idx = executeSeq.size();//getFlowIndex(fid);
         executeSeq.add(suid);

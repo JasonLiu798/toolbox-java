@@ -1,6 +1,6 @@
-package com.sf.inv.process.flow;
+package com.atjl.biz.flow.flow;
 
-import com.sf.inv.process.core.FlowOptionGen;
+import com.atjl.biz.flow.core.FlowOptionGen;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 

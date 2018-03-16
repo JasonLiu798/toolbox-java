@@ -1,9 +1,9 @@
-package com.sf.inv.process.api;
+package com.atjl.biz.flow.api;
 
-import com.sf.inv.dto.common.ResponseDataDto;
-//import com.sf.inv.dto.flow.FlowResponse;
-import com.sf.inv.log.LogContext;
-import com.sf.inv.process.dto.FlowConstant;
+import com.atjl.common.api.resp.ResponseDataDto;
+import com.atjl.common.api.resp.ResponseDataGenericDto;
+import com.atjl.log.api.LogUtil;
+import com.atjl.biz.flow.dto.FlowConstant;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * for extend
  */
-public abstract class Flow<P,R> {
+public abstract class Flow<P, R> {
     protected ThreadLocal<Map<String, Object>> contextData = new ThreadLocal() {
         protected Map<String, Object> initialValue() {
             return new HashMap<>();
@@ -24,7 +24,7 @@ public abstract class Flow<P,R> {
     /**
      *
      */
-    public String getId(){
+    public String getId() {
         //LogContext.debug( "clz name "+this.getClass().getCanonicalName());
         //LogContext.debug( "clz name "+this.getClass().getSimpleName());
         //LogContext.debug( "clz name simple "+this.getClass().getName());
@@ -40,12 +40,12 @@ public abstract class Flow<P,R> {
         try {
             res = clz.cast(contextData.get().get(key));
         } catch (Exception e) {
-            LogContext.debug("context data get or cast error,key {},clz {}", e, key, clz);
+            LogUtil.debug("context data get or cast error,key {},clz {}", e, key, clz);
         }
         return res;
     }
 
-    public Map<String,Object> getAllDataContext(){
+    public Map<String, Object> getAllDataContext() {
         return contextData.get();
     }
 
@@ -59,27 +59,27 @@ public abstract class Flow<P,R> {
     }
 
 
-    public Map<String,Object> getContextDataAll() {
+    public Map<String, Object> getContextDataAll() {
         return contextData.get();
     }
 
-    public void setContextDataAll(Map<String,Object>  map) {
+    public void setContextDataAll(Map<String, Object> map) {
         contextData.set(map);
     }
 
     public <P> FlowRequest<P> getRequest() {
-        return getContextData(FlowConstant.KEY_REQUEST,FlowRequest.class);
+        return getContextData(FlowConstant.KEY_REQUEST, FlowRequest.class);
     }
 
     public <P> P getRequestParam() {
-        return (P) getContextData(FlowConstant.KEY_REQUEST,FlowRequest.class).getParam();
+        return (P) getContextData(FlowConstant.KEY_REQUEST, FlowRequest.class).getParam();
     }
 
     public void setResquest(FlowRequest req) {
         setContextData(FlowConstant.KEY_REQUEST, req);
     }
 
-    public <R> void setResponse(ResponseDataDto<R> resp) {
+    public <R> void setResponse(ResponseDataGenericDto<R> resp) {
         setContextData(FlowConstant.KEY_RESPONSE, resp);
     }
 
@@ -110,7 +110,7 @@ public abstract class Flow<P,R> {
     }
 
     public <T> T getGlobal(Class<T> clz) {
-        return getContextData(FlowConstant.KEY_GLOBAL,clz);
+        return getContextData(FlowConstant.KEY_GLOBAL, clz);
     }
 
     public void setGlobal(Object obj) {

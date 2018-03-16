@@ -1,7 +1,7 @@
-package com.sf.inv.process.core;
+package com.atjl.biz.flow.core;
 
 
-import com.sf.inv.process.dto.FlowConstant;
+import com.atjl.biz.flow.dto.FlowConstant;
 
 /**
  * flow option util generator
