@@ -8,7 +8,6 @@ import com.atjl.util.common.CmdOptionUtil;
 import com.atjl.util.config.ConfigIntParser;
 import com.atjl.util.constant.SystemConstant;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -214,7 +213,7 @@ public final class FileUtil {
         if (StringCheckUtil.isEmpty(className)) {
             return "";
         }
-        // className.replaceAll(StringUtil.DOT_SEP_NO_REX,SystemConstant.DIR_SEP);
+        // className.replaceAll(StringUtil.DOT_SEP_NO_REX,SystemConstant.DIR_OS_SEP);
         String[] arr = className.split(RegexUtil.DOT_SEP_NO_REX);
         //System.out.println("arr size "+arr.length+","+className);
         if (arr.length == 1) {
@@ -225,7 +224,7 @@ public final class FileUtil {
         for (int i = 0; i < arr.length; i++) {
             sb.append(arr[i]);
             if (i != lenMinus1) {
-                sb.append(PathUtil.DIR_SEP);
+                sb.append(PathUtil.DIR_SEP_USING);
             }
         }
         return sb.toString();

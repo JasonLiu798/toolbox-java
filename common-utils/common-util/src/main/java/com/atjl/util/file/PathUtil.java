@@ -18,10 +18,23 @@ public class PathUtil {
     /**
      * dir separator ("/" on UNIX,"\" on Win)
      */
-    public static final String DIR_SEP = System.getProperty("file.separator");
+    public static final String DIR_OS_SEP = System.getProperty("file.separator");
     public static final String DIR_SEP_POSIX = "/";
     public static final String DIR_SEP_WIN = "\\";
     public static final String DIR_SEP_UNKNOWN = "unknown";
+
+
+    public static String DIR_SEP_USING = DIR_OS_SEP;
+
+    /**
+     * 强制指定分隔符
+     * 注：主要用于windows下的 moba,cygwin
+     */
+    public static void forceUse(String sep) {
+        DIR_SEP_USING = sep;
+    }
+
+
     /**
      * win disk separator
      * : in C:\\aa.txt
@@ -46,7 +59,7 @@ public class PathUtil {
      * @param filepath
      * @return
      */
-    public static String getPathSep(String filepath) {
+    public static String getOSPathSep(String filepath) {
         if (StringCheckUtil.isEmpty(filepath)) {
             return DIR_SEP_UNKNOWN;
         }
@@ -164,13 +177,13 @@ public class PathUtil {
      * @return
      */
     public static String getFileName(String filePath) {
-        String sep = getPathSep(filePath);
+        String sep = getOSPathSep(filePath);
         if (isUnknownPathSep(sep)) {
             return filePath;
         }
         int sepIdx = filePath.lastIndexOf(sep);
-        if (sepIdx+1 >= 0 && sepIdx+1 < filePath.length()) {
-            return filePath.substring(sepIdx+1);
+        if (sepIdx + 1 >= 0 && sepIdx + 1 < filePath.length()) {
+            return filePath.substring(sepIdx + 1);
         }
         return "";
     }
@@ -196,15 +209,15 @@ public class PathUtil {
      * @return path string
      */
     public static String join(String... path) {
-        if (DIR_SEP.equals(DIR_SEP_WIN)) {
-            return joinInnerRelative(DIR_SEP, path);
+        if (DIR_SEP_USING.equals(DIR_SEP_WIN)) {
+            return joinInnerRelative(DIR_SEP_WIN, path);
         } else {
-            return joinInnerAbs(DIR_SEP, path);
+            return joinInnerAbs(DIR_SEP_USING, path);
         }
     }
 
     //    public static String joinRelaive(String ... path){
-//        return joinInnerRelative(DIR_SEP,path);
+//        return joinInnerRelative(DIR_OS_SEP,path);
 //    }
     public static String joinInnerRelative(String sep, String... paths) {
         return joinInner(false, sep, paths);
@@ -217,6 +230,7 @@ public class PathUtil {
     /**
      * join with specified sep
      *
+     * @param isAbsolute 是否去掉头部的 分隔符,windows平台需要去除，poxis无需
      * @param sep
      * @param paths
      * @return path string

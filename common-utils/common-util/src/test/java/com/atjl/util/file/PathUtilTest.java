@@ -53,7 +53,25 @@ public class PathUtilTest {
 
     @Test
     public void testJoin() throws Exception {
+        PathUtil.forceUse(PathUtil.DIR_SEP_POSIX);
+        assertEquals(PathUtil.DIR_SEP_POSIX + "sdfds" + PathUtil.DIR_SEP_POSIX + "sdf", PathUtil.join("sdfds", "sdf"));
 
+        String res = PathUtil.join("sdfds", "df");
+        // /../sdfds/s/df
+        res = PathUtil.filterPath(PathUtil.DIR_SEP_POSIX,res);
+        System.out.println("res:"+res);
+//        assertEquals(PathUtil.DIR_SEP_POSIX + "sdfds" + PathUtil.DIR_SEP_POSIX + "s/df", PathUtil.join("../sdfds", "s/df"));
+
+        PathUtil.forceUse(PathUtil.DIR_SEP_WIN);
+        assertEquals("E:\\fds\\sdf", PathUtil.join("E:\\fds", "sdf"));
+
+        /*
+        assertEquals("ahah", PathUtil.getFileName("D:\\ahah"));
+        assertEquals("ahah", PathUtil.getFileName("ahah"));
+        assertEquals("ahah", PathUtil.getFileName("D:\\shshhs\\ahah"));
+        assertEquals("ahah", PathUtil.getFileName("/shshhs/ahah"));
+        assertEquals("", PathUtil.getFileName("/shshhs/ahah/"));
+        */
     }
 
     @Test

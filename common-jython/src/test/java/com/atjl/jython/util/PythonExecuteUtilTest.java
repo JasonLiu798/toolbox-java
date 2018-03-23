@@ -1,30 +1,25 @@
 package com.atjl.jython.util;
 
-import org.junit.*;
-import org.junit.rules.ExpectedException;
 import com.atjl.util.common.SystemUtil;
-import org.junit.runner.RunWith;
-import org.python.core.PyObject;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.atjl.util.json.JSONFastJsonUtil;
 import com.atjl.util.json.JSONFmtUtil;
+import org.junit.*;
+import org.junit.rules.ExpectedException;
+import org.python.core.PyObject;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(locations = {"classpath:test-service.xml"})
 public class PythonExecuteUtilTest {
 
-
     @Test
     public void testExecuteScript() throws Exception {
         long t = System.currentTimeMillis();
         try {
-
             //        interpreter.execfile("D:\\project\\python\\python-libs\\util\\string\\stringutil.py");
             String file = "D:\\project\\python\\python-libs\\util\\string\\stringutil.py";
 
             for (int i = 0; i < 1000; i++) {
-                PyObject res = PythonExecuteUtil.executeFile(file, "startWith", (1000-i)+"abcde", i + "");
+                PyObject res = PythonExecuteUtil.executeFile(file, "startWith", (1000 - i) + "abcde", i + "");
                 System.out.println("res: succ " + res);
             }
             //18193/1000/1000=0.018s
