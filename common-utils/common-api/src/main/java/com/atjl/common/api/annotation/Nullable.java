@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 
 /**
- * 可以为空
+ * null able note
  *
  * @since 1.0
  */

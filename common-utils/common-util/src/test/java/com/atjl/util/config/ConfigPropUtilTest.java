@@ -1,7 +1,7 @@
 package com.atjl.util.config;
 
-import com.atjl.util.collection.CollectionUtil;
-import com.atjl.util.file.FileUtil;
+import com.atjl.util.collection.CollectionUtilEx;
+import com.atjl.util.file.FileUtilEx;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 
@@ -15,7 +15,7 @@ public class ConfigPropUtilTest {
     @Test
     public void testCheckPropertiesExist() throws Exception {
 
-        List<String> f = FileUtil.ls("D:\\project\\java\\admin.zip");
+        List<String> f = FileUtilEx.ls("D:\\project\\java\\admin.zip");
         System.out.println("res:" + f);
 
     }
@@ -31,7 +31,7 @@ public class ConfigPropUtilTest {
     @Test
     public void testGetKey() throws Exception {
         String file = "test";
-        List<String> keys = CollectionUtil.newList("test1", "test2");
+        List<String> keys = CollectionUtilEx.newList("test1", "test2");
 
         ConfigPropUtil.init(file, ConfigPropConstant.TP_CLASSPATH);
 

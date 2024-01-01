@@ -1,6 +1,6 @@
 package com.atjl.util.character;
 
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
 import org.junit.Test;
 
 import java.util.List;
@@ -41,25 +41,25 @@ public class StringUtilTest {
 
     @Test
     public void testAddSpace() {
-        String res = StringUtil.addSpaceFront("123", 2, 3);
+        String res = StringUtilEx.addSpaceFront("123", 2, 3);
         System.out.println(res + "," + res.length());
     }
 
     @Test
     public void testReplaceBlank() {
-        String s = StringUtil.replaceBlank("aa\n");
+        String s = StringUtilEx.replaceBlank("aa\n");
         assertEquals(s, "aa");
-        s = StringUtil.replaceBlank("\n\taa");
+        s = StringUtilEx.replaceBlank("\n\taa");
         assertEquals(s, "aa");
-        s = StringUtil.replaceBlank("");
+        s = StringUtilEx.replaceBlank("");
         assertEquals(s, "");
-        s = StringUtil.replaceBlank(null);
+        s = StringUtilEx.replaceBlank(null);
         assertEquals(s, null);
-        s = StringUtil.replaceBlank(" aa ");
+        s = StringUtilEx.replaceBlank(" aa ");
         assertEquals(s, "aa");
-        s = StringUtil.replaceBlank("\n\taa\n\t");
+        s = StringUtilEx.replaceBlank("\n\taa\n\t");
         assertEquals(s, "aa");
-        s = StringUtil.replaceBlank("\n\ta\n\ta\n\t");
+        s = StringUtilEx.replaceBlank("\n\ta\n\ta\n\t");
         assertEquals(s, "aa");
 
     }
@@ -149,10 +149,10 @@ public class StringUtilTest {
      */
     @Test
     public void testCaptureName() throws Exception {
-        assertEquals("A", StringUtil.toUpperCaseFirstOne("a"));
-        assertEquals("Ab", StringUtil.toUpperCaseFirstOne("ab"));
-        assertEquals("", StringUtil.toUpperCaseFirstOne(""));
-        assertEquals(null, StringUtil.toUpperCaseFirstOne(null));
+        assertEquals("A", StringUtilEx.toUpperCaseFirstOne("a"));
+        assertEquals("Ab", StringUtilEx.toUpperCaseFirstOne("ab"));
+        assertEquals("", StringUtilEx.toUpperCaseFirstOne(""));
+        assertEquals(null, StringUtilEx.toUpperCaseFirstOne(null));
     }
 
 
@@ -527,44 +527,44 @@ public class StringUtilTest {
 
     @Test
     public void testTrimQuote() {
-        assertEquals(null, StringUtil.trimQuote(null));
-        assertEquals("", StringUtil.trimQuote(""));
-        assertEquals("", StringUtil.trimQuote("   "));
+        assertEquals(null, StringUtilEx.trimQuote(null));
+        assertEquals("", StringUtilEx.trimQuote(""));
+        assertEquals("", StringUtilEx.trimQuote("   "));
         //no quote
-        assertEquals("a", StringUtil.trimQuote("a"));
-        assertEquals("a", StringUtil.trimQuote("a  "));
-        assertEquals("a", StringUtil.trimQuote("  a"));
+        assertEquals("a", StringUtilEx.trimQuote("a"));
+        assertEquals("a", StringUtilEx.trimQuote("a  "));
+        assertEquals("a", StringUtilEx.trimQuote("  a"));
 
         //only single quote
-        assertEquals("", StringUtil.trimQuote("\""));
-        assertEquals("", StringUtil.trimQuote("   \""));
-        assertEquals("", StringUtil.trimQuote("\"  "));
-        assertEquals("", StringUtil.trimQuote("   \"  "));
+        assertEquals("", StringUtilEx.trimQuote("\""));
+        assertEquals("", StringUtilEx.trimQuote("   \""));
+        assertEquals("", StringUtilEx.trimQuote("\"  "));
+        assertEquals("", StringUtilEx.trimQuote("   \"  "));
 
         //only double quote
-        assertEquals("", StringUtil.trimQuote("\"\""));
-        assertEquals("", StringUtil.trimQuote("\"   \""));
-        assertEquals("", StringUtil.trimQuote("\"\"   "));
-        assertEquals("", StringUtil.trimQuote("   \"\""));
-        assertEquals("", StringUtil.trimQuote("   \"\"   "));
-        assertEquals("", StringUtil.trimQuote("   \"   \"   "));
+        assertEquals("", StringUtilEx.trimQuote("\"\""));
+        assertEquals("", StringUtilEx.trimQuote("\"   \""));
+        assertEquals("", StringUtilEx.trimQuote("\"\"   "));
+        assertEquals("", StringUtilEx.trimQuote("   \"\""));
+        assertEquals("", StringUtilEx.trimQuote("   \"\"   "));
+        assertEquals("", StringUtilEx.trimQuote("   \"   \"   "));
         //normal
-        assertEquals("a", StringUtil.trimQuote("\"a\""));
+        assertEquals("a", StringUtilEx.trimQuote("\"a\""));
         //got right
-        assertEquals("a", StringUtil.trimQuote("\"a"));
-        assertEquals("a", StringUtil.trimQuote("\"a   "));
-        assertEquals("a", StringUtil.trimQuote("   \"a"));
-        assertEquals("a", StringUtil.trimQuote("   \"a   "));
+        assertEquals("a", StringUtilEx.trimQuote("\"a"));
+        assertEquals("a", StringUtilEx.trimQuote("\"a   "));
+        assertEquals("a", StringUtilEx.trimQuote("   \"a"));
+        assertEquals("a", StringUtilEx.trimQuote("   \"a   "));
         //got left
-        assertEquals("a", StringUtil.trimQuote("a\""));
-        assertEquals("a", StringUtil.trimQuote("\"  a   \""));
-        assertEquals("a", StringUtil.trimQuote("\"a   \""));
-        assertEquals("a", StringUtil.trimQuote("\"   a\""));
-        assertEquals("asdfsasdfsdfd", StringUtil.trimQuote("\" asdfsasdfsdfd  \""));
-        assertEquals("asdfsasdfsdfd", StringUtil.trimQuote("   \" asdfsasdfsdfd  \"    "));
-        assertEquals("asdfsasdfsdfd", StringUtil.trimQuote("   \" asdfsasdfsdfd  \""));
-        assertEquals("asdfsasdfsdfd", StringUtil.trimQuote("\" asdfsasdfsdfd  \"   "));
-        assertEquals("asdf  sasdfsdfd", StringUtil.trimQuote("\" asdf  sasdfsdfd  \""));
+        assertEquals("a", StringUtilEx.trimQuote("a\""));
+        assertEquals("a", StringUtilEx.trimQuote("\"  a   \""));
+        assertEquals("a", StringUtilEx.trimQuote("\"a   \""));
+        assertEquals("a", StringUtilEx.trimQuote("\"   a\""));
+        assertEquals("asdfsasdfsdfd", StringUtilEx.trimQuote("\" asdfsasdfsdfd  \""));
+        assertEquals("asdfsasdfsdfd", StringUtilEx.trimQuote("   \" asdfsasdfsdfd  \"    "));
+        assertEquals("asdfsasdfsdfd", StringUtilEx.trimQuote("   \" asdfsasdfsdfd  \""));
+        assertEquals("asdfsasdfsdfd", StringUtilEx.trimQuote("\" asdfsasdfsdfd  \"   "));
+        assertEquals("asdf  sasdfsdfd", StringUtilEx.trimQuote("\" asdf  sasdfsdfd  \""));
     }
 
 
@@ -577,7 +577,7 @@ public class StringUtilTest {
         System.out.println("min:" + min + ",len:" + min.length());
         System.out.println("minus:" + (raw.length() - min.length()));
 
-        String res = StringUtil.simplifyFullClassName(raw, tgt);
+        String res = StringUtilEx.simplifyFullClassName(raw, tgt);
 //        String res = LogFmtUtil.simplifyFullClassName("12.3", 1);
 
         System.out.println("res:" + res + ",reslen:" + res.length());
@@ -585,15 +585,15 @@ public class StringUtilTest {
 
     @Test
     public void testSimplifyClassName2() throws Exception {
-        assertEquals("12345678901", StringUtil.simplifyFullClassName("12345678901", 10));
-        assertEquals("1234567", StringUtil.simplifyFullClassName("1234567", 10));
-        assertEquals("1.1", StringUtil.simplifyFullClassName("123456790.1", 10));
-        assertEquals(null, StringUtil.simplifyFullClassName(null, 10));
-        assertEquals("123", StringUtil.simplifyFullClassName("123", 0));
-        assertEquals("123", StringUtil.simplifyFullClassName("123", 1));
-        assertEquals("1.3", StringUtil.simplifyFullClassName("12.3", 1));
-        assertEquals("1.3.4", StringUtil.simplifyFullClassName("12.3.4", 1));
-        assertEquals("1.32.4", StringUtil.simplifyFullClassName("12.32.4", 6));
+        assertEquals("12345678901", StringUtilEx.simplifyFullClassName("12345678901", 10));
+        assertEquals("1234567", StringUtilEx.simplifyFullClassName("1234567", 10));
+        assertEquals("1.1", StringUtilEx.simplifyFullClassName("123456790.1", 10));
+        assertEquals(null, StringUtilEx.simplifyFullClassName(null, 10));
+        assertEquals("123", StringUtilEx.simplifyFullClassName("123", 0));
+        assertEquals("123", StringUtilEx.simplifyFullClassName("123", 1));
+        assertEquals("1.3", StringUtilEx.simplifyFullClassName("12.3", 1));
+        assertEquals("1.3.4", StringUtilEx.simplifyFullClassName("12.3.4", 1));
+        assertEquals("1.32.4", StringUtilEx.simplifyFullClassName("12.32.4", 6));
 //        assertEquals(,LogFmtUtil.simplifyFullClassName(null, 10));
 
     }
@@ -601,38 +601,38 @@ public class StringUtilTest {
 
     @Test
     public void testgetFirstUpperBefore() {
-        assertEquals("asdf", StringUtil.getFirstUpperBefore("asdfAA"));
-        assertEquals("", StringUtil.getFirstUpperBefore("AA"));
-        assertEquals("aaa", StringUtil.getFirstUpperBefore("aaa"));
-        assertEquals(null, StringUtil.getFirstUpperBefore(null));
-        assertEquals("a", StringUtil.getFirstUpperBefore("a"));
-        assertEquals("", StringUtil.getFirstUpperBefore("A"));
+        assertEquals("asdf", StringUtilEx.getFirstUpperBefore("asdfAA"));
+        assertEquals("", StringUtilEx.getFirstUpperBefore("AA"));
+        assertEquals("aaa", StringUtilEx.getFirstUpperBefore("aaa"));
+        assertEquals(null, StringUtilEx.getFirstUpperBefore(null));
+        assertEquals("a", StringUtilEx.getFirstUpperBefore("a"));
+        assertEquals("", StringUtilEx.getFirstUpperBefore("A"));
     }
 
 
     @Test
     public void testFilterEmpty() {
         String[] s = {};
-        String[] res = StringUtil.filterEmpty(s);
+        String[] res = StringUtilEx.filterEmpty(s);
         System.out.println("res:" + res);
 
-        res = StringUtil.filterEmpty(new String[]{"123", null, "234"});
-        System.out.println("res:" + CollectionUtil.array2List(res));
+        res = StringUtilEx.filterEmpty(new String[]{"123", null, "234"});
+        System.out.println("res:" + CollectionUtilEx.array2List(res));
 
-        res = StringUtil.filterEmpty(new String[]{"", "123", null, "234"});
-        System.out.println("res:" + CollectionUtil.array2List(res));
+        res = StringUtilEx.filterEmpty(new String[]{"", "123", null, "234"});
+        System.out.println("res:" + CollectionUtilEx.array2List(res));
 
     }
 
     @Test
     public void testFilterEmptyList() {
-        List<String> res = StringUtil.filterEmpty((List) null);
+        List<String> res = StringUtilEx.filterEmpty((List) null);
         System.out.println("res:" + res);
 
-        res = StringUtil.filterEmpty(CollectionUtil.newList("123", null, "234"));
+        res = StringUtilEx.filterEmpty(CollectionUtilEx.newList("123", null, "234"));
         System.out.println("res:" + res);
 
-        res = StringUtil.filterEmpty(CollectionUtil.newList("", "123", null, "234"));
+        res = StringUtilEx.filterEmpty(CollectionUtilEx.newList("", "123", null, "234"));
         System.out.println("res:" + res);
 
     }

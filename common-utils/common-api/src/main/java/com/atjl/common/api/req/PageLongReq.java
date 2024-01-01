@@ -3,14 +3,17 @@ package com.atjl.common.api.req;
 import com.atjl.common.constant.CommonConstant;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 
 /**
  * 默认分页请求
  *
- * @author jasondliu
+ * @author atjl
  */
+
+@Data
 @ApiModel(value = "分页基础请求对象")
 public class PageLongReq extends PageBaseReq implements Serializable {
     @ApiModelProperty(value = "当前页码", example = "查询需分页时传递，默认1")
@@ -30,23 +33,9 @@ public class PageLongReq extends PageBaseReq implements Serializable {
         this.currentPage = currentPage;
         this.pageSize = pageSize;
     }
-
-    public Long getCurrentPage() {
-        return currentPage;
-    }
-
-    public void setCurrentPage(Long currentPage) {
-        this.currentPage = currentPage;
-    }
-
     public Long getPageSize() {
         return pageSize == null || pageSize <= 0 ? CommonConstant.DFT_PAGE_SIZE : pageSize;
     }
-
-    public void setPageSize(Long pageSize) {
-        this.pageSize = pageSize;
-    }
-
     public Long getCurrentIndex() {
         return getCurrentPage() == null || getCurrentPage() <= 0 ? 0 : (getCurrentPage() - 1) * getPageSize();
     }

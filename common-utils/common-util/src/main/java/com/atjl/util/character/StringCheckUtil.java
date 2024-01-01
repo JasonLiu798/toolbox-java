@@ -1,6 +1,7 @@
 package com.atjl.util.character;
 
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
 
@@ -15,11 +16,7 @@ public final class StringCheckUtil {
      * ################## empty check ##################
      */
     public static boolean isEmpty(String target) {
-        return (target == null || target.length() == 0);
-    }
-
-    public static boolean isEmptyEx(String target) {
-        return (target == null || target.length() == 0 || NULL.equalsIgnoreCase(target));
+        return StringUtils.isEmpty(target);
     }
 
     public static boolean isNotEmpty(String target) {
@@ -51,7 +48,6 @@ public final class StringCheckUtil {
      * check Exist one empty
      *
      * @param targets string array
-     * @return
      */
     public static boolean isExistEmpty(String... targets) {
         if (targets == null || targets.length == 0) {
@@ -143,16 +139,7 @@ public final class StringCheckUtil {
      * @return
      */
     public static boolean equal(String s1, String s2) {
-        // all null
-        if (s1 == null && s2 == null) {
-            return true;
-        }
-        //one is null
-        if (s1 == null || s2 == null) {
-            return false;
-        }
-        //all not null
-        return s1.equals(s2);
+        return StringUtils.equals(s1,s2);
     }
 
     /**
@@ -164,10 +151,10 @@ public final class StringCheckUtil {
      */
     public static boolean equalExist(String src, String... tgt) {
         //all null
-        if (src == null && CollectionUtil.isEmpty(tgt)) {
+        if (src == null && CollectionUtilEx.isEmpty(tgt)) {
             return true;
         }
-        if (!CollectionUtil.isEmpty(tgt)) {
+        if (!CollectionUtilEx.isEmpty(tgt)) {
             for (String t : tgt) {
                 if (equal(src, t)) {
                     return true;
@@ -273,7 +260,7 @@ public final class StringCheckUtil {
     }
 
     public static boolean containExist(String raw, String... arr) {
-        if (CollectionUtil.isEmpty(arr)) {
+        if (CollectionUtilEx.isEmpty(arr)) {
             return false;
         }
         List<String> l = Arrays.asList(arr);
@@ -284,7 +271,7 @@ public final class StringCheckUtil {
      * raw是否包含了 arr内任何一个子字符串
      */
     public static boolean containExistInCollection(String raw, Collection<String> arr) {
-        if (CollectionUtil.isEmpty(arr) || StringCheckUtil.isEmpty(raw)) {
+        if (CollectionUtilEx.isEmpty(arr) || StringCheckUtil.isEmpty(raw)) {
             return false;
         }
         for (String s : arr) {
@@ -311,7 +298,7 @@ public final class StringCheckUtil {
     }
 
     public static boolean startWithExist(String raw, String... arr) {
-        if (CollectionUtil.isEmpty(arr)) {
+        if (CollectionUtilEx.isEmpty(arr)) {
             return false;
         }
         if (StringCheckUtil.isEmpty(raw)) {

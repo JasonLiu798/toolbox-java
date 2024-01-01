@@ -1,10 +1,11 @@
 package com.atjl.util.thread;
 
 import com.atjl.common.api.resp.ResponseDataDto;
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
 import com.atjl.util.reflect.ReflectClassUtil;
 import com.atjl.util.thread.domain.ThreadPoolStatus;
 import com.atjl.util.thread.task.BaseTask;
+import org.apache.commons.collections4.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +28,7 @@ public class ThreadPoolManager {
          * 固定大小
          * poolB,Fix,20
          */
-        if (CollectionUtil.isEmpty(paramList)) {
+        if (CollectionUtilEx.isEmpty(paramList)) {
             logger.info("init pool manager fail,param empty");
             return;
         }
@@ -128,7 +129,7 @@ public class ThreadPoolManager {
         if (clz == null) {
             return null;
         }
-        Object m = ReflectClassUtil.newInstance(clz, CollectionUtil.newArr(String.class, String.class), CollectionUtil.newArr(ThreadInnerUtil.getName(param), param));
+        Object m = ReflectClassUtil.newInstance(clz, CollectionUtilEx.newArr(String.class, String.class), CollectionUtilEx.newArr(ThreadInnerUtil.getName(param), param));
         if (m == null) {
             return null;
         }
@@ -210,7 +211,7 @@ public class ThreadPoolManager {
     
     
     public static ThreadManager get(String name){
-		if (CollectionUtil.isEmpty(execs)) {
+		if (MapUtils.isEmpty(execs)) {
 			return null;
 		}
 		ThreadManager tm = execs.get(name);
@@ -238,7 +239,7 @@ public class ThreadPoolManager {
      */
     public static synchronized void shutdown() {
         logger.info("start destryo pools");
-        if (CollectionUtil.isEmpty(execs)) {
+        if (MapUtils.isEmpty(execs)) {
             return;
         }
         for (Map.Entry<String, ThreadManager> entry : execs.entrySet()) {

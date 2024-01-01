@@ -2,7 +2,7 @@ package com.atjl.util.common;
 
 
 import com.atjl.util.collection.CollectionFilterUtil;
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
 import com.atjl.util.common.domain.BlackWhiteResp;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class BlackWhiteUtil {
      * @return
      */
     public static <T> BlackWhiteResp<T> processBlackWhite(T[] white, T[] black) {
-        return processBlackWhite(CollectionUtil.array2List(white), CollectionUtil.array2List(black), false);
+        return processBlackWhite(CollectionUtilEx.array2List(white), CollectionUtilEx.array2List(black), false);
     }
 
     /**
@@ -49,7 +49,7 @@ public class BlackWhiteUtil {
     public static <T> BlackWhiteResp<T> processBlackWhite(List<T> white, List<T> balck, boolean blackFirst) {
         boolean filterWhite = false;
         List<T> whiteList;
-        if (!CollectionUtil.isEmpty(white)) {
+        if (!CollectionUtilEx.isEmpty(white)) {
             whiteList = white;
             filterWhite = true;
         } else {
@@ -59,7 +59,7 @@ public class BlackWhiteUtil {
         //init black list
         boolean filterBlack = false;
         List<T> blackList = null;
-        if (!CollectionUtil.isEmpty(balck)) {
+        if (!CollectionUtilEx.isEmpty(balck)) {
             filterBlack = true;
             if (filterWhite) {
                 if (blackFirst) {

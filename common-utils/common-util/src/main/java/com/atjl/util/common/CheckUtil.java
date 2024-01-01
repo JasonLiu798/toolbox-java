@@ -1,7 +1,8 @@
 package com.atjl.util.common;
 
 import com.atjl.util.character.StringCheckUtil;
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
+import org.apache.commons.collections4.MapUtils;
 
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public class CheckUtil {
      * @param objs
      */
     public static void checkExistNull(Object... objs) {
-        if (CollectionUtil.isEmpty(objs)) {
+        if (CollectionUtilEx.isEmpty(objs)) {
             throw new NullPointerException();
         }
         for (Object obj : objs) {
@@ -37,7 +38,7 @@ public class CheckUtil {
      * @param strs
      */
     public static void checkStrExistNull(String... strs) {
-        if (CollectionUtil.isEmpty(strs)) {
+        if (CollectionUtilEx.isEmpty(strs)) {
             throw new NullPointerException();
         }
         for (String s : strs) {
@@ -54,7 +55,7 @@ public class CheckUtil {
      * @param objs
      */
     public static void checkAllNull(Object... objs) {
-        if (CollectionUtil.isEmpty(objs)) {
+        if (CollectionUtilEx.isEmpty(objs)) {
             throw new NullPointerException();
         }
         boolean existNotNull = false;
@@ -75,7 +76,7 @@ public class CheckUtil {
     }
 
     public static boolean checkMapExistNull(Map<String, String> map) {
-        if (CollectionUtil.isEmpty(map)) {
+        if (MapUtils.isEmpty(map)) {
             return true;
         }
         for (Map.Entry<String, String> entry : map.entrySet()) {

@@ -1,8 +1,9 @@
 package com.atjl.util.queue;
 
 import com.atjl.util.character.StringCheckUtil;
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
 import com.atjl.util.queue.impl.BlockingQueueEncap;
+import org.apache.commons.collections4.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,7 +82,7 @@ public class QueueManager {
         if (StringCheckUtil.isEmpty(queueName)) {
             throw new NullPointerException("queueName null");
         }
-        if (CollectionUtil.isEmpty(messageQueues) || messageQueues.get(queueName) == null) {
+        if (MapUtils.isEmpty(messageQueues) || messageQueues.get(queueName) == null) {
             //LOG.warn("queue map null");
             //throw new NullPointerException();
             IQueue queue = new BlockingQueueEncap(QueueConstant.CONF_DFT_QUEUE_SIZE);
@@ -101,7 +102,7 @@ public class QueueManager {
     }
 
     public static boolean queueExist(String queueName) {
-        if (CollectionUtil.isEmpty(messageQueues)) {
+        if (MapUtils.isEmpty(messageQueues)) {
             return false;
         }
         return messageQueues.containsKey(queueName);

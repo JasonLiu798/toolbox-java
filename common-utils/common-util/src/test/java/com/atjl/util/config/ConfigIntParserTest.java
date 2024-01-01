@@ -1,6 +1,6 @@
 package com.atjl.util.config;
 
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -26,7 +26,7 @@ public class ConfigIntParserTest {
 
     @Test
     public void testBooleanList2Int() throws Exception {
-        List<Boolean> l = CollectionUtil.newList(true, false, false);
+        List<Boolean> l = CollectionUtilEx.newList(true, false, false);
         int opt = ConfigIntParser.booleanList2Int(l);
         System.out.println("opt:" + opt);
         List<Boolean> pl = ConfigIntParser.int2bits(opt, 3);

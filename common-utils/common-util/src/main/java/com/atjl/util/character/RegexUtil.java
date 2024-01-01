@@ -1,21 +1,22 @@
 package com.atjl.util.character;
 
-import com.atjl.util.collection.CollectionUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.atjl.util.collection.CollectionUtilEx;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * 常用正则
+ *
+ * todo 性能待优化，缓存固定模式
  */
+@Slf4j
 public final class RegexUtil {
     private RegexUtil() {
         throw new UnsupportedOperationException();
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(RegexUtil.class);
 
     public static final String FRAG_SPACE = "\\s";
     public static final String FRAG_SPACES_OR_NE = "\\s*";
@@ -104,9 +105,6 @@ public final class RegexUtil {
 
     /**
      * 是否数字
-     *
-     * @param str
-     * @return
      */
     public static boolean isDigit(String str) {
         boolean flag = true;
@@ -291,7 +289,7 @@ public final class RegexUtil {
     }
 
     public static boolean isAlphaNumDash(String... str) {
-        if (CollectionUtil.isEmpty(str)) {
+        if (CollectionUtilEx.isEmpty(str)) {
             return false;
         }
         for (String s : str) {

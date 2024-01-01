@@ -1,6 +1,6 @@
 package com.atjl.util.test;
 
-import com.atjl.util.file.FileUtil;
+import com.atjl.util.file.FileUtilEx;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -25,8 +25,8 @@ public class TestUtil {
 //        Map<String,List<String>> res = new HashMap<>();
 //        res.put(file1,);
 		List<String> lostData = new LinkedList<>();
-		List<String> fileList1 = FileUtil.cat2list(file1);
-		List<String> fileList2 = FileUtil.cat2list(file2);
+		List<String> fileList1 = FileUtilEx.cat2list(file1);
+		List<String> fileList2 = FileUtilEx.cat2list(file2);
 		Set<String> file1Set = new HashSet<>();
 		file1Set.addAll(fileList2);
 		for(String f1Str:fileList1){

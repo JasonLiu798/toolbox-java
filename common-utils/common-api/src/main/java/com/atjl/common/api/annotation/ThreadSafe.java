@@ -3,7 +3,7 @@ package com.atjl.common.api.annotation;
 import java.lang.annotation.*;
 
 /**
- * ThreadSafe field,class
+ * ThreadSafe
  *
  * @since 1.0
  */

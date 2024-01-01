@@ -2,9 +2,9 @@ package com.atjl.util.file;
 
 
 import com.atjl.util.character.StringCheckUtil;
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
 import com.atjl.util.common.CmdOptionUtil;
-import com.atjl.util.common.DateUtil;
+import com.atjl.util.date.DateUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class FileBrowserUtil {
     public static void traverseDir(String dirpath, List<String> res) {
         File parent = new File(dirpath);
         File[] childs = parent.listFiles();
-        if (CollectionUtil.isEmpty(childs)) {
+        if (CollectionUtilEx.isEmpty(childs)) {
             return;
         }
         for (File c : childs) {
@@ -56,7 +56,7 @@ public class FileBrowserUtil {
             if (CmdOptionUtil.hasOption(option, "-R")) {
                 list.add(file.getAbsolutePath() + ":");
             }
-            if (CollectionUtil.isEmpty(childs)) {
+            if (CollectionUtilEx.isEmpty(childs)) {
                 return;
             }
             //分离 目录、普通文件
@@ -70,7 +70,7 @@ public class FileBrowserUtil {
                 }
             }
             //添加 普通文件
-            if (!CollectionUtil.isEmpty(childFiles)) {
+            if (!CollectionUtilEx.isEmpty(childFiles)) {
                 for (File f : childFiles) {
                     addAndFormatFile(list, f, option, file.isDirectory());
                 }
@@ -80,7 +80,7 @@ public class FileBrowserUtil {
             }
 
             //添加 目录及子节点
-            if (!CollectionUtil.isEmpty(childDirs)) {
+            if (!CollectionUtilEx.isEmpty(childDirs)) {
                 for (File f : childDirs) {
                     lsInner(f.getAbsolutePath(), option, list);
                 }

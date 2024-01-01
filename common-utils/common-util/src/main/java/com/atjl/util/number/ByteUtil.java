@@ -1,6 +1,6 @@
 package com.atjl.util.number;
 
-import com.atjl.util.character.StringUtil;
+import com.atjl.util.character.StringUtilEx;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -54,7 +54,7 @@ public class ByteUtil {
             n = 256 + n;
         int d1 = n / 16;
         int d2 = n % 16;
-        return StringUtil.HEX_DIGITS[d1] + StringUtil.HEX_DIGITS[d2];
+        return StringUtilEx.HEX_DIGITS[d1] + StringUtilEx.HEX_DIGITS[d2];
     }
 
 

@@ -1,6 +1,6 @@
 package com.atjl.util.performance;
 
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -124,7 +124,7 @@ public final class RunTimeUtil {
         List<Long> timeList = getTime(dto);
         List<String> commentList = getComment(dto);
 
-        if (CollectionUtil.isNotEmpty(timeList) && CollectionUtil.isNotEmpty(commentList)) {
+        if (CollectionUtilEx.isNotEmpty(timeList) && CollectionUtilEx.isNotEmpty(commentList)) {
             Long startTime = timeList.get(0);
             Long endTime = timeList.get(timeList.size() - 1);
             String startComment = commentList.get(0);

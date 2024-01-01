@@ -10,7 +10,7 @@ import com.alibaba.druid.sql.parser.SQLParserUtils;
 import com.alibaba.druid.sql.parser.SQLStatementParser;
 import com.alibaba.druid.sql.visitor.SQLASTOutputVisitor;
 import com.alibaba.druid.util.JdbcUtils;
-import com.atjl.util.file.FileUtil;
+import com.atjl.util.file.FileUtilEx;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +87,7 @@ public class SQLGenerator {
      * @param writepath
      */
     public static void batchGenerateInsert(String inputPath, String writepath) {
-        List<String> reads = FileUtil.cat2list(inputPath);
+        List<String> reads = FileUtilEx.cat2list(inputPath);
         String targetSql = null;
         List<String> writes = new ArrayList<>();
         for (String sql : reads) {
@@ -97,7 +97,7 @@ public class SQLGenerator {
             writes.add(targetSql);
             writes.add(sql.replace("rm", "rm from ") + ";");
         }
-        FileUtil.append(writepath, writes);
+        FileUtilEx.append(writepath, writes);
     }
 
 

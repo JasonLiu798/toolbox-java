@@ -6,8 +6,8 @@ public class RespConstant {
         super();
     }
 
-    public static final int SUCCESS_CODE = 0;
-    public static final int UNKNOWN_ERROR_CODE = 1004;
+    public static final Integer SUCCESS_CODE = 0;
+    public static final Integer UNKNOWN_ERROR_CODE = 1004;
 
 
     public static final String SUCC_MSG = "成功";

@@ -1,7 +1,7 @@
 package com.atjl.util.reflect;
 
 
-import com.atjl.util.character.StringUtil;
+import com.atjl.util.character.StringUtilEx;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -27,7 +27,7 @@ public class ReflectSetUtil {
      * @param val     value
      */
     public static <T> void setter(T obj, String field, Class<?> valType, Object val) {
-        String methodName = ReflectConstant.SET_PREFIX + StringUtil.toUpperCaseFirstOne(field);
+        String methodName = ReflectConstant.SET_PREFIX + StringUtilEx.toUpperCaseFirstOne(field);
         Method setter = null;
         Class clz = obj.getClass();
         try {

@@ -1,6 +1,6 @@
 package com.atjl.util.test;
 
-import com.atjl.util.character.StringUtil;
+import com.atjl.util.character.StringUtilEx;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -99,7 +99,7 @@ public class ExcelParser {
 
             for(int i =0;i< parameterNames.size();i++){
                 String parameterName = parameterNames.get(i);
-                String methodname = "set" + StringUtil.toUpperCaseFirstOne(parameterName);
+                String methodname = "set" + StringUtilEx.toUpperCaseFirstOne(parameterName);
                 String paramTypeName  = parameterTypes.get(i);
                 Class<?> paramTypeClass = Class.forName(paramTypeName);
                 Object paramObject = null;

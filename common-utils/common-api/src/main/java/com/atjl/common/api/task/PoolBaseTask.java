@@ -3,11 +3,15 @@ package com.atjl.common.api.task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
+
 /**
- * 基础线程
+ * base task
  */
-public abstract class PoolBaseTask {
+public abstract class PoolBaseTask implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(PoolBaseTask.class);
+
+    private static final long serialVersionUID = 3525221586178055369L;
 
     /**
      * 是否启动

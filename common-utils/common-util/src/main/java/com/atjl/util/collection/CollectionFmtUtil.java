@@ -17,7 +17,7 @@ public class CollectionFmtUtil {
      * @return
      */
     public static <T> String list2str(List<T> l) {
-        if (CollectionUtil.isEmpty(l)) {
+        if (CollectionUtilEx.isEmpty(l)) {
             return "";
         }
         String res = "";

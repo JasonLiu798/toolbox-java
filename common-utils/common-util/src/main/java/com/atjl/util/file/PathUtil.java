@@ -1,7 +1,7 @@
 package com.atjl.util.file;
 
 import com.atjl.util.character.StringCheckUtil;
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -135,7 +135,7 @@ public class PathUtil {
             throw new IllegalArgumentException("sep or path can not be empty");
         }
         String[] str = pathStr.split(sep);
-        if (CollectionUtil.isEmpty(str) || str.length == 0) {
+        if (CollectionUtilEx.isEmpty(str) || str.length == 0) {
             return null;
         }
         boolean haveBase = true;
@@ -236,7 +236,7 @@ public class PathUtil {
      * @return path string
      */
     public static String joinInner(boolean isAbsolute, String sep, String... paths) {
-        if (CollectionUtil.isEmpty(paths)) {
+        if (CollectionUtilEx.isEmpty(paths)) {
             return "";
         }
         if (StringCheckUtil.isEmpty(sep)) {

@@ -14,18 +14,6 @@ public class XmlSAXParser extends DefaultHandler {
 
     Stack tags = new Stack();
 
-    public static void main(String[] args) {
-        long lasting = System.currentTimeMillis();
-        try {
-            SAXParserFactory sf = SAXParserFactory.newInstance();
-            SAXParser sp = sf.newSAXParser();
-            XmlSAXParser reader = new XmlSAXParser();
-            sp.parse(new InputSource("D:\\project\\java\\sfopen\\project\\e2agile-core\\.classpath"), reader);
-            System.out.println("运行时间：" + (System.currentTimeMillis() - lasting) + "毫秒");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public void characters(char ch[], int start, int length)
             throws SAXException {

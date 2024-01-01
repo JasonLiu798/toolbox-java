@@ -1,7 +1,7 @@
 package com.atjl.util.thread;
 
 
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
 import com.atjl.util.common.SystemUtil;
 import com.atjl.util.thread.task.BaseTask;
 import org.junit.Test;
@@ -14,7 +14,7 @@ public class LockTest {
     @Test
     public void testCountDown() {
         String pool = "P1";
-        ThreadPoolManager.init(CollectionUtil.newList(pool + ThreadConstant.IO_POOL_PARAM));
+        ThreadPoolManager.init(CollectionUtilEx.newList(pool + ThreadConstant.IO_POOL_PARAM));
         CountDownLatch c = new CountDownLatch(10);
         ThreadPoolManager.execute(pool, new BaseTask() {
             @Override
@@ -52,7 +52,7 @@ public class LockTest {
     public void testSyncDeadLock() {
 
         String pool = "P1";
-        ThreadPoolManager.init(CollectionUtil.newList(pool + ThreadConstant.IO_POOL_PARAM));
+        ThreadPoolManager.init(CollectionUtilEx.newList(pool + ThreadConstant.IO_POOL_PARAM));
         CountDownLatch c = new CountDownLatch(2);
 
         ThreadPoolManager.execute(pool, new BaseTask() {
@@ -108,7 +108,7 @@ public class LockTest {
         ReentrantLock l2 = new ReentrantLock();
 
         String pool = "P1";
-        ThreadPoolManager.init(CollectionUtil.newList(pool + ThreadConstant.IO_POOL_PARAM));
+        ThreadPoolManager.init(CollectionUtilEx.newList(pool + ThreadConstant.IO_POOL_PARAM));
         CountDownLatch c = new CountDownLatch(2);
 
         ThreadPoolManager.execute(pool, new BaseTask() {

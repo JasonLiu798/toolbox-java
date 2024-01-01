@@ -146,7 +146,7 @@ public class FileNioUtil {
 
     public static boolean writeFile(String file, String content, Charset c, OpenOption o) {
         boolean res = true;
-        if (!FileUtil.fileExist(file)) {
+        if (!FileUtilEx.fileExist(file)) {
             o = StandardOpenOption.CREATE_NEW;
         }
         Path path = Paths.get(file);

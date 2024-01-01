@@ -4,6 +4,9 @@ package com.atjl.common.api.resp;
 import com.atjl.common.constant.RespConstant;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * 对外response dto
@@ -13,34 +16,19 @@ import io.swagger.annotations.ApiModelProperty;
  * @author atjl
  * @since 1.0
  */
+@Data
 @ApiModel
-public class ResponseDto {
+public class ResponseDto implements Serializable {
+    private static final long serialVersionUID = -4976381015792391830L;
     @ApiModelProperty(value = "错误码")
-    protected int code = RespConstant.SUCCESS_CODE;
+    protected Integer code = RespConstant.SUCCESS_CODE;
     @ApiModelProperty(value = "提示信息")
     protected String msg = RespConstant.SUCC_MSG;
 
     public ResponseDto() {
     }
-
     public ResponseDto(int code, String msg) {
         this.code = code;
-        this.msg = msg;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
         this.msg = msg;
     }
 
@@ -50,7 +38,7 @@ public class ResponseDto {
      * @return
      */
     public boolean isOk() {
-        return code == RespConstant.SUCCESS_CODE;
+        return RespConstant.SUCCESS_CODE.equals(code);
     }
 
 }

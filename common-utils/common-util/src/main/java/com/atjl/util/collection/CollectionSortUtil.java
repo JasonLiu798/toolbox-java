@@ -60,8 +60,6 @@ public class CollectionSortUtil {
         boolean allBelow = true;
         boolean isEqual = false;
         log.debug("get index len {},start {},end {}",list.size(),start,end);
-        log.debug("list:");
-        CollectionUtil.printList(list, 0);
         log.debug("item {}",addItem);
         for(int i=start;i<end;i++){
             T item = list.get(i);

@@ -6,7 +6,6 @@ package com.atjl.common.api.exception;
 public class CommonException extends RuntimeException {
 	
 	private static final long	serialVersionUID	= 1L;
-
 	public ErrorCode errorCode;
 
 	public CommonException() {

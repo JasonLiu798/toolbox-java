@@ -32,6 +32,11 @@
             <version>${api.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>cn.6tail</groupId>
+            <artifactId>lunar</artifactId>
+        </dependency>
+
         <!-- http -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -111,10 +116,11 @@
             <artifactId>commons-codec</artifactId>
             <version>1.10</version>
         </dependency>
+
         <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>3.2.2</version>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
         </dependency>
         <dependency>
             <groupId>commons-configuration</groupId>

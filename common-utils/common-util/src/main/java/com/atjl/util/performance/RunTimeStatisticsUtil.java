@@ -1,6 +1,6 @@
 package com.atjl.util.performance;
 
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
 import com.atjl.util.collection.SearchUtil;
 import com.atjl.util.number.Calculator;
 import com.atjl.util.number.LongCalculator;
@@ -35,7 +35,7 @@ public class RunTimeStatisticsUtil {
     public static RunTimeStatisticsDto getStatistics() {
         RunTimeDto[] arr = (RunTimeDto[]) queue.toArray(new RunTimeDto[queue.size()]);
         //List<RunTimeDto> list = runTimeList.get();
-        if (CollectionUtil.isEmpty(arr)) {
+        if (CollectionUtilEx.isEmpty(arr)) {
             return null;
         }
         ArrayList<Long> times = new ArrayList<>();
@@ -60,7 +60,7 @@ public class RunTimeStatisticsUtil {
      */
     public static <T> RunTimeStatisticsDto getStat(T[] list, Comparator<T> cmp, Calculator<T> calc, LongCoverter<T> cov) {
         //ArrayList<Long> times = new ArrayList<>();
-        if (CollectionUtil.isEmpty(list)) {
+        if (CollectionUtilEx.isEmpty(list)) {
             return new RunTimeStatisticsDto();
         }
         boolean first = true;

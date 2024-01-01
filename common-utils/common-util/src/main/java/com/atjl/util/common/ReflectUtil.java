@@ -1,6 +1,5 @@
 package com.atjl.util.common;
 
-import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.reflect.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

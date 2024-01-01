@@ -3,6 +3,7 @@ package com.atjl.common.api.resp;
 import com.atjl.common.constant.RespConstant;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 /**
  * 对外response dto,包含附加数据
@@ -10,9 +11,11 @@ import io.swagger.annotations.ApiModelProperty;
  * @author atjl
  * @since 1.0
  */
+@Data
 @ApiModel(value = "结果对象")
 public class ResponseDataDto extends ResponseDto {
 
+    private static final long serialVersionUID = 4425808686318200891L;
     @ApiModelProperty(value = "结果数据")
     private Object result = null;
 
@@ -29,15 +32,6 @@ public class ResponseDataDto extends ResponseDto {
         super();
         this.result = data;
     }
-
-    public Object getResult() {
-        return result;
-    }
-
-    public void setResult(Object result) {
-        this.result = result;
-    }
-
 
     public static ResponseDataDto buildOk() {
         return new ResponseDataDto(RespConstant.SUCCESS_CODE, RespConstant.SUCC_MSG);

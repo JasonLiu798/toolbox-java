@@ -1,97 +1,41 @@
 package com.atjl.util.collection;
 
 
-import com.atjl.util.common.BlackWhiteUtil;
-import com.atjl.util.common.domain.BlackWhiteResp;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.common.collect.Lists;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
+@Slf4j
 public class CollectionFilterUtil {
-    private CollectionFilterUtil() {
-        throw new UnsupportedOperationException();
-    }
 
-    private static final Logger logger = LoggerFactory.getLogger(CollectionFilterUtil.class);
 
     /**
-     * filter list 2 count,drop the node index >= count
+     * cut list to specified size, drop the node index >= count
      *
-     * @param list
-     * @param count
-     * @return
+     * @param list list
+     * @param count hold count
+     * @return new short list
      */
-    public static <T> List<T> filterList2Size(List<T> list, int count) {
+    public static <T> List<T> cutList2Size(List<T> list, int count) {
         if (list == null) {
             return null;
         }
         int size = list.size();
         if (size <= count) {
-            return list;
+            return Lists.newArrayList(list);
         } else {
+            List<T> res = Lists.newArrayList();
             int start = count - 1;
             int end = list.size() - 1;
-            if (logger.isDebugEnabled()) {
-                logger.debug("start " + start + " end " + end);
+            if (log.isDebugEnabled()) {
+                log.debug("start " + start + " end " + end);
             }
-            for (int i = end; i > start; i--) {
-                list.remove(i);
+            for (int i = 0; i<count;i++)  {
+                res.add(list.get(i));
             }
+            return res;
         }
-        return list;
-    }
-
-    public static <T> Map<String, T> filterMap(Map<String, T> map, String[] filterKeys) {
-        return filterMap(map, CollectionUtil.array2List(filterKeys));
-    }
-
-    /**
-     * map过滤，只过滤黑名单，key为String的
-     * 注：直接修改原map
-     *
-     * @param map
-     * @param filterKeys void
-     */
-    public static <T> Map<String, T> filterMap(Map<String, T> map, List<String> filterKeys) {
-        if (CollectionUtil.isEmpty(filterKeys) || CollectionUtil.isEmpty(map)) {
-            return new HashMap<>();
-        }
-        Map<String, T> res = CollectionUtil.copy(map);
-        for (String key : filterKeys) {
-            res.remove(key);
-        }
-        return res;
-    }
-
-
-    /**
-     * map过滤
-     *
-     * @param map
-     * @param balckList
-     * @param whiteList
-     * @return
-     */
-    public static <K, V> Map<K, V> filterMap(Map<K, V> map, List<K> balckList, List<K> whiteList) {
-        if (CollectionUtil.isEmpty(map)) {
-            return map;
-        }
-        BlackWhiteResp resp = BlackWhiteUtil.processBlackWhite(whiteList, balckList);
-        Map<K, V> resMap = new HashMap<>();
-        for (Map.Entry<K, V> entry : map.entrySet()) {
-            if (resp.isUseBlack() &&
-                    resp.getBlack().indexOf(entry.getKey()) >= 0) {
-                continue;
-            }
-            //process white list
-            if (resp.isUseWhite() &&
-                    whiteList.indexOf(entry.getKey()) < 0) {
-                continue;
-            }
-            resMap.put(entry.getKey(), entry.getValue());
-        }
-        return map;
     }
 
 
@@ -102,7 +46,7 @@ public class CollectionFilterUtil {
      * @return
      */
     public static List<String> filterDuplicate(List<String> l) {
-        if (CollectionUtil.isEmpty(l)) {
+        if (CollectionUtilEx.isEmpty(l)) {
             return l;
         }
         Set<String> set = new HashSet<>();
@@ -121,7 +65,7 @@ public class CollectionFilterUtil {
      * @return
      */
     public static <T> T[] filterNull(T[] raw) {
-        if (CollectionUtil.isEmpty(raw)) {
+        if (CollectionUtilEx.isEmpty(raw)) {
             return raw;
         }
         List<T> n = new ArrayList<T>(raw.length);
@@ -130,7 +74,7 @@ public class CollectionFilterUtil {
                 n.add(t);
             }
         }
-        return CollectionUtil.list2array(n);
+        return CollectionUtilEx.list2array(n);
     }
 
 
@@ -153,19 +97,19 @@ public class CollectionFilterUtil {
      * @return
      */
     public static <T> List<T> filterDelListInner(List<T> tgtList, List<T> delList, int option) {
-        if (CollectionUtil.isEmpty(delList)) {
+        if (CollectionUtilEx.isEmpty(delList)) {
             return tgtList;
         }
-        if (CollectionUtil.isEmpty(tgtList)) {
+        if (CollectionUtilEx.isEmpty(tgtList)) {
             return tgtList;
         }
         List<T> res = new ArrayList<>(tgtList.size());
         for (T tgtItem : tgtList) {
             boolean gotEq = false;
             if (option == CollectionConstant.TP_EQ) {
-                gotEq = CollectionUtil.isIn(delList, tgtItem);
+                gotEq = CollectionUtilEx.isIn(delList, tgtItem);
             } else if (option == CollectionConstant.TP_EXIST_STR) {
-                gotEq = CollectionUtil.isLikeIn((List<String>) delList, tgtItem.toString());
+                gotEq = CollectionUtilEx.isLikeIn((List<String>) delList, tgtItem.toString());
             }
 
             if (gotEq) {
@@ -175,6 +119,10 @@ public class CollectionFilterUtil {
             }
         }
         return res;
+    }
+
+    private CollectionFilterUtil() {
+        throw new UnsupportedOperationException();
     }
 
 }

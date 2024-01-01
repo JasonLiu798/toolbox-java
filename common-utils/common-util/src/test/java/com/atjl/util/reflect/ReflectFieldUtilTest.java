@@ -1,6 +1,6 @@
 package com.atjl.util.reflect;
 
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
 import com.atjl.util.common.ReflectUtil.GetClzOpt;
 import com.atjl.util.dto.TestDtoChild;
 import com.atjl.util.json.JSONFastJsonUtil;
@@ -61,7 +61,7 @@ public class ReflectFieldUtilTest {
 
         System.out.println("#########################");
         res = ReflectFieldUtil.getFieldList(src.getClass(), GetClzOpt.ALL, null, null);
-        res = ReflectFieldUtil.filterField(res, CollectionUtil.newArr(Long.class));
+        res = ReflectFieldUtil.filterField(res, CollectionUtilEx.newArr(Long.class));
         res = ReflectFieldUtil.filed2string(res);
         System.out.println("res Long:" + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(res)));
 
@@ -97,13 +97,13 @@ public class ReflectFieldUtilTest {
         src.setF1(1);
         src.setF2(2);
 
-        Map res = ReflectFieldUtil.getFieldValue(src, GetClzOpt.ALL, true, CollectionUtil.newArr("f2"), null);
+        Map res = ReflectFieldUtil.getFieldValue(src, GetClzOpt.ALL, true, CollectionUtilEx.newArr("f2"), null);
         System.out.println("res black:" + JSONFastJsonUtil.objectToJson(res));
 //
-        res = ReflectFieldUtil.getFieldValue(src, GetClzOpt.ALL, true, null, CollectionUtil.newArr("f1", "childField"));
+        res = ReflectFieldUtil.getFieldValue(src, GetClzOpt.ALL, true, null, CollectionUtilEx.newArr("f1", "childField"));
         System.out.println("res white:" + JSONFastJsonUtil.objectToJson(res));
 
-        res = ReflectFieldUtil.getFieldValue(src, GetClzOpt.ALL, true, CollectionUtil.newArr("f1"), CollectionUtil.newArr("f1", "f2"));
+        res = ReflectFieldUtil.getFieldValue(src, GetClzOpt.ALL, true, CollectionUtilEx.newArr("f1"), CollectionUtilEx.newArr("f1", "f2"));
         System.out.println("res white and black:" + JSONFastJsonUtil.objectToJson(res));
     }
 

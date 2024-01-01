@@ -7,7 +7,8 @@ public class CommonErrorCode {
 	
 	public static final String SUCCESS_CODE = "0";
 	public static final String SUCCESS_MSG = "成功";
-	public static ErrorCode SUCCESS = new ErrorCode(SUCCESS_CODE, SUCCESS_MSG, "");
+	public static final String NO_ACTION = "";
+	public static ErrorCode SUCCESS = new ErrorCode(SUCCESS_CODE, SUCCESS_MSG, NO_ACTION);
 	
 	public static final String UNKNOWN_ERROR_CODE = "S00001";
 	public static final String UNKNOWN_ERROR_MSG = "未知错误";

@@ -1,8 +1,8 @@
 package com.atjl.util.reflect;
 
-import com.atjl.util.character.StringUtil;
+import com.atjl.util.character.StringUtilEx;
 import com.atjl.util.collection.CollectionFilterUtil;
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
 import com.atjl.util.common.ReflectUtil.GetClzOpt;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -73,7 +73,7 @@ public class ReflectFieldUtil {
      */
     public static void copyField(Object source, Object target, GetClzOpt opt, boolean allowNull, String[] blackList, String[] whiteList) {
         List<Field> fields = getFieldList(source, opt, blackList, whiteList);
-        if (CollectionUtil.isEmpty(fields)) {
+        if (CollectionUtilEx.isEmpty(fields)) {
             if (logger.isWarnEnabled()) {
                 logger.warn("copy fields,source filed empty {}", source);
             }
@@ -310,7 +310,7 @@ public class ReflectFieldUtil {
 //        if (logger.isDebugEnabled()) {
 //            logger.debug("getField clz list:{}", clazzList);
 //        }
-        if (CollectionUtil.isEmpty(clazzList)) {
+        if (CollectionUtilEx.isEmpty(clazzList)) {
             return new ArrayList<>();
         }
         List<Field> res = new ArrayList<>();
@@ -375,7 +375,7 @@ public class ReflectFieldUtil {
 //        if (logger.isDebugEnabled()) {
 //            logger.debug("getField clz list:{}", clazzList);
 //        }
-        if (CollectionUtil.isEmpty(clazzList)) {
+        if (CollectionUtilEx.isEmpty(clazzList)) {
             return new ArrayList<>();
         }
         List<Field> res = new ArrayList<>();
@@ -444,7 +444,7 @@ public class ReflectFieldUtil {
      */
     public static Map<String, Field> getFieldMap(Class obj, GetClzOpt parentOpt, String[] blackArr, String[] whiteArr) {
         List<Field> l = getFieldList(obj, parentOpt, blackArr, whiteArr);
-        if (CollectionUtil.isEmpty(l)) {
+        if (CollectionUtilEx.isEmpty(l)) {
             return new HashMap<>();
         }
         Map<String, Field> res = new HashMap<>();
@@ -464,7 +464,7 @@ public class ReflectFieldUtil {
      * @return
      */
     public static List<Field> filterField(List<Field> fields, Class[] whiteClzArr) {
-        if (CollectionUtil.isEmpty(fields)) {
+        if (CollectionUtilEx.isEmpty(fields)) {
             return fields;
         }
         boolean filterClzWhite = false;
@@ -518,7 +518,7 @@ public class ReflectFieldUtil {
             if (name.startsWith(ReflectConstant.SET_PREFIX)) {
                 name = name.substring(ReflectConstant.SET_PREFIX.length());
                 if (name.length() > 0) {
-                    name = StringUtil.toLowerCaseFirstOne(name);
+                    name = StringUtilEx.toLowerCaseFirstOne(name);
                     sets.add(name);
                 }
 
@@ -603,7 +603,7 @@ public class ReflectFieldUtil {
         Class clz = obj.getClass();
 
         List<Field> fields = getFieldList(clz, parentOpt, blackArr, whiteArr);
-        if (CollectionUtil.isEmpty(fields)) {
+        if (CollectionUtilEx.isEmpty(fields)) {
             return new HashMap<>();
         }
 
@@ -712,7 +712,7 @@ public class ReflectFieldUtil {
      * @return
      */
     public static List<String> filed2string(List<Field> filesList) {
-        if (!CollectionUtil.isEmpty(filesList)) {
+        if (!CollectionUtilEx.isEmpty(filesList)) {
             List<String> res = new ArrayList<>(filesList.size());
             for (Field f : filesList) {
                 res.add(f.getName());

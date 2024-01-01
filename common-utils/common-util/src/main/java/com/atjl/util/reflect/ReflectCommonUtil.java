@@ -2,7 +2,7 @@ package com.atjl.util.reflect;
 
 
 import com.atjl.util.character.StringCheckUtil;
-import com.atjl.util.character.StringUtil;
+import com.atjl.util.character.StringUtilEx;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +51,7 @@ public class ReflectCommonUtil {
         if (StringCheckUtil.isEmpty(field)) {
             return null;
         }
-        String upperFiled = StringUtil.toUpperCaseFirstOne(field);
+        String upperFiled = StringUtilEx.toUpperCaseFirstOne(field);
         if (isBoolean) {
             return ReflectConstant.GET_BOOL_PREFIX + upperFiled;
         }

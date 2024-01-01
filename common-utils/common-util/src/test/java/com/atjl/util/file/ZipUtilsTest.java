@@ -1,6 +1,6 @@
 package com.atjl.util.file;
 
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
 import com.atjl.util.common.SystemUtil;
 import com.atjl.util.json.JSONFastJsonUtil;
 import com.atjl.util.json.JSONFmtUtil;
@@ -22,9 +22,9 @@ public class ZipUtilsTest {
 //            List<String> src = CollectionUtil.newList(base+"15215288779325030070828381f3027c7cf4ea1014c086f06f01f.jpg",base+"152152889475353494669201103282259361273531778562_000_640.jpg",base+"报告1521536766.doc");
             String dest = "a.zip";
 //            String dest = "E:\\a.zip";
-            FileUtil.rm(PathUtil.join(base, dest));
+            FileUtilEx.rm(PathUtil.join(base, dest));
 
-            List<String> src = CollectionUtil.newList("15215971657285030070828381f3027c7cf4ea1014c086f06f01f.jpg", "1521597199467截图201698114721.png");//, "报告1521536766.doc");
+            List<String> src = CollectionUtilEx.newList("15215971657285030070828381f3027c7cf4ea1014c086f06f01f.jpg", "1521597199467截图201698114721.png");//, "报告1521536766.doc");
             ZipUtils.zipFiles(base, src, dest);
 
             System.out.println("res: succ " + JSONFmtUtil.formatJsonConsole(JSONFastJsonUtil.objectToJson(res)));

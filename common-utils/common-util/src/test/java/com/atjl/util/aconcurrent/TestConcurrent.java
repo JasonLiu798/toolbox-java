@@ -1,6 +1,6 @@
 package com.atjl.util.aconcurrent;
 
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
 import org.junit.Test;
 
 import java.util.Map;
@@ -36,7 +36,7 @@ public class TestConcurrent {
                 latch.countDown();
                 latch.await();
                 System.out.println(key + "thread start run " + id);
-                Map res = CollectionUtil.addKV(CollectionUtil.newMap(id, id), id + 1, id + 1);
+                Map res = CollectionUtilEx.addKV(CollectionUtilEx.newMap(id, id), id + 1, id + 1);
                 System.out.println(key + "res:" + res);
             } catch (InterruptedException e) {
                 e.printStackTrace();

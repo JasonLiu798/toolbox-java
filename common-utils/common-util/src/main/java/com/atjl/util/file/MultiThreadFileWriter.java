@@ -1,6 +1,6 @@
 package com.atjl.util.file;
 
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
 import com.atjl.util.queue.IQueue;
 import com.atjl.util.queue.QueueManager;
 
@@ -144,7 +144,7 @@ public class MultiThreadFileWriter implements Runnable {
 	private void doAdd(FileDto fd){
 		if(fd!=null) {
 			List<String> oldContent = memPage.get(fd.getPath());
-			if (CollectionUtil.isEmpty(oldContent)) {
+			if (CollectionUtilEx.isEmpty(oldContent)) {
 				memPage.put(fd.getPath(), fd.getContents());
 			} else {
 				oldContent.addAll(fd.getContents());
@@ -158,7 +158,7 @@ public class MultiThreadFileWriter implements Runnable {
 			LOG.debug("before write map:"+memPage);
 		}
 		for(Map.Entry<String,List<String>> entry:memPage.entrySet()) {
-			FileUtil.append(entry.getKey(),entry.getValue());
+			FileUtilEx.append(entry.getKey(),entry.getValue());
 		}
 		memPage.clear();
 		if(LOG.isDebugEnabled()){

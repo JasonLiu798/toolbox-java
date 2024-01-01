@@ -1,7 +1,7 @@
 package com.atjl.util.thread;
 
 import com.atjl.util.character.StringCheckUtil;
-import com.atjl.util.character.StringUtil;
+import com.atjl.util.character.StringUtilEx;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -54,7 +54,7 @@ public class ThreadManualManager extends ThreadManager {
             SecurityManager s = System.getSecurityManager();
             group = (s != null) ? s.getThreadGroup() :
                     Thread.currentThread().getThreadGroup();
-            String filterName = StringCheckUtil.isEmpty(name) ? "P" + StringUtil.getUUID() : name;
+            String filterName = StringCheckUtil.isEmpty(name) ? "P" + StringUtilEx.getUUID() : name;
             namePrefix = filterName +
                     poolNumber.getAndIncrement() +
                     "-thread-";

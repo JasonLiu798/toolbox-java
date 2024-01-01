@@ -1,6 +1,6 @@
 package com.atjl.util.performance;
 
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -50,7 +50,7 @@ public class RunTimeDto implements Serializable {
      * @return interval time list
      */
     public List<Long> getIntervalTimes(){
-        if(CollectionUtil.isEmpty(times)){
+        if(CollectionUtilEx.isEmpty(times)){
             return null;
         }
         List<Long>  res = new LinkedList<>();
@@ -68,7 +68,7 @@ public class RunTimeDto implements Serializable {
      */
     public Long getTotalCostTime(){
         List<Long> intlist = getIntervalTimes();
-        if(CollectionUtil.isEmpty(intlist)){
+        if(CollectionUtilEx.isEmpty(intlist)){
             return 0L;
         }
         long res = 0;
@@ -83,7 +83,7 @@ public class RunTimeDto implements Serializable {
      * @return time count
      */
     public int getCount(){
-        if(CollectionUtil.isEmpty(times)){
+        if(CollectionUtilEx.isEmpty(times)){
             return 0;
         }
         return times.size();

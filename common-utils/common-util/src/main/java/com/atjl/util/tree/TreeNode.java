@@ -1,6 +1,6 @@
 package com.atjl.util.tree;
 
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class TreeNode<T> {
 
 
     public boolean hasChild() {
-        if (CollectionUtil.isEmpty(childs)) {
+        if (CollectionUtilEx.isEmpty(childs)) {
             return false;
         }
         return true;

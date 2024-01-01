@@ -1,13 +1,14 @@
 package com.atjl.util.config;
 
 import com.atjl.util.character.StringCheckUtil;
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
 import com.atjl.util.common.CovertUtil;
 import com.atjl.util.common.ReflectUtil;
 import com.atjl.util.config.util.ConfigPropCommonUtil;
 import com.atjl.util.file.PathUtil;
 import com.atjl.util.reflect.ReflectFieldUtil;
 import com.atjl.util.reflect.ReflectSetUtil;
+import org.apache.commons.collections4.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +39,7 @@ public class ConfigModelUtil {
     }
 
     public static <T> T generateConfigModel(Map<String, String> configs, Class<T> clz, boolean force) {
-        if (CollectionUtil.isEmpty(configs) || clz == null) {
+        if (MapUtils.isEmpty(configs) || clz == null) {
             logger.warn("generateConfigModel config null or clz null");
             return null;
         }
@@ -46,8 +47,8 @@ public class ConfigModelUtil {
         try {
             res = clz.newInstance();
 
-            List<String> keyList = CollectionUtil.map2list(configs, true);
-            Map<String, Field> fieldMap = ReflectFieldUtil.getFieldMap(clz, ReflectUtil.GetClzOpt.ALL, null, CollectionUtil.list2array(keyList));
+            List<String> keyList = CollectionUtilEx.map2list(configs, true);
+            Map<String, Field> fieldMap = ReflectFieldUtil.getFieldMap(clz, ReflectUtil.GetClzOpt.ALL, null, CollectionUtilEx.list2array(keyList));
             for (Map.Entry<String, String> configEntry : configs.entrySet()) {
                 /**
                  * 配置项值不为空
@@ -70,7 +71,7 @@ public class ConfigModelUtil {
                 }
             }
         } catch (InstantiationException | IllegalAccessException e) {
-            logger.error("generateConfigModel {}", e);
+            logger.error("generateConfigModel ex", e);
         }
         return res;
     }
@@ -95,7 +96,7 @@ public class ConfigModelUtil {
             }
 
             List<Field> fields = ReflectUtil.getFields(clz, ReflectUtil.GetClzOpt.ALL, modelExecludeFields, null);
-            if (CollectionUtil.isEmpty(fields)) {
+            if (CollectionUtilEx.isEmpty(fields)) {
                 logger.warn("generateConfigModel,field empty");
                 return res;
             }
@@ -104,7 +105,7 @@ public class ConfigModelUtil {
 
             List<String> keys = ReflectUtil.filed2string(fields);
             if (!StringCheckUtil.isEmpty(prefix)) {
-                if (!CollectionUtil.isEmpty(keys)) {
+                if (!CollectionUtilEx.isEmpty(keys)) {
                     List<String> keyWithPrefix = new ArrayList<>();
                     for (String key : keys) {
                         keyWithPrefix.add(ConfigPropCommonUtil.filterPrefix(prefix, key));
@@ -132,8 +133,8 @@ public class ConfigModelUtil {
                     ReflectSetUtil.setter(res, field.getName(), fieldType, val);
                 }
             }
-        } catch (InstantiationException | IllegalAccessException e) {
-            logger.error("generateConfigModel {}", e);
+        } catch (Exception e) {
+            logger.error("generateConfigModel ex", e);
         }
         return res;
     }

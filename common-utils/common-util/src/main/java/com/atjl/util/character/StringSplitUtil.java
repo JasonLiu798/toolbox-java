@@ -160,7 +160,7 @@ public final class StringSplitUtil {
             if (removeCharacters == null)
                 postRemove = array[i];
             else
-                postRemove = StringUtil.replace(array[i], removeCharacters, "");
+                postRemove = StringUtilEx.replace(array[i], removeCharacters, "");
             String splitThisArrayElement[] = splitToTwo(postRemove, delimiter);
             if (splitThisArrayElement != null)
                 map.put(splitThisArrayElement[0].trim(), splitThisArrayElement[1].trim());

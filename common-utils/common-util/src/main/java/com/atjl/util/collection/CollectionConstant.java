@@ -5,7 +5,6 @@ package com.atjl.util.collection;
  */
 public class CollectionConstant {
 
-
     private CollectionConstant() {
         throw new UnsupportedOperationException();
     }

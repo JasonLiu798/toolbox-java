@@ -1,7 +1,7 @@
 package com.atjl.util.net;
 
 import com.atjl.util.character.StringCheckUtil;
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,7 +98,7 @@ public class IPUtil {
 
     public static String getOneRandomIp() {
         List<String> localIps = IPUtil.getLocalIP();
-        if (CollectionUtil.isEmpty(localIps)) {
+        if (CollectionUtilEx.isEmpty(localIps)) {
             return LOCAL_IP;
         }
         String tgtIP = LOCAL_IP;

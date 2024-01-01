@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * simple tree,and record all item in map
+ */
 public class Tree<T> {
     private TreeNode<T> root;
     Map<String, TreeNode> treeMap;
@@ -46,7 +49,6 @@ public class Tree<T> {
                 preOrderTraverseRecu(sb,treeNodeChild);
             }
         }
-        return;
     }
 
 

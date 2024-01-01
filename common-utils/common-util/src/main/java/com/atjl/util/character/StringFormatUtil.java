@@ -1,5 +1,6 @@
 package com.atjl.util.character;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +15,8 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Slf4j
 public final class StringFormatUtil {
-
-    private static final Logger logger = LoggerFactory.getLogger(StringFormatUtil.class);
 
     private static final String NULL = "NULL";
     private static final int NULLNUMSTR = -1;
@@ -163,7 +163,7 @@ public final class StringFormatUtil {
         try {
             decimalWeight = new BigDecimal(weight);
         } catch (Exception e) {
-            logger.error("处理重量失败，非法的重量参数：" + weight, e);
+            log.error("处理重量失败，非法的重量参数：" + weight, e);
             return weight;
         }
 

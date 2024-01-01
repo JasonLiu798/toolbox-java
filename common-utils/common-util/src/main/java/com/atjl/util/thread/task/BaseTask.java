@@ -1,6 +1,6 @@
 package com.atjl.util.thread.task;
 
-import com.atjl.util.common.DateUtil;
+import com.atjl.util.date.DateUtil;
 import com.atjl.util.thread.ThreadManager;
 import io.swagger.annotations.ApiModelProperty;
 import org.slf4j.Logger;

@@ -1,7 +1,7 @@
 package com.atjl.util.config;
 
 import com.atjl.util.character.StringCheckUtil;
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
 import com.atjl.util.file.PathUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -180,7 +180,7 @@ public final class ConfigPropUtil {
      * @return
      */
     public static Map<String, String> getBatch(String fileName, List<String> keys) {
-        if (CollectionUtil.isEmpty(keys)) {
+        if (CollectionUtilEx.isEmpty(keys)) {
             return new HashMap<>();
         }
         if (!RESOURCE_BUNDLES.containsKey(fileName)) {

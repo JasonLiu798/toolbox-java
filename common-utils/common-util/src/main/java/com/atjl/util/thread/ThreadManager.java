@@ -1,9 +1,10 @@
 package com.atjl.util.thread;
 
 import com.atjl.common.api.resp.ResponseDataDto;
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.collection.CollectionUtilEx;
 import com.atjl.util.thread.domain.ThreadStatus;
 import com.atjl.util.thread.task.BaseTask;
+import org.apache.commons.collections4.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -82,7 +83,7 @@ public abstract class ThreadManager {
 
     public List<ThreadStatus> getStatus() {
         List<ThreadStatus> status = new ArrayList<>();
-        if (!CollectionUtil.isEmpty(runningTaskMap)) {
+        if (!MapUtils.isEmpty(runningTaskMap)) {
             for (Map.Entry<String, BaseTask> entry : runningTaskMap.entrySet()) {
                 ThreadStatus s = new ThreadStatus();
                 BaseTask t = entry.getValue();

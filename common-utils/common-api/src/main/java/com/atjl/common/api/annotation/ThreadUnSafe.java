@@ -3,7 +3,7 @@ package com.atjl.common.api.annotation;
 import java.lang.annotation.*;
 
 /**
- * 非线程安全
+ * thread unsafe
  *
  * @since 1.0
  */

@@ -1,7 +1,6 @@
 package com.atjl.util.thread;
 
 import com.atjl.common.api.resp.ResponseDataDto;
-import com.atjl.util.collection.CollectionUtil;
 import com.atjl.util.common.SystemUtil;
 import com.atjl.util.json.JSONFastJsonUtil;
 import com.atjl.util.json.JSONFmtUtil;
@@ -12,9 +11,6 @@ import org.junit.rules.ExpectedException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.locks.AbstractQueuedSynchronizer;
-import java.util.concurrent.locks.ReentrantLock;
 
 
 public class ThreadPoolManagerTest {

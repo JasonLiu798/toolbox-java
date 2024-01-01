@@ -1,8 +1,8 @@
 package com.atjl.util.common;
 
 import com.atjl.util.character.StringCheckUtil;
-import com.atjl.util.character.StringUtil;
-import com.atjl.util.collection.CollectionUtil;
+import com.atjl.util.character.StringUtilEx;
+import com.atjl.util.collection.CollectionUtilEx;
 import com.atjl.util.common.domain.ClassType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -209,7 +209,7 @@ public class CovertUtil {
             return (T) res;
         } else if (tgtClz == String[].class) {
             String[] res = rawVal.split(sep);
-            if (CollectionUtil.isEmpty(res)) {
+            if (CollectionUtilEx.isEmpty(res)) {
                 return dft;
             } else {
                 return (T) res;
@@ -228,7 +228,7 @@ public class CovertUtil {
      * @return parse方法后半部分
      */
     private static String genParseFuncName(Class clz) {
-        String func = StringUtil.toUpperCaseFirstOne(clz.getSimpleName());
+        String func = StringUtilEx.toUpperCaseFirstOne(clz.getSimpleName());
         if (clz == Integer.class) {
             func = func.substring(0, 3);//parseInt
         }

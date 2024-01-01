@@ -1,7 +1,7 @@
 package com.atjl.common.context;
 
 /**
- * 开发 阶段用
+ * for test
  */
 public class DevContext {
 
@@ -32,7 +32,4 @@ public class DevContext {
         return !dev;
     }
 
-    public static void doNothing(){
-
-    }
 }

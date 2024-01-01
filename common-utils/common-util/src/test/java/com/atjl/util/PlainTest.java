@@ -2,7 +2,6 @@ package com.atjl.util;
 
 import com.atjl.util.config.ConfigIntParser;
 import org.junit.Test;
-import sun.misc.Unsafe;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -76,6 +75,8 @@ public class PlainTest {
         return rs | wc;
     }
 
+    /*
+
     public static Unsafe getUnsafe() {
         try {
             Field field = Unsafe.class.getDeclaredField("theUnsafe");
@@ -100,7 +101,7 @@ public class PlainTest {
 				//unsafe.unpark(currThread);
 			} catch (Exception e) {}
 		}).start();
-		*/
+		*
 //		unsafe.park(false, 0);
         unsafe.park(false, 3000 * 1000 * 1000l);
 
@@ -141,7 +142,7 @@ public class PlainTest {
         n |= n >>> 16;
         int res = (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
         System.out.println("res:" + res + ",max:" + MAXIMUM_CAPACITY);
-    }
+    }*/
 
     public static void print() {
         ConcurrentHashMap<String, String> m = new ConcurrentHashMap<>();
