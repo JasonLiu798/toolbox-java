@@ -21,12 +21,14 @@ public class DailyLogTemplate {
     }
 
 
-
     public static List<TimeItem> getTemplate(String file) {
         String contents = FileUtilEx.catFromClassPath(file);
-        String[] contentArr = contents.split("\n");
+        String[] contentArr = contents.split("\r\n");
         List<TimeItem> list = new ArrayList<>();
         for (String line : contentArr) {
+            if (StringUtils.isBlank(line)) {
+                continue;
+            }
             TimeItem ti = new TimeItem();
             if (line.contains("，")) {
                 String[] item = line.split("，");

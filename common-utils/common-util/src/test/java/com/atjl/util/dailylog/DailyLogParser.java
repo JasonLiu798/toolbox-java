@@ -1,7 +1,9 @@
 package com.atjl.util.dailylog;
 
 import com.atjl.util.date.DateUtil;
+import com.atjl.util.date.HolidayUtils;
 import com.atjl.util.file.FileUtilEx;
+import com.atjl.util.log.LogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -11,14 +13,14 @@ import java.util.*;
 @Slf4j
 public class DailyLogParser {
 
+    public static final String ENTER = "\r\n";
 
     public static final String CUR_YEAR = "2023";
 
-    public static void cov(String file) {
-
+    public static Map<String, Day> parse(String file) {
         String res = FileUtilEx.catFromClassPath(file);
         log.info("read {}", res);
-        String[] contentArr = res.split("\n");
+        String[] contentArr = res.split(ENTER);
         Map<String, Day> yearMap = new HashMap<>();
 
         Boolean first = true;
@@ -33,10 +35,11 @@ public class DailyLogParser {
                 if (!first) {
                     // process last
                     if (CollectionUtils.isNotEmpty(contents)) {
-                        for (String c : contents) {
-
-                        }
+                        List<TimeItem> ti = parseItems(curDay, contents);
+                        curDay.setTimeItems(ti);
                     }
+                } else {
+                    first = false;
                 }
 
                 // process new
@@ -53,28 +56,54 @@ public class DailyLogParser {
                 // process
             } else {
                 contents.add(line);
-
-
             }
         }
+        return yearMap;
     }
 
 
-    private List<TimeItem> parseItems(String day, List<String> lines) {
+    private static List<TimeItem> parseItems(Day day, List<String> lines) {
+        // day format
+        String dayStr = day.getDay();
+        Date d = DateUtil.parse(dayStr, DateUtil.yyyy_MM_dd_EN);
+        Boolean holiday = HolidayUtils.isHoliday(d);
+        List<TimeItem> tiList = null;
+        if (holiday) {
+            tiList = DailyLogTemplate.getWeekend();
+        } else {
+            tiList = DailyLogTemplate.getNormal();
+        }
 
-        List<TimeItem> itemAll = new ArrayList<>();
+        List<TimeItem> rawItemList = new ArrayList<>();
         for (String line : lines) {
             List<TimeItem> items = parseItem(line);
             if (CollectionUtils.isNotEmpty(items)) {
-                itemAll.addAll(items);
+                rawItemList.addAll(items);
             }
         }
 
-
-        return null;
+        int cnt = DailyLogBatchUtil.countEmptyContent(tiList);
+        if (rawItemList.size() > cnt) {
+            log.info("item count more than template,{}", LogUtil.toJsonStringNoExcep(day));
+        }
+        List<TimeItem> res = new ArrayList<>();
+        int i = 0;
+        for (TimeItem ti : tiList) {
+            if (StringUtils.isBlank(ti.getContent())) {
+                TimeItem input = rawItemList.get(i);
+                ti.setContent(input.getContent());
+                ti.setTag(input.getTag());
+                // yyyy-MM-dd
+                String dateTime = day.getDay() + " " + ti.getTemplateTime();
+                Date itemDate = DateUtil.parse(dateTime, DateUtil.yyyy_MM_dd_EN + " " + "HHmm");
+                ti.setTs(itemDate.getTime());
+                res.add(ti);
+            }
+        }
+        return res;
     }
 
-    private List<TimeItem> parseItem(String line) {
+    private static List<TimeItem> parseItem(String line) {
         // C2 包菜炒肉；西红柿炒鸡蛋，糖放多了
         String[] lineContentArr = line.split(" ");
         String typeAndHour = lineContentArr[0];

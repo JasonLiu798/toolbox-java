@@ -5,10 +5,10 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class  TimeItem implements Serializable,Comparable<TimeItem> {
+public class TimeItem implements Serializable, Comparable<TimeItem> {
     private static final long serialVersionUID = -5966081483028949977L;
 
-    Integer ts;
+    Long ts;
 
     String templateTime;
 
@@ -26,6 +26,6 @@ public class  TimeItem implements Serializable,Comparable<TimeItem> {
 
     @Override
     public int compareTo(TimeItem o) {
-        return o.getTs() - ts;
+        return Math.toIntExact(o.getTs() - ts);
     }
 }

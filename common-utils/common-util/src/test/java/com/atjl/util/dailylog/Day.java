@@ -17,6 +17,9 @@ public class Day implements Serializable {
 
     private Long ts;
 
+    /**
+     * return string yyyy-MM-dd
+     */
     public String getDay(){
         return TimestampUtil.format(ts, DateUtil.yyyy_MM_dd_EN);
     }
